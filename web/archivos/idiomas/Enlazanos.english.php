@@ -1,0 +1,5 @@
+<?php
+
+$txt['enlazanos'] = 'Enlazanos'; 
+
+?>

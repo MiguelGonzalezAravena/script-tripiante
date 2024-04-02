@@ -23,7 +23,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>
 
 <link>' . $boardurl . '/</link>
 <description>Ultimos 25 post con mayor puntaje en ' . $mbname . '</description>';
-while ($row =	mysql_fetch_array($request)) {
+while ($row =	mysqli_fetch_array($request)) {
 echo '<item>
 <title><![CDATA[' . htmlentities($row['subject']) . ' (' . $row['points'] . ')]]></title>
 <link>' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html</link>

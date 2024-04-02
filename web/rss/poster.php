@@ -3,7 +3,7 @@
 
 $request	=	mysql_query("SELECT m.realName, m.posts FROM {$db_prefix}members AS m ORDER BY m.posts DESC LIMIT 0, 25");
 $context['rssuser'] = array();
-while ($row = mysql_fetch_assoc($request)) {
+while ($row = mysqli_fetch_assoc($request)) {
 $row['realName'] = parse_bbc($row['realName'], 1, $row['posts']); 
 $row['realName'] = strtr($func['substr'](str_replace('<br />', "\n", $row['realName']), 0, 400 - 3), array("\n" => '<br />'));	
 censorText($row['realName']);
@@ -13,7 +13,7 @@ $context['rssuser'][] = array(
 	'realName' => $row['realName'],
 );
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 
 echo'<?xml version="1.0" encoding="UTF-8"?>
 <rss version="0.92" xml:lang="spanish">

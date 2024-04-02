@@ -1,5 +1,6 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
+
 $request	=	mysql_query("
 SELECT points, ID_PICTURE, title
 FROM {$db_prefix}gallery_pic
@@ -7,14 +8,14 @@ GROUP BY ID_PICTURE, title DESC
 ORDER BY points DESC
 LIMIT 0, 25");
 $context['comment-img3'] = array();
-while ($row = mysql_fetch_assoc($request)) {
+while ($row = mysqli_fetch_assoc($request)) {
 $context['comment-img3'][] = array(
 'title' => $row['title'],
 'points' => $row['points'],
 'ID_PICTURE' => $row['ID_PICTURE']
 );
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 
 echo '<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="0.92" xml:lang="spanish"><channel>

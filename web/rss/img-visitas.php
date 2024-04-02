@@ -23,7 +23,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>
 
 <link>' . $boardurl . '/</link>
 <description>Ultimas 25 imagenes mas vistas en ' . $mbname . '</description>';
-while($row = mysql_fetch_array($request)) {
+while($row = mysqli_fetch_array($request)) {
 echo '<item>
 <title><![CDATA[' . htmlentities($row['title']) . '  (' . $row['views'] . ')]]></title>
 <link>' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '</link>

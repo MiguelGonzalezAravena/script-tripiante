@@ -24,12 +24,12 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>
 <link>' . $boardurl . '/</link>
 <description>Ultimos 25 post mas visitados en ' . $mbname . '</description>
 ';
-while ($row =	mysql_fetch_array($request)) {
-echo '<item>
-<title><![CDATA[' . htmlentities($row['subject']) . ' (' . htmlentities($row['numViews']) . ')]]></title>
-<link>' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html</link>
-<description><![CDATA[]]></description>
-<comments>' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html#comentar</comments></item>';
+while ($row =	mysqli_fetch_array($request)) {
+  echo '<item>
+  <title><![CDATA[' . htmlentities($row['subject']) . ' (' . htmlentities($row['numViews']) . ')]]></title>
+  <link>' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html</link>
+  <description><![CDATA[]]></description>
+  <comments>' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html#comentar</comments></item>';
 }
 echo '</channel></rss>';
 ?> 

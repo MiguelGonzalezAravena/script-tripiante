@@ -16,7 +16,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
 
 <link>' . $boardurl  .'/</link>
 <description>Usuarios con mas puntos de ' . $mbname . '</description>';
-while ($row = mysql_fetch_assoc($request)) {
+while ($row = mysqli_fetch_assoc($request)) {
 echo '<item>
 <title><![CDATA[' . htmlentities($row['realName']) . ' (' . $row['moneyBank'] . ')]]></title>
 <link>' . $boardurl . '/perfil/' . htmlentities($row['memberName']) . '</link>

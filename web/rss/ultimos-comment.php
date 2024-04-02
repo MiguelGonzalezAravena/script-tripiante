@@ -1,15 +1,16 @@
 <?php
-require('../Settings.php');
-require('../SSI.php');
+@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
+@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+
 $conexion = mysql_connect($db_server, $db_user, $db_passwd) OR die("No se puedo conectar a la BDD ".mysql_error()."...!!!");mysql_select_db($db_name, $conexion) OR die("No se pudo seleccionar la BDD ".mysql_error()."...!!!");
 $comment=mysql_query("SELECT *FROM ({$db_prefix}comments AS c, {$db_prefix}members AS mem, {$db_prefix}messages AS m)WHERE c.ID_MEMBER = mem.ID_MEMBER
 AND m.ID_TOPIC = c.ID_TOPIC
 GROUP BY c.ID_TOPICORDER BY c.ID_COMMENT DESC
 LIMIT 25");
-$context['comment'] = array();while ($row = mysql_fetch_assoc($comment)){$row['comment'] = parse_bbc($row['comment'], 1, $row['ID_TOPIC']); censorText($row['comment']);censorText($row['subject']);$row['comment'] = strtr($func['substr'](str_replace('<br />', "\n", $row['comment']), 0, 400 - 3), array("\n" => '<br />'));$context['comment'][] = array('comment' => $row['comment'],'titulo' => $row['subject'],'nom-user' => $row['realName'],'id_comment' => $row['id_coment'],'id' => $row['id_post'],
+$context['comment'] = array();while ($row = mysqli_fetch_assoc($comment)){$row['comment'] = parse_bbc($row['comment'], 1, $row['ID_TOPIC']); censorText($row['comment']);censorText($row['subject']);$row['comment'] = strtr($func['substr'](str_replace('<br />', "\n", $row['comment']), 0, 400 - 3), array("\n" => '<br />'));$context['comment'][] = array('comment' => $row['comment'],'titulo' => $row['subject'],'nom-user' => $row['realName'],'id_comment' => $row['id_coment'],'id' => $row['id_post'],
 );
 }
-mysql_free_result($comment);
+mysqli_free_result($comment);
 
 $contando=1;
 echo'<?xml version="1.0" encoding="UTF-8"?>

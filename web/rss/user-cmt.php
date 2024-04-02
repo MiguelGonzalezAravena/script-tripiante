@@ -23,7 +23,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>
 
 <link>' . $boardurl . '/</link>
 <description>25 usuarios que mas comentan en ' . $mbname . '</description>';
-while ($row = mysql_fetch_assoc($request)) {
+while ($row = mysqli_fetch_assoc($request)) {
 echo '<item><title><![CDATA[' . htmlentities($row['realName']) . ' (' . $row['total'] . ' com)]]></title><link>' . $boardurl . '/perfil/' . htmlentities($row['memberName']) . '</link></item>';
 }
 echo '</channel></rss>';

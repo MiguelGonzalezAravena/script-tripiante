@@ -14,7 +14,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?><rss version="0.92" xml:lang="es-es
 <title>' . $mbname . ' - Ultimos temas</title>
 <link>' . $boardurl . '/</link>
 <description>Ultimos 10 temas de las comunidades en ' . $mbname . '</description>';
-while ($row = mysql_fetch_assoc($request)){
+while ($row = mysqli_fetch_assoc($request)){
 echo '<item><title><![CDATA[' . htmlentities($row['subject'], ENT_QUOTES, "UTF-8") . ' - Comunidad: ' . htmlentities($row['title'], ENT_QUOTES, "UTF-8") . ']]></title>
 <link>' . $boardurl . '/comunidades/' . $row['friendly_url'] . '/' . $row['ID_TOPIC'] . '/' . ssi_amigable($row['subject']) . '.html</link>
 <description><![CDATA[' . htmlentities($row['body'], ENT_QUOTES, "UTF-8") . ']]></description>

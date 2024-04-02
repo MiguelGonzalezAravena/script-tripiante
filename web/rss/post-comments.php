@@ -10,7 +10,7 @@ ORDER BY Cuenta DESC
 LIMIT 25
 ", __FILE__, __LINE__);
 $context['tcomentados'] = array();
-while ($row = mysql_fetch_assoc($request)){
+while ($row = mysqli_fetch_assoc($request)){
 $context['tcomentados'][] = array(
 'subject' => ssi_reducir($row['subject']),
 'cuenta' => $row['Cuenta'],
@@ -19,7 +19,7 @@ $context['tcomentados'][] = array(
 'bname' => $row['bname'],
 );
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 
 echo '<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="0.92" xml:lang="spanish"><channel>

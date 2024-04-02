@@ -11,7 +11,7 @@ AND cc.ID_MEMBER = mem.ID_MEMBER
 AND cc.ID_TOPIC = $id
 ORDER BY cc.ID_COMMENT ASC
 LIMIT 0, 25");
-$row2 = mysql_fetch_assoc($request);
+$row2 = mysqli_fetch_assoc($request);
 echo '<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="0.92" xml:lang="spanish">
 <channel>
@@ -27,7 +27,7 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>
 <link>' . $boardurl . '/</link>
 <description>Comentarios para el tema ' . $row2['subject'] . '</description>';
 $count++;
-while ($row = mysql_fetch_assoc($request)) {
+while ($row = mysqli_fetch_assoc($request)) {
 echo '<item>
 <title><![CDATA[#' . $count++ . ' Comentario de ' . htmlentities($row['memberName']) . ']]></title>
 <link>' . $boardurl . '/comunidades/' . $row['friendly_url'] . '/' . $row['ID_TOPIC'] . '/' . ssi_amigable($row2['subject']) . '.html#comentarios</link>

@@ -10,7 +10,7 @@ return $valor;
 $existe	=	mysql_query("SELECT m.ID_TOPIC, m.ID_MEMBER, m.subject, m.body, m.hiddenOption, m.ID_MSG FROM {$db_prefix}messages AS m GROUP BY m.ID_TOPIC
 ORDER BY m.ID_TOPIC DESC LIMIT 0, 25");
 $context['rssuser'] = array();
-while ($row = mysql_fetch_assoc($existe)){
+while ($row = mysqli_fetch_assoc($existe)){
 $row['body'] = reemplazar(parse_bbc($row['body'], 1, $row['ID_MSG']));
 censorText($row['body']);
 censorText($row['subject']);
@@ -21,7 +21,7 @@ $context['rssuser'][] = array(
 'postprivado' => $row['hiddenOption'],
 );
 }
-mysql_free_result($existe);
+mysqli_free_result($existe);
 echo '<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="0.92" xml:lang="es-es">
 <channel>

@@ -1,7 +1,7 @@
-	  RewriteBase /web/widget/
-      RewriteEngine on
-      Rewriterule ^(.*)-(.*)-(.*)/$ index.php?cat=$1&cantidad=$2&tamano=$3
-      Rewriterule ^icono-cat-(.*).gif$ /images/post/icono_$1.gif
-      Rewriterule ^fondo-blanco.gif$ /images/bg_widget.png
-      Rewriterule ^logo.gif$ /images/widget-logo.png
-      Rewriterule ^fondo2.gif$ /images/fondo2-widget.png
+  RewriteBase /web/widget/
+  RewriteEngine on
+  Rewriterule ^(.*)-(.*)-(.*)/$ index.php?cat=$1&cantidad=$2&tamano=$3
+  Rewriterule ^icono-cat-(.*).gif$ /images/post/icono_$1.gif
+  Rewriterule ^fondo-blanco.gif$ /images/bg_widget.png
+  Rewriterule ^logo.gif$ /images/widget-logo.png
+  Rewriterule ^fondo2.gif$ /images/fondo2-widget.png

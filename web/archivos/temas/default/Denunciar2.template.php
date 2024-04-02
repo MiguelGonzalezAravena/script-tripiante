@@ -11,13 +11,13 @@ FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS ma)
 WHERE g.ID_PICTURE = ".$context['ID_PICTURE']."
 AND g.ID_MEMBER = ma.ID_MEMBER
 ", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request)){
+	while ($row = mysqli_fetch_assoc($request)){
 			$titulo = $row['title'];
 			$id = $row['ID_PICTURE'];
 			$usuario = $row['memberName'];
 			$started = $row['ID_MEMBER2'];
 			}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	
 if($context['user']['is_guest']) {

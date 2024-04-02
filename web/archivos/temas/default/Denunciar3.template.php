@@ -9,11 +9,11 @@ SELECT mem.ID_MEMBER, mem.memberName, mem.realName
 FROM ({$db_prefix}members AS mem)
 WHERE mem.memberName = '".$context['NOMBRE_USER']."'
 LIMIT 1 ", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request)){
+	while ($row = mysqli_fetch_assoc($request)){
 			$memberName = $row['memberName'];
 			$ID_MEMBER = $row['ID_MEMBER'];	
 			}
-mysql_free_result($request);
+mysqli_free_result($request);
 
 if ($context['user']['is_guest'])
 {

@@ -13,7 +13,7 @@ function template_main()
  }
 
 	 $resp = db_query("SELECT * FROM {$db_prefix}members WHERE memberName = '$us' ", __FILE__, __LINE__);
-	 $datos = mysql_fetch_assoc($resp) ;
+	 $datos = mysqli_fetch_assoc($resp) ;
 	if($us != $datos['memberName'])
 	fatal_error('Este usuario no existe.-', false);
 
@@ -42,12 +42,12 @@ LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
 echo '<div class="box_780" style="float:left;">
 <div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Mis im&aacute;genes</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" /></div></div><div class="windowbg" style="width:764px;padding:4px;"><table border="0" width="100%">
 ';
-while($row = mysql_fetch_assoc($request2)){
+while($row = mysqli_fetch_assoc($request2)){
 $total = db_query("SELECT COUNT(ID_PICTURE) AS total FROM {$db_prefix}gallery_comment WHERE ID_PICTURE = " . $row['ID_PICTURE'], __FILE__, __LINE__);
-$total2 = mysql_fetch_assoc($total);
+$total2 = mysqli_fetch_assoc($total);
 echo '<td width="70px"><div style="width:90px;"><div class="photo_small"><a href="/imagenes/ver/' . $row['ID_PICTURE'] . '"><img src="' . $row['filename'] . '" title="' . $row['title'] . '" onload="if(this.height > 68) {this.height=68}" style="width:90px;" border="0"/></a></div><div class="smalltext"><center>Comentarios: (<a href="/imagenes/ver/' . $row['ID_PICTURE'] . '#comentarios">' . $total2['total'] . '</a>)</center></div></div></td>';
 }
-$NroRegistros	=	mysql_num_rows(db_query("SELECT * FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS m) WHERE m.ID_MEMBER = g.ID_MEMBER AND g.ID_MEMBER = ".$datos['ID_MEMBER']." ", __FILE__, __LINE__));
+$NroRegistros	=	mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS m) WHERE m.ID_MEMBER = g.ID_MEMBER AND g.ID_MEMBER = ".$datos['ID_MEMBER']." ", __FILE__, __LINE__));
 
 
  $PagAnt=$PagAct-1;
@@ -57,7 +57,7 @@ $NroRegistros	=	mysql_num_rows(db_query("SELECT * FROM ({$db_prefix}gallery_pic 
  if($Res>0) $PagUlt=floor($PagUlt)+1;
 echo '</tr></table>';
 
-$count	=	mysql_num_rows($request2);
+$count	=	mysqli_num_rows($request2);
 if($count <= 0)
 {
 echo '<div class="noesta">'.$_GET['user'].' no tiene ninguna imagen.</div>';
@@ -93,12 +93,12 @@ echo '<style type="text/css">.photo_small{width:90px;margin:6px;padding:2px;text
 <div class="box_title" style="width: 915px;"><div class="box_txt box_buscadort"><center>Im&aacute;genes de '.$_GET['user'].'</center></div>
 <div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div><div style="width:907px;padding:4px;" class="windowbg" border="0"><table border="0" width="100%">
 ';
-while($row	=	mysql_fetch_assoc($request2)){
+while($row	=	mysqli_fetch_assoc($request2)){
 $total = db_query("SELECT COUNT(ID_PICTURE) AS total FROM {$db_prefix}gallery_comment WHERE ID_PICTURE = " . $row['ID_PICTURE'], __FILE__, __LINE__);
-$total2 = mysql_fetch_assoc($total);
+$total2 = mysqli_fetch_assoc($total);
 echo '<td width="70px"><div style="width:90px;"><div class="photo_small"><a href="/imagenes/ver/', $row['ID_PICTURE'], '"><img src="', $row['filename'], '" title="', $row['title'], '" onload="if(this.height > 68) {this.height=68}" style="width:90px;" border="0"/></a></div><div class="smalltext"><center>Comentarios: (<a href="/imagenes/ver/', $row['ID_PICTURE'], '#comentarios">', $total2['total'], '</a>)</center></div></div></td>';
 }
-$NroRegistros	=	mysql_num_rows(db_query("SELECT * FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS m) WHERE m.ID_MEMBER = g.ID_MEMBER AND g.ID_MEMBER = ".$datos['ID_MEMBER']." ", __FILE__, __LINE__));
+$NroRegistros	=	mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS m) WHERE m.ID_MEMBER = g.ID_MEMBER AND g.ID_MEMBER = ".$datos['ID_MEMBER']." ", __FILE__, __LINE__));
 
 
  $PagAnt=$PagAct-1;
@@ -108,7 +108,7 @@ $NroRegistros	=	mysql_num_rows(db_query("SELECT * FROM ({$db_prefix}gallery_pic 
  if($Res>0) $PagUlt=floor($PagUlt)+1;
 echo '</tr></table>';
 
-$count	=	mysql_num_rows($request2);
+$count	=	mysqli_num_rows($request2);
 if($count <= 0)
 {
 echo '<div class="noesta">'.$_GET['user'].' no tiene ninguna imagen.</div>';
@@ -243,20 +243,20 @@ $bbc_check		=	function_exists('parse_bbc');
 @require_once('SSI.php');
 
 $requests	=	db_query("SELECT * FROM {$db_prefix}gallery_pic WHERE ID_PICTURE = {$context['gallery_pic']['ID_PICTURE']} ", __FILE__, __LINE__);
-while ($grups = mysql_fetch_assoc($requests))
+while ($grups = mysqli_fetch_assoc($requests))
 {
 $fecha	=	timeformat($grups['date']);
 }
-mysql_free_result($requests);
+mysqli_free_result($requests);
 
 $request = db_query("SELECT * FROM {$db_prefix}gallery_pic WHERE ID_PICTURE = {$context['gallery_pic']['ID_PICTURE']} ", __FILE__, __LINE__);
-while ($grup = mysql_fetch_assoc($request))
+while ($grup = mysqli_fetch_assoc($request))
 {
 $context['numcom']	=	$grup['commenttotal'];
 $context['puntos']	=	$grup['puntos'];
 $context['num_views']	=	$grup['views'];
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 
 $al_azar	=	db_query("
 SELECT DISTINCT g.ID_PICTURE, g.points, g.title, g.ID_MEMBER, mem.ID_MEMBER
@@ -265,7 +265,7 @@ WHERE g.ID_MEMBER = mem.ID_MEMBER
 ORDER BY RAND()
 LIMIT 10", __FILE__, __LINE__);
 $context['al-azar'] = array();
-while ($row = mysql_fetch_assoc($al_azar))
+while ($row = mysqli_fetch_assoc($al_azar))
 {
 $context['al-azar'][] = array(
 'title' => $row['title'],
@@ -273,7 +273,7 @@ $context['al-azar'][] = array(
 'ID_PICTURE' => $row['ID_PICTURE'],
 );
 }
-mysql_free_result($al_azar);
+mysqli_free_result($al_azar);
 
 ssi_grupos();
 
@@ -282,7 +282,7 @@ SELECT den.ID_TOPIC, den.TYPE
 FROM {$db_user}denunciations AS den
 WHERE den.ID_TOPIC = {$_GET['id']}
 AND den.TYPE = 'imagen'", __FILE__, __LINE__);
-$context['contando'] = mysql_num_rows($request);
+$context['contando'] = mysqli_num_rows($request);
 
 if($context['contando'] > 5 && empty($context['user']['is_admin']))
 fatal_error('Imagen eliminada por acumulaci&oacute;n de denuncias, se encuentra en proceso de revisi&oacute;n.', false);
@@ -307,7 +307,7 @@ $userse = db_query("
 SELECT *
 FROM {$db_prefix}members
 WHERE ID_MEMBER = {$iduser} ", __FILE__, __LINE__);
-while($row = mysql_fetch_assoc($userse))
+while($row = mysqli_fetch_assoc($userse))
 {
 	$context['memberName']		=	$row['memberName'];
 	$context['avatar']			=	$row['avatar'];
@@ -330,7 +330,7 @@ $userse2	=	db_query("
 SELECT *
 FROM {$db_prefix}membergroups
 WHERE ID_GROUP = {$idgrup} ", __FILE__, __LINE__);
-while($row2	=	mysql_fetch_assoc($userse2))
+while($row2	=	mysqli_fetch_assoc($userse2))
 {
 $membergropu	=	$row2['groupName'];
 }
@@ -339,7 +339,7 @@ $userse3	=	db_query("
 SELECT *
 FROM {$db_prefix}membergroups
 WHERE ID_GROUP = {$idgrup2} ", __FILE__, __LINE__);
-while($row2	=	mysql_fetch_assoc($userse3))
+while($row2	=	mysqli_fetch_assoc($userse3))
 {
 $membergropu2	=	$row2['groupName'];
 }
@@ -348,7 +348,7 @@ $medalla	=	db_query("
 SELECT *
 FROM {$db_prefix}membergroups
 WHERE ID_GROUP = ".(!empty($idgrup2) ? $idgrup2 : $idgrup)."", __FILE__, __LINE__);
-while($row7	=	mysql_fetch_assoc($medalla))
+while($row7	=	mysqli_fetch_assoc($medalla))
 {
 $medalla	=	$row7['stars'];
 }
@@ -403,7 +403,7 @@ $request = db_query("
 SELECT * FROM {$db_prefix}comments
 WHERE ID_MEMBER = {$iduser}
 ", __FILE__, __LINE__);
-$context['comentuser'] = mysql_num_rows($request);
+$context['comentuser'] = mysqli_num_rows($request);
 
 echo '<br /><div class="fondoavatar" style="overflow:hidden;width:130px;"><b style="color:#FE8F47;text-shadow: #6A5645 0px 1px 1px;">PUNTOS:</b> <b><span id="cant_pts_post">', $context['money'], '</span></b><br />
 <b style="color:#FE8F47;text-shadow: #6A5645 0px 1px 1px;">POST:</b> <b><a href="/user-post/', $context['memberName'], '">', $context['topics'], '</a></b><br />
@@ -481,7 +481,7 @@ SELECT o.ID_TOPIC
 FROM ({$db_prefix}bookmarks AS o)
 WHERE o.ID_TOPIC = {$context['gallery_pic']['ID_PICTURE']}
 AND o.TYPE = 'imagen' ", __FILE__, __LINE__);
-$context['fav1'] = mysql_num_rows($rs);
+$context['fav1'] = mysqli_num_rows($rs);
 echo '<div style="clear: left;"></div></div></div></div><div style="width:386px;float:left;"><div class="box_390"><div class="box_title" style="width:384px;"><div class="box_txt box_390-34">Informaci&oacute;n de la imagen</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div>
 <div class="windowbg size11" style="width: 376px; padding: 4px;"><center><span class="icons visitas">&nbsp;' . $context['gallery_pic']['views'] . '&nbsp;visitas</span><span class="icons fav"><span id="cant_favs_post">' . $context['fav1'] . '</span>&nbsp;favoritos</span><span class="icons puntos"><span id="cant_pts_post_dos">' . $context['gallery_pic']['points'] . '</span> puntos</span></center><div class="hrs"></div>
 
@@ -513,11 +513,11 @@ echo '<form action="/comentario-img/eliminar/" method="post" accept-charset="', 
 echo '<div class="box_title" style="width: 772px;"><div class="box_txt box_780-34">Comentarios</div>
 <div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width: 764px; padding: 4px;">';
 $sincoment = db_query("SELECT c.ID_PICTURE,  c.ID_COMMENT, c.date, c.comment, c.ID_MEMBER, m.posts, m.memberName,m.realName FROM {$db_prefix}gallery_comment as c, {$db_prefix}members AS m WHERE	c.ID_PICTURE = " . $context['gallery_pic']['ID_PICTURE'] . " AND c.ID_MEMBER = m.ID_MEMBER ORDER BY c.ID_COMMENT ASC", __FILE__, __LINE__);
-$context['sin_coment'] =  mysql_num_rows($sincoment);
+$context['sin_coment'] =  mysqli_num_rows($sincoment);
 $dbresult = db_query("SELECT c.ID_PICTURE,  c.ID_COMMENT, c.date, c.comment, c.ID_MEMBER, m.posts, m.memberName,m.realName FROM {$db_prefix}gallery_comment as c, {$db_prefix}members AS m WHERE	c.ID_PICTURE = " . $context['gallery_pic']['ID_PICTURE'] . " AND c.ID_MEMBER = m.ID_MEMBER ORDER BY c.ID_COMMENT ASC", __FILE__, __LINE__);
 $comment_count = db_affected_rows();
 $context['pic_comment'] = array();
-while ($row = mysql_fetch_assoc($dbresult))
+while ($row = mysqli_fetch_assoc($dbresult))
 	{
 		censorText($row['comment']);
 		$context['pic_comment'][] = array(
@@ -531,7 +531,7 @@ while ($row = mysql_fetch_assoc($dbresult))
 			);
 		$context['ID_PICTURE']=$row['ID_PICTURE'];
 	}
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 $cantidad++;
 $memCommID = $pic_comment['ID_MEMBER'];
 loadMemberData($memCommID);
@@ -615,14 +615,14 @@ function loadSmileys()
 				FROM {$db_prefix}smileys
 				WHERE hidden IN (0, 2)
 				ORDER BY smileyRow, smileyOrder", __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				$row['code'] = htmlspecialchars($row['code']);
 				$row['filename'] = htmlspecialchars($row['filename']);
 				$row['description'] = htmlspecialchars($row['description']);
 			$context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 		cache_put_data('posting_smileys', $context['smileys'], 480);
 	}
 

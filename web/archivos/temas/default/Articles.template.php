@@ -35,7 +35,7 @@ FROM {$db_prefix}articles
 ORDER BY date DESC
 LIMIT 5
 ", __FILE__, __LINE__);
-while($row	=	mysql_fetch_assoc($request)) {
+while($row	=	mysqli_fetch_assoc($request)) {
 echo '<img alt="', $row['title'], '" src="', $settings['images_url'], '/ayuda/articulo.png" title="', $row['title'], '" />&nbsp;<a href="/ayuda/articulo/', $row['ID_ARTICLE'], '">', ssi_reducir($row['title']), '</a> (', timeformat($row['date']), ')<br />';
 }
 
@@ -48,7 +48,7 @@ FROM {$db_prefix}articles
 ORDER BY views DESC
 LIMIT 5
 ", __FILE__, __LINE__);
-while($row2	=	mysql_fetch_assoc($request2)) {
+while($row2	=	mysqli_fetch_assoc($request2)) {
 echo '<img alt="', $row2['title'], '" src="', $settings['images_url'], '/ayuda/articulo.png" title="', $row2['title'], '" />&nbsp;<a href="/ayuda/articulo/', $row2['ID_ARTICLE'], '">', ssi_reducir($row2['title']), '</a> (', $row2['views'], ' ', $txt['smfarticles_cviews'] ,')<br />';
 }
 echo '</div></div></div>';
@@ -162,7 +162,7 @@ function template_addcat()
 	global $scripturl, $txt, $context, $settings;
 
 	echo '<center><div class="box_title" style="width:539px;"><div class="box_txt">' , $txt['smfarticles_addcat'] , '</div><div class="box_rss"><img alt="" src="/images/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
-<div class="windowbg" style="width:531px;padding:4px;"><form style="margin: 0px; padding: 0px;" action="' , $scripturl , '?action=articles;sa=addcat2"" method="POST" name="cateform" accept-charset="UTF-8"><table>
+<div class="windowbg" style="width:531px;padding:4px;"><form style="margin: 0px; padding: 0px;" action="' , $scripturl , '?action=articles;sa=addcat2"" method="POST" name="cateform" accept-charset="' . $context['character_set'] . '"><table>
 <tr><td style="width:100px;"><b>' , $txt['smfarticles_ctitle'] , '</b></td><td> <input type="text" name="title" size="64" maxlenght="100" onfocus="foco(this);" onblur="no_foco(this);" style="width:300px;" /> </td></tr>
 
 <tr><td style="width:100px;"><b>' , $txt['smfarticles_parentcategory'] ,'</b></td><td>
@@ -190,7 +190,7 @@ function template_editcat()
 echo '<center>
 <div class="box_title" style="width:539px;"><div class="box_txt">' , $txt['smfarticles_editcat'] , '</div><div class="box_rss"><img alt="" src="/images/blank.gif" style="width: 14px; height: 12px;" border="0"></div></div>
 <div class="windowbg" style="width:531px;padding:4px;">
-<form style="margin: 0px; padding: 0px;" action="' , $scripturl , '?action=articles;sa=editcat2" method="POST" name="catform" accept-charset="UTF-8"><table>
+<form style="margin: 0px; padding: 0px;" action="' , $scripturl , '?action=articles;sa=editcat2" method="POST" name="catform" accept-charset="' . $context['character_set'] . '"><table>
 <tr><td style="width:100px;"><b>' , $txt['smfarticles_ctitle'] , '</b></td><td> <input value="' , $context['articles_data']['title'] , '" type="text" name="title" onfocus="foco(this);" onblur="no_foco(this);" style="width:300px;" size="64" maxlength="100"/> </td></tr>
 
 <tr><td style="width:100px;"><b>' , $txt['smfarticles_parentcategory'] ,'</b></td>

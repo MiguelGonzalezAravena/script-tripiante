@@ -62,6 +62,8 @@ function template_main() {
     ORDER BY t.ID_TOPIC DESC
     LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
+  $rows = mysqli_num_rows($request2);
+
   $colors = array(
     0 => '#F4F4FF',
     1 => '#F4F4FF',
@@ -87,8 +89,8 @@ function template_main() {
         </div>
         <div class="text_container">';
 
-    if($context['user']['is_guest']) {
-      if($row['hiddenOption']) {
+    if ($context['user']['is_guest']) {
+      if ($row['hiddenOption']) {
         echo '
           <div class="icon_img" style="float: left; margin-right: 0px;">
             <img alt="" src="' . $settings['images_url'] . '/icons/tpbig-v1-iconos.gif?v3.2.3" style="margin-top: -578px; display: inline;" />
@@ -97,8 +99,8 @@ function template_main() {
     }
 
     echo '
-          <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" target="_self" title="' . htmlentities($row['subject'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlentities($row['subject'], ENT_QUOTES, "UTF-8") . '">
-            ' . ssi_reducir(htmlentities($row['subject'], ENT_QUOTES, 'UTF-8')) . '
+          <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" target="_self" title="' . htmlentities(censorText($row['subject']), ENT_QUOTES, 'UTF-8') . '" alt="' . htmlentities(censorText($row['subject']), ENT_QUOTES, "UTF-8") . '">
+            ' . ssi_reducir(htmlentities(censorText($row['subject']), ENT_QUOTES, 'UTF-8')) . '
           </a>
         </div>
       </div>
@@ -107,10 +109,13 @@ function template_main() {
     $index_color	=	1	+	$index_color;
   }
 
-  mysqli_free_result($request);
-
-  if (mysqli_num_rows($request2) == '') {
-    echo '<div class="noesta"><br/><br/><br/><br/>No hay post en esta categor&iacute;a.<br/><br/><br/><br/><br/></div>';
+  if ($rows == 0) {
+    echo '
+      <div class="noesta">
+        <br /><br /><br /><br />
+        No hay post en esta categor&iacute;a.
+        <br /><br /><br /><br /><br />
+      </div>';
   } else {
     while ($row = mysqli_fetch_assoc($request2)) {
       echo '
@@ -121,7 +126,7 @@ function template_main() {
           <div class="text_container">';
 
       if ($context['user']['is_guest']) {
-        if($row['hiddenOption']) {
+        if ($row['hiddenOption']) {
           echo '
             <div class="icon_img" style="float: left; margin-right: 0px;">
               <img alt="" src="' . $settings['images_url'] . '/icons/tpbig-v1-iconos.gif?v3.2.3" style="margin-top: -578px; display: inline;" />
@@ -131,7 +136,7 @@ function template_main() {
 
       echo '
             <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" target="_self" title="' . htmlentities($row['subject'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlentities($row['subject'], ENT_QUOTES, 'UTF-8') . '">
-              ' . ssi_reducir(htmlentities($row['subject'], ENT_QUOTES, "UTF-8")) . '
+              ' . ssi_reducir(htmlentities($row['subject'], ENT_QUOTES, 'UTF-8')) . '
             </a>
           </div>
         </div>
@@ -140,22 +145,21 @@ function template_main() {
   }
 
   mysqli_free_result($request);
+  mysqli_free_result($request2);
 
   if (empty($categoria)) {
     $request = db_query("
       SELECT *
       FROM {$db_prefix}messages", __FILE__, __LINE__);
-
-    $records = mysqli_num_rows($request);
   } else {
     $request = db_query("
       SELECT *
       FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b)
       WHERE m.ID_BOARD = b.ID_BOARD
       AND b.description = '$categoria'", __FILE__, __LINE__);
-
-    $records = mysqli_num_rows($request);
   }
+
+  $records = mysqli_num_rows($request);
 
   mysqli_free_result($request);
 
@@ -164,29 +168,34 @@ function template_main() {
   $lastPage = $records / $end;
   $residue = $records % $end;
 
-  if ($residue > 0)
-    $lastPage = floor($lastPage) + 1;
+  if ($residue > 0) {
+    $lastPage = floor($lastPage) + 1; 
+  }
 
   echo '
       </div>
     </div>
     <div class="windowbgpag" style="width: 378px;">';
 
-  if (mysqli_num_rows($request2) == '') {
+  if ($rows == '') {
     echo '<a href="' . $boardurl . '/">Inicio</a>';
   } else {
     if ($categoria == '') {
-      if ($actualPage > 1)
-        echo ' <a href="' . $boardurl . '/pag-' . $previousPage   . '">&#171; anterior</a>';
+      if ($actualPage > 1) {
+        echo '<a href="' . $boardurl . '/pag-' . $previousPage   . '">&#171; anterior</a>';
+      }
 
-      if ($actualPage < $lastPage)
+      if ($actualPage < $lastPage) {
         echo ' <a href="' . $boardurl . '/pag-' . $nextPage   . '">siguiente &#187;</a>';
+      }
     } else {
-      if ($actualPage > 1)
+      if ($actualPage > 1) {
         echo ' <a href="' . $boardurl . '/categoria/' . $categoria . '/pag-' . $previousPage   . '">&#171; anterior</a>';
+      }
 
-      if ($actualPage < $lastPage)
+      if ($actualPage < $lastPage) {
         echo ' <a href="' . $boardurl . '/categoria/' . $categoria . '/pag-' . $nextPage   . '">siguiente &#187;</a>';
+      }
     }
   }
 
@@ -316,7 +325,11 @@ function template_main() {
     LIMIT " . $modSettings['number_tops'], __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request)) {
-    echo '<b>' . $tops_posts_de_la_semana++ . ' -</b> <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" title="' . $row['subject'] . '">' . ssi_reducir($row['subject']) . '</a> (<span title="' . $row['points'] . ' pts">' . $row['POINTS'] . ' pts</span>)
+    echo '
+      <b>' . $tops_posts_de_la_semana++ . '&nbsp;-&nbsp;</b>
+      <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable(censorText($row['subject'])) . '.html" title="' . censorText($row['subject']) . '">' . ssi_reducir(censorText($row['subject'])) . '</a>
+      &nbsp;
+      (<span title="' . $row['points'] . ' pts">' . $row['POINTS'] . ' pts</span>)
     <br />';
   }
 
@@ -386,16 +399,15 @@ function template_main() {
 
   while ($row = mysqli_fetch_assoc($request)) {
     echo '
-        <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" title="' . $row['title'] . '" alt="' . $row['title'] . '">
-          <img src="' . $row['filename'] . '" title="' . $row['title'] . '" alt="' . $row['title'] . '" width="151px" height="151px" />
+        <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" title="' . censorText($row['title']) . '" alt="' . censorText($row['title']) . '">
+          <img src="' . $row['filename'] . '" title="' . censorText($row['title']) . '" alt="' . censorText($row['title']) . '" width="151px" height="151px" />
         </a>
       </div>';
   }
 
   mysqli_free_result($request);
 
-  echo '
-    </div>';
+  echo '</div>';
 
   // Últimas imágenes
   echo '
@@ -419,8 +431,8 @@ function template_main() {
   while ($row = mysqli_fetch_assoc($request)) {
     echo '
       <div style="-moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 2px; margin-bottom: 1px; background-color: #F4F4FF; border: 1px solid #C2D2E4;">
-        <img src="' . $settings['images_url'] . '/icons/foto.gif" alt="' . $row['title'] . '" title="' . $row['title'] . '"/>&nbsp;
-        <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" title="' . $row['title'] . '" alt="' . $row['title'] . '">' . ssi_reducir2($row['title']) . '</a>
+        <img src="' . $settings['images_url'] . '/icons/foto.gif" alt="' . censorText($row['title']) . '" title="' . censorText($row['title']) . '"/>&nbsp;
+        <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" title="' . censorText($row['title']) . '" alt="' . censorText($row['title']) . '">' . ssi_reducir2(censorText($row['title'])) . '</a>
       </div>';
   }
 
@@ -466,23 +478,25 @@ function template_main() {
   $max_num_posts = 1;
   $user_de_la_semana++;
 
-  while ($row_members = mysqli_fetch_assoc($request)) {
+  while ($row = mysqli_fetch_assoc($request)) {
     echo '
       <font style="font-size: 11px">
-        <b>' . $user_de_la_semana++ . ' - </b>
-        <a href="' . $boardurl . '/perfil/' . $row_members['realName'] . '">' . $row_members['realName'] . '</a> (' . $row_members['count_posts']. ')
+        <b>' . $user_de_la_semana++ . '&nbsp;-&nbsp;</b>
+        <a href="' . $boardurl . '/perfil/' . censorText($row['realName']) . '">' . censorText($row['realName']) . '</a>
+        &nbsp;
+        (' . $row['count_posts']. ')
       </font>
       <br />';
 
-    if ($max_num_posts < $row_members['count_posts']) {
-      $max_num_posts = $row_members['count_posts'];
+    if ($max_num_posts < $row['count_posts']) {
+      $max_num_posts = $row['count_posts'];
     }
 
     foreach ($context['user_de_la_semana'] as $i => $j) {
       $context['user_de_la_semana'][$i]['post_percent'] = round(($j['num_posts'] * 100) / $max_num_posts);
     }
 
-    unset($max_num_posts, $row_members, $j, $i);
+    unset($max_num_posts, $row, $j, $i);
   }
 
   mysqli_free_result($request);
@@ -506,7 +520,7 @@ function template_main() {
       </div>
       <div class="windowbg" style="padding: 4px; width: 153px; margin-bottom: 8px;">';
 
-  $members_result = db_query("
+  $request = db_query("
     SELECT ID_MEMBER, realName, memberName, topics
     FROM {$db_prefix}members
     WHERE topics > 0
@@ -516,13 +530,17 @@ function template_main() {
   $max_num_topics = 1;
   $user_con_mas_post = 0;
 
-  while ($row_members = mysqli_fetch_assoc($members_result)) {
+  while ($row = mysqli_fetch_assoc($request)) {
     echo '
-      <font style="font-size: 11px"><b>' . $user_con_mas_post++ . ' - </b><a href="' . $boardurl . '/perfil/' . $row_members['realName'] . '" title="' . $row_members['realName'] . '">' . $row_members['realName'] . '</a> (' . $row_members['topics'] . ')</font>
+      <font style="font-size: 11px">
+        <b>' . $user_con_mas_post++ . '&nbsp;-&nbsp;</b>
+        <a href="' . $boardurl . '/perfil/' . censorText($row['realName']) . '" title="' . censorText($row['realName']) . '">' . censorText($row['realName']) . '</a>
+        &nbsp;
+        (' . $row['topics'] . ')</font>
       <br/>';
 
-    if ($max_num_topics < $row_members['topics']) {
-      $max_num_topics = $row_members['topics'];
+    if ($max_num_topics < $row['topics']) {
+      $max_num_topics = $row['topics'];
     }
   }
 
@@ -547,7 +565,7 @@ function template_main() {
   echo '
     <div align="left" style="margin-bottom: 4px;">
       <span class="iconse anuncio">
-        <a title="Anunciate aca" href="' . $boardurl . '/contactanos/" target="_blank" rel="nofollow">Anunciate ac&aacute;</a>
+        <a title="Anunciate ac&aacute;" href="' . $boardurl . '/contactanos/" target="_blank" rel="nofollow">Anunciate ac&aacute;</a>
       </span>
     </div>';
 
@@ -561,8 +579,9 @@ function template_main() {
 
   // Estadísticas
   echo '
-          <div class="img_aletat">
-            <div class="box_title" style="width: 161px;"><div class="box_txt img_aletat">Estad&iacute;sticas</div>
+        <div class="img_aletat">
+          <div class="box_title" style="width: 161px;">
+            <div class="box_txt img_aletat">Estad&iacute;sticas</div>
             <div class="box_rss">
               <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
             </div>
@@ -598,9 +617,10 @@ function comentarios() {
     $ID_COMMENT = $row['ID_COMMENT'];
     $ID_TOPIC = $row['ID_TOPIC2'];
     $ID_MEMBER = $row['ID_MEMBER2'];
-    $realName = $row['realName'];
+    $realName = censorText($row['realName']);
     $description = $row['description'];
-    $subject = ssi_reducir($row['subject']);
+    $subject = ssi_reducir(censorText($row['subject']));
+
     echo '
       <font class="size11">
         <b>
@@ -619,36 +639,36 @@ function nube_etiquetas($etiquetas) {
   global $db_prefix, $boardurl;
 
   $etiquetas = array(
-    "windows" => 10,
-    "video" => 11,
-    "rock" => 10,
-    "rapidshare" => 14,
-    "programas" => 11,
-    "programa" => 10,
-    "post" => 12,
-    "portable" => 10,
-    "peliculas" => 10,
-    "pelicula" => 10,
-    "pc" => 14,
-    "online" => 10,
-    "musica" => 18,
-    "mp3" => 12,
-    "metal" => 12,
-    "megaupload" => 13,
-    "juegos" => 13,
-    "juego" => 12,
-    "imagenes" => 12,
-    "humor" => 10,
-    "full" => 12,
-    "espaol" => 11,
-    "dvdrip" => 12,
-    "descargas" => 11,
-    "descargar" => 12,
-    "descarga" => 15,
-    "de" => 13,
-    "tp" => 10,
-    "tripiante" => 11,
-    "2010" => 20
+    'windows' => 10,
+    'video' => 11,
+    'rock' => 10,
+    'rapidshare' => 14,
+    'programas' => 11,
+    'programa' => 10,
+    'post' => 12,
+    'portable' => 10,
+    'peliculas' => 10,
+    'pelicula' => 10,
+    'pc' => 14,
+    'online' => 10,
+    'musica' => 18,
+    'mp3' => 12,
+    'metal' => 12,
+    'megaupload' => 13,
+    'juegos' => 13,
+    'juego' => 12,
+    'imagenes' => 12,
+    'humor' => 10,
+    'full' => 12,
+    'espaol' => 11,
+    'dvdrip' => 12,
+    'descargas' => 11,
+    'descargar' => 12,
+    'descarga' => 15,
+    'de' => 13,
+    'tp' => 10,
+    'tripiante' => 11,
+    '2010' => 20
   );
 
   $count = 0;
@@ -660,10 +680,9 @@ function nube_etiquetas($etiquetas) {
       WHERE t.ID_TAG = l.ID_TAG
       AND t.tag = '$nombreetiqueta'", __FILE__, __LINE__);
 
-    $row = mysqli_num_rows($request);
+    $rows = mysqli_num_rows($request);
 
-    echo '
-      <a href="' . $boardurl . '/tags/' . $nombreetiqueta . '" style="font-size: ' . $apariciones . 'pt; margin-right: 2px; margin-bottom: 2px;" title="' . $row . ' post con el tag ' . $nombreetiqueta . '">' . $nombreetiqueta . '</a>';
+    echo '<a href="' . $boardurl . '/tags/' . $nombreetiqueta . '" style="font-size: ' . $apariciones . 'pt; margin-right: 2px; margin-bottom: 2px;" title="' . $rows . ' post con el tag ' . $nombreetiqueta . '">' . $nombreetiqueta . '</a>';
 
     $count++;
 

@@ -1,9 +1,8 @@
 <?php
 // Version: 1.1; Xml
 
-function template_quotefast()
-{
-	global $context, $settings, $options, $txt;
+function template_quotefast() {
+	global $context;
 
 	echo '<', '?xml version="1.0" encoding="', $context['character_set'], '"?', '>
 <smf>
@@ -11,9 +10,8 @@ function template_quotefast()
 </smf>';
 }
 
-function template_modifyfast()
-{
-	global $context, $settings, $options, $txt;
+function template_modifyfast() {
+	global $context;
 
 	echo '<', '?xml version="1.0" encoding="', $context['character_set'], '"?', '>
 <smf>
@@ -22,9 +20,8 @@ function template_modifyfast()
 </smf>';
 }
 
-function template_modifydone()
-{
-	global $context, $settings, $options, $txt;
+function template_modifydone() {
+	global $context, $txt;
 
 	echo '<', '?xml version="1.0" encoding="', $context['character_set'], '"?', '>
 <smf>
@@ -44,9 +41,8 @@ function template_modifydone()
 </smf>';
 }
 
-function template_modifytopicdone()
-{
-	global $context, $settings, $options, $txt;
+function template_modifytopicdone() {
+	global $context, $txt;
 
 	echo '<', '?xml version="1.0" encoding="', $context['character_set'], '"?', '>
 <smf>
@@ -65,9 +61,8 @@ function template_modifytopicdone()
 </smf>';
 }
 
-function template_post()
-{
-	global $context, $settings, $options, $txt;
+function template_post() {
+	global $context;
 
 	echo '<', '?xml version="1.0" encoding="', $context['character_set'], '"?', '>
 <smf>
@@ -109,9 +104,8 @@ function template_post()
 </smf>';
 }
 
-function template_stats()
-{
-	global $context, $settings, $options, $txt, $modSettings;
+function template_stats() {
+	global $context, $modSettings;
 
 	echo '<', '?xml version="1.0" encoding="', $context['character_set'], '"?', '>
 <smf>';
@@ -129,16 +123,14 @@ function template_stats()
 </smf>';
 }
 
-function template_split()
-{
-	global $context, $settings, $options;
+function template_split() {
+	global $context;
 
 	echo '<', '?xml version="1.0" encoding="', $context['character_set'], '"?', '>
 <smf>
 	<pageIndex section="not_selected" startFrom="', $context['not_selected']['start'], '"><![CDATA[', $context['not_selected']['page_index'], ']]></pageIndex>
 	<pageIndex section="selected" startFrom="', $context['selected']['start'], '"><![CDATA[', $context['selected']['page_index'], ']]></pageIndex>';
-	foreach ($context['changes'] as $change)
-	{
+	foreach ($context['changes'] as $change) {
 		if ($change['type'] == 'remove')
 			echo '
 	<change id="', $change['id'], '" curAction="remove" section="', $change['section'], '" />';
@@ -155,17 +147,10 @@ function template_split()
 }
 
 // This is just to hold off some errors if people are stupid.
-if (!function_exists('template_button_strip'))
-{
-	function template_button_strip($button_strip, $direction = 'top', $force_reset = false, $custom_td = '')
-	{
-	}
-	function template_menu()
-	{
-	}
-	function theme_linktree()
-	{
-	}
+if (!function_exists('template_button_strip')) {
+	function template_button_strip($button_strip, $direction = 'top', $force_reset = false, $custom_td = '') {}
+	function template_menu() {}
+	function theme_linktree() {}
 }
 
 ?>

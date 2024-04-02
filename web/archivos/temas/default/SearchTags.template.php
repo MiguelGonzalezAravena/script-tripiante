@@ -78,7 +78,7 @@ echo'<div style="float:left;width:212px;margin-bottom:8px;"><div class="publicid
 			FROM ({$db_prefix}tags_log AS tl INNER JOIN {$db_prefix}tags AS t ON tl.ID_TAG = t.ID_TAG) INNER JOIN {$db_prefix}messages AS m ON m.ID_TOPIC = tl.ID_TOPIC
 			WHERE t.tag = '" . $context['search_params']['search'] . "'", __FILE__, __LINE__);
 			$context['tags'] = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			{ $context['tags'][] = array('ID' => $row['ID_TAG']); }
 
 		foreach ($context['tags'] as $valtags) {
@@ -102,7 +102,7 @@ echo'<div style="float:left;width:212px;margin-bottom:8px;"><div class="publicid
 		LIMIT 10
 		", __FILE__, __LINE__);
 		$context['posts10'] = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 				$context['posts10'][$row['ID_MSG']] = array(
 				'tag' => $row['tag'],

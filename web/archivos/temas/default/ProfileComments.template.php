@@ -94,8 +94,8 @@ function template_edit()
 		p.ID_COMMENT, p.ID_MEMBER, p.comment, p.subject, p.date, p.COMMENT_MEMBER_ID 
 	FROM {$db_prefix}profile_comments as p 
 	WHERE p.ID_COMMENT = $id LIMIT 1", __FILE__, __LINE__);
-	$row = mysql_fetch_assoc($dbresult);
-	mysql_free_result($dbresult);
+	$row = mysqli_fetch_assoc($dbresult);
+	mysqli_free_result($dbresult);
 	// Load the spell checker?
 	if ($context['show_spellchecking'])
 		echo '
@@ -175,10 +175,10 @@ function template_commentsadmin()
 			COUNT(*) AS total 
 		FROM {$db_prefix}profile_comments 
 		WHERE  approved = 0", __FILE__, __LINE__);
-		$row = mysql_fetch_assoc($dbresult);
+		$row = mysqli_fetch_assoc($dbresult);
 		$total =  $row['total'];
 	
-		mysql_free_result($dbresult);
+		mysqli_free_result($dbresult);
 	
 	
 			echo '
@@ -199,7 +199,7 @@ function template_commentsadmin()
 			LEFT JOIN {$db_prefix}members AS m ON (p.ID_MEMBER = m.ID_MEMBER)
 			LEFT JOIN {$db_prefix}members AS m2 ON (p.COMMENT_MEMBER_ID = m2.ID_MEMBER)
 			WHERE p.approved = 0 ORDER BY p.ID_COMMENT DESC  LIMIT $context[start],10", __FILE__, __LINE__);
-			while($row = mysql_fetch_assoc($dbresult))
+			while($row = mysqli_fetch_assoc($dbresult))
 			{
 				echo '<td>',$row['subject'],'<br />',parse_bbc($row['comment']),'</td>';
 				echo '<td><a href="',$scripturl,'?action=profile;u='  . $row['ID_MEMBER'] . '">' . $row['realName'],'</td>';
@@ -209,7 +209,7 @@ function template_commentsadmin()
 				<a href="', $scripturl, '?action=comment;sa=delete;id=' . $row['ID_COMMENT'] . '">',$txt['pcomments_delcomment'],'</a></td>';
 				
 			}
-			mysql_free_result($dbresult);
+			mysqli_free_result($dbresult);
 			
 			if ($total > 0)
 			{

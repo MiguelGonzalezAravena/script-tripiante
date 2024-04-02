@@ -1,11 +1,12 @@
 <?php
+
 function template_main() {
   global $txt, $context, $settings, $modSettings, $user_info, $ID_MEMBER, $db_prefix, $boardurl;
 
   $end = $modSettings['bookmarks_posts'];
   $page = (int) $_GET['page'];
 
-  if(isset($page)) {
+  if (isset($page)) {
     $start = ($page - 1) * $end;
     $actualPage = $page;
   } else {
@@ -63,8 +64,8 @@ function template_main() {
         <div style="width: 747px; padding: 4px;" class="windowbg">
         <form action="' . $boardurl . '/favoritos/eliminar/" method="post">';
 
-  if(!empty($context['bookmarks'])) {
-    while($row	=	mysqli_fetch_assoc($request2)) {
+  if (!empty($context['bookmarks'])) {
+    while ($row	=	mysqli_fetch_assoc($request2)) {
       echo '
         <div class="entryf">
           <div class="icon">
@@ -111,10 +112,10 @@ function template_main() {
     <div class="windowbgpag" style="width: 757px;">';
 
   if ($actualPage > 1)
-    echo '<a href=\'' . $boardurl . '/favoritos/post/pag-' . $previousPage . '\'>&#171; anterior</a>';
+    echo '<a href="' . $boardurl . '/favoritos/post/pag-' . $previousPage . '">&#171; anterior</a>';
 
   if ($actualPage < $lastPage)
-    echo '<a href=\'' . $boardurl . '/favoritos/post/pag-' . $nextPage . '\'>siguiente &#187;</a>';
+    echo '<a href="' . $boardurl . '/favoritos/post/pag-' . $nextPage . '">siguiente &#187;</a>';
 
   echo '
           </div>

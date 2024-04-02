@@ -277,7 +277,7 @@ SELECT *
 FROM ({$db_prefix}personal_messages) 
 WHERE ID_PM = ".$_REQUEST['pmsg']."
 ", __FILE__, __LINE__);
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 	{
 		censorText($row['body']);
 		$row['body'] = trim(un_htmlspecialchars(strip_tags(strtr(parse_bbc($row['body'], false, $ID_MSG), array('<br />' => "\n", '</div>' => "\n", '</li>' => "\n", '&#91;' => '[', '&#93;' => ']')))));
@@ -286,7 +286,7 @@ while ($row = mysql_fetch_assoc($request))
 		$nombre = $row['fromName'];
  	 
 	}
-	mysql_free_result($request);}
+	mysqli_free_result($request);}
 	
 	echo '<b class="size11">Mensaje Privado:</b><br />';
 

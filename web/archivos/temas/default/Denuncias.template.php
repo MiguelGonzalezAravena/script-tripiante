@@ -9,7 +9,7 @@ $request = db_query("
 SELECT *
 FROM {$db_prefix}denunciations
 WHERE TYPE = 'post'");
-$context['denunciasss'] = mysql_num_rows($request);
+$context['denunciasss'] = mysqli_num_rows($request);
 
 $RegistrosAMostrar		=	$modSettings['denunciations'];
 if(isset($_GET['pag'])){
@@ -31,7 +31,7 @@ AND den.TYPE = 'post'
 AND m3.ID_MEMBER = m2.ID_MEMBER
 ORDER BY den.ID_DENUNCIATIONS DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count	=	mysql_num_rows($request2);
+$count	=	mysqli_num_rows($request2);
 echo '<div style="float:left;width:737px;margin-right:8px;"><div class="mennes"><div class="botnes"><ul>
 
 <li>
@@ -53,7 +53,7 @@ echo '<div class="noesta">No hay denuncias de posts hechos.</div>';
 }
 else
 {
-while($row	=	mysql_fetch_assoc($request2)){
+while($row	=	mysqli_fetch_assoc($request2)){
 $comentario = htmlspecialchars($row['comment']);
 $comentario = censorText($row['comment']);
 echo '<td><input type="checkbox" name="campos['.$row['ID_DENUNCIATIONS'].']"></td>';
@@ -87,7 +87,7 @@ echo '<tr><td width="20%"><b class="size11">Raz&oacute;n: </b></td>
 echo '<tr><td width="20%"><b class="size11">Comentario: </b></td>
 <td>'.$comentario.'</td></tr>';
 }
-$NroRegistros	=	mysql_num_rows(db_query("SELECT den.ID_DENUNCIATIONS, den.ID_TOPIC, den.ID_MEMBER, den.comment, den.reason, den.TYPE, m.ID_MEMBER,
+$NroRegistros	=	mysqli_num_rows(db_query("SELECT den.ID_DENUNCIATIONS, den.ID_TOPIC, den.ID_MEMBER, den.comment, den.reason, den.TYPE, m.ID_MEMBER,
 m.realName AS realName1, m.memberName AS memberName1, b.ID_BOARD, b.description, m2.ID_TOPIC, m2.ID_BOARD, 
 m2.subject, m2.ID_MEMBER, m3.ID_MEMBER, m3.recibir, m3.realName AS realName2, m3.memberName AS memberName2
 FROM ({$db_prefix}denunciations AS den, {$db_prefix}members AS m, {$db_prefix}boards AS b, {$db_prefix}messages as m2, {$db_prefix}members as m3)
@@ -125,7 +125,7 @@ $request = db_query("
 SELECT *
 FROM {$db_prefix}denunciations
 WHERE TYPE = 'imagen'");
-$context['denunciasss'] = mysql_num_rows($request);
+$context['denunciasss'] = mysqli_num_rows($request);
 
 $RegistrosAMostrar		=	$modSettings['denunciations'];
 if(isset($_GET['pag'])){
@@ -143,7 +143,7 @@ AND den.ID_MEMBER = m.ID_MEMBER
 AND den.TYPE = 'imagen'
 ORDER BY den.ID_DENUNCIATIONS DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count	=	mysql_num_rows($request2);
+$count	=	mysqli_num_rows($request2);
 echo '<div style="float:left;width:737px;margin-right:8px;"><div class="mennes"><div class="botnes"><ul>
 
 <li>
@@ -165,7 +165,7 @@ echo '<div class="noesta">No hay denuncias de im&aacute;genes hechas.</div>';
 }
 else
 {
-while($row	=	mysql_fetch_assoc($request2)){
+while($row	=	mysqli_fetch_assoc($request2)){
 $comentario = htmlspecialchars($row['comment']);
 $comentario = censorText($row['comment']);
 echo '<tr>
@@ -181,7 +181,7 @@ echo '<tr><td width="20%"><b class="size11">Raz&oacute;n: </b></td>
 echo '<tr><td width="20%"><b class="size11">Comentario: </b></td>
 <td>'.$comentario.'</td></tr>';
 }
-$NroRegistros	=	mysql_num_rows(db_query("SELECT den.ID_DENUNCIATIONS, den.ID_TOPIC, den.ID_MEMBER, den.comment, den.reason, den.TYPE, m.ID_MEMBER, m.realName, m.memberName, g.ID_PICTURE, g.title, g.ID_MEMBER
+$NroRegistros	=	mysqli_num_rows(db_query("SELECT den.ID_DENUNCIATIONS, den.ID_TOPIC, den.ID_MEMBER, den.comment, den.reason, den.TYPE, m.ID_MEMBER, m.realName, m.memberName, g.ID_PICTURE, g.title, g.ID_MEMBER
 FROM ({$db_prefix}denunciations AS den, {$db_prefix}members AS m, {$db_prefix}gallery_pic AS g)
 WHERE den.ID_TOPIC = g.ID_PICTURE
 AND den.ID_MEMBER = m.ID_MEMBER
@@ -214,7 +214,7 @@ $request = db_query("
 SELECT *
 FROM {$db_prefix}denunciations
 WHERE TYPE = 'user'");
-$context['denunciasss'] = mysql_num_rows($request);
+$context['denunciasss'] = mysqli_num_rows($request);
 
 $RegistrosAMostrar		=	$modSettings['denunciations'];
 if(isset($_GET['pag'])){
@@ -232,7 +232,7 @@ AND den.ID_TOPIC = mem2.ID_MEMBER
 AND den.TYPE = 'user'
 ORDER BY den.ID_DENUNCIATIONS DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count	=	mysql_num_rows($request2);
+$count	=	mysqli_num_rows($request2);
 echo '<div style="float:left;width:737px;margin-right:8px;"><div class="mennes"><div class="botnes"><ul>
 
 <li>
@@ -254,7 +254,7 @@ echo '<div class="noesta">No hay denuncias de usuarios hechas.</div>';
 }
 else
 {
-while($row	=	mysql_fetch_assoc($request2)){
+while($row	=	mysqli_fetch_assoc($request2)){
 $comentario = htmlspecialchars($row['comment']);
 $comentario = censorText($row['comment']);
 echo '<tr>
@@ -270,7 +270,7 @@ echo '<tr><td width="20%"><b class="size11">Raz&oacute;n: </b></td>
 echo '<tr><td width="20%"><b class="size11">Comentario: </b></td>
 <td>'.$comentario.'</td></tr>';
 }
-$NroRegistros	=	mysql_num_rows(db_query("SELECT mem.ID_MEMBER, mem.memberName AS memberName1, mem.realName AS realName1, mem2.ID_MEMBER, mem2.memberName AS memberName2, mem2.realName AS realName2, den.ID_DENUNCIATIONS, den.ID_TOPIC, den.ID_MEMBER, den.TYPE, den.comment, den.reason
+$NroRegistros	=	mysqli_num_rows(db_query("SELECT mem.ID_MEMBER, mem.memberName AS memberName1, mem.realName AS realName1, mem2.ID_MEMBER, mem2.memberName AS memberName2, mem2.realName AS realName2, den.ID_DENUNCIATIONS, den.ID_TOPIC, den.ID_MEMBER, den.TYPE, den.comment, den.reason
 FROM ({$db_prefix}members AS mem, {$db_prefix}members AS mem2, {$db_prefix}denunciations AS den)
 WHERE mem.ID_MEMBER = den.ID_MEMBER
 AND den.ID_TOPIC = mem2.ID_MEMBER
@@ -302,7 +302,7 @@ $request = db_query("
 SELECT *
 FROM {$db_prefix}denunciations
 WHERE TYPE = 'comunidad'");
-$context['denunciasss'] = mysql_num_rows($request);
+$context['denunciasss'] = mysqli_num_rows($request);
 
 $RegistrosAMostrar		=	$modSettings['denunciations'];
 if(isset($_GET['pag'])){
@@ -320,7 +320,7 @@ AND den.ID_TOPIC = c.ID_COMMUNITY
 AND den.TYPE = 'comunidad'
 ORDER BY den.ID_DENUNCIATIONS DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count	=	mysql_num_rows($request2);
+$count	=	mysqli_num_rows($request2);
 echo '<div style="float:left;width:737px;margin-right:8px;"><div class="mennes"><div class="botnes"><ul>
 
 <li>
@@ -342,7 +342,7 @@ echo '<div class="noesta">No hay denuncias de comunidades hechas.</div>';
 }
 else
 {
-while($row	=	mysql_fetch_assoc($request2)){
+while($row	=	mysqli_fetch_assoc($request2)){
 $comentario = htmlspecialchars($row['comment']);
 $comentario = censorText($row['comment']);
 echo '<tr>
@@ -358,7 +358,7 @@ echo '<tr><td width="20%"><b class="size11">Raz&oacute;n: </b></td>
 echo '<tr><td width="20%"><b class="size11">Comentario: </b></td>
 <td>' . $comentario . '</td></tr>';
 }
-$NroRegistros	=	mysql_num_rows(db_query("SELECT *
+$NroRegistros	=	mysqli_num_rows(db_query("SELECT *
 FROM ({$db_prefix}members AS mem, {$db_prefix}denunciations AS den, {$db_prefix}communities AS c)
 WHERE mem.ID_MEMBER = den.ID_MEMBER
 AND den.ID_TOPIC = c.ID_COMMUNITY

@@ -157,7 +157,7 @@ echo '<div class="userOption"><ul>';
 
 ';
 $request	=	db_query("SELECT * FROM ({$db_prefix}buddies AS b) WHERE b.ID_MEMBER = " . $context['user']['id'] . " AND b.BUDDY_ID = " . $context['member']['id'] . " AND b.requested = " . $context['user']['id'] . "", __FILE__, __LINE__);
-$row		=	mysql_num_rows($request);
+$row		=	mysqli_num_rows($request);
 if($row <= 0) {
 echo '<li><a href="/amigos-agregar/', $context['member']['name'], '" title="Agregar a mis amistades">Agregar a mis amistades</a></li>';
 } else {
@@ -169,7 +169,7 @@ echo '
 ';
 
 $request	=	db_query("SELECT * FROM {$db_prefix}ignored WHERE ID_MEMBER = " . $context['user']['id'] . " AND ID_IGNORED = " . $context['member']['id'] . "");
-$ignore		=	mysql_num_rows($request);
+$ignore		=	mysqli_num_rows($request);
 if($ignore <= 0) {
 echo '<li id="ac_no"><a href="#" onclick="ignorar2(\'', $context['member']['name'], '\'); return false;" title="Ignorar usuario">Ignorar usuario</a></li>
 
@@ -229,7 +229,7 @@ AND b2.ID_MEMBER = mem2.ID_MEMBER
 AND mem2.ID_MEMBER = " . $context['user']['id'] . "
 ORDER BY RAND()
 LIMIT 6", __FILE__, __LINE__);
-$count1		=	mysql_num_rows($request);
+$count1		=	mysqli_num_rows($request);
 if (isset($context['member']['buddies_data2'])) {
 $iq = 1;
 if ($iq == 1) {
@@ -261,7 +261,7 @@ echo '</tr></table></center></div></div>';
 
 /* Amigos */
 $request	=	db_query("SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b) WHERE b.ID_MEMBER = " . $context['member']['id'] . " AND b.BUDDY_ID = mem.ID_MEMBER ORDER BY RAND() LIMIT 6", __FILE__, __LINE__);
-$count3		=	mysql_num_rows($request);
+$count3		=	mysqli_num_rows($request);
 if (isset($context['member']['buddies_data'])) {
 $i = 1;
 if ($i == 1) {
@@ -306,19 +306,19 @@ WHERE c.ID_MEMBER = {$iduser}
 AND c.ID_TOPIC = t.ID_TOPIC
 ", __FILE__, __LINE__);
 $request2	=	db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, m.ID_MEMBER, m.memberName FROM {$db_prefix}gallery_comment AS c, {$db_prefix}members AS m WHERE c.ID_MEMBER = m.ID_MEMBER AND m.memberName = '{$context['member']['name']}' ", __FILE__, __LINE__);
-$context['comentuser'] = mysql_num_rows($request);
-$context['comentimguser']	=	mysql_num_rows($request2);
+$context['comentuser'] = mysqli_num_rows($request);
+$context['comentimguser']	=	mysqli_num_rows($request2);
 /* Conteo de comentarios */
 
 /* Conteo de Im&#225;genes */
 $request3	=	db_query("SELECT * FROM {$db_prefix}gallery_pic AS c, {$db_prefix}members AS mem WHERE c.ID_MEMBER = mem.ID_MEMBER AND mem.ID_MEMBER = {$iduser} ", __FILE__, __LINE__);
-$context['imguser'] = mysql_num_rows($request3);
+$context['imguser'] = mysqli_num_rows($request3);
 
 /* Conteo de Im&#225;genes */	
 
 /* Conteo de Mensajes del Muro */
 $request4	=	db_query("SELECT * FROM ({$db_prefix}members AS m, {$db_prefix}profile_comments AS p) WHERE p.ID_MEMBER = m.ID_MEMBER AND p.COMMENT_MEMBER_ID = " . $context['member']['id'] . " ", __FILE__, __LINE__);
-$context['muromsg']	=	mysql_num_rows($request4);
+$context['muromsg']	=	mysqli_num_rows($request4);
 /* Conteo de Mensajes del Muro */
 	
 echo '<div style="margin-top:8px;">
@@ -337,12 +337,12 @@ echo '<div style="float:left;margin-bottom:8px;margin-left:8px;"><div style="mar
 
 <div class="windowbg" style="width:193px;padding:4px;">';
 $request	=	db_query("SELECT * FROM ({$db_prefix}messages AS m, {$db_prefix}topics AS t, {$db_prefix}boards AS b, {$db_prefix}members AS mem) WHERE m.ID_TOPIC = t.ID_TOPIC AND m.ID_BOARD = t.ID_BOARD AND m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = mem.ID_MEMBER AND mem.ID_MEMBER = {$context['member']['id']} ORDER BY m.ID_TOPIC DESC LIMIT " . $modSettings['profile_posts_limit'], __FILE__, __LINE__);
-$count		=	mysql_num_rows($request);
+$count		=	mysqli_num_rows($request);
 if($count <= 0) {
 echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;n post hecho.-</div>';
 } else {
 $context['posts']	=	array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['posts'][] = array(
 			'name' => $row['name'],
 			'ID_BOARD' => $row['ID_BOARD'],
@@ -367,12 +367,12 @@ echo '<div style="margin-bottom:10px;">
 <div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimas im&aacute;genes</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div>
 <div class="windowbg" style="width:193px;padding:4px;">';
 $request	=	db_query("SELECT * FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS m) WHERE g.ID_MEMBER = m.ID_MEMBER AND m.ID_MEMBER = {$context['member']['id']} ORDER BY g.ID_PICTURE DESC LIMIT " . $modSettings['profile_images_limit'], __FILE__, __LINE__);
-$count		=	mysql_num_rows($request);
+$count		=	mysqli_num_rows($request);
 if($count <= 0) {
 echo '<div class="noesta">', $context['member']['name'], ' no tiene ninguna imagen.-</div>';
 } else {
 $context['imagenes']	=	array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['imagenes'][] = array(
 			'ID_PICTURE' => $row['ID_PICTURE'],
 			'filename' => $row['filename'],
@@ -380,7 +380,7 @@ $context['imagenes']	=	array();
 		);
 foreach ($context['imagenes'] as $img) {
 $total = db_query("SELECT COUNT(ID_COMMENT) AS total FROM {$db_prefix}gallery_comment WHERE ID_PICTURE = " . $img['ID_PICTURE'], __FILE__, __LINE__);
-$total2 = mysql_fetch_assoc($total);
+$total2 = mysqli_fetch_assoc($total);
 echo '<div class="photo_small1"><center><a href="/imagenes/ver/', $img['ID_PICTURE'], '"><img alt="" style="width:150px;" src="', $img['filename'], '" border="6" /></a></center></div><div class="smalltext"><center>Comentarios: (<a href="/imagenes/ver/', $img['ID_PICTURE'], '#comentarios">', $total2['total'], '</a>)</center></div>';
 }
 echo '<br /><span style="font-size:9px;"><center><a href="/imagenes/', $context['member']['name'], '">Ir a sus im&aacute;genes</a></center></span>';
@@ -878,7 +878,7 @@ function template_editarimagen()
 
 $id			=	htmlentities(addslashes($_REQUEST['id']));
 $request	=	db_query("SELECT ID_PICTURE, title, filename FROM {$db_prefix}gallery_pic WHERE ID_PICTURE = $id", __FILE__, __LINE__);
-$row		=	mysql_fetch_assoc($request);
+$row		=	mysqli_fetch_assoc($request);
 $causa		=	htmlentities(addslashes($_POST['causa']));
 
 echo '<script language="JavaScript" type="text/javascript">
@@ -937,16 +937,16 @@ FROM {$db_prefix}member_notes
 WHERE ID_MEMBER = $ID_MEMBER
 ORDER BY id_note DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count	=	mysql_num_rows($request2);
+$count	=	mysqli_num_rows($request2);
 if($count <= 0) {
 echo '<div style="float:left;"><div class="noesta" style="width:774px;">No tienes notas agregadas.</div>';
 } else {
 echo '<div style="float:left;"><table class="linksList" style="width:774px;"><thead align="center"><tr><th style="text-align:left;">Nota</th><th>Fecha</th><th>Eliminar</th></tr></thead><tbody>';
-while($row	=	mysql_fetch_assoc($request2)) {
+while($row	=	mysqli_fetch_assoc($request2)) {
 echo '<tr><td style="text-align:left;"><a title="', parse_bbc(strip_tags($row['subject'])), '" href="/mis-notas/ver-', $row['id_note'], '/">', parse_bbc(strip_tags($row['subject'])), '</a></td>
 <td title="', timeformat($row['posterTime']), '">', timeformat($row['posterTime']), '</td> <td><a title="Eliminar nota" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta nota?\')) return false;" href="/mis-notas/eliminar-', $row['id_note'], '"><img alt="Eliminar nota" title="Eliminar nota" style="width:16px;height:16px;" src="', $settings['images_url'], '/icons/eliminar-notas.gif" /></a></td></tr>';
 }
-$NroRegistros	=	mysql_num_rows(db_query("SELECT id_note, subject, body, posterTime FROM {$db_prefix}member_notes WHERE ID_MEMBER = $ID_MEMBER ORDER BY id_note DESC ", __FILE__, __LINE__));
+$NroRegistros	=	mysqli_num_rows(db_query("SELECT id_note, subject, body, posterTime FROM {$db_prefix}member_notes WHERE ID_MEMBER = $ID_MEMBER ORDER BY id_note DESC ", __FILE__, __LINE__));
 echo '</tbody></table>';
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;
@@ -1085,7 +1085,7 @@ ver_apariencia();
 echo '<div class="noesta">No puedes ver la apariencia de ', $context['member']['name'], '.</div>';
 } elseif($context['member']['quienve'] == '2') {
 $request	=	db_query("SELECT * FROM {$db_prefix}buddies AS b WHERE b.BUDDY_ID = " . $context['user']['id'] . "", __FILE__, __LINE__);
-$row		=	mysql_num_rows($request);
+$row		=	mysqli_num_rows($request);
 if($row > 0) {
 ver_apariencia();
 } elseif($row <= 0) {
@@ -1126,10 +1126,10 @@ echo '<div style="float:left;margin-bottom:8px;"><div class="mennes"><div class=
 
 </ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>';
 
-/* Últimos temas creados */
+/* ï¿½ltimos temas creados */
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuTemPerfil.php');
 echo '<div style="border: 1px solid #517BA1;background:#517BA1;height:2px;margin-top:10px;margin-bottom:10px;" class="hrs"></div>';
-/* Últimos temas creados */
+/* ï¿½ltimos temas creados */
 
 /* Comunidades creadas */
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuCrePerfil.php');
@@ -2271,7 +2271,7 @@ AND m.posterName = '" . $context['member']['name'] . "'
 GROUP BY t.ID_TOPIC
 ORDER BY m.posterTime DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count	=	mysql_num_rows($request2);
+$count	=	mysqli_num_rows($request2);
 if($count <= 0) {
 echo '<div class="noesta" style="width:922px;">', $context['member']['name'], ' no tiene posts hechos.</div>';
 } else {
@@ -2282,7 +2282,7 @@ echo '<div style="float:left;width:757px;">
 <th>Puntos</th>
 <th>Enviar</th></tr></thead><tbody>
 ';
-while($row	=	mysql_fetch_assoc($request2)) {
+while($row	=	mysqli_fetch_assoc($request2)) {
 echo '<tr>
 <td><img alt="" title="' . $row['name'] . '" src="' . $settings['images_url'] . '/post/icono_' . $row['ID_BOARD'] . '.gif" /></td>
 
@@ -2294,7 +2294,7 @@ echo '<tr>
 
 <td><a title="Enviar a amigo" href="/enviar-a-amigo/' . $row['ID_TOPIC'] . '"><img alt="" src="' . $settings['images_url'] . '/icons/icono-enviar-mensaje.gif" /></a></td></tr>';
 }
-$NroRegistros	=	mysql_num_rows(db_query("SELECT * FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}members as m2) WHERE m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = m2.ID_MEMBER AND m2.memberName = '" . $context['member']['name'] . "' ", __FILE__, __LINE__));
+$NroRegistros	=	mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}members as m2) WHERE m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = m2.ID_MEMBER AND m2.memberName = '" . $context['member']['name'] . "' ", __FILE__, __LINE__));
 
 
  $PagAnt=$PagAct-1;
@@ -2342,8 +2342,8 @@ WHERE c.ID_PICTURE = g.ID_PICTURE
 AND c.ID_MEMBER = " . $context['member']['id'] . "
 AND g.ID_PICTURE = c.ID_PICTURE
 ", __FILE__, __LINE__);
-$count_c	=	mysql_num_rows($request);
-$count_c_img	=	mysql_num_rows($request2);
+$count_c	=	mysqli_num_rows($request);
+$count_c_img	=	mysqli_num_rows($request2);
 
 echo '<div style="float:left;width:757px;">
 <div class="mennes"><div class="botnes"><ul>
@@ -2374,11 +2374,11 @@ AND m2.memberName = '" . $context['member']['name'] . "'
 ORDER BY c.ID_COMMENT DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
 
-while($row	=	mysql_fetch_assoc($request3)) {
+while($row	=	mysqli_fetch_assoc($request3)) {
 echo '<table width="100%"><tr><td valign="top" style="width:16px;"><img alt="" src="' . $settings['images_url'] . '/post/icono_' . $row['ID_BOARD'] . '.gif" title="' . $row['name'] . '" /></td><td><b class="size11"><a title="' . $row['subject'] . '" href="/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" >' . $row['subject'] . '</a></b><div class="size11">' . timeformat($row['posterTime']) . ': <a href="/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html#cmt_' . $row['ID_COMMENT'] . '" >' . $row['comment'] . '</a></div></td></tr></table>
 ';
 }
-$NroRegistros=mysql_num_rows(db_query("SELECT *
+$NroRegistros=mysqli_num_rows(db_query("SELECT *
 FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t, {$db_prefix}comments AS c, {$db_prefix}members AS m2)
 WHERE m.ID_TOPIC = t.ID_TOPIC
 AND b.ID_BOARD = m.ID_BOARD
@@ -2425,14 +2425,14 @@ AND c.ID_TOPIC = t.ID_TOPIC
 AND c.ID_TOPIC = m.ID_TOPIC
 AND c.ID_MEMBER = mem.ID_MEMBER
 AND mem.memberName = '" . $context['member']['name'] . "'", __FILE__, __LINE__);
-$count_c	=	mysql_num_rows($request);
+$count_c	=	mysqli_num_rows($request);
 
 $request2	=	db_query("SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
 FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
 WHERE c.ID_PICTURE = g.ID_PICTURE
 AND c.ID_MEMBER = " . $context['member']['id'] . "
 AND g.ID_PICTURE = c.ID_PICTURE", __FILE__, __LINE__);
-$count_c_img	=	mysql_num_rows($request2);
+$count_c_img	=	mysqli_num_rows($request2);
 
 echo '<div style="float:left;width:757px;">
 <div class="mennes"><div class="botnes"><ul>
@@ -2458,11 +2458,11 @@ AND c.ID_MEMBER = " . $context['member']['id'] . "
 AND g.ID_PICTURE = c.ID_PICTURE
 ORDER BY c.ID_COMMENT DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-while($row	=	mysql_fetch_assoc($request3)) {
+while($row	=	mysqli_fetch_assoc($request3)) {
 echo '<table width="100%"><tr><td valign="top" style="width:16px;"><span class="icons fot2"> </span></td><td><b class="size11"><a title="' . $row['title'] . '" href="/imagenes/ver/' . $row['ID_PICTURE'] . '" >' . $row['title'] . '</a></b><div class="size11">' . timeformat($row['date']) . ': <a href="/imagenes/ver/' . $row['ID_PICTURE'] . '#cmt_' . $row['ID_COMMENT'] . '" >' . $row['comment'] . '</a></div></td></tr></table>
 ';
 }
-$NroRegistros=mysql_num_rows(db_query("
+$NroRegistros=mysqli_num_rows(db_query("
 SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
 FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
 WHERE c.ID_PICTURE = g.ID_PICTURE
@@ -2522,10 +2522,10 @@ ORDER BY b.time_updated DESC", __FILE__, __LINE__);
 if($count <= 0) {
 echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;n amigo a&ntilde;adido.</div>';
 } else {
-echo '<p align="right" style="margin:0px;padding:0px;"><a href="/perfil/', $context['member']['name'], '/lista-de-amigos/">' . mysql_num_rows($count) . ' amigos</a></p><hr />
+echo '<p align="right" style="margin:0px;padding:0px;"><a href="/perfil/', $context['member']['name'], '/lista-de-amigos/">' . mysqli_num_rows($count) . ' amigos</a></p><hr />
 ';
 
-while($row	=	mysql_fetch_assoc($request2)) {
+while($row	=	mysqli_fetch_assoc($request2)) {
 echo '<table><tbody><tr><td valign="top"><img style="width: 50px; height: 50px;" alt="" src="';
 if(!empty($row['avatar'])) {
 echo $row['avatar'];
@@ -2550,7 +2550,7 @@ echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif
 echo '</span><br /><span style="color: green; font-size: 10px;"><b>Es amigo desde:</b> ', timeformat($row['time_updated']), ' </span></td></tr></tbody></table><hr>';
 }
 
-$NroRegistros	=	mysql_num_rows(db_query("SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b) WHERE b.BUDDY_ID = mem.ID_MEMBER AND b.ID_MEMBER = " . $context['member']['id'] . " ", __FILE__, __LINE__));
+$NroRegistros	=	mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b) WHERE b.BUDDY_ID = mem.ID_MEMBER AND b.ID_MEMBER = " . $context['member']['id'] . " ", __FILE__, __LINE__));
 }
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;
@@ -2603,8 +2603,8 @@ WHERE b.ID_MEMBER = " . $context['member']['id'] . "
 AND b.BUDDY_ID = mem.ID_MEMBER
 GROUP BY b.BUDDY_ID DESC
 ORDER BY b.time_updated DESC");
-$count	=	mysql_num_rows($request2);
-$contartotal	=	mysql_num_rows($total);
+$count	=	mysqli_num_rows($request2);
+$contartotal	=	mysqli_num_rows($total);
 if($count <= 0) {
 echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;n amigo a&ntilde;adido.</div>';
 } elseif($context['member']['name'] == $context['user']['name']) {
@@ -2613,7 +2613,7 @@ echo '<b class="size11">Acci&oacute;n no reconocida.-</b><hr/>';
 echo '<p style="margin:0px;padding:0px;float:left;width:250px;"><a href="/perfil/', $context['member']['name'], '/amigos-en-comun/">' . $count . ' amigos en com&uacute;n</a></p><p align="right" style="margin:0px;padding:0px;"><a href="/perfil/', $context['member']['name'], '/lista-de-amigos/">' . $contartotal . ' amigos</a></p><hr />
 ';
 
-while($row	=	mysql_fetch_assoc($request2)) {
+while($row	=	mysqli_fetch_assoc($request2)) {
 echo '<table><tbody><tr><td valign="top"><img style="width: 50px; height: 50px;" alt="" src="';
 if(!empty($row['avatar'])) {
 echo $row['avatar'];
@@ -2638,7 +2638,7 @@ echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif
 echo '</span><br /><span style="color: green; font-size: 10px;"><b>Es amigo desde:</b> ', timeformat($row['time_updated']), ' </span></td></tr></tbody></table><hr>';
 }
 
-$NroRegistros	=	mysql_num_rows(db_query("SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE, b2.BUDDY_ID, b2.ID_MEMBER, mem2.ID_MEMBER FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2, {$db_prefix}log_online AS o) WHERE b.ID_MEMBER = " . $context['member']['id'] . " AND b.BUDDY_ID = b2.BUDDY_ID AND mem.ID_MEMBER = b2.BUDDY_ID AND b2.ID_MEMBER = " . $context['user']['id'] . " AND b2.ID_MEMBER = mem2.ID_MEMBER AND mem2.ID_MEMBER = " . $context['user']['id'] . " GROUP BY b.BUDDY_ID DESC ", __FILE__, __LINE__));
+$NroRegistros	=	mysqli_num_rows(db_query("SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE, b2.BUDDY_ID, b2.ID_MEMBER, mem2.ID_MEMBER FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2, {$db_prefix}log_online AS o) WHERE b.ID_MEMBER = " . $context['member']['id'] . " AND b.BUDDY_ID = b2.BUDDY_ID AND mem.ID_MEMBER = b2.BUDDY_ID AND b2.ID_MEMBER = " . $context['user']['id'] . " AND b2.ID_MEMBER = mem2.ID_MEMBER AND mem2.ID_MEMBER = " . $context['user']['id'] . " GROUP BY b.BUDDY_ID DESC ", __FILE__, __LINE__));
 }
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;

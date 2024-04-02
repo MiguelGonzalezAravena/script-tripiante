@@ -874,7 +874,7 @@ function template_admin_settings()
 				</td>
 			</tr>
 		</table>
-		<input type="hidden" name="sc" value="', $context['session_id'], '" />
+		<input type="hidden" name="sc" value="' . $context['session_id'] . '" />
 	</form>';
 }
 

@@ -99,7 +99,7 @@ function DumpDatabase2()
 	}
 
 	// Dump each table.
-	while ($tableName = mysql_fetch_row($queryTables))
+	while ($tableName = mysqli_fetch_row($queryTables))
 	{
 		if (function_exists('apache_reset_timeout'))
 			apache_reset_timeout();
@@ -138,7 +138,7 @@ function DumpDatabase2()
 			$get_rows,
 			'# --------------------------------------------------------', $crlf;
 	}
-	mysql_free_result($queryTables);
+	mysqli_free_result($queryTables);
 
 	echo
 		$crlf,
@@ -158,20 +158,20 @@ function getTableContent($tableName)
 		FROM `$tableName`", false, false);
 
 	// The number of rows, just for record keeping and breaking INSERTs up.
-	$num_rows = @mysql_num_rows($result);
+	$num_rows = @mysqli_num_rows($result);
 	$current_row = 0;
 
 	if ($num_rows == 0)
 		return '';
 
-	$fields = array_keys(mysql_fetch_assoc($result));
+	$fields = array_keys(mysqli_fetch_assoc($result));
 	mysql_data_seek($result, 0);
 
 	// Start it off with the basic INSERT INTO.
 	$data = 'INSERT INTO `' . $tableName . '`' . $crlf . "\t(`" . implode('`, `', $fields) . '`)' . $crlf . 'VALUES ';
 
 	// Loop through each row.
-	while ($row = mysql_fetch_row($result))
+	while ($row = mysqli_fetch_row($result))
 	{
 		$current_row++;
 
@@ -201,7 +201,7 @@ function getTableContent($tableName)
 		else
 			$data .= ',' . $crlf . "\t";
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	// Return an empty string if there were no rows.
 	return $num_rows == 0 ? '' : $data;
@@ -219,7 +219,7 @@ function getTableSQLData($tableName)
 	$result = db_query("
 		SHOW FIELDS
 		FROM `$tableName`", false, false);
-	while ($row = @mysql_fetch_assoc($result))
+	while ($row = @mysqli_fetch_assoc($result))
 	{
 		// Make the CREATE for this column.
 		$schema_create .= '  ' . $row['Field'] . ' ' . $row['Type'] . ($row['Null'] != 'YES' ? ' NOT NULL' : '');
@@ -237,7 +237,7 @@ function getTableSQLData($tableName)
 		// And now any extra information. (such as auto_increment.)
 		$schema_create .= ($row['Extra'] != '' ? ' ' . $row['Extra'] : '') . ',' . $crlf;
 	}
-	@mysql_free_result($result);
+	@mysqli_free_result($result);
 
 	// Take off the last comma.
 	$schema_create = substr($schema_create, 0, -strlen($crlf) - 1);
@@ -247,7 +247,7 @@ function getTableSQLData($tableName)
 		SHOW KEYS
 		FROM `$tableName`", false, false);
 	$indexes = array();
-	while ($row = @mysql_fetch_assoc($result))
+	while ($row = @mysqli_fetch_assoc($result))
 	{
 		// IS this a primary key, unique index, or regular index?
 		$row['Key_name'] = $row['Key_name'] == 'PRIMARY' ? 'PRIMARY KEY' : (empty($row['Non_unique']) ? 'UNIQUE ' : ($row['Comment'] == 'FULLTEXT' || (isset($row['Index_type']) && $row['Index_type'] == 'FULLTEXT') ? 'FULLTEXT ' : 'KEY ')) . $row['Key_name'];
@@ -262,7 +262,7 @@ function getTableSQLData($tableName)
 		else
 			$indexes[$row['Key_name']][$row['Seq_in_index']] = $row['Column_name'];
 	}
-	@mysql_free_result($result);
+	@mysqli_free_result($result);
 
 	// Build the CREATEs for the keys.
 	foreach ($indexes as $keyname => $columns)
@@ -277,8 +277,8 @@ function getTableSQLData($tableName)
 	$result = db_query("
 		SHOW TABLE STATUS
 		LIKE '" . strtr($tableName, array('_' => '\\_', '%' => '\\%')) . "'", false, false);
-	$row = @mysql_fetch_assoc($result);
-	@mysql_free_result($result);
+	$row = @mysqli_fetch_assoc($result);
+	@mysqli_free_result($result);
 
 	// Probably MyISAM.... and it might have a comment.
 	$schema_create .= $crlf . ') TYPE=' . (isset($row['Type']) ? $row['Type'] : $row['Engine']) . ($row['Comment'] != '' ? ' COMMENT="' . $row['Comment'] . '"' : '');

@@ -560,9 +560,9 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID)
 				WHERE memberName IN ('$_POST[pm_ignore_list]') OR realName IN ('$_POST[pm_ignore_list]')
 				LIMIT " . (substr_count($_POST['pm_ignore_list'], '\', \'') + 1), __FILE__, __LINE__);
 			$_POST['pm_ignore_list'] = '';
-			while ($row = mysql_fetch_assoc($result))
+			while ($row = mysqli_fetch_assoc($result))
 				$_POST['pm_ignore_list'] .= $row['ID_MEMBER'] . ',';
-			mysql_free_result($result);
+			mysqli_free_result($result);
 
 			// !!! Did we find all the members?
 
@@ -585,9 +585,9 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID)
 				WHERE memberName IN ('$_POST[buddy_list]') OR realName IN ('$_POST[buddy_list]')
 				LIMIT " . (substr_count($_POST['buddy_list'], '\', \'') + 1), __FILE__, __LINE__);
 			$_POST['buddy_list'] = '';
-			while ($row = mysql_fetch_assoc($result))
+			while ($row = mysqli_fetch_assoc($result))
 				$_POST['buddy_list'] .= $row['ID_MEMBER'] . ',';
-			mysql_free_result($result);
+			mysqli_free_result($result);
 
 			// !!! Did we find all the members?
 
@@ -683,9 +683,9 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID)
 				WHERE ID_MEMBER != $memID
 					AND emailAddress = '$_POST[emailAddress]'
 				LIMIT 1", __FILE__, __LINE__);
-			if (mysql_num_rows($request) > 0)
+			if (mysqli_num_rows($request) > 0)
 				$post_errors[] = 'email_taken';
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			$profile_vars['emailAddress'] = '\'' . $_POST['emailAddress'] . '\'';
 		}
@@ -797,8 +797,8 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID)
 					WHERE (ID_GROUP = 1 OR FIND_IN_SET(1, additionalGroups))
 						AND ID_MEMBER != $memID
 					LIMIT 1", __FILE__, __LINE__);
-				list ($another) = mysql_fetch_row($request);
-				mysql_free_result($request);
+				list ($another) = mysqli_fetch_row($request);
+				mysqli_free_result($request);
 
 				if (empty($another))
 					fatal_lang_error('at_least_one_admin');
@@ -1103,7 +1103,7 @@ function summary($memID)
 				AND (bg.expire_time IS NULL OR bg.expire_time > " . time() . ")
 				AND (" . implode(' OR ', $ban_query) . ')
 			GROUP BY bg.ID_BAN_GROUP', __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			// Work out what restrictions we actually have.
 			$ban_restrictions = array();
@@ -1129,7 +1129,7 @@ function summary($memID)
 				'explanation' => $ban_explanation,
 			);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	// For avatars: if we're always html resizing, assume it's too large.
 	if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {
@@ -1279,9 +1279,9 @@ function editBuddies($memID)
 				LIMIT " . count($new_buddies), __FILE__, __LINE__);
 
 			// Add the new member to the buddies array.
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$buddiesArray[] = (int) $row['ID_MEMBER'];
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			// Now update the current users buddy list.
 			$user_profile[$memID]['buddy_list'] = implode(',', $buddiesArray);
@@ -1303,9 +1303,9 @@ function editBuddies($memID)
 			WHERE ID_MEMBER IN (" . implode(', ', $buddiesArray) . ")
 			ORDER BY realName
 			LIMIT " . (substr_count($user_profile[$memID]['buddy_list'], ',') + 1), __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($result))
+		while ($row = mysqli_fetch_assoc($result))
 			$buddies[] = $row['ID_MEMBER'];
-		mysql_free_result($result);
+		mysqli_free_result($result);
 	}
 
 	$context['buddy_count'] = count($buddies);
@@ -1356,14 +1356,14 @@ function TrackIP($memID = 0)
 			INNER JOIN {$db_prefix}boards AS b ON (b.ID_BOARD = m.ID_BOARD)
 		WHERE $user_info[query_see_board]
 			AND m.posterIP $dbip", __FILE__, __LINE__);
-	list ($totalMessages) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($totalMessages) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 	$request = db_query("
 		SELECT COUNT(*)
 		FROM {$db_prefix}log_errors
 		WHERE ip $dbip", __FILE__, __LINE__);
-	list ($totalErrors) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($totalErrors) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	$context['message_start'] = isset($_GET['mesStart']) ? (int) $_GET['mesStart'] : 0;
 	$context['error_start'] = isset($_GET['errStart']) ? $_GET['errStart'] : 0;
@@ -1375,9 +1375,9 @@ function TrackIP($memID = 0)
 		FROM {$db_prefix}members
 		WHERE memberIP $dbip", __FILE__, __LINE__);
 	$context['ips'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['ips'][$row['memberIP']][] = '<a href="' . $scripturl . '?action=profile;u=' . $row['ID_MEMBER'] . '">' . $row['display_name'] . '</a>';
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	ksort($context['ips']);
 
@@ -1394,7 +1394,7 @@ function TrackIP($memID = 0)
 		ORDER BY m.ID_MSG DESC
 		LIMIT $context[message_start], 20", __FILE__, __LINE__);
 	$context['messages'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['messages'][] = array(
 			'ip' => $row['posterIP'],
 			'member' => array(
@@ -1413,7 +1413,7 @@ function TrackIP($memID = 0)
 			'time' => timeformat($row['posterTime']),
 			'timestamp' => forum_time(true, $row['posterTime'])
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// !!!SLOW This query is using a filesort.
 	$request = db_query("
@@ -1426,7 +1426,7 @@ function TrackIP($memID = 0)
 		ORDER BY le.ID_ERROR DESC
 		LIMIT $context[error_start], 20", __FILE__, __LINE__);
 	$context['error_messages'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['error_messages'][] = array(
 			'ip' => $row['ip'],
 			'member' => array(
@@ -1439,7 +1439,7 @@ function TrackIP($memID = 0)
 			'url' => $row['url'],
 			'error_time' => timeformat($row['logTime'])
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$context['single_ip'] = strpos($context['ip'], '*') === false;
 	if ($context['single_ip'])
@@ -1516,7 +1516,7 @@ function showPermissions($memID)
 		WHERE $user_info[query_see_board]", __FILE__, __LINE__);
 	$context['boards'] = array();
 	$context['no_access_boards'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (count(array_intersect($curGroups, explode(',', $row['memberGroups']))) === 0)
 			$context['no_access_boards'][] = array(
@@ -1532,7 +1532,7 @@ function showPermissions($memID)
 				'permission_mode' => $row['permission_mode'],
 			);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	if (!empty($context['no_access_boards']))
 		$context['no_access_boards'][count($context['no_access_boards']) - 1]['is_last'] = true;
@@ -1556,7 +1556,7 @@ function showPermissions($memID)
 			LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = p.ID_GROUP)
 		WHERE p.ID_GROUP IN (" . implode(', ', $curGroups) . ")
 		ORDER BY p.addDeny DESC, p.permission, mg.minPosts, IF(mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($result))
+	while ($row = mysqli_fetch_assoc($result))
 	{
 		// We don't know about this permission, it doesn't exist :P.
 		if (!isset($txt['permissionname_' . $row['permission']]))
@@ -1590,7 +1590,7 @@ function showPermissions($memID)
 		// Once denied is always denied.
 		$context['member']['permissions']['general'][$row['permission']]['is_denied'] |= empty($row['addDeny']);
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	$request = db_query("
 		SELECT
@@ -1604,7 +1604,7 @@ function showPermissions($memID)
 			AND b.ID_BOARD = $board
 			AND (mods.ID_MEMBER IS NOT NULL OR bp.ID_GROUP != 3)"), __FILE__, __LINE__);
 
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// We don't know about this permission, it doesn't exist :P.
 		if (!isset($txt['permissionname_' . $row['permission']]))
@@ -1644,7 +1644,7 @@ function showPermissions($memID)
 
 		$context['member']['permissions']['board'][$row['permission']]['is_denied'] |= empty($row['addDeny']);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 }
 
 function perfil($memID)
@@ -1675,7 +1675,7 @@ function perfil($memID)
 			WHERE ID_GROUP != 3
 				AND minPosts = -1
 			ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			// We should skip the administrator group if they don't have the admin_forum permission!
 			if ($row['ID_GROUP'] == 1 && !allowedTo('admin_forum'))
@@ -1689,7 +1689,7 @@ function perfil($memID)
 				'can_be_additional' => true,
 			);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
     $context['page_title'] = 'Editar mi perfil';
 	$context['avatar_url'] = $modSettings['avatar_url'];
@@ -1977,7 +1977,7 @@ function apariencia($memID)
 				AND (bg.expire_time IS NULL OR bg.expire_time > " . time() . ")
 				AND (" . implode(' OR ', $ban_query) . ')
 			GROUP BY bg.ID_BAN_GROUP', __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			// Work out what restrictions we actually have.
 			$ban_restrictions = array();
@@ -2003,7 +2003,7 @@ function apariencia($memID)
 				'explanation' => $ban_explanation,
 			);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	// For avatars: if we're always html resizing, assume it's too large.
 	if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {
@@ -2240,7 +2240,7 @@ function comunidades($memID)
 				AND (bg.expire_time IS NULL OR bg.expire_time > " . time() . ")
 				AND (" . implode(' OR ', $ban_query) . ')
 			GROUP BY bg.ID_BAN_GROUP', __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			// Work out what restrictions we actually have.
 			$ban_restrictions = array();
@@ -2266,7 +2266,7 @@ function comunidades($memID)
 				'explanation' => $ban_explanation,
 			);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	// For avatars: if we're always html resizing, assume it's too large.
 	if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {
@@ -2556,7 +2556,7 @@ function misnotas()
 		
 		$cnt = 1;
 		$notes = array();
-		while ($row = mysql_fetch_assoc($result))
+		while ($row = mysqli_fetch_assoc($result))
 		{
 			$notes[] = array(
 				'pos' => $cnt++,
@@ -2565,7 +2565,7 @@ function misnotas()
 				'body' => $row['body'],
 			);
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 	}
 	$context['total_notes'] = count($notes);
 
@@ -2696,7 +2696,7 @@ function account($memID)
 			WHERE ID_GROUP != 3
 				AND minPosts = -1
 			ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			// We should skip the administrator group if they don't have the admin_forum permission!
 			if ($row['ID_GROUP'] == 1 && !allowedTo('admin_forum'))
@@ -2710,7 +2710,7 @@ function account($memID)
 				'can_be_additional' => true,
 			);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	// Are languages user selectable?  If so, get a list.
@@ -2875,8 +2875,8 @@ function deleteAccount2($profile_vars, $post_errors, $memID)
 			WHERE (ID_GROUP = 1 OR FIND_IN_SET(1, additionalGroups))
 				AND ID_MEMBER != $memID
 			LIMIT 1", __FILE__, __LINE__);
-		list ($another) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($another) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		if (empty($another))
 			fatal_lang_error('at_least_one_admin');
@@ -2906,9 +2906,9 @@ function deleteAccount2($profile_vars, $post_errors, $memID)
 					FROM {$db_prefix}topics AS t
 					WHERE t.ID_MEMBER_STARTED = $memID", __FILE__, __LINE__);
 				$topicIDs = array();
-				while ($row = mysql_fetch_assoc($request))
+				while ($row = mysqli_fetch_assoc($request))
 					$topicIDs[] = $row['ID_TOPIC'];
-				mysql_free_result($request);
+				mysqli_free_result($request);
 
 				// Actually remove the topics.
 				// !!! This needs to check permissions, but we'll let it slide for now because of moderate_forum already being had.
@@ -2923,9 +2923,9 @@ function deleteAccount2($profile_vars, $post_errors, $memID)
 					AND m.ID_TOPIC = t.ID_TOPIC
 					AND t.ID_FIRST_MSG != m.ID_MSG", __FILE__, __LINE__);
 			// This could take a while... but ya know it's gonna be worth it in the end.
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				removeMessage($row['ID_MSG']);
-			mysql_free_result($request);
+			mysqli_free_result($request);
 		}
 
 		// Only delete this poor members account if they are actually being booted out of camp.
@@ -3053,7 +3053,7 @@ function loadThemeOptions($memID)
 			WHERE ID_THEME IN (1, " . (int) $user_profile[$memID]['ID_THEME'] . ")
 				AND ID_MEMBER IN (-1, $memID)", __FILE__, __LINE__);
 		$temp = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if ($row['ID_MEMBER'] == -1)
 			{
@@ -3065,7 +3065,7 @@ function loadThemeOptions($memID)
 				$row['value'] = $_POST['options'][$row['variable']];
 			$context['member']['options'][$row['variable']] = $row['value'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Load up the default theme options for any missing.
 		foreach ($temp as $k => $v)
@@ -3214,7 +3214,7 @@ function buddies2($memID)
 				AND (bg.expire_time IS NULL OR bg.expire_time > " . time() . ")
 				AND (" . implode(' OR ', $ban_query) . ')
 			GROUP BY bg.ID_BAN_GROUP', __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			// Work out what restrictions we actually have.
 			$ban_restrictions = array();
@@ -3240,7 +3240,7 @@ function buddies2($memID)
 				'explanation' => $ban_explanation,
 			);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}	
 	// For avatars: if we're always html resizing, assume it's too large.
 	if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {
@@ -3443,7 +3443,7 @@ function buddies($memID)
 				AND (bg.expire_time IS NULL OR bg.expire_time > " . time() . ")
 				AND (" . implode(' OR ', $ban_query) . ')
 			GROUP BY bg.ID_BAN_GROUP', __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			// Work out what restrictions we actually have.
 			$ban_restrictions = array();
@@ -3469,7 +3469,7 @@ function buddies($memID)
 				'explanation' => $ban_explanation,
 			);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}	
 	// For avatars: if we're always html resizing, assume it's too large.
 	if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {

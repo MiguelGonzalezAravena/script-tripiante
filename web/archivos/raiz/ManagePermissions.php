@@ -75,8 +75,8 @@ function PermissionIndex()
 		SELECT COUNT(*)
 		FROM {$db_prefix}members
 		WHERE ID_GROUP = 0", __FILE__, __LINE__);
-	list ($num_members) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($num_members) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	// Fill the context variable with 'Guests' and 'Regular Members'.
 	$context['groups'] = array(
@@ -127,7 +127,7 @@ function PermissionIndex()
 		FROM {$db_prefix}membergroups" . (empty($modSettings['permission_enable_postgroups']) ? "
 		WHERE minPosts = -1" : '') . "
 		ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($query))
+	while ($row = mysqli_fetch_assoc($query))
 	{
 		$row['stars'] = explode('#', $row['stars']);
 		$context['groups'][$row['ID_GROUP']] = array(
@@ -153,7 +153,7 @@ function PermissionIndex()
 		else
 			$postGroups[$row['ID_GROUP']] = $row['ID_GROUP'];
 	}
-	mysql_free_result($query);
+	mysqli_free_result($query);
 
 	// Get the number of members in this post group.
 	if (!empty($postGroups))
@@ -163,9 +163,9 @@ function PermissionIndex()
 			FROM {$db_prefix}members
 			WHERE ID_POST_GROUP IN (" . implode(', ', $postGroups) . ")
 			GROUP BY ID_POST_GROUP", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($query))
+		while ($row = mysqli_fetch_assoc($query))
 			$context['groups'][$row['ID_GROUP']]['num_members'] += $row['num_members'];
-		mysql_free_result($query);
+		mysqli_free_result($query);
 	}
 
 	if (!empty($normalGroups))
@@ -176,9 +176,9 @@ function PermissionIndex()
 			FROM {$db_prefix}members
 			WHERE ID_GROUP IN (" . implode(', ', $normalGroups) . ")
 			GROUP BY ID_GROUP", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($query))
+		while ($row = mysqli_fetch_assoc($query))
 			$context['groups'][$row['ID_GROUP']]['num_members'] += $row['num_members'];
-		mysql_free_result($query);
+		mysqli_free_result($query);
 
 		// This one is slower, but it's okay... careful not to count twice!
 		$query = db_query("
@@ -189,9 +189,9 @@ function PermissionIndex()
 				AND mem.ID_GROUP != mg.ID_GROUP
 				AND FIND_IN_SET(mg.ID_GROUP, mem.additionalGroups)
 			GROUP BY mg.ID_GROUP", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($query))
+		while ($row = mysqli_fetch_assoc($query))
 			$context['groups'][$row['ID_GROUP']]['num_members'] += $row['num_members'];
-		mysql_free_result($query);
+		mysqli_free_result($query);
 	}
 
 	foreach ($context['groups'] as $id => $data)
@@ -221,16 +221,16 @@ function PermissionIndex()
 			SELECT ID_GROUP, COUNT(*) AS numPermissions, addDeny
 			FROM {$db_prefix}permissions
 			GROUP BY ID_GROUP, addDeny", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			if (isset($context['groups'][(int) $row['ID_GROUP']]) && (!empty($row['addDeny']) || $row['ID_GROUP'] != -1))
 				$context['groups'][(int) $row['ID_GROUP']]['num_permissions'][empty($row['addDeny']) ? 'denied' : 'allowed'] = $row['numPermissions'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$request = db_query("
 			SELECT ID_BOARD, ID_GROUP, COUNT(*) AS numPermissions, addDeny
 			FROM {$db_prefix}board_permissions
 			GROUP BY ID_BOARD, ID_GROUP, addDeny", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if ($row['ID_BOARD'] == 0)
 			{
@@ -240,7 +240,7 @@ function PermissionIndex()
 			elseif (isset($context['boards'][$row['ID_BOARD']]) && isset($context['boards'][$row['ID_BOARD']]['groups'][(int) $row['ID_GROUP']]) && (!empty($row['addDeny']) || $row['ID_GROUP'] != -1))
 				$context['boards'][$row['ID_BOARD']]['groups'][(int) $row['ID_GROUP']]['num_permissions'][empty($row['addDeny']) ? 'denied' : 'allowed'] = $row['numPermissions'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	else
 	{
@@ -251,12 +251,12 @@ function PermissionIndex()
 			FROM {$db_prefix}board_permissions
 			WHERE ID_BOARD = $_REQUEST[boardid]
 			GROUP BY ID_BOARD, ID_GROUP, addDeny", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if (isset($context['groups'][(int) $row['ID_GROUP']]) && (!empty($row['addDeny']) || $row['ID_GROUP'] != -1))
 				$context['groups'][(int) $row['ID_GROUP']]['num_permissions'][empty($row['addDeny']) ? 'denied' : 'allowed'] += $row['numPermissions'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$context['board'] = array(
 			'id' => $_REQUEST['boardid']
@@ -269,20 +269,20 @@ function PermissionIndex()
 			WHERE ID_BOARD != $_REQUEST[boardid]
 				AND permission_mode = 1", __FILE__, __LINE__);
 		$context['boards'] = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$context['copy_boards'][] = array(
 				'id' => $row['ID_BOARD'],
 				'name' => $row['name']
 			);
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$request = db_query("
 			SELECT name, memberGroups
 			FROM {$db_prefix}boards
 			WHERE ID_BOARD = $_REQUEST[boardid]
 			LIMIT 1", __FILE__, __LINE__);
-		list ($context['board']['name'], $groups) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($context['board']['name'], $groups) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		$groups = explode(',', $groups);
 		foreach ($groups as $group)
@@ -322,7 +322,7 @@ function PermissionByBoard()
 		GROUP BY ID_BOARD
 		ORDER BY boardOrder", __FILE__, __LINE__);
 	$context['boards'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$row['memberGroups'] = explode(',', $row['memberGroups']);
 		$context['boards'][$row['ID_BOARD']] = array(
@@ -337,7 +337,7 @@ function PermissionByBoard()
 //			'groups' => $board_groups
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$context['sub_template'] = 'by_board';
 }
@@ -416,9 +416,9 @@ function SetQuickGroups()
 				AND ID_GROUP IN (" . implode(',', $_POST['group']) . ")", __FILE__, __LINE__);
 
 		$target_perms = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$target_perms[] = "('$row[permission]', $row[ID_GROUP], $_REQUEST[boardid], $row[addDeny])";
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Delete the previous global board permissions...
 		db_query("
@@ -457,9 +457,9 @@ function SetQuickGroups()
 				FROM {$db_prefix}permissions
 				WHERE ID_GROUP = $_POST[copy_from]", __FILE__, __LINE__);
 			$target_perm = array();
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$target_perm[$row['permission']] = $row['addDeny'];
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			$insert_string = '';
 			foreach ($_POST['group'] as $group_id)
@@ -498,9 +498,9 @@ function SetQuickGroups()
 			WHERE ID_GROUP = $_POST[copy_from]
 				AND ID_BOARD = $_REQUEST[boardid]", __FILE__, __LINE__);
 		$target_perm = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$target_perm[$row['permission']] = $row['addDeny'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$insert_string = '';
 		foreach ($_POST['group'] as $group_id)
@@ -603,7 +603,7 @@ function SwitchBoard()
 		WHERE ID_BOARD = $_GET[boardid]
 			AND permission_mode = " . ($_GET['to'] == 'local' ? '0' : '1') . "
 		LIMIT 1", __FILE__, __LINE__);
-	if (mysql_num_rows($request) != 1)
+	if (mysqli_num_rows($request) != 1)
 	{
 		if ($_GET['to'] == 'local')
 			PermissionIndex();
@@ -611,7 +611,7 @@ function SwitchBoard()
 			redirectexit('action=permissions');
 		return;
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Copy the global permissions to the specific board.
 	if ($_GET['to'] == 'local')
@@ -621,9 +621,9 @@ function SwitchBoard()
 			FROM {$db_prefix}board_permissions
 			WHERE ID_BOARD = 0", __FILE__, __LINE__);
 		$insertRows = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$insertRows[] = "($row[ID_GROUP], $_GET[boardid], '$row[permission]', $row[addDeny])";
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Reset the current local permissions.
 		db_query("
@@ -676,8 +676,8 @@ function ModifyMembergroup()
 			FROM {$db_prefix}membergroups
 			WHERE ID_GROUP = {$context['group']['id']}
 			LIMIT 1", __FILE__, __LINE__);
-		list ($context['group']['name']) = mysql_fetch_row($result);
-		mysql_free_result($result);
+		list ($context['group']['name']) = mysqli_fetch_row($result);
+		mysqli_free_result($result);
 	}
 	elseif ($context['group']['id'] == -1)
 		$context['group']['name'] = &$txt['membergroups_guests'];
@@ -695,10 +695,10 @@ function ModifyMembergroup()
 			WHERE ID_BOARD = {$context['board']['id']}
 				AND permission_mode = 1", __FILE__, __LINE__);
 		// Either the board was not found or the permissions are set to global.
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('smf232', false);
-		list ($context['board']['name']) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($context['board']['name']) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 	}
 
 	// Fetch the current permissions.
@@ -712,9 +712,9 @@ function ModifyMembergroup()
 			SELECT permission, addDeny
 			FROM {$db_prefix}permissions
 			WHERE ID_GROUP = $_GET[group]", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($result))
+		while ($row = mysqli_fetch_assoc($result))
 			$permissions['membergroup'][empty($row['addDeny']) ? 'denied' : 'allowed'][] = $row['permission'];
-		mysql_free_result($result);
+		mysqli_free_result($result);
 		$context['permissions']['membergroup']['show'] = true;
 	}
 	else
@@ -727,9 +727,9 @@ function ModifyMembergroup()
 		WHERE ID_GROUP = {$context['group']['id']}
 			AND ID_BOARD = {$context['board']['id']}", __FILE__, __LINE__);
 
-	while ($row = mysql_fetch_assoc($result))
+	while ($row = mysqli_fetch_assoc($result))
 		$permissions['board'][empty($row['addDeny']) ? 'denied' : 'allowed'][] = $row['permission'];
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	$context['permissions']['board']['show'] = true;
 
 	// Loop through each permission and set whether it's checked.
@@ -855,9 +855,9 @@ function GeneralPermissionSettings()
 				FROM {$db_prefix}board_permissions
 				WHERE ID_BOARD = 0", __FILE__, __LINE__);
 			$perm = array();
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$perm[$row['ID_GROUP']][$row['addDeny']][] = $row['permission'];
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			// Cycle through all boards with restrictions.
 			$request = db_query("
@@ -866,7 +866,7 @@ function GeneralPermissionSettings()
 				WHERE permission_mode > 1", __FILE__, __LINE__);
 			$insertRows = array();
 			$boards = array();
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				$boards[] = $row['ID_BOARD'];
 				foreach ($perm as $ID_GROUP => $perm_array)
@@ -885,7 +885,7 @@ function GeneralPermissionSettings()
 							$insertRows[] = "('$permission', $row[ID_BOARD], $ID_GROUP, $deny)";
 				}
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			if (!empty($insertRows))
 				db_query("
@@ -927,9 +927,9 @@ function GeneralPermissionSettings()
 				SELECT ID_GROUP
 				FROM {$db_prefix}membergroups
 				WHERE minPosts != -1", __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$post_groups[] = $row['ID_GROUP'];
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			// Remove'em.
 			db_query("
@@ -1154,7 +1154,7 @@ function setPermissionLevel($level, $group, $board = 'null')
 			FROM {$db_prefix}membergroups
 			WHERE ID_GROUP > 3
 			ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
-		while ($row = mysql_fetch_row($query))
+		while ($row = mysqli_fetch_row($query))
 		{
 			$group = $row[0];
 
@@ -1164,7 +1164,7 @@ function setPermissionLevel($level, $group, $board = 'null')
 				VALUES ($board, $group, '" . implode("'),
 					($board, $group, '", $boardLevels[$level]) . "')", __FILE__, __LINE__);
 		}
-		mysql_free_result($query);
+		mysqli_free_result($query);
 
 		// Add permissions for ungrouped members.
 		db_query("
@@ -1409,9 +1409,9 @@ function init_inline_permissions($permissions, $excluded_groups = array())
 		FROM {$db_prefix}permissions
 		WHERE ID_GROUP IN (-1, 0)
 			AND permission IN ('" . implode("', '", $permissions) . "')", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context[$row['permission']][$row['ID_GROUP']]['status'] = $row['status'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$request = db_query("
 		SELECT mg.ID_GROUP, mg.groupName, mg.minPosts, IFNULL(p.addDeny, -1) AS status, p.permission
@@ -1420,7 +1420,7 @@ function init_inline_permissions($permissions, $excluded_groups = array())
 		WHERE mg.ID_GROUP NOT IN (1, 3)" . (empty($modSettings['permission_enable_postgroups']) ? "
 			AND mg.minPosts = -1" : '') . "
 		ORDER BY mg.minPosts, IF(mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Initialize each permission as being 'off' until proven otherwise.
 		foreach ($permissions as $permission)
@@ -1434,7 +1434,7 @@ function init_inline_permissions($permissions, $excluded_groups = array())
 
 		$context[$row['permission']][$row['ID_GROUP']]['status'] = empty($row['status']) ? 'deny' : ($row['status'] == 1 ? 'on' : 'off');
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Some permissions cannot be given to certain groups. Remove the groups.
 	foreach ($excluded_groups as $group)

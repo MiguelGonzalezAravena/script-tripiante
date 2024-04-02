@@ -42,21 +42,21 @@ function RemindMail()
 		FROM {$db_prefix}members
 		WHERE memberName = '$_POST[user]'
 		LIMIT 1", __FILE__, __LINE__);
-	if (mysql_num_rows($request) == 0)
+	if (mysqli_num_rows($request) == 0)
 	{
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$request = db_query("
 			SELECT ID_MEMBER, realName, memberName, emailAddress, is_activated, validation_code
 			FROM {$db_prefix}members
 			WHERE emailAddress = '$_POST[user]'
 			LIMIT 1", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error(40, false);
 	}
 
-	$row = mysql_fetch_assoc($request);
-	mysql_free_result($request);
+	$row = mysqli_fetch_assoc($request);
+	mysqli_free_result($request);
 
 	// If the user isn't activated/approved, give them some feedback on what to do next.
 	if ($row['is_activated'] != 1)
@@ -143,11 +143,11 @@ function setPassword2()
 		LIMIT 1", __FILE__, __LINE__);
 
 	// Does this user exist at all?
-	if (mysql_num_rows($request) == 0)
+	if (mysqli_num_rows($request) == 0)
 		fatal_lang_error('invalid_userid', false);
 
-	list ($realCode, $username, $email) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($realCode, $username, $email) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	// Is the password actually valid?
 	require_once($sourcedir . '/Subs-Auth.php');
@@ -195,21 +195,21 @@ function secretAnswerInput()
 		FROM {$db_prefix}members
 		WHERE memberName = '$_POST[user]'
 		LIMIT 1", __FILE__, __LINE__);
-	if (mysql_num_rows($request) == 0)
+	if (mysqli_num_rows($request) == 0)
 	{
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$request = db_query("
 			SELECT realName, memberName, secretQuestion
 			FROM {$db_prefix}members
 			WHERE emailAddress = '$_POST[user]'
 			LIMIT 1", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error(40, false);
 	}
 
-	$row = mysql_fetch_assoc($request);
-	mysql_free_result($request);
+	$row = mysqli_fetch_assoc($request);
+	mysqli_free_result($request);
 
 	// If there is NO secret question - then throw an error.
 	if (trim($row['secretQuestion']) == '')
@@ -241,21 +241,21 @@ function secretAnswer2()
 		FROM {$db_prefix}members
 		WHERE memberName = '$_POST[user]'
 		LIMIT 1", __FILE__, __LINE__);
-	if (mysql_num_rows($request) == 0)
+	if (mysqli_num_rows($request) == 0)
 	{
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$request = db_query("
 			SELECT ID_MEMBER, realName, memberName, secretAnswer, secretQuestion
 			FROM {$db_prefix}members
 			WHERE emailAddress = '$_POST[user]'
 			LIMIT 1", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error(40, false);
 	}
 
-	$row = mysql_fetch_assoc($request);
-	mysql_free_result($request);
+	$row = mysqli_fetch_assoc($request);
+	mysqli_free_result($request);
 
 	// Check if the secret answer is correct.
 	if ($row['secretQuestion'] == '' || $row['secretAnswer'] == '' || md5(stripslashes($_POST['secretAnswer'])) != $row['secretAnswer'])

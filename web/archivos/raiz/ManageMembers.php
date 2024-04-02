@@ -36,9 +36,9 @@ function ViewMembers()
 	$context['activation_numbers'] = array();
 	$context['awaiting_activation'] = 0;
 	$context['awaiting_approval'] = 0;
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['activation_numbers'][$row['is_activated']] = $row['totalMembers'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	foreach ($context['activation_numbers'] as $activation_type => $total_members)
 	{
@@ -166,7 +166,7 @@ function ViewMemberlist()
 			FROM {$db_prefix}membergroups
 			WHERE ID_GROUP != 3
 			ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if ($row['minPosts'] == -1)
 				$context['membergroups'][] = array(
@@ -180,7 +180,7 @@ function ViewMemberlist()
 					'name' => $row['groupName']
 				);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Some data about the form fields and how they are linked to the database.
 		$params = array(
@@ -399,8 +399,8 @@ function ViewMemberlist()
 			SELECT COUNT(*)
 			FROM {$db_prefix}members
 			WHERE $where", __FILE__, __LINE__);
-		list ($num_members) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($num_members) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 	}
 
 	// Construct the page links.
@@ -413,7 +413,7 @@ function ViewMemberlist()
 		WHERE $where" : '') . "
 		ORDER BY $_REQUEST[sort]" . (!isset($_REQUEST['desc']) ? '' : ' DESC') . "
 		LIMIT $context[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Calculate number of days since last online.
 		if (empty($row['lastLogin']))
@@ -447,7 +447,7 @@ function ViewMemberlist()
 			'link' => '<a href="' . $scripturl . '?action=profile;u=' . $row['ID_MEMBER'] . '">' . $row['realName'] . '</a>'
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 }
 
 // Search the member list, using one or more criteria.
@@ -470,7 +470,7 @@ function SearchMembers()
 		FROM {$db_prefix}membergroups
 		WHERE ID_GROUP != 3
 		ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if ($row['minPosts'] == -1)
 			$context['membergroups'][] = array(
@@ -484,7 +484,7 @@ function SearchMembers()
 				'name' => $row['groupName']
 			);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$context['page_title'] = $txt[9];
 	$context['sub_template'] = 'search_members';
@@ -560,8 +560,8 @@ function MembersAwaitingActivation()
 		SELECT COUNT(*)
 		FROM {$db_prefix}members
 		WHERE is_activated = $context[current_filter]", __FILE__, __LINE__);
-	list ($context['num_members']) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($context['num_members']) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	// Construct the page links.
 	$context['page_index'] = constructPageIndex($scripturl . '?action=viewmembers;sa=browse;type=' . $context['browse_type'] . ';sort=' . $_REQUEST['sort'] . (isset($_REQUEST['desc']) ? ';desc' : ''), $_REQUEST['start'], $context['num_members'], $modSettings['defaultMaxMembers']);
@@ -601,7 +601,7 @@ function MembersAwaitingActivation()
 		ORDER BY $_REQUEST[sort]" . (!isset($_REQUEST['desc']) ? '' : ' DESC') . "
 		LIMIT $context[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
 
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['members'][] = array(
 			'id' => $row['ID_MEMBER'],
 			'username' => $row['memberName'],
@@ -611,7 +611,7 @@ function MembersAwaitingActivation()
 			'ip' => $row['memberIP'],
 			'dateRegistered' => timeformat($row['dateRegistered']),
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 }
 
 // Do the approve/activate/delete stuff
@@ -660,7 +660,7 @@ function AdminApprove()
 		WHERE is_activated = $current_filter$condition
 		ORDER BY lngfile", __FILE__, __LINE__);
 
-	$member_count = mysql_num_rows($request);
+	$member_count = mysqli_num_rows($request);
 
 	// If no results then just return!
 	if ($member_count == 0)
@@ -669,7 +669,7 @@ function AdminApprove()
 	$member_info = array();
 	$members = array();
 	// Fill the info array.
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$members[] = $row['ID_MEMBER'];
 		$member_info[] = array(
@@ -681,7 +681,7 @@ function AdminApprove()
 			'code' => $row['validation_code']
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Are we activating or approving the members?
 	if ($_POST['todo'] == 'ok' || $_POST['todo'] == 'okemail')

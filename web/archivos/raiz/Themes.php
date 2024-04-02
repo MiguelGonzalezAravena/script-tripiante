@@ -91,14 +91,14 @@ function ThemeAdmin()
 				AND ID_MEMBER = 0
 			ORDER BY ID_THEME", __FILE__, __LINE__);
 		$context['themes'] = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			$context['themes'][] = array(
 				'id' => $row['ID_THEME'],
 				'name' => $row['name']
 			);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Can we create a new theme?
 		$context['can_create_new'] = is_writable($boarddir . '/web/archivos/temas');
@@ -146,9 +146,9 @@ function ThemeList()
 			WHERE variable IN ('theme_dir', 'theme_url', 'images_url', 'base_theme_dir', 'base_theme_url', 'base_images_url')
 				AND ID_MEMBER = 0", __FILE__, __LINE__);
 		$themes = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$themes[$row['ID_THEME']][$row['variable']] = $row['value'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$_POST['reset_dir'] = stripslashes($_POST['reset_dir']);
 		$_POST['reset_url'] = stripslashes($_POST['reset_url']);
@@ -196,7 +196,7 @@ function ThemeList()
 		WHERE variable IN ('name', 'theme_dir', 'theme_url', 'images_url')
 			AND ID_MEMBER = 0", __FILE__, __LINE__);
 	$context['themes'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (!isset($context['themes'][$row['ID_THEME']]))
 			$context['themes'][$row['ID_THEME']] = array(
@@ -204,7 +204,7 @@ function ThemeList()
 			);
 		$context['themes'][$row['ID_THEME']][$row['variable']] = $row['value'];
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	foreach ($context['themes'] as $i => $theme)
 	{
@@ -251,7 +251,7 @@ function SetThemeOptions()
 			WHERE variable IN ('name', 'theme_dir')
 				AND ID_MEMBER = 0", __FILE__, __LINE__);
 		$context['themes'] = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if (!isset($context['themes'][$row['ID_THEME']]))
 				$context['themes'][$row['ID_THEME']] = array(
@@ -261,25 +261,25 @@ function SetThemeOptions()
 				);
 			$context['themes'][$row['ID_THEME']][$row['variable']] = $row['value'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$request = db_query("
 			SELECT ID_THEME, COUNT(*) AS value
 			FROM {$db_prefix}themes
 			WHERE ID_MEMBER = -1
 			GROUP BY ID_THEME", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$context['themes'][$row['ID_THEME']]['num_default_options'] = $row['value'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$request = db_query("
 			SELECT ID_THEME, COUNT(DISTINCT ID_MEMBER) AS value
 			FROM {$db_prefix}themes
 			WHERE ID_MEMBER > 0
 			GROUP BY ID_THEME", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$context['themes'][$row['ID_THEME']]['num_members'] = $row['value'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		foreach ($context['themes'] as $k => $v)
 		{
@@ -449,9 +449,9 @@ function SetThemeOptions()
 			WHERE ID_THEME IN (1, " . $_GET['th'] . ")
 				AND ID_MEMBER = -1", __FILE__, __LINE__);
 		$context['theme_options'] = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$context['theme_options'][$row['variable']] = $row['value'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$context['theme_options_reset'] = false;
 	}
@@ -714,8 +714,8 @@ function PickTheme()
 			FROM {$db_prefix}members
 			WHERE ID_MEMBER = $context[current_member]
 			LIMIT 1", __FILE__, __LINE__);
-		list ($context['current_theme']) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($context['current_theme']) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 	}
 	// Get the theme name and descriptions.
 	$context['available_themes'] = array();
@@ -731,7 +731,7 @@ function PickTheme()
 				AND ID_THEME != 1" : '') . "
 				AND ID_THEME != 0
 			LIMIT " . count(explode(',', $modSettings['knownThemes'])) * 8, __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if (!isset($context['available_themes'][$row['ID_THEME']]))
 				$context['available_themes'][$row['ID_THEME']] = array(
@@ -741,7 +741,7 @@ function PickTheme()
 				);
 			$context['available_themes'][$row['ID_THEME']][$row['variable']] = $row['value'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	// Okay, this is a complicated problem: the default theme is 1, but they aren't allowed to access 1!
@@ -759,7 +759,7 @@ function PickTheme()
 		SELECT ID_THEME, COUNT(*) AS theCount
 		FROM {$db_prefix}members
 		GROUP BY ID_THEME DESC", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Figure out which theme it is they are REALLY using.
 		if ($row['ID_THEME'] == 1 && empty($modSettings['theme_default']))
@@ -772,7 +772,7 @@ function PickTheme()
 		else
 			$context['available_themes'][$guest_theme]['num_users'] += $row['theCount'];
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	foreach ($context['available_themes'] as $ID_THEME => $theme_data)
 	{
@@ -839,8 +839,8 @@ function ThemeInstall()
 				AND ID_MEMBER = 0
 				AND variable = 'name'
 			LIMIT 1", __FILE__, __LINE__);
-		list ($theme_name) = mysql_fetch_row($result);
-		mysql_free_result($result);
+		list ($theme_name) = mysqli_fetch_row($result);
+		mysqli_free_result($result);
 
 		$context['sub_template'] = 'installed';
 		$context['page_title'] = $txt['theme_installed'];
@@ -981,8 +981,8 @@ function ThemeInstall()
 						AND th3.ID_MEMBER = 0
 						AND th3.variable = 'images_url'") . "
 					LIMIT 1", __FILE__, __LINE__);
-				$temp = mysql_fetch_assoc($request);
-				mysql_free_result($request);
+				$temp = mysqli_fetch_assoc($request);
+				mysqli_free_result($request);
 
 				// !!! An error otherwise?
 				if (is_array($temp))
@@ -1001,8 +1001,8 @@ function ThemeInstall()
 		$result = db_query("
 			SELECT MAX(ID_THEME)
 			FROM {$db_prefix}themes", __FILE__, __LINE__);
-		list ($ID_THEME) = mysql_fetch_row($result);
-		mysql_free_result($result);
+		list ($ID_THEME) = mysqli_fetch_row($result);
+		mysqli_free_result($result);
 
 		// This will be theme number...
 		$ID_THEME++;
@@ -1137,7 +1137,7 @@ function EditTheme()
 				AND ID_MEMBER = 0
 				AND ID_THEME != 1", __FILE__, __LINE__);
 		$context['themes'] = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if (!isset($context['themes'][$row['ID_THEME']]))
 				$context['themes'][$row['ID_THEME']] = array(
@@ -1147,7 +1147,7 @@ function EditTheme()
 				);
 			$context['themes'][$row['ID_THEME']][$row['variable']] = $row['value'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		foreach ($context['themes'] as $k => $v)
 		{
@@ -1197,8 +1197,8 @@ function EditTheme()
 		WHERE variable = 'theme_dir'
 			AND ID_THEME = $_GET[th]
 		LIMIT 1", __FILE__, __LINE__);
-	list ($theme_dir, $context['theme_id']) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($theme_dir, $context['theme_id']) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	if (!isset($_REQUEST['filename']))
 	{
@@ -1274,8 +1274,8 @@ function EditTheme()
 					WHERE variable = 'theme_url'
 						AND ID_THEME = $_GET[th]
 					LIMIT 1", __FILE__, __LINE__);
-				list ($theme_url) = mysql_fetch_row($request);
-				mysql_free_result($request);
+				list ($theme_url) = mysqli_fetch_row($request);
+				mysqli_free_result($request);
 
 				$fp = fopen($theme_dir . '/tmp_' . session_id() . '.php', 'w');
 				fwrite($fp, $_POST['entire_file']);
@@ -1446,8 +1446,8 @@ function CopyTemplate()
 		WHERE th1.variable = 'theme_dir'
 			AND th1.ID_THEME = $_GET[th]
 		LIMIT 1", __FILE__, __LINE__);
-	list ($theme_dir, $context['theme_id'], $base_theme_dir) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($theme_dir, $context['theme_id'], $base_theme_dir) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	if (isset($_REQUEST['template']) && preg_match('~[\./\\\\:\0]~', $_REQUEST['template']) == 0)
 	{

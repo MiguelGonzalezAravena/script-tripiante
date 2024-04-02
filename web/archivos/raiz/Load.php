@@ -25,9 +25,9 @@ function reloadSettings()
 		$modSettings = array();
 		if (!$request)
 			db_fatal_error();
-		while ($row = mysql_fetch_row($request))
+		while ($row = mysqli_fetch_row($request))
 			$modSettings[$row[0]] = $row[1];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 
 		// Do a few things to protect against missing settings or settings with invalid values...
@@ -169,8 +169,8 @@ function reloadSettings()
 		$request = db_query("
 			SELECT COUNT(*)
 			FROM {$db_prefix}log_online", __FILE__, __LINE__);
-		list ($dont_do_it) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($dont_do_it) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		if ($dont_do_it > $modSettings['autoOptMaxOnline'])
 			return;
@@ -192,9 +192,9 @@ function reloadSettings()
 	}
 
 	$tables = array();
-	while ($row = mysql_fetch_row($request))
+	while ($row = mysqli_fetch_row($request))
 		$tables[] = $row[0];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	updateSettings(array('autoOptLastOpt' => time()));
 
@@ -253,8 +253,8 @@ function loadUserSettings()
 				FROM {$db_prefix}members AS mem
 				WHERE mem.ID_MEMBER = $ID_MEMBER
 				LIMIT 1", __FILE__, __LINE__);
-			$user_settings = mysql_fetch_assoc($request);
-			mysql_free_result($request);
+			$user_settings = mysqli_fetch_assoc($request);
+			mysqli_free_result($request);
 
 			if (!empty($modSettings['cache_enable']) && $modSettings['cache_enable'] >= 2)
 				cache_put_data('user_settings-' . $ID_MEMBER, $user_settings, 60);
@@ -295,8 +295,8 @@ function loadUserSettings()
 				FROM {$db_prefix}messages
 				WHERE ID_MSG = $user_settings[ID_MSG_LAST_VISIT]
 				LIMIT 1", __FILE__, __LINE__);
-			list ($visitTime) = mysql_fetch_row($result);
-			mysql_free_result($result);
+			list ($visitTime) = mysqli_fetch_row($result);
+			mysqli_free_result($result);
 
 			$_SESSION['ID_MSG_LAST_VISIT'] = $user_settings['ID_MSG_LAST_VISIT'];
 
@@ -445,9 +445,9 @@ function loadBoard()
 			WHERE b.ID_BOARD = " . (empty($topic) ? $board : "t.ID_BOARD
 				AND t.ID_TOPIC = $topic"), __FILE__, __LINE__);
 		// If there aren't any, skip.
-		if (mysql_num_rows($request) > 0)
+		if (mysqli_num_rows($request) > 0)
 		{
-			$row = mysql_fetch_assoc($request);
+			$row = mysqli_fetch_assoc($request);
 
 			// Set the current board.
 			if (!empty($row['ID_BOARD']))
@@ -487,7 +487,7 @@ function loadBoard()
 						'link' => '<a href="' . $scripturl . '?action=profile;u=' . $row['ID_MODERATOR'] . '" title="' . $txt[62] . '">' . $row['realName'] . '</a>'
 					);
 			}
-			while ($row = mysql_fetch_assoc($request));
+			while ($row = mysqli_fetch_assoc($request));
 
 			if (!empty($modSettings['cache_enable']) && (empty($topic) || $modSettings['cache_enable'] == 3))
 			{
@@ -507,7 +507,7 @@ function loadBoard()
 			$topic = null;
 			$board = 0;
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	if (!empty($topic))
@@ -599,14 +599,14 @@ function loadPermissions()
 			FROM {$db_prefix}permissions
 			WHERE ID_GROUP IN (" . implode(', ', $user_info['groups']) . ')', __FILE__, __LINE__);
 		$removals = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if (empty($row['addDeny']))
 				$removals[] = $row['permission'];
 			else
 				$user_info['permissions'][] = $row['permission'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		if (isset($cache_groups))
 			cache_put_data('permissions:' . $cache_groups, array($user_info['permissions'], $removals), 240);
@@ -624,14 +624,14 @@ function loadPermissions()
 			FROM {$db_prefix}board_permissions
 			WHERE ID_GROUP IN (" . implode(', ', $user_info['groups']) . ")
 				AND ID_BOARD = " . ($board_info['use_local_permissions'] ? $board : '0'), __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if (empty($row['addDeny']))
 				$removals[] = $row['permission'];
 			else
 				$user_info['permissions'][] = $row['permission'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	// Remove all the permissions they shouldn't have ;).
@@ -746,14 +746,14 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
 			FROM {$db_prefix}members AS mem$select_tables
 			WHERE mem." . ($is_name ? 'memberName' : 'ID_MEMBER') . (count($users) == 1 ? " = '" . current($users) . "'" : " IN ('" . implode("', '", $users) . "')"), __FILE__, __LINE__);
 		$new_loaded_ids = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			$new_loaded_ids[] = $row['ID_MEMBER'];
 			$loaded_ids[] = $row['ID_MEMBER'];
 			$row['options'] = array();
 			$user_profile[$row['ID_MEMBER']] = $row;
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	if (!empty($new_loaded_ids) && $set !== 'minimal')
@@ -762,9 +762,9 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
 			SELECT *
 			FROM {$db_prefix}themes
 			WHERE ID_MEMBER" . (count($new_loaded_ids) == 1 ? ' = ' . $new_loaded_ids[0] : ' IN (' . implode(', ', $new_loaded_ids) . ')'), __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$user_profile[$row['ID_MEMBER']]['options'][$row['variable']] = $row['value'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	if (!empty($new_loaded_ids) && !empty($modSettings['cache_enable']) && $modSettings['cache_enable'] == 3)
@@ -783,8 +783,8 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
 				FROM {$db_prefix}membergroups
 				WHERE ID_GROUP = 3
 				LIMIT 1", __FILE__, __LINE__);
-			$row = mysql_fetch_assoc($request);
-			mysql_free_result($request);
+			$row = mysqli_fetch_assoc($request);
+			mysqli_free_result($request);
 
 			cache_put_data('moderator_group_info', $row, 480);
 		}
@@ -1006,7 +1006,7 @@ function loadTheme($ID_THEME = 0, $initialize = true)
 			WHERE ID_MEMBER" . (empty($themeData[0]) ? " IN (-1, 0, $member)" : " = $member") . "
 				AND ID_THEME" . ($ID_THEME == 1 ? ' = 1' : " IN ($ID_THEME, 1)"), __FILE__, __LINE__);
 		// Pick between $settings and $options depending on whose data it is.
-		while ($row = mysql_fetch_assoc($result))
+		while ($row = mysqli_fetch_assoc($result))
 		{
 			// If this is the theme_dir of the default theme, store it.
 			if (in_array($row['variable'], array('theme_dir', 'theme_url', 'images_url')) && $row['ID_THEME'] == '1' && empty($row['ID_MEMBER']))
@@ -1016,7 +1016,7 @@ function loadTheme($ID_THEME = 0, $initialize = true)
 			if (!isset($themeData[$row['ID_MEMBER']][$row['variable']]) || $row['ID_THEME'] != '1')
 				$themeData[$row['ID_MEMBER']][$row['variable']] = substr($row['variable'], 0, 5) == 'show_' ? $row['value'] == '1' : $row['value'];
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 
 		if (!empty($themeData[-1]))
 			foreach ($themeData[-1] as $k => $v)
@@ -1445,9 +1445,9 @@ function getBoardParents($id_parent)
 				LEFT JOIN {$db_prefix}members AS mem ON (mem.ID_MEMBER = mods.ID_MEMBER)
 			WHERE b.ID_BOARD = $id_parent", __FILE__, __LINE__);
 		// In the EXTREMELY unlikely event this happens, give an error message.
-		if (mysql_num_rows($result) == 0)
+		if (mysqli_num_rows($result) == 0)
 			fatal_lang_error('parent_not_found');
-		while ($row = mysql_fetch_assoc($result))
+		while ($row = mysqli_fetch_assoc($result))
 		{
 			if (!isset($boards[$row['ID_BOARD']]))
 			{
@@ -1471,7 +1471,7 @@ function getBoardParents($id_parent)
 					);
 				}
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 	}
 
 	return $boards;
@@ -1527,7 +1527,7 @@ function loadJumpTo()
 		WHERE $user_info[query_see_board]", __FILE__, __LINE__);
 	$context['jump_to'] = array();
 	$this_cat = array('id' => -1);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if ($this_cat['id'] != $row['ID_CAT'])
 		{
@@ -1544,7 +1544,7 @@ function loadJumpTo()
 			'is_current' => isset($context['current_board']) && $row['ID_BOARD'] == $context['current_board']
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 }
 
 // Load the template/language file using eval or require? (with eval we can show an error message!)
@@ -1837,8 +1837,8 @@ function sessionRead($session_id)
 		FROM {$db_prefix}sessions
 		WHERE session_id = '" . addslashes($session_id) . "'
 		LIMIT 1", __FILE__, __LINE__);
-	list ($sess_data) = mysql_fetch_row($result);
-	mysql_free_result($result);
+	list ($sess_data) = mysqli_fetch_row($result);
+	mysqli_free_result($result);
 
 	return $sess_data;
 }

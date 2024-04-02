@@ -80,7 +80,7 @@ function MembergroupIndex()
 		SELECT ID_GROUP, groupName, minPosts, onlineColor, stars
 		FROM {$db_prefix}membergroups
 		ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($query))
+	while ($row = mysqli_fetch_assoc($query))
 	{
 		$row['stars'] = explode('#', $row['stars']);
 		$context['groups'][$row['minPosts'] == -1 ? 'regular' : 'post'][$row['ID_GROUP']] = array(
@@ -96,7 +96,7 @@ function MembergroupIndex()
 			'stars' => !empty($row['stars'][0]) && !empty($row['stars'][1]) ? str_repeat('<img src="' . $settings['images_url'] . '/' . $row['stars'][1] . '" alt="*" border="0" />', $row['stars'][0]) : '',
 		);
 	}
-	mysql_free_result($query);
+	mysqli_free_result($query);
 
 	if (!empty($context['groups']['post']))
 	{
@@ -105,9 +105,9 @@ function MembergroupIndex()
 			FROM {$db_prefix}members
 			WHERE ID_POST_GROUP IN (" . implode(', ', array_keys($context['groups']['post'])) . ")
 			GROUP BY ID_POST_GROUP", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($query))
+		while ($row = mysqli_fetch_assoc($query))
 			$context['groups']['post'][$row['ID_GROUP']]['num_members'] += $row['num_members'];
-		mysql_free_result($query);
+		mysqli_free_result($query);
 	}
 
 	if (!empty($context['groups']['regular']))
@@ -117,9 +117,9 @@ function MembergroupIndex()
 			FROM {$db_prefix}members
 			WHERE ID_GROUP IN (" . implode(', ', array_keys($context['groups']['regular'])) . ")
 			GROUP BY ID_GROUP", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($query))
+		while ($row = mysqli_fetch_assoc($query))
 			$context['groups']['regular'][$row['ID_GROUP']]['num_members'] += $row['num_members'];
-		mysql_free_result($query);
+		mysqli_free_result($query);
 
 		$query = db_query("
 			SELECT mg.ID_GROUP, COUNT(*) AS num_members
@@ -129,9 +129,9 @@ function MembergroupIndex()
 				AND mem.ID_GROUP != mg.ID_GROUP
 				AND FIND_IN_SET(mg.ID_GROUP, mem.additionalGroups)
 			GROUP BY mg.ID_GROUP", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($query))
+		while ($row = mysqli_fetch_assoc($query))
 			$context['groups']['regular'][$row['ID_GROUP']]['num_members'] += $row['num_members'];
-		mysql_free_result($query);
+		mysqli_free_result($query);
 	}
 
 	foreach ($context['groups'] as $temp => $dummy)
@@ -161,8 +161,8 @@ function AddMembergroup()
 		$request = db_query("
 			SELECT MAX(ID_GROUP)
 			FROM {$db_prefix}membergroups", __FILE__, __LINE__);
-		list ($ID_GROUP) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($ID_GROUP) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 		$ID_GROUP++;
 
 		db_query("
@@ -198,13 +198,13 @@ function AddMembergroup()
 				FROM {$db_prefix}permissions
 				WHERE ID_GROUP = $_POST[copyperm]", __FILE__, __LINE__);
 			$setString = '';
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				if (empty($context['illegal_permissions']) || !in_array($row['permission'], $context['illegal_permissions']))
 					$setString .= "
 						($ID_GROUP, '$row[permission]', $row[addDeny]),";
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			if (!empty($setString))
 				db_query("
@@ -218,10 +218,10 @@ function AddMembergroup()
 				WHERE ID_GROUP = $_POST[copyperm]" . (empty($modSettings['permission_enable_by_board']) ? "
 					AND ID_BOARD = 0" : ''), __FILE__, __LINE__);
 			$setString = '';
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$setString .= "
 					($ID_GROUP, $row[ID_BOARD], '$row[permission]', $row[addDeny]),";
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			if (!empty($setString))
 				db_query("
@@ -237,8 +237,8 @@ function AddMembergroup()
 					FROM {$db_prefix}membergroups
 					WHERE ID_GROUP = $_POST[copyperm]
 					LIMIT 1", __FILE__, __LINE__);
-				$group_info = mysql_fetch_assoc($request);
-				mysql_free_result($request);
+				$group_info = mysqli_fetch_assoc($request);
+				mysqli_free_result($request);
 
 				// ...and update the new membergroup with it.
 				db_query("
@@ -282,25 +282,25 @@ function AddMembergroup()
 			AND minPosts = -1" : '') . "
 		ORDER BY minPosts, ID_GROUP != 2, groupName", __FILE__, __LINE__);
 	$context['groups'] = array();
-	while ($row = mysql_fetch_assoc($result))
+	while ($row = mysqli_fetch_assoc($result))
 		$context['groups'][] = array(
 			'id' => $row['ID_GROUP'],
 			'name' => $row['groupName']
 		);
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	$result = db_query("
 		SELECT ID_BOARD, name, childLevel
 		FROM {$db_prefix}boards", __FILE__, __LINE__);
 	$context['boards'] = array();
-	while ($row = mysql_fetch_assoc($result))
+	while ($row = mysqli_fetch_assoc($result))
 		$context['boards'][] = array(
 			'id' => $row['ID_BOARD'],
 			'name' => $row['name'],
 			'child_level' => $row['childLevel'],
 			'selected' => false
 		);
-	mysql_free_result($result);
+	mysqli_free_result($result);
 }
 
 // Deleting a membergroup by URL (not implemented).
@@ -371,13 +371,13 @@ function EditMembergroup()
 				FROM {$db_prefix}boards
 				WHERE FIND_IN_SET(" . (int) $_REQUEST['group'] . ", memberGroups)" . (empty($_POST['boardaccess']) ? '' : "
 					AND ID_BOARD NOT IN (" . implode(', ', $_POST['boardaccess']) . ')'), __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				db_query("
 					UPDATE {$db_prefix}boards
 					SET memberGroups = '" . implode(',', array_diff(explode(',', $row['memberGroups']), array($_REQUEST['group']))) . "'
 					WHERE ID_BOARD = $row[ID_BOARD]
 					LIMIT 1", __FILE__, __LINE__);
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			// Add the membergroup to all boards that hadn't been set yet.
 			if (!empty($_POST['boardaccess']))
@@ -401,9 +401,9 @@ function EditMembergroup()
 				FROM {$db_prefix}members
 				WHERE FIND_IN_SET(" . (int) $_REQUEST['group'] . ", additionalGroups)", __FILE__, __LINE__);
 			$updates = array();
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$updates[$row['additionalGroups']][] = $row['ID_MEMBER'];
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			foreach ($updates as $additionalGroups => $memberArray)
 				updateMemberData($memberArray, array('additionalGroups' => '\'' . implode(',', array_diff(explode(',', $additionalGroups), array((int) $_REQUEST['group']))) . '\''));
@@ -421,10 +421,10 @@ function EditMembergroup()
 		FROM {$db_prefix}membergroups
 		WHERE ID_GROUP = " . (int) $_REQUEST['group'] . "
 		LIMIT 1", __FILE__, __LINE__);
-	if (mysql_num_rows($request) == 0)
+	if (mysqli_num_rows($request) == 0)
 		fatal_lang_error('membergroup_does_not_exist', false);
-	$row = mysql_fetch_assoc($request);
-	mysql_free_result($request);
+	$row = mysqli_fetch_assoc($request);
+	mysqli_free_result($request);
 
 	$row['stars'] = explode('#', $row['stars']);
 
@@ -449,14 +449,14 @@ function EditMembergroup()
 		$result = db_query("
 			SELECT ID_BOARD, name, childLevel, FIND_IN_SET(" . (int) $_REQUEST['group'] . ", memberGroups) AS can_access
 			FROM {$db_prefix}boards", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($result))
+		while ($row = mysqli_fetch_assoc($result))
 			$context['boards'][] = array(
 				'id' => $row['ID_BOARD'],
 				'name' => $row['name'],
 				'child_level' => $row['childLevel'],
 				'selected' => !empty($row['can_access']),
 			);
-		mysql_free_result($result);
+		mysqli_free_result($result);
 	}
 	$context['sub_template'] = 'edit_group';
 	$context['page_title'] = $txt['membergroups_edit_group'];
@@ -480,10 +480,10 @@ function MembergroupMembers()
 		WHERE ID_GROUP = " . (int) $_REQUEST['group'] . "
 		LIMIT 1", __FILE__, __LINE__);
 	// Not really possible...
-	if (mysql_num_rows($request) == 0)
+	if (mysqli_num_rows($request) == 0)
 		fatal_lang_error('membergroup_does_not_exist', false);
-	$context['group'] = mysql_fetch_assoc($request);
-	mysql_free_result($request);
+	$context['group'] = mysqli_fetch_assoc($request);
+	mysqli_free_result($request);
 
 	// Non-admins cannot assign admins.
 	if ($context['group']['id'] == 1 && !allowedTo('admin_forum'))
@@ -521,9 +521,9 @@ function MembergroupMembers()
 			WHERE LOWER(memberName) IN ('" . implode("', '", $memberNames) . "') OR LOWER(realName) IN ('" . implode("', '", $memberNames) . "')
 			LIMIT " . count($memberNames), __FILE__, __LINE__);
 		$members = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$members[] = $row['ID_MEMBER'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// !!! Add $_POST['additional'] to templates!
 
@@ -561,8 +561,8 @@ function MembergroupMembers()
 		SELECT COUNT(*)
 		FROM {$db_prefix}members
 		WHERE " . (empty($context['group']['is_post_group']) ? "ID_GROUP = " . (int) $_REQUEST['group'] . " OR FIND_IN_SET(" . (int) $_REQUEST['group'] . ", additionalGroups)" : "ID_POST_GROUP = " . (int) $_REQUEST['group']), __FILE__, __LINE__);
-	list ($context['total_members']) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($context['total_members']) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	// Create the page index.
 	$context['page_index'] = constructPageIndex($scripturl . '?action=membergroups;sa=members;group=' . $_REQUEST['group'] . ';sort=' . $context['sort_by'] . (isset($_REQUEST['desc']) ? ';desc' : ''), $_REQUEST['start'], $context['total_members'], $modSettings['defaultMaxMembers']);
@@ -576,7 +576,7 @@ function MembergroupMembers()
 		ORDER BY $querySort " . ($context['sort_direction'] == 'down' ? 'DESC' : 'ASC') . "
 		LIMIT $context[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
 	$context['members'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$last_online = empty($row['lastLogin']) ? $txt['never'] : timeformat($row['lastLogin']);
 
@@ -595,7 +595,7 @@ function MembergroupMembers()
 			'is_activated' => $row['is_activated'] % 10 == 1,
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Select the template.
 	$context['sub_template'] = 'group_members';

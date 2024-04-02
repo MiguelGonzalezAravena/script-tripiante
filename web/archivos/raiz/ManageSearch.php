@@ -137,12 +137,12 @@ function EditSearchMethod()
 		SHOW INDEX
 		FROM {$db_prefix}messages", false, false);
 	$context['fulltext_index'] = '';
-	if ($request !== false || mysql_num_rows($request) != 0)
+	if ($request !== false || mysqli_num_rows($request) != 0)
 	{
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			if ($row['Column_name'] == 'body' && (isset($row['Index_type']) && $row['Index_type'] == 'FULLTEXT' || isset($row['Comment']) && $row['Comment'] == 'FULLTEXT'))
 				$context['fulltext_index'][] = $row['Key_name'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		if (is_array($context['fulltext_index']))
 			$context['fulltext_index'] = array_unique($context['fulltext_index']);
@@ -153,10 +153,10 @@ function EditSearchMethod()
 		FROM {$db_prefix}messages", false, false);
 	if ($request !== false)
 	{
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			if ($row['Field'] == 'body' && $row['Type'] == 'mediumtext')
 				$context['cannot_create_fulltext'] = true;
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	if (preg_match('~^`(.+?)`\.(.+?)$~', $db_prefix, $match) !== 0)
@@ -171,10 +171,10 @@ function EditSearchMethod()
 
 	if ($request !== false)
 	{
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			if ((isset($row['Type']) && strtolower($row['Type']) != 'myisam') || (isset($row['Engine']) && strtolower($row['Engine']) != 'myisam'))
 				$context['cannot_create_fulltext'] = true;
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	if (!empty($_REQUEST['sa']) && $_REQUEST['sa'] == 'createfulltext')
@@ -253,14 +253,14 @@ function EditSearchMethod()
 		$request = db_query("
 			SHOW TABLE STATUS
 			LIKE '" . str_replace('_', '\_', $db_prefix) . "messages'", false, false);
-	if ($request !== false && mysql_num_rows($request) == 1)
+	if ($request !== false && mysqli_num_rows($request) == 1)
 	{
 		// Only do this if the user has permission to execute this query.
-		$row = mysql_fetch_assoc($request);
+		$row = mysqli_fetch_assoc($request);
 		$context['table_info']['data_length'] = $row['Data_length'];
 		$context['table_info']['index_length'] = $row['Index_length'];
 		$context['table_info']['fulltext_length'] = $row['Index_length'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	// Now check the custom index table, if it exists at all.
@@ -273,13 +273,13 @@ function EditSearchMethod()
 		$request = db_query("
 			SHOW TABLE STATUS
 			LIKE '" . str_replace('_', '\_', $db_prefix) . "log_search_words'", false, false);
-	if ($request !== false && mysql_num_rows($request) == 1)
+	if ($request !== false && mysqli_num_rows($request) == 1)
 	{
 		// Only do this if the user has permission to execute this query.
-		$row = mysql_fetch_assoc($request);
+		$row = mysqli_fetch_assoc($request);
 		$context['table_info']['index_length'] += $row['Data_length'] + $row['Index_length'];
 		$context['table_info']['custom_index_length'] = $row['Data_length'] + $row['Index_length'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	// Format the data and index length in kilobytes.
@@ -375,7 +375,7 @@ function CreateMessageIndex()
 			SELECT ID_MSG >= $context[start] AS todo, COUNT(*) AS numMesages
 			FROM {$db_prefix}messages
 			GROUP BY todo", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$num_messages[empty($row['todo']) ? 'done' : 'todo'] = $row['numMesages'];
 
 		if (empty($num_messages['todo']))
@@ -396,12 +396,12 @@ function CreateMessageIndex()
 					FROM {$db_prefix}messages
 					WHERE ID_MSG BETWEEN $context[start] AND " . ($context['start'] + $messages_per_batch - 1) . "
 					LIMIT $messages_per_batch", __FILE__, __LINE__);
-				while ($row = mysql_fetch_assoc($request))
+				while ($row = mysqli_fetch_assoc($request))
 					foreach (text2words($row['body'], $context['index_settings']['bytes_per_word'], true) as $ID_WORD)
 						$inserts .= "($ID_WORD, $row[ID_MSG]),\n";
-				$num_messages['done'] += mysql_num_rows($request);
-				$num_messages['todo'] -= mysql_num_rows($request);
-				mysql_free_result($request);
+				$num_messages['done'] += mysqli_num_rows($request);
+				$num_messages['todo'] -= mysqli_num_rows($request);
+				mysqli_free_result($request);
 
 				$context['start'] += $messages_per_batch;
 
@@ -446,9 +446,9 @@ function CreateMessageIndex()
 					WHERE ID_WORD BETWEEN $context[start] AND " . ($context['start'] + $index_properties[$context['index_settings']['bytes_per_word']]['step_size'] - 1) . "
 					GROUP BY ID_WORD
 					HAVING numWords > $maxMessages", __FILE__, __LINE__);
-				while ($row = mysql_fetch_assoc($request))
+				while ($row = mysqli_fetch_assoc($request))
 					$stop_words[] = $row['ID_WORD'];
-				mysql_free_result($request);
+				mysqli_free_result($request);
 
 				updateSettings(array('search_stopwords' => implode(',', $stop_words)));
 

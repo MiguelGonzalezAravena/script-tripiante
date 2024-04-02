@@ -17,7 +17,7 @@ function Post()
 	FROM {$db_prefix}tags_log as l, {$db_prefix}tags as t 
 	WHERE t.ID_TAG = l.ID_TAG && l.ID_TOPIC = $topic", __FILE__, __LINE__);
 		$context['topic_tags'] = array();
-		 while($row = mysql_fetch_assoc($dbresult))
+		 while($row = mysqli_fetch_assoc($dbresult))
 			{
 				$context['topic_tags'][] = array(
 				'ID' => $row['ID'],
@@ -25,7 +25,7 @@ function Post()
 				'tag' => $row['tag'],
 				);
 		}
-	mysql_free_result($dbresult);
+	mysqli_free_result($dbresult);
 	// End Tagging System
 
 	$request = db_query("
@@ -34,14 +34,14 @@ function Post()
 			LEFT JOIN {$db_prefix}categories AS c ON (c.ID_CAT = b.ID_CAT)
 	", __FILE__, __LINE__);
 	$context['boards'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['boards'][] = array(
 			'id' => $row['ID_BOARD'],
 			'name' => $row['name'],
 			'category' => $row['catName'],
 			'child_level' => $row['childLevel'],
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
     $categorias = $_POST['categorias'];
 
@@ -61,8 +61,8 @@ function Post()
 				LEFT JOIN {$db_prefix}messages AS ml ON (ml.ID_MSG = t.ID_LAST_MSG)
 			WHERE t.ID_TOPIC = $topic
 			LIMIT 1", __FILE__, __LINE__);
-		list ($locked, $context['notify'], $sticky, $context['num_replies'], $ID_MEMBER_POSTER, $ID_FIRST_MSG, $first_subject, $lastPostTime) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($locked, $context['notify'], $sticky, $context['num_replies'], $ID_MEMBER_POSTER, $ID_FIRST_MSG, $first_subject, $lastPostTime) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		if (empty($_REQUEST['msg']))
 		{
@@ -122,9 +122,9 @@ function Post()
 				m.ID_MEMBER, m.posterName, t.ID_MEMBER_STARTED
 			FROM {$db_prefix}messages AS m, {$db_prefix}topics AS t
 			WHERE m.ID_MSG = " . (int) $_REQUEST['msg'] . "", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('noresponder', false);
-		$row = mysql_fetch_assoc($request);
+		$row = mysqli_fetch_assoc($request);
 		
 		if ($row['ID_MEMBER'] != $ID_MEMBER && (!allowedTo('modify_any')))
 		fatal_lang_error('noresponder', false);
@@ -283,8 +283,8 @@ function Post()
 					WHERE ID_MSG = " . (int) $_REQUEST['msg'] . "
 						AND ID_TOPIC = $topic
 					LIMIT 1", __FILE__, __LINE__);
-				$row = mysql_fetch_assoc($request);
-				mysql_free_result($request);
+				$row = mysqli_fetch_assoc($request);
+				mysqli_free_result($request);
 
 				if (empty($row['ID_MEMBER']))
 				{
@@ -316,9 +316,9 @@ function Post()
 				AND t.ID_TOPIC = $topic", __FILE__, __LINE__);
 		// The message they were trying to edit was most likely deleted.
 		// !!! Change this error message?
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('smf232', false);
-		$row = mysql_fetch_assoc($request);
+		$row = mysqli_fetch_assoc($request);
 
 		if ($row['ID_MEMBER'] == $ID_MEMBER && !allowedTo('modify_any'))
 		{
@@ -456,9 +456,9 @@ function Post()
 				FROM {$db_prefix}message_icons
 				WHERE ID_BOARD IN (0, $board)", __FILE__, __LINE__);
 			$icon_data = array();
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$icon_data[] = $row;
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			cache_put_data('posting_icons-' . $board, $icon_data, 480);
 		}
@@ -566,8 +566,8 @@ function Post2()
 			WHERE t.ID_TOPIC = $topic
 				AND m.ID_MSG = t.ID_FIRST_MSG
 			LIMIT 1", __FILE__, __LINE__);
-		list ($tmplocked, $tmpstickied, $numReplies, $ID_MEMBER_POSTER) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($tmplocked, $tmpstickied, $numReplies, $ID_MEMBER_POSTER) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		// Don't allow a post if it's locked.
 		if ($tmplocked != 0 && !allowedTo('moderate_board'))
@@ -652,10 +652,10 @@ function Post2()
 			WHERE m.ID_MSG = $_REQUEST[msg]
 				AND t.ID_TOPIC = $topic
 			LIMIT 1", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('smf272', false);
-		$row = mysql_fetch_assoc($request);
-		mysql_free_result($request);
+		$row = mysqli_fetch_assoc($request);
+		mysqli_free_result($request);
 
 		if (!empty($row['locked']) && !allowedTo('moderate_board'))
 			fatal_lang_error(90, false);
@@ -884,7 +884,7 @@ function Post2()
 			FROM {$db_prefix}boards
 			WHERE ID_BOARD = $board
 			LIMIT 1", __FILE__, __LINE__);
-		$row_shop = mysql_fetch_array($result_shop, MYSQL_ASSOC);
+		$row_shop = mysqli_fetch_array($result_shop, MYSQL_ASSOC);
 		
 		if (isset($row_shop['countMoney']) && $row_shop['countMoney'] == "1") {
 			if ($newTopic)
@@ -916,9 +916,9 @@ function Post2()
 	{
 		//Get how many tags there have been for the topic
 		$dbresult = db_query("SELECT COUNT(*) as total FROM {$db_prefix}tags_log WHERE ID_TOPIC = " . $topic, __FILE__, __LINE__);
-		$row = mysql_fetch_assoc($dbresult);
+		$row = mysqli_fetch_assoc($dbresult);
 		$totaltags = $row['total'];
-		mysql_free_result($dbresult);
+		mysqli_free_result($dbresult);
 
 		//Check Tag restrictions
 		$tags = explode(',',htmlspecialchars($_REQUEST['tags'],ENT_QUOTES));
@@ -956,7 +956,7 @@ function Post2()
 				}
 				else 
 				{
-					$row = mysql_fetch_assoc($dbresult);
+					$row = mysqli_fetch_assoc($dbresult);
 					$ID_TAG = $row['ID_TAG'];
 					$dbresult2= db_query("SELECT ID FROM {$db_prefix}tags_log WHERE ID_TAG  =  $ID_TAG  AND ID_TOPIC = $topic", __FILE__, __LINE__);
 					if(db_affected_rows() != 0)
@@ -964,14 +964,14 @@ function Post2()
 						continue;
 
 					}
-					mysql_free_result($dbresult2);
+					mysqli_free_result($dbresult2);
 					db_query("INSERT INTO {$db_prefix}tags_log
 						(ID_TAG,ID_TOPIC, ID_MEMBER)
 					VALUES ($ID_TAG,$topic,$ID_MEMBER)", __FILE__, __LINE__);
 					$tagcount++;
 
 				}
-				mysql_free_result($dbresult);
+				mysqli_free_result($dbresult);
 			}
 		}
 	}
@@ -1103,7 +1103,7 @@ function AnnouncementSelectMembergroup()
 		WHERE mg.ID_GROUP IN (" . implode(', ', $groups) . ")
 		GROUP BY mg.ID_GROUP
 		ORDER BY mg.minPosts, IF(mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$context['groups'][$row['ID_GROUP']] = array(
 			'id' => $row['ID_GROUP'],
@@ -1111,7 +1111,7 @@ function AnnouncementSelectMembergroup()
 			'member_count' => $row['num_members'],
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Get the subject of the topic we're about to announce.
 	$request = db_query("
@@ -1119,8 +1119,8 @@ function AnnouncementSelectMembergroup()
 		FROM ({$db_prefix}messages AS m, {$db_prefix}topics AS t)
 		WHERE t.ID_TOPIC = $topic
 			AND m.ID_MSG = t.ID_FIRST_MSG", __FILE__, __LINE__);
-	list ($context['topic_subject']) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($context['topic_subject']) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	censorText($context['announce_topic']['subject']);
 
@@ -1159,8 +1159,8 @@ function AnnouncementSend()
 		FROM ({$db_prefix}messages AS m, {$db_prefix}topics AS t)
 		WHERE t.ID_TOPIC = $topic
 			AND m.ID_MSG = t.ID_FIRST_MSG", __FILE__, __LINE__);
-	list ($ID_MSG, $context['topic_subject'], $message) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($ID_MSG, $context['topic_subject'], $message) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	censorText($context['topic_subject']);
 	censorText($message);
@@ -1183,7 +1183,7 @@ function AnnouncementSend()
 		LIMIT $chunkSize", __FILE__, __LINE__);
 
 	// All members have received a mail. Go to the next screen.
-	if (mysql_num_rows($request) == 0)
+	if (mysqli_num_rows($request) == 0)
 	{
 		if (!empty($_REQUEST['move']) && allowedTo('move_any'))
 			redirectexit('action=movetopic;topic=' . $topic . '.0' . (empty($_REQUEST['goback']) ? '' : ';goback'));
@@ -1194,7 +1194,7 @@ function AnnouncementSend()
 	}
 
 	// Loop through all members that'll receive an announcement in this batch.
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$cur_language = empty($row['lngfile']) || empty($modSettings['userLanguage']) ? $language : $row['lngfile'];
 
@@ -1213,7 +1213,7 @@ function AnnouncementSend()
 		$announcements[$cur_language]['recipients'][$row['ID_MEMBER']] = $row['emailAddress'];
 		$context['start'] = $row['ID_MEMBER'];
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// For each language send a different mail.
 	foreach ($announcements as $lang => $mail)
@@ -1266,7 +1266,7 @@ function notifyMembersBoard()
 			AND ln.ID_MEMBER = mem.ID_MEMBER
 		GROUP BY mem.ID_MEMBER
 		ORDER BY mem.lngfile", __FILE__, __LINE__);
-	while ($rowmember = mysql_fetch_assoc($members))
+	while ($rowmember = mysqli_fetch_assoc($members))
 	{
 		if ($rowmember['ID_GROUP'] != 1)
 		{
@@ -1301,7 +1301,7 @@ function notifyMembersBoard()
 				$txt['notify_boardsUnsubscribe'] . ': ' . $scripturl . '?action=notifyboard;board=' . $board . ".0\n\n" .
 				$txt[130], null, 't' . $topic);
 	}
-	mysql_free_result($members);
+	mysqli_free_result($members);
 
 	// Sent!
 	db_query("
@@ -1336,7 +1336,7 @@ function getTopic()
 			AND m.ID_MSG < " . (int) $_REQUEST['msg'] : '') . "
 		ORDER BY m.ID_MSG DESC$limit", __FILE__, __LINE__);
 	$context['previous_posts'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Hide the post in preview or not? --- XD
 		$row['can_view_post'] = 1;
@@ -1367,7 +1367,7 @@ function getTopic()
 		if (!empty($newReplies))
 			$newReplies--;
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 }
 
 function QuoteFast()
@@ -1395,13 +1395,13 @@ function QuoteFast()
 			AND $user_info[query_see_board]" . (!isset($_REQUEST['modify']) || (!empty($moderate_boards) && $moderate_boards[0] == 0) ? '' : '
  			AND (t.locked = 0' . (empty($moderate_boards) ? '' : ' OR b.ID_BOARD IN (' . implode(', ', $moderate_boards) . ')') . ')') . "
 		LIMIT 1", __FILE__, __LINE__);
-	$context['close_window'] = mysql_num_rows($request) == 0;
+	$context['close_window'] = mysqli_num_rows($request) == 0;
 
 	$context['sub_template'] = 'quotefast';
-	if (mysql_num_rows($request) != 0)
+	if (mysqli_num_rows($request) != 0)
 	{
-		$row = mysql_fetch_assoc($request);
-		mysql_free_result($request);
+		$row = mysqli_fetch_assoc($request);
+		mysqli_free_result($request);
 
 		// Remove special formatting we don't want anymore.
 		$row['body'] = un_preparsecode($row['body']);
@@ -1478,10 +1478,10 @@ function JavaScriptModify()
 			WHERE m.ID_MSG = " . (empty($_REQUEST['msg']) ? 't.ID_FIRST_MSG' : (int) $_REQUEST['msg']) . "
 				AND m.ID_TOPIC = $topic
 				AND t.ID_TOPIC = $topic", __FILE__, __LINE__);
-	if (mysql_num_rows($request) == 0)
+	if (mysqli_num_rows($request) == 0)
 		fatal_lang_error('smf232', false);
-	$row = mysql_fetch_assoc($request);
-	mysql_free_result($request);
+	$row = mysqli_fetch_assoc($request);
+	mysqli_free_result($request);
 
 	// Change either body or subject requires permissions to modify messages.
 	if (isset($_POST['message']) || isset($_POST['subject']) || isset($_POST['icon']))

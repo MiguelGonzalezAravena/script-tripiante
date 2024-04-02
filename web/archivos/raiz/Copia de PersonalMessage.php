@@ -33,8 +33,8 @@ function MessageMain()
 			SELECT MAX(maxMessages) AS topLimit, MIN(maxMessages) AS bottomLimit
 			FROM {$db_prefix}membergroups
 			WHERE ID_GROUP IN (" . implode(', ', $user_info['groups']) . ')', __FILE__, __LINE__);
-		list ($maxMessage, $minMessage) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($maxMessage, $minMessage) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		$context['message_limit'] = $minMessage == 0 ? 0 : $maxMessage;
 	}
@@ -67,7 +67,7 @@ function MessageMain()
 		FROM {$db_prefix}pm_recipients
 		WHERE ID_MEMBER = $ID_MEMBER
 		GROUP BY labels, is_read", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($result))
+	while ($row = mysqli_fetch_assoc($result))
 	{
 		$this_labels = explode(',', $row['labels']);
 		foreach ($this_labels as $this_label)
@@ -77,7 +77,7 @@ function MessageMain()
 				$context['labels'][(int) $this_label]['unread_messages'] += $row['num'];
 		}
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	// This determines if we have more labels than just the standard inbox.
 	$context['currently_using_labels'] = count($context['labels']) > 1 ? 1 : 0;
@@ -271,8 +271,8 @@ function MessageFolder()
 			FROM {$db_prefix}pm_recipients AS pmr
 			WHERE pmr.ID_MEMBER = $ID_MEMBER
 				AND pmr.deleted = 0$labelQuery", __FILE__, __LINE__);
-	list ($max_messages) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($max_messages) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	// Only show the button if there are messages to delete.
 	$context['show_delete'] = $max_messages > 0;
@@ -308,8 +308,8 @@ function MessageFolder()
 						AND pmr.deleted = 0$labelQuery
 						AND ID_PM " . ($descending ? '>' : '<') . " $_GET[pmid]", __FILE__, __LINE__);
 
-			list ($_GET['start']) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list ($_GET['start']) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 
 			// To stop the page index's being abnormal, start the page on the page the message would normally be located on...
 			$_GET['start'] = $modSettings['defaultMaxMessages'] * (int) ($_GET['start'] / $modSettings['defaultMaxMessages']);
@@ -352,7 +352,7 @@ ORDER BY " . ($_GET['sort'] == 'pm.ID_PM' && $context['folder'] != 'outbox' ? 'p
 	$pms = array();
 	$posters = $context['folder'] == 'outbox' ? array($ID_MEMBER) : array();
 	$recipients = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (!isset($recipients[$row['ID_PM']]))
 		{
@@ -365,7 +365,7 @@ ORDER BY " . ($_GET['sort'] == 'pm.ID_PM' && $context['folder'] != 'outbox' ? 'p
 			);
 		}
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	if (!empty($pms))
 	{
@@ -380,7 +380,7 @@ if(isset($context['sl-singlepm']) && empty($pms))
 			WHERE pmr.ID_PM IN (" . implode(', ', $pms) . ")", __FILE__, __LINE__);
 		$context['message_labels'] = array();
 		$context['message_replied'] = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if ($context['folder'] == 'outbox' || empty($row['bcc']))
 				$recipients[$row['ID_PM']][empty($row['bcc']) ? 'to' : 'bcc'][] = empty($row['ID_MEMBER_TO']) ? $txt[28] : '<a href="' . $scripturl . '?action=profile;u=' . $row['ID_MEMBER_TO'] . '">' . $row['toName'] . '</a>';
@@ -397,7 +397,7 @@ if(isset($context['sl-singlepm']) && empty($pms))
 				}
 			}
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Load any users....
 		$posters = array_unique($posters);
@@ -450,7 +450,7 @@ function prepareMessageContext($reset = false)
 		return @mysql_data_seek($messages_request, 0);
 
 	// Get the next one... bail if anything goes wrong.
-	$message = mysql_fetch_assoc($messages_request);
+	$message = mysqli_fetch_assoc($messages_request);
 	if (!$message)
 		return(false);
 
@@ -539,8 +539,8 @@ function MessagePost()
 			WHERE pm.ID_MEMBER_FROM = $ID_MEMBER
 				AND pm.msgtime > " . (time() - 3600) . "
 				AND pr.ID_PM = pm.ID_PM", __FILE__, __LINE__);
-		list ($postCount) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($postCount) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		if (!empty($postCount) && $postCount >= $modSettings['pm_posts_per_hour'])
 		{
@@ -549,9 +549,9 @@ function MessagePost()
 				SELECT ID_MEMBER
 				FROM {$db_prefix}moderators
 				WHERE ID_MEMBER = $ID_MEMBER", __FILE__, __LINE__);
-			if (mysql_num_rows($request) == 0)
+			if (mysqli_num_rows($request) == 0)
 				fatal_error(sprintf($txt['pm_too_many_per_hour'], $modSettings['pm_posts_per_hour']));
-			mysql_free_result($request);
+			mysqli_free_result($request);
 		}
 	}
 
@@ -572,10 +572,10 @@ function MessagePost()
 				AND pmr.ID_PM = $_REQUEST[pmsg]
 				AND pmr.ID_MEMBER = $ID_MEMBER") . "
 			LIMIT 1", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('pm_not_yours', false);
-		$row_quoted = mysql_fetch_assoc($request);
-		mysql_free_result($request);
+		$row_quoted = mysqli_fetch_assoc($request);
+		mysqli_free_result($request);
 
 		// Censor the message.
 		censorText($row_quoted['subject']);
@@ -658,9 +658,9 @@ function MessagePost()
 				WHERE pmr.ID_PM = $_REQUEST[pmsg]
 					AND pmr.ID_MEMBER != $ID_MEMBER
 					AND bcc = 0", __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$membersTo[] = '&quot;' . htmlspecialchars($row['realName']) . '&quot;';
-			mysql_free_result($request);
+			mysqli_free_result($request);
 		}
 		else
 		{
@@ -673,9 +673,9 @@ function MessagePost()
 				FROM {$db_prefix}members
 				WHERE memberName = '" . implode(', ', $_REQUEST['u']) . "'
 				LIMIT " . count($_REQUEST['u']), __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$membersTo[] = '&quot;' . $row['realName'] . '&quot;';
-			mysql_free_result($request);
+			mysqli_free_result($request);
 		}
 
 		// Create the 'to' string - Quoting it, just in case it's something like bob,i,like,commas,man.
@@ -748,10 +748,10 @@ function messagePostError($error_types, $to, $bcc)
 				AND pmr.ID_PM = $_REQUEST[replied_to]
 				AND pmr.ID_MEMBER = $ID_MEMBER") . "
 			LIMIT 1", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('pm_not_yours', false);
-		$row_quoted = mysql_fetch_assoc($request);
-		mysql_free_result($request);
+		$row_quoted = mysqli_fetch_assoc($request);
+		mysqli_free_result($request);
 
 		censorText($row_quoted['subject']);
 		censorText($row_quoted['body']);
@@ -833,8 +833,8 @@ function MessagePost2()
 			WHERE pm.ID_MEMBER_FROM = $ID_MEMBER
 				AND pm.msgtime > " . (time() - 3600) . "
 				AND pr.ID_PM = pm.ID_PM", __FILE__, __LINE__);
-		list ($postCount) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($postCount) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		if (!empty($postCount) && $postCount >= $modSettings['pm_posts_per_hour'])
 		{
@@ -843,9 +843,9 @@ function MessagePost2()
 				SELECT ID_MEMBER
 				FROM {$db_prefix}moderators
 				WHERE ID_MEMBER = $ID_MEMBER", __FILE__, __LINE__);
-			if (mysql_num_rows($request) == 0)
+			if (mysqli_num_rows($request) == 0)
 				fatal_error(sprintf($txt['pm_too_many_per_hour'], $modSettings['pm_posts_per_hour']));
-			mysql_free_result($request);
+			mysqli_free_result($request);
 		}
 	}
 
@@ -979,9 +979,9 @@ function MessagePost2()
 			FROM {$db_prefix}members
 			WHERE ID_MEMBER IN (" . implode(',', $_REQUEST['u']) . ")
 			LIMIT " . count($_REQUEST['u']), __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$recipients['to'][] = $row['ID_MEMBER'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	// Before we send the PM, let's make sure we don't have an abuse of numbers.
@@ -1059,14 +1059,14 @@ function WirelessAddBuddy()
 			WHERE ID_MEMBER IN (" . implode(',', $user_info['buddies']) . ")
 			ORDER BY realName
 			LIMIT " . count($user_info['buddies']), __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$context['buddies'][] = array(
 				'id' => $row['ID_MEMBER'],
 				'name' => $row['realName'],
 				'selected' => in_array($row['ID_MEMBER'], $current_buddies),
 				'add_href' => $base_url . $row['ID_MEMBER'],
 			);
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 }
 
@@ -1134,7 +1134,7 @@ function MessageActionsApply()
 			WHERE ID_MEMBER = $ID_MEMBER
 				AND ID_PM IN (" . implode(',', array_keys($to_label)) . ")
 			LIMIT " . count($to_label), __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			$labels = $row['labels'] == '' ? array('-1') : explode(',', trim($row['labels']));
 
@@ -1162,7 +1162,7 @@ function MessageActionsApply()
 					LIMIT 1", __FILE__, __LINE__);
 			}
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Any errors?
 		// !!! Separate the sprintf?
@@ -1226,9 +1226,9 @@ function MessagePrune()
 			WHERE deletedBySender = 0
 				AND ID_MEMBER_FROM = $ID_MEMBER
 				AND msgtime < $deleteTime", __FILE__, __LINE__);
-		while ($row = mysql_fetch_row($request))
+		while ($row = mysqli_fetch_row($request))
 			$toDelete[] = $row[0];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Select all messages in their inbox older than $deleteTime.
 		$request = db_query("
@@ -1238,9 +1238,9 @@ function MessagePrune()
 				AND pmr.ID_MEMBER = $ID_MEMBER
 				AND pm.ID_PM = pmr.ID_PM
 				AND pm.msgtime < $deleteTime", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$toDelete[] = $row['ID_PM'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Delete the actual messages.
 		deleteMessages($toDelete);
@@ -1297,7 +1297,7 @@ function deleteMessages($personal_messages, $folder = null, $owner = null)
 				AND deleted = 0$where
 			GROUP BY ID_MEMBER, is_read", __FILE__, __LINE__);
 		// ...And update the statistics accordingly - now including unread messages!.
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if ($row['is_read'])
 				updateMemberData($row['ID_MEMBER'], array('instantMessages' => $where == '' ? 0 : "instantMessages - $row[numDeletedMessages]"));
@@ -1312,7 +1312,7 @@ function deleteMessages($personal_messages, $folder = null, $owner = null)
 					$user_info['unread_messages'] -= $row['numDeletedMessages'];
 			}
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Do the actual deletion.
 		db_query("
@@ -1331,9 +1331,9 @@ function deleteMessages($personal_messages, $folder = null, $owner = null)
 			" . str_replace('ID_PM', 'pm.ID_PM', $where) . "
 		HAVING recipient IS null", __FILE__, __LINE__);
 	$remove_pms = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$remove_pms[] = $row['ID_PM'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	if (!empty($remove_pms))
 	{
@@ -1381,7 +1381,7 @@ function markMessages($personal_messages = null, $label = null, $owner = null)
 				AND NOT (is_read & 1)
 			GROUP BY labels", __FILE__, __LINE__);
 		$total_unread = 0;
-		while ($row = mysql_fetch_assoc($result))
+		while ($row = mysqli_fetch_assoc($result))
 		{
 			$total_unread += $row['num'];
 
@@ -1392,7 +1392,7 @@ function markMessages($personal_messages = null, $label = null, $owner = null)
 			foreach ($this_labels as $this_label)
 				$context['labels'][(int) $this_label]['unread_messages'] += $row['num'];
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 
 		updateMemberData($owner, array('unreadMessages' => $total_unread));
 
@@ -1498,7 +1498,7 @@ function ManageLabels()
 				FROM {$db_prefix}pm_recipients
 				WHERE FIND_IN_SET('" . implode("', labels) OR FIND_IN_SET('", $searchArray) . "', labels)
 					AND ID_MEMBER = $ID_MEMBER", __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				// Do the long task of updating them...
 				$toChange = explode(',', $row['labels']);
@@ -1523,7 +1523,7 @@ function ManageLabels()
 						AND ID_MEMBER = $ID_MEMBER
 					LIMIT 1", __FILE__, __LINE__);
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 		}
 
 		// To make the changes appear right away, redirect.
@@ -1568,7 +1568,7 @@ function theme_quickreply_box()
 				FROM {$db_prefix}smileys
 				WHERE hidden IN (0, 2)
 				ORDER BY smileyRow, smileyOrder", __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				$row['code'] = htmlspecialchars($row['code']);
 				$row['filename'] = htmlspecialchars($row['filename']);
@@ -1576,7 +1576,7 @@ function theme_quickreply_box()
 
 				$context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			cache_put_data('posting_smileys', $context['smileys'], 480);
 		}

@@ -145,7 +145,7 @@ function SelectMailingMembers()
 		WHERE mg.minPosts = -1" : '') . "
 		GROUP BY mg.ID_GROUP
 		ORDER BY mg.minPosts, IF(mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$context['groups'][$row['ID_GROUP']] = array(
 			'id' => $row['ID_GROUP'],
@@ -158,7 +158,7 @@ function SelectMailingMembers()
 		else
 			$postGroups[$row['ID_GROUP']] = $row['ID_GROUP'];
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// If we have post groups, let's count the number of members...
 	if (!empty($postGroups))
@@ -168,9 +168,9 @@ function SelectMailingMembers()
 			FROM {$db_prefix}members AS mem
 			WHERE mem.ID_POST_GROUP IN (" . implode(', ', $postGroups) . ")
 			GROUP BY mem.ID_POST_GROUP", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($query))
+		while ($row = mysqli_fetch_assoc($query))
 			$context['groups'][$row['ID_GROUP']]['member_count'] += $row['member_count'];
-		mysql_free_result($query);
+		mysqli_free_result($query);
 	}
 
 	if (!empty($normalGroups))
@@ -181,9 +181,9 @@ function SelectMailingMembers()
 			FROM {$db_prefix}members
 			WHERE ID_GROUP IN (" . implode(',', $normalGroups) . ")
 			GROUP BY ID_GROUP", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($query))
+		while ($row = mysqli_fetch_assoc($query))
 			$context['groups'][$row['ID_GROUP']]['member_count'] += $row['member_count'];
-		mysql_free_result($query);
+		mysqli_free_result($query);
 
 		// Also do those who have it as an additional membergroup - this ones more yucky...
 		$query = db_query("
@@ -194,9 +194,9 @@ function SelectMailingMembers()
 				AND mem.ID_GROUP != mg.ID_GROUP
 				AND FIND_IN_SET(mg.ID_GROUP, mem.additionalGroups)
 			GROUP BY mg.ID_GROUP", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($query))
+		while ($row = mysqli_fetch_assoc($query))
 			$context['groups'][$row['ID_GROUP']]['member_count'] += $row['member_count'];
-		mysql_free_result($query);
+		mysqli_free_result($query);
 	}
 
 	// Any moderators?
@@ -204,8 +204,8 @@ function SelectMailingMembers()
 		SELECT COUNT(DISTINCT ID_MEMBER) AS num_distinct_mods
 		FROM {$db_prefix}moderators
 		LIMIT 1", __FILE__, __LINE__);
-	list ($context['groups'][3]['member_count']) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($context['groups'][3]['member_count']) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	$context['can_send_pm'] = allowedTo('pm_send');
 }
@@ -233,7 +233,7 @@ function ComposeMailing()
 			AND (ISNULL(bg.expire_time) OR bg.expire_time > " . time() . ")", __FILE__, __LINE__);
 	$condition_array = array();
 	$members = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$members[] = $row['ID_MEMBER'];
 	if (!empty($members))
 		$condition_array[] = 'mem.ID_MEMBER NOT IN (' . implode(', ', $members) . ')';
@@ -245,7 +245,7 @@ function ComposeMailing()
 		WHERE (bg.cannot_access = 1 OR bg.cannot_login = 1)
 			AND (ISNULL(bg.expire_time) OR bg.expire_time > " . time() . ")
 			AND bi.email_address != ''", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$condition_array[] = "mem.emailAddress NOT LIKE '" . $row['email_address'] . "'";
 
 	if (!empty($condition_array))
@@ -261,9 +261,9 @@ function ComposeMailing()
 			FROM ({$db_prefix}members AS mem, {$db_prefix}moderators AS mods)
 			WHERE mem.ID_MEMBER = mods.ID_MEMBER
 				AND mem.is_activated = 1$condition", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$list[] = $row['identifier'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		unset($_POST['who'][3], $_POST['who'][3]);
 	}
@@ -276,9 +276,9 @@ function ComposeMailing()
 			FROM {$db_prefix}members AS mem
 			WHERE mem.ID_GROUP = 0
 				AND mem.is_activated = 1$condition", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$list[] = $row['identifier'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		unset($_POST['who'][0], $_POST['who'][0]);
 	}
@@ -295,9 +295,9 @@ function ComposeMailing()
 			WHERE (mg.ID_GROUP = mem.ID_GROUP OR FIND_IN_SET(mg.ID_GROUP, mem.additionalGroups) OR mg.ID_GROUP = mem.ID_POST_GROUP)
 				AND mg.ID_GROUP IN (" . implode(',', $_POST['who']) . ")
 				AND mem.is_activated = 1$condition", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$list[] = $row['identifier'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	// Tear out duplicates....
@@ -424,7 +424,7 @@ function SendMailing()
 		FROM {$db_prefix}members
 		WHERE emailAddress IN ('" . implode("', '", addslashes__recursive($send_list)) . "')
 			AND is_activated = 1", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($result))
+	while ($row = mysqli_fetch_assoc($result))
 	{
 		unset($send_list[$row['emailAddress']]);
 
@@ -438,7 +438,7 @@ function SendMailing()
 		// Send the actual email off, replacing the member dependent variables.
 		sendmail($row['emailAddress'], str_replace($from_member, $to_member, addslashes($_POST['subject'])), str_replace($from_member, $to_member, addslashes($_POST['message'])), null, null, !empty($_POST['send_html']));
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	// Send the emails to people who weren't members....
 	if (!empty($send_list))

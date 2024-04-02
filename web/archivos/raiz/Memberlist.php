@@ -128,18 +128,18 @@ function MLAll()
 
 			$memberlist_cache = array(
 				'last_update' => time(),
-				'num_members' => mysql_num_rows($request),
+				'num_members' => mysqli_num_rows($request),
 				'index' => array(),
 			);
 
-			for ($i = 0, $n = mysql_num_rows($request); $i < $n; $i += $cache_step_size)
+			for ($i = 0, $n = mysqli_num_rows($request); $i < $n; $i += $cache_step_size)
 			{
 				mysql_data_seek($request, $i);
-				list($memberlist_cache['index'][$i]) = mysql_fetch_row($request);
+				list($memberlist_cache['index'][$i]) = mysqli_fetch_row($request);
 			}
 			mysql_data_seek($request, $memberlist_cache['num_members'] - 1);
-			list($memberlist_cache['index'][$i]) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list($memberlist_cache['index'][$i]) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 
 			// Now we've got the cache...store it.
 			updateSettings(array('memberlist_cache' => addslashes(serialize($memberlist_cache))));
@@ -155,8 +155,8 @@ function MLAll()
 			SELECT COUNT(*)
 			FROM {$db_prefix}members
 			WHERE is_activated = 1", __FILE__, __LINE__);
-		list ($context['num_members']) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($context['num_members']) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 	}
 
 	// Set defaults for sort (realName) and start. (0)
@@ -175,8 +175,8 @@ function MLAll()
 			FROM {$db_prefix}members
 			WHERE LOWER(SUBSTRING(realName, 1, 1)) < '$_REQUEST[start]'
 				AND is_activated = 1", __FILE__, __LINE__);
-		list ($_REQUEST['start']) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($_REQUEST['start']) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 	}
 
 	$context['letter_links'] = '';
@@ -297,7 +297,7 @@ function MLAll()
 		ORDER BY " . $sort_methods[$_REQUEST['sort']][$context['sort_direction']] . "
 		LIMIT $limit, $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
 	printMemberListRows($request);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Add anchors at the start of each letter.
 	if ($_REQUEST['sort'] == 'realName')
@@ -367,8 +367,8 @@ function MLSearch()
 				LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
 			WHERE " . implode(" $query OR ", $fields) . " $query$condition
 				AND is_activated = 1", __FILE__, __LINE__);
-		list ($numResults) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($numResults) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		$context['page_index'] = constructPageIndex($scripturl . '?action=mlist;sa=search;search=' . $_POST['search'] . ';fields=' . implode(',', $_POST['fields']), $_REQUEST['start'], $numResults, $modSettings['defaultMaxMembers']);
 
@@ -383,7 +383,7 @@ function MLSearch()
 				AND is_activated = 1
 			LIMIT $_REQUEST[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
 		printMemberListRows($request);
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	else
 	{
@@ -406,8 +406,8 @@ function printMemberListRows($request)
 	$result = db_query("
 		SELECT MAX(posts)
 		FROM {$db_prefix}members", __FILE__, __LINE__);
-	list ($MOST_POSTS) = mysql_fetch_row($result);
-	mysql_free_result($result);
+	list ($MOST_POSTS) = mysqli_fetch_row($result);
+	mysqli_free_result($result);
 
 	// Avoid division by zero...
 	if ($MOST_POSTS == 0)
@@ -417,15 +417,15 @@ function printMemberListRows($request)
 	$result = db_query("
 		SELECT MAX(topics)
 		FROM {$db_prefix}members", __FILE__, __LINE__);
-	list ($MOST_TOPICS) = mysql_fetch_row($result);
-	mysql_free_result($result);
+	list ($MOST_TOPICS) = mysqli_fetch_row($result);
+	mysqli_free_result($result);
 
 	// Avoid division by zero...
 	if ($MOST_TOPICS == 0)
 		$MOST_TOPICS = 1;
 
 	$members = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$members[] = $row['ID_MEMBER'];
 
 	// Load all the members for display.

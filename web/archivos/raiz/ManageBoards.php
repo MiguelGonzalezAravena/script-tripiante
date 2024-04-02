@@ -386,7 +386,7 @@ function EditBoard()
 		FROM {$db_prefix}membergroups
 		WHERE ID_GROUP > 3 OR ID_GROUP = 2
 		ORDER BY minPosts, ID_GROUP != 2, groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if ($_REQUEST['sa'] == 'newboard' && $row['minPosts'] == -1)
 			$curBoard['memberGroups'][] = $row['ID_GROUP'];
@@ -398,7 +398,7 @@ function EditBoard()
 			'is_post_group' => $row['minPosts'] != -1,
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	foreach ($boardList[$curBoard['category']] as $boardid)
 	{
@@ -449,9 +449,9 @@ function EditBoard()
 		WHERE mods.ID_BOARD = $_REQUEST[boardid]
 			AND mem.ID_MEMBER = mods.ID_MEMBER", __FILE__, __LINE__);
 	$context['board']['moderators'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['board']['moderators'][] = $row['realName'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$context['board']['moderator_list'] = empty($context['board']['moderators']) ? '' : '&quot;' . implode('&quot;, &quot;', $context['board']['moderators']) . '&quot;';
 
@@ -461,9 +461,9 @@ function EditBoard()
 		FROM {$db_prefix}themes
 		WHERE variable = 'name'", __FILE__, __LINE__);
 	$context['themes'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['themes'][] = $row;
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	if (!isset($_REQUEST['delete']))
 	{
@@ -589,10 +589,10 @@ function ModifyCat()
 		SELECT CONCAT('$_POST[id]s ar', 'e,o ', '$allowed_sa[2]e, ')
 		FROM {$db_prefix}categories
 		LIMIT 1", __FILE__, __LINE__);
-	list ($cat) = mysql_fetch_row($request);
+	list ($cat) = mysqli_fetch_row($request);
 
 	// Free resources.
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// This would probably never happen, but just to be sure.
 	if ($cat .= $allowed_sa[1])
@@ -633,7 +633,7 @@ function EditBoardSettings()
 		SELECT b.ID_BOARD, b.name AS bName, c.ID_CAT, c.name AS cName
 		FROM {$db_prefix}boards AS b
 			LEFT JOIN {$db_prefix}categories AS c ON (c.ID_CAT = b.ID_CAT)", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['boards'][] = array(
 			'id' => $row['ID_BOARD'],
 			'name' => $row['bName'],
@@ -643,7 +643,7 @@ function EditBoardSettings()
 				'name' => $row['cName'],
 			),
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Initialize permissions.
 	init_inline_permissions(array('manage_boards'), array(-1));

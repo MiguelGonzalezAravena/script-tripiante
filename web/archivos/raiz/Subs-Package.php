@@ -1786,9 +1786,9 @@ function package_create_backup($id = 'backup')
 		FROM {$db_prefix}themes
 		WHERE ID_MEMBER = 0
 			AND variable = 'theme_dir'", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$dirs[$row['value']] = empty($_REQUEST['use_full_paths']) ? 'Themes/' . basename($row['value']) . '/' : strtr($row['value'] . '/', '\\', '/');
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	while (!empty($dirs))
 	{

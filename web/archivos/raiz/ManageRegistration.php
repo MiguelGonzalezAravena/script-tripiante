@@ -129,9 +129,9 @@ function AdminRegister()
 			AND ID_GROUP != 1") . "
 		ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
 	$context['member_groups'] = array(0 => &$txt['admin_register_group_none']);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['member_groups'][$row['ID_GROUP']] = $row['groupName'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 }
 
 // I hereby agree not to be a lazy bum.

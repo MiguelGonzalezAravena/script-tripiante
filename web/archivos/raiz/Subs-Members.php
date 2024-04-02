@@ -48,9 +48,9 @@ function deleteMembers($users)
 				AND (ID_GROUP = 1 OR FIND_IN_SET(1, additionalGroups) != 0)
 			LIMIT " . count($users), __FILE__, __LINE__);
 		$admins = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$admins[] = $row['ID_MEMBER'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		if (!empty($admins))
 			$users = array_diff($users, $admins);
@@ -136,7 +136,7 @@ function deleteMembers($users)
 		SELECT ID_MEMBER, pm_ignore_list, buddy_list
 		FROM {$db_prefix}members
 		WHERE FIND_IN_SET(" . implode(', pm_ignore_list) OR FIND_IN_SET(', $users) . ', pm_ignore_list) OR FIND_IN_SET(' . implode(', buddy_list) OR FIND_IN_SET(', $users) . ', buddy_list)', __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		db_query("
 			UPDATE {$db_prefix}members
 			SET
@@ -144,7 +144,7 @@ function deleteMembers($users)
 				buddy_list = '" . implode(',', array_diff(explode(',', $row['buddy_list']), $users)) . "'
 			WHERE ID_MEMBER = $row[ID_MEMBER]
 			LIMIT 1", __FILE__, __LINE__);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Make sure no member's birthday is still sticking in the calendar...
 	updateStats('calendar');
@@ -202,9 +202,9 @@ function deleteMembergroups($groups)
 		FROM {$db_prefix}members
 		WHERE FIND_IN_SET(" . implode(', additionalGroups) OR FIND_IN_SET(', $groups) . ', additionalGroups)', __FILE__, __LINE__);
 	$updates = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$updates[$row['additionalGroups']][] = $row['ID_MEMBER'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	foreach ($updates as $additionalGroups => $memberArray)
 		updateMemberData($memberArray, array('additionalGroups' => '\'' . implode(',', array_diff(explode(',', $additionalGroups), $groups)) . '\''));
@@ -215,9 +215,9 @@ function deleteMembergroups($groups)
 		FROM {$db_prefix}boards
 		WHERE FIND_IN_SET(" . implode(', memberGroups) OR FIND_IN_SET(', $groups) . ', memberGroups)', __FILE__, __LINE__);
 	$updates = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$updates[$row['memberGroups']][] = $row['ID_BOARD'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	foreach ($updates as $memberGroups => $boardArray)
 		db_query("
@@ -290,9 +290,9 @@ function removeMembersFromGroups($members, $groups = null)
 		SELECT ID_GROUP
 		FROM {$db_prefix}membergroups
 		WHERE minPosts != -1", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$implicitGroups[] = $row['ID_GROUP'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Now get rid of those groups.
 	$groups = array_diff($groups, $implicitGroups);
@@ -321,9 +321,9 @@ function removeMembersFromGroups($members, $groups = null)
 			AND ID_MEMBER IN (" . implode(', ', $members) . ")
 		LIMIT " . count($members), __FILE__, __LINE__);
 	$updates = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$updates[$row['additionalGroups']][] = $row['ID_MEMBER'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	foreach ($updates as $additionalGroups => $memberArray)
 		db_query("
@@ -389,9 +389,9 @@ function addMembersToGroup($members, $group, $type = 'auto')
 		FROM {$db_prefix}membergroups
 		WHERE minPosts != -1", __FILE__, __LINE__);
 	$implicitGroups = array(-1, 0, 3);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$implicitGroups[] = $row['ID_GROUP'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Sorry, you can't join an implicit group.
 	if (in_array($group, $implicitGroups) || empty($members))
@@ -540,9 +540,9 @@ function registerMember(&$regOptions)
 			OR emailAddress = '$regOptions[username]'
 		LIMIT 1", __FILE__, __LINE__);
 	// !!! Separate the sprintf?
-	if (mysql_num_rows($request) != 0)
+	if (mysqli_num_rows($request) != 0)
 		fatal_error(sprintf($txt[730], htmlspecialchars($regOptions['email'])), false);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$reservedVars = array(
 		'actual_theme_url',
@@ -633,9 +633,9 @@ function registerMember(&$regOptions)
 			SELECT ID_GROUP
 			FROM {$db_prefix}membergroups
 			WHERE minPosts != -1", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$unassignableGroups[] = $row['ID_GROUP'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		if (in_array($regOptions['register_vars']['ID_GROUP'], $unassignableGroups))
 			$regOptions['register_vars']['ID_GROUP'] = 0;
@@ -777,9 +777,9 @@ function isReservedName($name, $current_ID_MEMBER = 0, $is_name = true, $fatal =
 		WHERE " . (empty($current_ID_MEMBER) ? '' : "ID_MEMBER != $current_ID_MEMBER
 			AND ") . "(realName LIKE '$checkName' OR memberName LIKE '$checkName')
 		LIMIT 1", __FILE__, __LINE__);
-	if (mysql_num_rows($request) > 0)
+	if (mysqli_num_rows($request) > 0)
 	{
-		mysql_free_result($request);
+		mysqli_free_result($request);
 		return true;
 	}
 
@@ -789,9 +789,9 @@ function isReservedName($name, $current_ID_MEMBER = 0, $is_name = true, $fatal =
 		FROM {$db_prefix}membergroups
 		WHERE groupName LIKE '$checkName'
 		LIMIT 1", __FILE__, __LINE__);
-	if (mysql_num_rows($request) > 0)
+	if (mysqli_num_rows($request) > 0)
 	{
-		mysql_free_result($request);
+		mysqli_free_result($request);
 		return true;
 	}
 	
@@ -817,9 +817,9 @@ function groupsAllowedTo($permission, $board_id = null)
 			SELECT ID_GROUP, addDeny
 			FROM {$db_prefix}permissions
 			WHERE permission = '$permission'", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$membergroups[$row['addDeny'] === '1' ? 'allowed' : 'denied'][] = $row['ID_GROUP'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	// Let's do the global/local board permissions
@@ -835,10 +835,10 @@ function groupsAllowedTo($permission, $board_id = null)
 				FROM {$db_prefix}boards
 				WHERE ID_BOARD = $board_id
 				LIMIT 1", __FILE__, __LINE__);
-			if (mysql_num_rows($request) == 0)
+			if (mysqli_num_rows($request) == 0)
 				fatal_lang_error('smf232');
-			list($permission_mode) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list($permission_mode) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 		}
 
 		// Without permissions-by-board, you might need moderator permission.
@@ -864,9 +864,9 @@ function groupsAllowedTo($permission, $board_id = null)
 				AND modperm.permission = 'moderate_board' 
 				AND modperm.addDeny = 1" : '') . "
 				AND bp.ID_BOARD " . (empty($modSettings['permission_enable_by_board']) || empty($permission_mode) || $board_id === 0 ? '= 0' : 'IN (0, ' . $board_id . ')'), __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$membergroups[$row['addDeny'] === '1' ? 'allowed' : 'denied'][] = $row['ID_GROUP'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	// Denied is never allowed.
@@ -895,9 +895,9 @@ function membersAllowedTo($permission, $board_id = null)
 		WHERE (" . ($include_moderators ? "mods.ID_MEMBER IS NOT NULL OR " : '') . 'ID_GROUP IN (' . implode(', ', $membergroups['allowed']) . ") OR FIND_IN_SET(" . implode(', mem.additionalGroups) OR FIND_IN_SET(', $membergroups['allowed']) . ", mem.additionalGroups))" . (empty($membergroups['denied']) ? '' : "
 			AND NOT (" . ($exclude_moderators ? "mods.ID_MEMBER IS NOT NULL OR " : '') . 'ID_GROUP IN (' . implode(', ', $membergroups['denied']) . ") OR FIND_IN_SET(" . implode(', mem.additionalGroups) OR FIND_IN_SET(', $membergroups['denied']) . ", mem.additionalGroups))"), __FILE__, __LINE__);
 	$members = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$members[] = $row['ID_MEMBER'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	return $members;
 }
@@ -917,8 +917,8 @@ function reattributePosts($memID, $email = false, $post_count = false)
 			FROM {$db_prefix}members
 			WHERE ID_MEMBER = $memID
 			LIMIT 1", __FILE__, __LINE__);
-		list ($email) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($email) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 	}
 
 	// If they want the post count restored then we need to do some research.
@@ -932,8 +932,8 @@ function reattributePosts($memID, $email = false, $post_count = false)
 				AND m.icon != 'recycled'
 				AND b.ID_BOARD = m.ID_BOARD
 				AND b.countPosts = 1", __FILE__, __LINE__);
-		list ($messageCount) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($messageCount) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		updateMemberData($memID, array('posts' => 'posts + ' . $messageCount));
 	}
@@ -981,8 +981,8 @@ function generateValidationCode()
 	$request = db_query('
 		SELECT RAND()', __FILE__, __LINE__);
 	
-	list ($dbRand) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($dbRand) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 	
 	return substr(preg_replace('/\W/', '', sha1(microtime() . mt_rand() . $dbRand . $modSettings['rand_seed'])), 0, 10);	
 }

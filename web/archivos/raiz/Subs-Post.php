@@ -565,10 +565,10 @@ function sendpm($recipients, $subject, $message, $store_outbox = false, $from = 
 			SELECT ID_MEMBER, memberName
 			FROM {$db_prefix}members
 			WHERE memberName IN ('" . implode("', '", array_keys($usernames)) . "')", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			if (isset($usernames[$func['strtolower']($row['memberName'])]))
 				$usernames[$func['strtolower']($row['memberName'])] = $row['ID_MEMBER'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Replace the usernames with IDs. Drop usernames that couldn't be found.
 		foreach ($recipients as $rec_type => $rec)
@@ -609,7 +609,7 @@ function sendpm($recipients, $subject, $message, $store_outbox = false, $from = 
 		ORDER BY mem.lngfile
 		LIMIT " . count($all_to), __FILE__, __LINE__);
 	$notifications = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Has the receiver gone over their message limit, assuming that neither they nor the sender are important?!
 		if (!empty($row['maxMessages']) && $row['maxMessages'] <= $row['instantMessages'] && !allowedTo('moderate_forum') && !$row['is_admin'])
@@ -632,7 +632,7 @@ function sendpm($recipients, $subject, $message, $store_outbox = false, $from = 
 
 		$log['sent'][] = sprintf(isset($txt['pm_successfully_sent']) ? $txt['pm_successfully_sent'] : '', $row['realName']);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Only 'send' the message if there are any recipients left.
 	if (empty($all_to))
@@ -993,7 +993,7 @@ function theme_postbox($msg)
 				FROM {$db_prefix}smileys
 				WHERE hidden IN (0, 2)
 				ORDER BY smileyRow, smileyOrder", __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				$row['code'] = htmlspecialchars($row['code']);
 				$row['filename'] = htmlspecialchars($row['filename']);
@@ -1001,7 +1001,7 @@ function theme_postbox($msg)
 
 				$context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			cache_put_data('posting_smileys', $context['smileys'], 480);
 		}
@@ -1162,8 +1162,8 @@ function sendNotifications($ID_TOPIC, $type)
 			AND mf.ID_MSG = t.ID_FIRST_MSG
 			AND ml.ID_MSG = t.ID_LAST_MSG
 		LIMIT 1", __FILE__, __LINE__);
-	list ($subject, $body, $last_id) = mysql_fetch_row($result);
-	mysql_free_result($result);
+	list ($subject, $body, $last_id) = mysqli_fetch_row($result);
+	mysqli_free_result($result);
 
 	if (empty($last_id))
 		trigger_error('sendNotifications(): non-existant topic passed', E_USER_NOTICE);
@@ -1188,7 +1188,7 @@ function sendNotifications($ID_TOPIC, $type)
 		GROUP BY mem.ID_MEMBER
 		ORDER BY mem.lngfile", __FILE__, __LINE__);
 	$sent = 0;
-	while ($row = mysql_fetch_assoc($members))
+	while ($row = mysqli_fetch_assoc($members))
 	{
 		// Easier to check this here... if they aren't the topic poster do they really want to know?
 		if ($type != 'reply' && $row['notifyTypes'] == 2 && $row['ID_MEMBER'] != $row['ID_MEMBER_STARTED'])
@@ -1229,7 +1229,7 @@ function sendNotifications($ID_TOPIC, $type)
 			$sent++;
 		}
 	}
-	mysql_free_result($members);
+	mysqli_free_result($members);
 
 	if (isset($current_language) && $current_language != $user_info['language'])
 		loadLanguage('Post');
@@ -1266,7 +1266,7 @@ function createPost(&$msgOptions, &$topicOptions, &$posterOptions)
 				WHERE ID_MEMBER = $posterOptions[id]
 				LIMIT 1", __FILE__, __LINE__);
 			// Couldn't find the current poster?
-			if (mysql_num_rows($request) == 0)
+			if (mysqli_num_rows($request) == 0)
 			{
 				trigger_error('createPost(): Invalid member id ' . $posterOptions['id'], E_USER_NOTICE);
 				$posterOptions['id'] = 0;
@@ -1274,8 +1274,8 @@ function createPost(&$msgOptions, &$topicOptions, &$posterOptions)
 				$posterOptions['email'] = '';
 			}
 			else
-				list ($posterOptions['name'], $posterOptions['email']) = mysql_fetch_row($request);
-			mysql_free_result($request);
+				list ($posterOptions['name'], $posterOptions['email']) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 		}
 		else
 		{
@@ -1450,8 +1450,8 @@ function modifyPost(&$msgOptions, &$topicOptions, &$posterOptions)
 				SELECT body
 				FROM {$db_prefix}messages
 				WHERE ID_MSG = $msgOptions[id]", __FILE__, __LINE__);
-			list ($old_body) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list ($old_body) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 		}
 	}
 	if (!empty($msgOptions['modify_time']))
@@ -1479,11 +1479,11 @@ $request = db_query("
 		FROM {$db_prefix}topics
 		WHERE ID_TOPIC =$topicOptions[id]
 		GROUP BY ID_BOARD", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
     $ID_BOARD=$row['ID_BOARD'];
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	db_query("
 	UPDATE {$db_prefix}boards
@@ -1554,10 +1554,10 @@ $request = db_query("
 			FROM {$db_prefix}topics
 			WHERE ID_FIRST_MSG = $msgOptions[id]
 			LIMIT 1", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 1)
+		if (mysqli_num_rows($request) == 1)
 			updateStats('subject', $topicOptions['id'], $msgOptions['subject']);
 		
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	return true;
@@ -1585,9 +1585,9 @@ function updateLastMessages($setboards, $ID_MSG = 0)
 			WHERE ID_BOARD IN (" . implode(', ', $setboards) . ")
 			GROUP BY ID_BOARD", __FILE__, __LINE__);
 		$lastMsg = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$lastMsg[$row['ID_BOARD']] = $row['ID_MSG'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	else
 	{
@@ -1678,8 +1678,8 @@ function adminNotify($type, $memberID, $memberName = null)
 			FROM {$db_prefix}members
 			WHERE ID_MEMBER = $memberID
 			LIMIT 1", __FILE__, __LINE__);
-		list ($memberName) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($memberName) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 	}
 
 	$toNotify = array();
@@ -1692,9 +1692,9 @@ function adminNotify($type, $memberID, $memberName = null)
 		WHERE permission = 'moderate_forum'
 			AND addDeny = 1
 			AND ID_GROUP != 0", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$groups[] = $row['ID_GROUP'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Add administrators too...
 	$groups[] = 1;
@@ -1707,7 +1707,7 @@ function adminNotify($type, $memberID, $memberName = null)
 		WHERE (ID_GROUP IN (" . implode(', ', $groups) . ") OR FIND_IN_SET(" . implode(', additionalGroups) OR FIND_IN_SET(', $groups) . ", additionalGroups))
 			AND notifyTypes != 4
 		ORDER BY lngfile", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Post it in this members language.
 		$needed_language = empty($row['lngfile']) || empty($modSettings['userLanguage']) ? $language : $row['lngfile'];
@@ -1726,7 +1726,7 @@ function adminNotify($type, $memberID, $memberName = null)
 		// And do the actual sending...
 		sendmail($row['emailAddress'], $txt['admin_notify_subject'], $message . $txt[130]);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	if (isset($current_language) && $current_language != $user_info['language'])
 		loadLanguage('Login');

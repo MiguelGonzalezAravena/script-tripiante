@@ -176,10 +176,10 @@ function ModifyPostSettings()
 				FROM {$db_prefix}messages", false, false);
 			if ($request !== false)
 			{
-				while ($row = mysql_fetch_assoc($request))
+				while ($row = mysqli_fetch_assoc($request))
 					if ($row['Field'] == 'body')
 						$body_type = $row['Type'];
-				mysql_free_result($request);
+				mysqli_free_result($request);
 			}
 
 			$request = db_query("
@@ -187,10 +187,10 @@ function ModifyPostSettings()
 				FROM {$db_prefix}messages", false, false);
 			if ($request !== false)
 			{
-				while ($row = mysql_fetch_assoc($request))
+				while ($row = mysqli_fetch_assoc($request))
 					if ($row['Column_name'] == 'body' && (isset($row['Index_type']) && $row['Index_type'] == 'FULLTEXT' || isset($row['Comment']) && $row['Comment'] == 'FULLTEXT'))
 						$fulltext = true;
-				mysql_free_result($request);
+				mysqli_free_result($request);
 			}
 
 			if (isset($body_type) && $_POST['max_messageLength'] > 65535 && $body_type == 'text')
@@ -300,7 +300,7 @@ function ModifyHideTagSpecialSettings()
 		SELECT groupName, ID_GROUP, minPosts
 		FROM {$db_prefix}membergroups
 		ORDER BY minPosts, ID_GROUP != 1, ID_GROUP != 2, ID_GROUP != 3, groupName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$context['groups'][(int) $row['ID_GROUP']] = array(
 			'id' => $row['ID_GROUP'],
@@ -309,7 +309,7 @@ function ModifyHideTagSpecialSettings()
 			'is_post_group' => $row['minPosts'] != -1,
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 	
 	//Sorry for the lazyness... but it's easier...
 	loadLanguage('ManageBoards');

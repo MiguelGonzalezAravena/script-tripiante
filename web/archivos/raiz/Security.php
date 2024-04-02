@@ -160,7 +160,7 @@ function is_not_banned($forceCheck = false)
 					AND (bg.expire_time IS NULL OR bg.expire_time > " . time() . ")
 					AND (" . implode(' OR ', $ban_query) . ')', __FILE__, __LINE__);
 			// Store every type of ban that applies to you in your session.
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				foreach ($restrictions as $restriction)
 					if (!empty($row[$restriction]))
@@ -172,7 +172,7 @@ function is_not_banned($forceCheck = false)
 							$flag_is_activated = true;
 					}
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 		}
 
 		// Mark the cannot_access and cannot_post bans as being 'hit'.
@@ -202,12 +202,12 @@ function is_not_banned($forceCheck = false)
 				AND bg.cannot_access = 1
 				AND bi.ID_BAN IN (" . implode(', ', $bans) . ")
 			LIMIT " . count($bans), __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			$_SESSION['ban']['cannot_access']['ids'][] = $row['ID_BAN'];
 			$_SESSION['ban']['cannot_access']['reason'] = $row['reason'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// My mistake. Next time better.
 		if (!isset($_SESSION['ban']['cannot_access']))
@@ -366,7 +366,7 @@ function isBannedEmail($email, $restriction, $error)
 		WHERE bg.ID_BAN_GROUP = bi.ID_BAN_GROUP
 			AND '$email' LIKE bi.email_address
 			AND (bg.$restriction = 1 OR bg.cannot_access = 1)", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (!empty($row['cannot_access']))
 		{
@@ -379,7 +379,7 @@ function isBannedEmail($email, $restriction, $error)
 			$ban_reason = $row['reason'];
 		}
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// You're in biiig trouble.  Banned for the rest of this session!
 	if (isset($_SESSION['ban']['cannot_access']))
@@ -583,13 +583,13 @@ function allowedTo($permission, $boards = null)
 		GROUP BY b.ID_BOARD", __FILE__, __LINE__);
 
 	// Make sure they can do it on all of the boards.
-	if (mysql_num_rows($request) != count($boards))
+	if (mysqli_num_rows($request) != count($boards))
 		return false;
 
 	$result = true;
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$result &= !empty($row['addDeny']);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// If the query returned 1, they can do it... otherwise, they can't.
 	return $result;
@@ -669,14 +669,14 @@ function boardsAllowedTo($permission)
 			AND (mods.ID_MEMBER IS NOT NULL OR bp.ID_GROUP != 3)", __FILE__, __LINE__);
 	$boards = array();
 	$deny_boards = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (empty($row['addDeny']))
 			$deny_boards[] = $row['ID_BOARD'];
 		else
 			$boards[] = $row['ID_BOARD'];
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$boards = array_values(array_diff($boards, $deny_boards));
 

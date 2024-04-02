@@ -1,14 +1,13 @@
 <?php
 if (!defined('SMF'))
-	die('Hacking attempt...');
+  die('Hacking attempt...');
 
-function NoPost();
-{
-	global $settings, $context, $txt;
-	
-	loadLanguage('Errors');
-	loadTemplate('NoPost');
-	$context['sub_template'] = 'NoPost';
-
+function NoPost() {
+  global $context;
+  
+  loadLanguage('Errors');
+  loadTemplate('NoPost');
+  $context['sub_template'] = 'NoPost';
 }
+
 ?>

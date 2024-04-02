@@ -534,7 +534,7 @@ function fix_serialized_columns()
 		SELECT ID_ACTION, extra
 		FROM {$db_prefix}log_actions
 		WHERE action IN ('remove', 'delete')", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (@unserialize($row['extra']) === false && preg_match('~^(a:3:{s:5:"topic";i:\d+;s:7:"subject";s:)(\d+):"(.+)"(;s:6:"member";s:5:"\d+";})$~', $row['extra'], $matches) === 1)
 			db_query("
@@ -543,7 +543,7 @@ function fix_serialized_columns()
 				WHERE ID_ACTION = $row[ID_ACTION]
 				LIMIT 1", __FILE__, __LINE__);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Refresh some serialized strings stored in the settings table.
 	updateStats('calendar');

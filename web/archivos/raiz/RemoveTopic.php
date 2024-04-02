@@ -14,8 +14,8 @@ function RemoveTopic2()
 		WHERE t.ID_TOPIC = {$topic}
 			AND ms.ID_MSG = t.ID_FIRST_MSG
 		LIMIT 1", __FILE__, __LINE__);
-	list ($starter, $subject) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($starter, $subject) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	if ($starter == $ID_MEMBER && !allowedTo('remove_any')) 
 		isAllowedTo('remove_own');
@@ -55,8 +55,8 @@ function DeleteMessage()
 			AND m.ID_TOPIC = $topic
 			AND m.ID_MSG = $_REQUEST[msg]
 		LIMIT 1", __FILE__, __LINE__);
-	list ($starter, $poster, $subject, $post_time) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($starter, $poster, $subject, $post_time) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	if ($poster == $ID_MEMBER)
 	{
@@ -130,9 +130,9 @@ function RemoveOldTopics2()
 			AND m.posterTime < " . (time() - 3600 * 24 * $_POST['maxdays']) . "$condition
 			AND t.ID_BOARD IN (" . implode(', ', array_keys($_POST['boards'])) . ')', __FILE__, __LINE__);
 	$topics = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$topics[] = $row['ID_TOPIC'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	removeTopics($topics, false, true);
 
@@ -173,13 +173,13 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
 				AND m.icon != 'recycled'
 				AND b.countPosts = 0
 			GROUP BY m.ID_MEMBER", __FILE__, __LINE__);
-		if (mysql_num_rows($requestMembers) > 0)
+		if (mysqli_num_rows($requestMembers) > 0)
 		{
-			//while ($rowMembers = mysql_fetch_assoc($requestMembers))
+			//while ($rowMembers = mysqli_fetch_assoc($requestMembers))
 			//	updateMemberData($rowMembers['ID_MEMBER'], array('posts' => 'posts - ' . $rowMembers['posts']));
 				
 			//BEGIN SMFShop 2.0 (Build 8) MOD code
-			while ($rowMembers = mysql_fetch_assoc($requestMembers)) {
+			while ($rowMembers = mysqli_fetch_assoc($requestMembers)) {
 				updateMemberData($rowMembers['ID_MEMBER'], array('posts' => 'posts - ' . $rowMembers['posts']));
 			global $modSettings;
 			db_query("UPDATE {$db_prefix}members
@@ -189,7 +189,7 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
 			}
 			//END SMFShop 2.0 code
 		}
-		mysql_free_result($requestMembers);
+		mysqli_free_result($requestMembers);
 	}
 
 	// Decrease the topic count for member.
@@ -203,9 +203,9 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
 				AND b.countPosts = 0
 			", __FILE__, __LINE__);
 
-			while ($rowMembers = mysql_fetch_assoc($requestMembers))
+			while ($rowMembers = mysqli_fetch_assoc($requestMembers))
 				updateMemberData($rowMembers['ID_MEMBER_STARTED'], array('topics' => 'topics - 1'));
-		mysql_free_result($requestMembers);
+		mysqli_free_result($requestMembers);
 	}
 	
 	// Recycle topics that aren't in the recycle board...
@@ -217,13 +217,13 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
 			WHERE ID_TOPIC $condition
 				AND ID_BOARD != $modSettings[recycle_board]
 			LIMIT " . count($topics), __FILE__, __LINE__);
-		if (mysql_num_rows($request) > 0)
+		if (mysqli_num_rows($request) > 0)
 		{
 			// Get topics that will be recycled.
 			$recycleTopics = array();
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$recycleTopics[] = $row['ID_TOPIC'];
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			// Mark recycled topics as recycled.
 			db_query("
@@ -250,7 +250,7 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
 			$condition = 'IN (' . implode(', ', $topics) . ')';
 		}
 		else
-			mysql_free_result($request);
+			mysqli_free_result($request);
 	}
 
 	// Still topics left to delete?
@@ -265,7 +265,7 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
 		FROM {$db_prefix}topics
 		WHERE ID_TOPIC $condition
 		GROUP BY ID_BOARD", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// The numReplies is only the *replies*.  There're also the first posts in the topics.
 		$adjustBoards[] = array(
@@ -274,7 +274,7 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
 			'ID_BOARD' => $row['ID_BOARD']
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Decrease the posts/topics...
 	foreach ($adjustBoards as $stats)
@@ -294,12 +294,12 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
 		$words = array();
 		$messages = array();
 		$request = db_query("SELECT ID_MSG, body FROM {$db_prefix}messages WHERE ID_TOPIC $condition", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			$words = array_merge($words, text2words($row['body'], $customIndexSettings['bytes_per_word'], true));
 			$messages[] = $row['ID_MSG'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 		$words = array_unique($words);
 
 		if (!empty($words) && !empty($messages))		

@@ -201,18 +201,18 @@ function BoardReport()
 		FROM ({$db_prefix}moderators AS mods, {$db_prefix}members AS mem)
 		WHERE mem.ID_MEMBER = mods.ID_MEMBER", __FILE__, __LINE__);
 	$moderators = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$moderators[$row['ID_BOARD']][] = $row['realName'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Get all the possible membergroups!
 	$request = db_query("
 		SELECT ID_GROUP, groupName, onlineColor
 		FROM {$db_prefix}membergroups", __FILE__, __LINE__);
 	$groups = array(-1 => $txt[28], 0 => $txt['full_member']);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$groups[$row['ID_GROUP']] = empty($row['onlineColor']) ? $row['groupName'] : '<span style="color: ' . $row['onlineColor'] . '">' . $row['groupName'] . '</span>';
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// All the fields we'll show.
 	$boardSettings = array(
@@ -239,7 +239,7 @@ function BoardReport()
 			LEFT JOIN {$db_prefix}boards AS par ON (par.ID_BOARD = b.ID_PARENT)
 			LEFT JOIN {$db_prefix}themes AS th ON (th.ID_THEME = b.ID_THEME AND variable = 'name')", __FILE__, __LINE__);
 	$boards = array(0 => array('name' => $txt['global_boards'], 'local_perms' => 1));
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Each board has it's own table.
 		newTable($row['name'], '', 'left', 'auto', 'left', 200, 'left');
@@ -273,7 +273,7 @@ function BoardReport()
 		// Next add the main data.
 		addData($boardData);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 }
 
 // Generate a report on the current permissions by board and membergroup.
@@ -311,13 +311,13 @@ function BoardPermissionsReport()
 		FROM {$db_prefix}boards
 		WHERE $board_clause", __FILE__, __LINE__);
 	$boards = array(0 => array('name' => $txt['global_boards'], 'local_perms' => 1));
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$boards[$row['ID_BOARD']] = array(
 			'name' => $row['name'],
 			'local_perms' => !empty($modSettings['permission_enable_by_board']) && $row['permission_mode'] == 1,
 			'permission_mode' => empty($modSettings['permission_enable_by_board']) ? (empty($row['permission_mode']) ? 'normal' : ($row['permission_mode'] == 2 ? 'no_polls' : ($row['permission_mode'] == 3 ? 'reply_only' : 'read_only'))) : 'normal',
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Get all the possible membergroups, except for admin!
 	$request = db_query("
@@ -331,9 +331,9 @@ function BoardPermissionsReport()
 		$memberGroups = array('col' => '', -1 => $txt['membergroups_guests'], 0 => $txt['membergroups_members']);
 	else
 		$memberGroups = array('col' => '');
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$memberGroups[$row['ID_GROUP']] = $row['groupName'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Make sure that every group is represented - plus in rows!
 	setKeys('rows', $memberGroups);
@@ -348,7 +348,7 @@ function BoardPermissionsReport()
 			AND $group_clause" . (empty($modSettings['permission_enable_deny']) ? "
 			AND addDeny = 1" : '') . "
 		ORDER BY ID_BOARD, permission", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$board_permissions[$row['ID_BOARD']][$row['ID_GROUP']][$row['permission']] = $row['addDeny'];
 
@@ -361,7 +361,7 @@ function BoardPermissionsReport()
 			);
 		}
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Now cycle through the board permissions array... lots to do ;)
 	foreach ($board_permissions as $board => $groups)
@@ -458,7 +458,7 @@ function MemberGroupsReport()
 	$request = db_query("
 		SELECT ID_BOARD, name, memberGroups, permission_mode
 		FROM {$db_prefix}boards", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$boards[$row['ID_BOARD']] = array(
 			'id' => $row['ID_BOARD'],
 			'name' => $row['name'],
@@ -466,7 +466,7 @@ function MemberGroupsReport()
 			'permission_mode' => empty($modSettings['permission_enable_by_board']) ? (empty($row['permission_mode']) ? $txt['permission_mode_normal'] : ($row['permission_mode'] == 2 ? $txt['permission_mode_no_polls'] : ($row['permission_mode'] == 3 ? $txt['permission_mode_reply_only'] : $txt['permission_mode_read_only']))) : $txt['permission_mode_normal'],
 			'groups' => array_merge(array(1,3), explode(',', $row['memberGroups'])),
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Standard settings.
 	$mgSettings = array(
@@ -518,9 +518,9 @@ function MemberGroupsReport()
 			'stars' => ''
 		),
 	);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$rows[] = $row;
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	foreach ($rows as $row)
 	{
@@ -572,9 +572,9 @@ function GroupPermissionsReport()
 		$groups = array('col' => '', -1 => $txt['membergroups_guests'], 0 => $txt['membergroups_members']);
 	else
 		$groups = array('col' => '');
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$groups[$row['ID_GROUP']] = $row['groupName'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Make sure that every group is represented!
 	setKeys('rows', $groups);
@@ -596,7 +596,7 @@ function GroupPermissionsReport()
 			AND addDeny = 1" : '') . "
 		ORDER BY permission", __FILE__, __LINE__);
 	$lastPermission = null;
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// If this is a new permission flush the last row.
 		if ($row['permission'] != $lastPermission)
@@ -617,7 +617,7 @@ function GroupPermissionsReport()
 		else
 			$curData[$row['ID_GROUP']] = '<span style="color: red;">' . $txt['board_perms_deny'] . '</span>';
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Flush the last data!
 	addData($curData);
@@ -635,9 +635,9 @@ function StaffReport()
 		SELECT ID_BOARD, name
 		FROM {$db_prefix}boards", __FILE__, __LINE__);
 	$boards = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$boards[$row['ID_BOARD']] = $row['name'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Get every moderator.
 	$request = db_query("
@@ -645,12 +645,12 @@ function StaffReport()
 		FROM {$db_prefix}moderators AS mods", __FILE__, __LINE__);
 	$moderators = array();
 	$local_mods = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$moderators[$row['ID_MEMBER']][] = $row['ID_BOARD'];
 		$local_mods[$row['ID_MEMBER']] = $row['ID_MEMBER'];
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Get a list of global moderators (i.e. members with moderation powers).
 	$global_mods = array_intersect(membersAllowedTo('moderate_board', 0), membersAllowedTo('post_new', 0), membersAllowedTo('remove_any', 0), membersAllowedTo('modify_any', 0));
@@ -670,9 +670,9 @@ function StaffReport()
 		SELECT ID_GROUP, groupName, onlineColor
 		FROM {$db_prefix}membergroups", __FILE__, __LINE__);
 	$groups = array(0 => $txt['full_member']);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$groups[$row['ID_GROUP']] = empty($row['onlineColor']) ? $row['groupName'] : '<span style="color: ' . $row['onlineColor'] . '">' . $row['groupName'] . '</span>';
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// All the fields we'll show.
 	$staffSettings = array(
@@ -691,7 +691,7 @@ function StaffReport()
 		FROM {$db_prefix}members
 		WHERE ID_MEMBER IN (" . implode(',', $allStaff) . ")
 		ORDER BY realName", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Each member gets their own table!.
 		newTable($row['realName'], '', 'left', 'auto', 'left', 200, 'center');
@@ -725,7 +725,7 @@ function StaffReport()
 		// Next add the main data.
 		addData($staffData);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 }
 
 // This function creates a new table of data, most functions will only use it once.

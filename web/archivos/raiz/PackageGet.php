@@ -83,7 +83,7 @@ function PackageServers()
 		SELECT ID_SERVER, name, url
 		FROM {$db_prefix}package_servers", __FILE__, __LINE__);
 	$context['servers'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$context['servers'][] = array(
 			'name' => htmlspecialchars($row['name']),
@@ -91,7 +91,7 @@ function PackageServers()
 			'id' => $row['ID_SERVER'],
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$context['package_download_broken'] = !is_writable($boarddir . '/web/archivos/paquetes') || !is_writable($boarddir . '/web/archivos/paquetes/installed.list');
 
@@ -173,8 +173,8 @@ function PackageGBrowse()
 			FROM {$db_prefix}package_servers
 			WHERE ID_SERVER = $server
 			LIMIT 1", __FILE__, __LINE__);
-		list ($name, $url) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($name, $url) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		// If the server does not exist, dump out.
 		if (empty($url))
@@ -477,8 +477,8 @@ function PackageDownload()
 			FROM {$db_prefix}package_servers
 			WHERE ID_SERVER = $server
 			LIMIT 1", __FILE__, __LINE__);
-		list ($name, $url) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($name, $url) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		// If server does not exist then dump out.
 		if (empty($url))

@@ -29,8 +29,8 @@ function ShowXmlFeed()
 				SELECT name
 				FROM {$db_prefix}categories
 				WHERE ID_CAT = " . (int) $_REQUEST['c'][0], __FILE__, __LINE__);
-			list ($feed_title) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list ($feed_title) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 
 			$feed_title = ' - ' . strip_tags($feed_title);
 		}
@@ -42,12 +42,12 @@ function ShowXmlFeed()
 				AND $user_info[query_see_board]", __FILE__, __LINE__);
 		$total_cat_posts = 0;
 		$boards = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			$boards[] = $row['ID_BOARD'];
 			$total_cat_posts += $row['numPosts'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		if (!empty($boards))
 			$query_this_board = 'b.ID_BOARD IN (' . implode(', ', $boards) . ')';
@@ -71,12 +71,12 @@ function ShowXmlFeed()
 			LIMIT " . count($_REQUEST['boards']), __FILE__, __LINE__);
 
 		// Either the board specified doesn't exist or you have no access.
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('smf232');
 
 		$total_posts = 0;
 		$boards = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if (count($_REQUEST['boards']) == 1)
 				$feed_title = ' - ' . strip_tags($row['name']);
@@ -84,7 +84,7 @@ function ShowXmlFeed()
 			$boards[] = $row['ID_BOARD'];
 			$total_posts += $row['numPosts'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		if (!empty($boards))
 			$query_this_board = 'b.ID_BOARD IN (' . implode(', ', $boards) . ')';
@@ -101,8 +101,8 @@ function ShowXmlFeed()
 			FROM {$db_prefix}boards
 			WHERE ID_BOARD = $board
 			LIMIT 1", __FILE__, __LINE__);
-		list ($total_posts) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($total_posts) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		$feed_title = ' - ' . strip_tags($board_info['name']);
 
@@ -398,7 +398,7 @@ function getXmlMembers($xml_format)
 		ORDER BY ID_MEMBER DESC
 		LIMIT $_GET[limit]", __FILE__, __LINE__);
 	$data = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Make the data look rss-ish.
 		if ($xml_format == 'rss' || $xml_format == 'rss2')
@@ -432,7 +432,7 @@ function getXmlMembers($xml_format)
 				'link' => $scripturl . '?action=profile;u=' . $row['ID_MEMBER']
 			);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	return $data;
 }
@@ -461,7 +461,7 @@ function getXmlNews($xml_format)
 		ORDER BY t.ID_FIRST_MSG DESC
 		LIMIT $_GET[limit]", __FILE__, __LINE__);
 	$data = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Limit the length of the message, if the option is set.
 		if (!empty($modSettings['xmlnews_maxlen']) && $func['strlen'](str_replace('<br />', "\n", $row['body'])) > $modSettings['xmlnews_maxlen'])
@@ -522,7 +522,7 @@ function getXmlNews($xml_format)
 				'link' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.0'
 			);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	return $data;
 }
@@ -541,9 +541,9 @@ function getXmlRecent($xml_format)
 		ORDER BY m.ID_MSG DESC
 		LIMIT $_GET[limit]", __FILE__, __LINE__);
 	$messages = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$messages[] = $row['ID_MSG'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	if (empty($messages))
 		return array();
@@ -567,7 +567,7 @@ function getXmlRecent($xml_format)
 		ORDER BY m.ID_MSG DESC
 		LIMIT $_GET[limit]", __FILE__, __LINE__);
 	$data = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// Limit the length of the message, if the option is set.
 		if (!empty($modSettings['xmlnews_maxlen']) && $func['strlen'](str_replace('<br />', "\n", $row['body'])) > $modSettings['xmlnews_maxlen'])
@@ -637,7 +637,7 @@ function getXmlRecent($xml_format)
 				'link' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.msg' . $row['ID_MSG'] . '#msg' . $row['ID_MSG']
 			);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	return $data;
 }

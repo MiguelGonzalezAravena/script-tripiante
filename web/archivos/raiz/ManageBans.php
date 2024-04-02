@@ -188,8 +188,8 @@ function BanList()
 	$request = db_query("
 		SELECT COUNT(*)
 		FROM {$db_prefix}ban_groups", __FILE__, __LINE__);
-	list ($totalBans) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($totalBans) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	// Create the page index.
 	$context['page_index'] = constructPageIndex($scripturl . '?action=ban;sort=' . $_REQUEST['sort'] . (isset($_REQUEST['desc']) ? ';desc' : ''), $_REQUEST['start'], $totalBans, 20);
@@ -222,7 +222,7 @@ function getBanEntry($reset = false)
 	if ($ban_request == false)
 		return false;
 
-	if (!($row = mysql_fetch_assoc($ban_request)))
+	if (!($row = mysqli_fetch_assoc($ban_request)))
 		return false;
 
 	$output = array(
@@ -322,9 +322,9 @@ function BanEdit()
 				WHERE (ID_GROUP = 1 OR FIND_IN_SET(1, additionalGroups))
 					AND emailAddress LIKE '$_POST[email]'
 				LIMIT 1", __FILE__, __LINE__);
-			if (mysql_num_rows($request) != 0)
+			if (mysqli_num_rows($request) != 0)
 				fatal_lang_error('no_ban_admin');
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			if ($newBan)
 				$inserts['email_address'] = "'$_POST[email]'";
@@ -347,10 +347,10 @@ function BanEdit()
 				FROM {$db_prefix}members
 				WHERE memberName = '$_POST[user]' OR realName = '$_POST[user]'
 				LIMIT 1", __FILE__, __LINE__);
-			if (mysql_num_rows($request) == 0)
+			if (mysqli_num_rows($request) == 0)
 				fatal_lang_error('invalid_username', false);
-			list ($memberid, $isAdmin) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list ($memberid, $isAdmin) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 
 			if ($isAdmin)
 				fatal_lang_error('no_ban_admin');
@@ -432,9 +432,9 @@ function BanEdit()
 				AND ID_BAN_GROUP != $_REQUEST[bg]") . "
 			LIMIT 1", __FILE__, __LINE__);
 		// !!! Separate the sprintf?
-		if (mysql_num_rows($request) == 1)
+		if (mysqli_num_rows($request) == 1)
 			fatal_error(sprintf($txt['ban_name_exists'], $_POST['ban_name']), false);
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$_POST['reason'] = htmlspecialchars($_POST['reason'], ENT_QUOTES);
 		$_POST['notes'] = htmlspecialchars($_POST['notes'], ENT_QUOTES);
@@ -489,10 +489,10 @@ function BanEdit()
 							FROM {$db_prefix}members
 							WHERE memberName = '$_POST[user]' OR realName = '$_POST[user]'
 							LIMIT 1", __FILE__, __LINE__);
-						if (mysql_num_rows($request) == 0)
+						if (mysqli_num_rows($request) == 0)
 							fatal_lang_error('invalid_username', false);
-						list ($_POST['bannedUser'], $isAdmin) = mysql_fetch_row($request);
-						mysql_free_result($request);
+						list ($_POST['bannedUser'], $isAdmin) = mysqli_fetch_row($request);
+						mysqli_free_result($request);
 
 						if ($isAdmin)
 							fatal_lang_error('no_ban_admin');
@@ -570,9 +570,9 @@ function BanEdit()
 				LEFT JOIN {$db_prefix}ban_items AS bi ON (bi.ID_BAN_GROUP = bg.ID_BAN_GROUP)
 				LEFT JOIN {$db_prefix}members AS mem ON (mem.ID_MEMBER = bi.ID_MEMBER)
 			WHERE bg.ID_BAN_GROUP = $_REQUEST[bg]", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('ban_not_found', false);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if (!isset($context['ban']))
 			{
@@ -636,7 +636,7 @@ function BanEdit()
 				}
 			}
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	// Not an existing one, then it's probably a new one.
 	else
@@ -676,11 +676,11 @@ function BanEdit()
 				FROM {$db_prefix}members
 				WHERE ID_MEMBER = " . (int) $_REQUEST['u'] . "
 				LIMIT 1", __FILE__, __LINE__);
-			if (mysql_num_rows($request) > 0)
+			if (mysqli_num_rows($request) > 0)
 			{
-				list ($context['ban_suggestions']['member']['id'], $context['ban_suggestions']['member']['name'], $context['ban_suggestions']['main_ip'], $context['ban_suggestions']['email']) = mysql_fetch_row($request);
+				list ($context['ban_suggestions']['member']['id'], $context['ban_suggestions']['member']['name'], $context['ban_suggestions']['main_ip'], $context['ban_suggestions']['email']) = mysqli_fetch_row($request);
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			if (!empty($context['ban_suggestions']['member']['id']))
 			{
@@ -702,9 +702,9 @@ function BanEdit()
 					WHERE ID_MEMBER = " . (int) $_REQUEST['u'] . "
 						AND posterIP RLIKE '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$'
 					ORDER BY posterIP", __FILE__, __LINE__);
-				while ($row = mysql_fetch_assoc($request))
+				while ($row = mysqli_fetch_assoc($request))
 					$context['ban_suggestions']['message_ips'][] = $row['posterIP'];
-				mysql_free_result($request);
+				mysqli_free_result($request);
 
 				$context['ban_suggestions']['error_ips'] = array();
 				$request = db_query("
@@ -713,9 +713,9 @@ function BanEdit()
 					WHERE ID_MEMBER = " . (int) $_REQUEST['u'] . "
 						AND ip RLIKE '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$'
 					ORDER BY ip", __FILE__, __LINE__);
-				while ($row = mysql_fetch_assoc($request))
+				while ($row = mysqli_fetch_assoc($request))
 					$context['ban_suggestions']['error_ips'][] = $row['ip'];
-				mysql_free_result($request);
+				mysqli_free_result($request);
 
 				// Borrowing a few language strings from profile.
 				loadLanguage('Profile');
@@ -770,10 +770,10 @@ function BanEditTrigger()
 			WHERE ID_BAN = " . (int) $_REQUEST['bi'] . "
 				AND ID_BAN_GROUP = " . (int) $_REQUEST['bg'] . "
 			LIMIT 1", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('ban_not_found', false);
-		$row = mysql_fetch_assoc($request);
-		mysql_free_result($request);
+		$row = mysqli_fetch_assoc($request);
+		mysqli_free_result($request);
 
 		$context['ban_trigger'] = array(
 			'id' => $row['ID_BAN'],
@@ -853,8 +853,8 @@ function BanBrowseTriggers()
 		SELECT COUNT(*)
 		FROM ({$db_prefix}ban_items AS bi" . ($context['selected_entity'] == 'member' ? ", {$db_prefix}members AS mem" : '') . ")
 		WHERE " . $query[$context['selected_entity']]['where'], __FILE__, __LINE__);
-	list ($num_items) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($num_items) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	$context['page_index'] = constructPageIndex($scripturl . '?action=ban;sa=browse;entity=' . $context['selected_entity'], $_REQUEST['start'], $num_items, $modSettings['defaultMaxMessages']);
 	$context['start'] = $_REQUEST['start'];
@@ -869,7 +869,7 @@ function BanBrowseTriggers()
 				AND bg.ID_BAN_GROUP = bi.ID_BAN_GROUP
 			ORDER BY " . $query[$context['selected_entity']]['orderby'] . "
 			LIMIT $context[start], $modSettings[defaultMaxMessages]", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			$context['ban_items'][$row['ID_BAN']] = array(
 				'id' => $row['ID_BAN'],
@@ -898,7 +898,7 @@ function BanBrowseTriggers()
 				$context['ban_items'][$row['ID_BAN']]['entity'] = $context['ban_items'][$row['ID_BAN']]['member']['link'];
 			}
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	$context['sub_template'] = 'browse_triggers';
 }
@@ -944,8 +944,8 @@ function BanLog()
 	$request = db_query("
 		SELECT COUNT(*)
 		FROM {$db_prefix}log_banned", __FILE__, __LINE__);
-	list ($num_ban_log_entries) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($num_ban_log_entries) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	// Set start if not already set.
 	$_REQUEST['start'] = empty($_REQUEST['start']) || $_REQUEST['start'] < 0 ? 0 : (int) $_REQUEST['start'];
@@ -969,7 +969,7 @@ function BanLog()
 		ORDER BY " . $sort_columns[$context['sort']] . (isset($_REQUEST['desc']) ? ' DESC' : '') . "
 		LIMIT $_REQUEST[start], $entries_per_page", __FILE__, __LINE__);
 	$context['log_entries'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['log_entries'][] = array(
 			'id' => $row['ID_BAN_LOG'],
 			'member' => array(
@@ -982,7 +982,7 @@ function BanLog()
 			'email' => $row['email'],
 			'date' => timeformat($row['logTime']),
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$context['sub_template'] = 'ban_log';
 }
@@ -1052,12 +1052,12 @@ function updateBanMembers()
 			AND (bg.expire_time IS NULL OR bg.expire_time > " . time() . ")
 			AND (mem.ID_MEMBER = bi.ID_MEMBER OR mem.emailAddress LIKE bi.email_address)
 			AND mem.is_activated < 10", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$updates[$row['new_value']][] = $row['ID_MEMBER'];
 		$newMembers[] = $row['ID_MEMBER'];
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// We welcome our new members in the realm of the banned.
 	if (!empty($newMembers))
@@ -1074,9 +1074,9 @@ function updateBanMembers()
 			LEFT JOIN {$db_prefix}ban_groups AS bg ON (bg.ID_BAN_GROUP = bi.ID_BAN_GROUP AND bg.cannot_access = 1 AND (bg.expire_time IS NULL OR bg.expire_time > " . time() . "))
 		WHERE (bi.ID_BAN IS NULL OR bg.ID_BAN_GROUP IS NULL)
 			AND mem.is_activated >= 10", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$updates[$row['new_value']][] = $row['ID_MEMBER'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	if (!empty($updates))
 		foreach ($updates as $newStatus => $members)

@@ -48,8 +48,8 @@ function markBoardsRead($boards, $unread = false)
 		SELECT MIN(ID_TOPIC)
 		FROM {$db_prefix}log_topics
 		WHERE ID_MEMBER = $ID_MEMBER", __FILE__, __LINE__);
-	list ($lowest_topic) = mysql_fetch_row($result);
-	mysql_free_result($result);
+	list ($lowest_topic) = mysqli_fetch_row($result);
+	mysqli_free_result($result);
 
 	if (empty($lowest_topic))
 		return;
@@ -63,9 +63,9 @@ function markBoardsRead($boards, $unread = false)
 			AND t.ID_BOARD IN (" . implode(', ', $boards) . ")
 			AND lt.ID_MEMBER = $ID_MEMBER", __FILE__, __LINE__);
 	$topics = array();
-	while ($row = mysql_fetch_assoc($result))
+	while ($row = mysqli_fetch_assoc($result))
 		$topics[] = $row['ID_TOPIC'];
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	if (!empty($topics))
 		db_query("
@@ -93,9 +93,9 @@ function MarkRead()
 			FROM {$db_prefix}boards AS b
 			WHERE $user_info[query_see_board]", __FILE__, __LINE__);
 		$boards = array();
-		while ($row = mysql_fetch_assoc($result))
+		while ($row = mysqli_fetch_assoc($result))
 			$boards[] = $row['ID_BOARD'];
-		mysql_free_result($result);
+		mysqli_free_result($result);
 
 		if (!empty($boards))
 			markBoardsRead($boards, isset($_REQUEST['unread']));
@@ -140,8 +140,8 @@ function MarkRead()
 				FROM {$db_prefix}messages
 				WHERE ID_TOPIC = $topic
 					AND ID_MSG < " . (int) $_GET['t'], __FILE__, __LINE__);
-			list ($earlyMsg) = mysql_fetch_row($result);
-			mysql_free_result($result);
+			list ($earlyMsg) = mysqli_fetch_row($result);
+			mysqli_free_result($result);
 		}
 
 		if (empty($earlyMsg))
@@ -152,8 +152,8 @@ function MarkRead()
 				WHERE ID_TOPIC = $topic
 				ORDER BY ID_MSG
 				LIMIT " . (int) $_REQUEST['start'] . ", 1", __FILE__, __LINE__);
-			list ($earlyMsg) = mysql_fetch_row($result);
-			mysql_free_result($result);
+			list ($earlyMsg) = mysqli_fetch_row($result);
+			mysqli_free_result($result);
 		}
 
 		$earlyMsg--;
@@ -201,9 +201,9 @@ function MarkRead()
 			WHERE $user_info[query_see_board]
 				AND b." . implode(" OR b.", $clauses), __FILE__, __LINE__);
 		$boards = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$boards[] = $row['ID_BOARD'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		if (empty($boards))
 			redirectexit();
@@ -224,10 +224,10 @@ function MarkRead()
 				FROM {$db_prefix}boards AS b
 				WHERE b.ID_PARENT IN (" . implode(', ', $boards) . ")
 					AND $user_info[query_see_board]", __FILE__, __LINE__);
-			if (mysql_num_rows($result) > 0)
+			if (mysqli_num_rows($result) > 0)
 			{
 				$setString = '';
-				while ($row = mysql_fetch_assoc($result))
+				while ($row = mysqli_fetch_assoc($result))
 					$setString .= "
 						($modSettings[maxMsgID], $ID_MEMBER, $row[ID_BOARD]),";
 
@@ -236,7 +236,7 @@ function MarkRead()
 						(ID_MSG, ID_MEMBER, ID_BOARD)
 					VALUES" . substr($setString, 0, -1), __FILE__, __LINE__);
 			}
-			mysql_free_result($result);
+			mysqli_free_result($result);
 
 			if (empty($board))
 				redirectexit();
@@ -265,12 +265,12 @@ function getMsgMemberID($messageID)
 			LEFT JOIN {$db_prefix}members AS mem ON (mem.ID_MEMBER = m.ID_MEMBER)
 		WHERE m.ID_MSG = " . (int) $messageID . "
 		LIMIT 1", __FILE__, __LINE__);
-	if (mysql_num_rows($result) > 0)
-		list ($memberID) = mysql_fetch_row($result);
+	if (mysqli_num_rows($result) > 0)
+		list ($memberID) = mysqli_fetch_row($result);
 	// The message doesn't even exist.
 	else
 		$memberID = 0;
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	return $memberID;
 }
@@ -417,7 +417,7 @@ function QuickModeration()
 			WHERE ID_TOPIC IN (" . implode(', ', array_keys($_REQUEST['actions'])) . ")" . (!empty($board) ? "
 				AND ID_BOARD != $board" : '') . "
 			LIMIT " . count($_REQUEST['actions']), __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if (!empty($board))
 				unset($_REQUEST['actions'][$row['ID_TOPIC']]);
@@ -434,7 +434,7 @@ function QuickModeration()
 					unset($_REQUEST['actions'][$row['ID_TOPIC']]);
 			}
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	$stickyCache = array();
@@ -494,7 +494,7 @@ function QuickModeration()
 				AND ID_MEMBER_STARTED = $ID_MEMBER" : '') . "
 			LIMIT " . count($moveCache[0]), __FILE__, __LINE__);
 		$moveCache2 = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			$to = $moveCache[1][$row['ID_TOPIC']];
 			$row['numReplies']++;
@@ -532,7 +532,7 @@ function QuickModeration()
 
 			$moveCache2[] = array($row['ID_TOPIC'], $row['ID_BOARD'], $to);
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		$moveCache = $moveCache2;
 
@@ -559,9 +559,9 @@ function QuickModeration()
 					AND ID_MEMBER_STARTED = $ID_MEMBER
 				LIMIT " . count($removeCache), __FILE__, __LINE__);
 			$removeCache = array();
-			while ($row = mysql_fetch_assoc($result))
+			while ($row = mysqli_fetch_assoc($result))
 				$removeCache[] = $row['ID_TOPIC'];
-			mysql_free_result($result);
+			mysqli_free_result($result);
 		}
 
 		// Maybe *none* were their own topics.
@@ -596,12 +596,12 @@ function QuickModeration()
 					AND locked IN (2, 0)
 				LIMIT " . count($lockCache), __FILE__, __LINE__);
 			$lockCache = array();
-			while ($row = mysql_fetch_assoc($result))
+			while ($row = mysqli_fetch_assoc($result))
 			{
 				$lockCache[] = $row['ID_TOPIC'];
 				$lockStatus[$row['ID_TOPIC']] = empty($row['locked']);
 			}
-			mysql_free_result($result);
+			mysqli_free_result($result);
 		}
 		else
 		{
@@ -610,9 +610,9 @@ function QuickModeration()
 				FROM {$db_prefix}topics
 				WHERE ID_TOPIC IN (" . implode(', ', $lockCache) . ")
 				LIMIT " . count($lockCache), __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($result))
+			while ($row = mysqli_fetch_assoc($result))
 				$lockStatus[$row['ID_TOPIC']] = empty($row['locked']);
-			mysql_free_result($result);
+			mysqli_free_result($result);
 		}
 
 		// It could just be that *none* were their own topics...
@@ -698,8 +698,8 @@ function QuickModeration2()
 			FROM {$db_prefix}topics
 			WHERE ID_TOPIC = $topic
 			LIMIT 1", __FILE__, __LINE__);
-		list ($starter) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($starter) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		$allowed_all = $starter == $ID_MEMBER;
 	}
@@ -719,14 +719,14 @@ function QuickModeration2()
 			AND ID_MEMBER = $ID_MEMBER" : '') . "
 		LIMIT " . count($messages), __FILE__, __LINE__);
 	$messages = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (!$allowed_all && !empty($modSettings['edit_disable_time']) && $row['posterTime'] + $modSettings['edit_disable_time'] * 60 < time())
 			continue;
 
 		$messages[$row['ID_MSG']] = array($row['subject'], $row['ID_MEMBER']);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Get the first message in the topic - because you can't delete that!
 	$request = db_query("
@@ -734,8 +734,8 @@ function QuickModeration2()
 		FROM {$db_prefix}topics
 		WHERE ID_TOPIC = $topic
 		LIMIT 1", __FILE__, __LINE__);
-	list ($first_message, $last_message) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($first_message, $last_message) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	// Delete all the messages we know they can delete. ($messages)
 	foreach ($messages as $message => $info)
@@ -931,9 +931,9 @@ function modifyBoard($board_id, &$boardOptions)
 					FROM {$db_prefix}members
 					WHERE memberName IN ('" . implode("','", $moderators) . "') OR realName IN ('" . implode("','", $moderators) . "')
 					LIMIT " . count($moderators), __FILE__, __LINE__);
-				while ($row = mysql_fetch_assoc($request))
+				while ($row = mysqli_fetch_assoc($request))
 					$boardOptions['moderators'][] = $row['ID_MEMBER'];
-				mysql_free_result($request);
+				mysqli_free_result($request);
 			}
 		}
 
@@ -1006,8 +1006,8 @@ function createBoard($boardOptions)
 				FROM {$db_prefix}boards
 				WHERE ID_BOARD = " . (int) $boards[$board_id]['parent'] . "
 				LIMIT 1", __FILE__, __LINE__);
-			list ($boardOptions['permission_mode']) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list ($boardOptions['permission_mode']) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 
 			db_query("
 				UPDATE {$db_prefix}boards
@@ -1022,9 +1022,9 @@ function createBoard($boardOptions)
 				FROM {$db_prefix}board_permissions
 				WHERE ID_BOARD = " . (int) $boards[$board_id]['parent'], __FILE__, __LINE__);
 			$boardPerms = array();
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 				$boardPerms[] = "$board_id, $row[ID_GROUP], '$row[permission]', $row[addDeny]";
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			if (!empty($boardPerms))
 				// Do the insert!
@@ -1088,9 +1088,9 @@ function deleteBoards($boards_to_remove, $moveChildrenTo = null)
 		FROM {$db_prefix}topics
 		WHERE ID_BOARD IN (" . implode(', ', $boards_to_remove) . ')', __FILE__, __LINE__);
 	$topics = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$topics[] = $row['ID_TOPIC'];
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	require_once($sourcedir . '/RemoveTopic.php');
 	removeTopics($topics, false);
@@ -1157,7 +1157,7 @@ function modifyCategory($category_id, $catOptions)
 			SELECT ID_CAT, catOrder
 			FROM {$db_prefix}categories
 			ORDER BY catOrder", __FILE__, __LINE__);
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 		{
 			if ($row['ID_CAT'] != $category_id)
 				$cats[] = $row['ID_CAT'];
@@ -1165,7 +1165,7 @@ function modifyCategory($category_id, $catOptions)
 				$cats[] = $category_id;
 			$catOrder[$row['ID_CAT']] = $row['catOrder'];
 		}
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		// Set the new order for the categories.
 		foreach ($cats as $index => $cat)
@@ -1242,9 +1242,9 @@ function deleteCategories($categories, $moveBoardsTo = null)
 			FROM {$db_prefix}boards
 			WHERE ID_CAT IN (" . implode(', ', $categories) . ')', __FILE__, __LINE__);
 		$boards_inside = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$boards_inside[] = $row['ID_BOARD'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		if (!empty($boards_inside))
 			deleteBoards($boards_inside, null);
@@ -1314,9 +1314,9 @@ function fixChildren($parent, $newLevel, $newParent)
 		FROM {$db_prefix}boards
 		WHERE ID_PARENT = $parent", __FILE__, __LINE__);
 	$children = array();
-	while ($row = mysql_fetch_assoc($result))
+	while ($row = mysqli_fetch_assoc($result))
 		$children[] = $row['ID_BOARD'];
-	mysql_free_result($result);
+	mysqli_free_result($result);
 
 	// ...and set it to a new parent and childLevel.
 	db_query("
@@ -1348,7 +1348,7 @@ function getBoardTree()
 	$cat_tree = array();
 	$boards = array();
 	$last_board_order = 0;
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (!isset($cat_tree[$row['ID_CAT']]))
 		{
@@ -1423,7 +1423,7 @@ function getBoardTree()
 			}
 		}
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Get a list of all the boards in each category (using recursion).
 	$boardList = array();

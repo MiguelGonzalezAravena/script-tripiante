@@ -31,20 +31,20 @@ $_SESSION['last_read_topic'] = $topic;
 
 $dbresult = mysql_query("SELECT t.tag,l.ID,t.ID_TAG FROM {$db_prefix}tags_log as l, {$db_prefix}tags as t WHERE t.ID_TAG = l.ID_TAG && l.ID_TOPIC = $topic");
 $context['topic_tags'] = array();
-while($row = mysql_fetch_assoc($dbresult)) {
+while($row = mysqli_fetch_assoc($dbresult)) {
 $context['topic_tags'][] = array(
 'ID' => $row['ID'],
 'ID_TAG' => $row['ID_TAG'],
 'tag' => $row['tag'],
 );
 }
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 
 if(isset($_REQUEST['tags']) && !isset($_REQUEST['num_replies'])) {
 $dbresult = mysql_query("SELECT COUNT(*) as total FROM {$db_prefix}tags_log WHERE ID_TOPIC = " . $topic, __FILE__, __LINE__);
-$row = mysql_fetch_assoc($dbresult);
+$row = mysqli_fetch_assoc($dbresult);
 $totaltags = $row['total'];
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 $tags = explode(',',htmlentities($_REQUEST['tags'], ENT_QUOTES));
 if($totaltags < $modSettings['smftags_set_maxtags']) {
 $tagcount = 0;
@@ -68,26 +68,26 @@ $ID_TAG = db_insert_id();
 mysql_query("INSERT INTO {$db_prefix}tags_log (ID_TAG,ID_TOPIC, ID_MEMBER) VALUES ($ID_TAG,$topic,$ID_MEMBER)");
 $tagcount++;
 } else {
-$row = mysql_fetch_assoc($dbresult);
+$row = mysqli_fetch_assoc($dbresult);
 $ID_TAG = $row['ID_TAG'];
 $dbresult2= mysql_query("SELECT ID FROM {$db_prefix}tags_log WHERE ID_TAG  =  $ID_TAG  AND ID_TOPIC = $topic");
 if(db_affected_rows() != 0) {
 continue;
 }
-mysql_free_result($dbresult2);
+mysqli_free_result($dbresult2);
 mysql_query("INSERT INTO {$db_prefix}tags_log (ID_TAG,ID_TOPIC, ID_MEMBER) VALUES ($ID_TAG,$topic,$ID_MEMBER)");
 $tagcount++;
 }
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 }
 }
 }
 $request = mysql_query("SELECT * FROM ({$db_prefix}topics AS t, {$db_prefix}messages AS ms) WHERE t.ID_TOPIC = $topic AND ms.ID_TOPIC = $topicids LIMIT 1");
-if (mysql_num_rows($request) == 0) {
+if (mysqli_num_rows($request) == 0) {
 fatal_lang_error(472, false);
 }
-$topicinfo = mysql_fetch_assoc($request);
-mysql_free_result($request);
+$topicinfo = mysqli_fetch_assoc($request);
+mysqli_free_result($request);
 
 	$context['show_spellchecking'] = !empty($modSettings['enableSpellChecking']);
 	censorText($topicinfo['subject']);
@@ -108,13 +108,13 @@ mysql_free_result($request);
 
 	$messages = array();
 	$posters = array();
-	while ($row = mysql_fetch_assoc($request)) 	{
+	while ($row = mysqli_fetch_assoc($request)) 	{
 	if (!empty($row['ID_MEMBER'])) {
 		$posters[] = $row['ID_MEMBER'];
 	}
 		$messages[] = $row['ID_MSG'];
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 	$posters = array_unique($posters);
 
     if(isset($context['single-post']) && in_array($context['single-post'], $messages))
@@ -128,12 +128,12 @@ mysql_free_result($request);
 			
 		/* Post Relacionados por Tags */
 $request = mysql_query("SELECT t.ID_TAG FROM ({$db_prefix}tags_log AS tl INNER JOIN {$db_prefix}tags AS t ON tl.ID_TAG = t.ID_TAG) INNER JOIN {$db_prefix}messages AS m ON m.ID_TOPIC = tl.ID_TOPIC WHERE m.ID_TOPIC = " . $topic);
-while ($row = mysql_fetch_assoc($request)) {
+while ($row = mysqli_fetch_assoc($request)) {
 $context['tags'][] = array(
 'id' => $row['ID_TAG']
 );
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 
 		foreach ($context['tags'] as $valtags) 
 			{ $valins = $valins.$valtags['id'].", "; }
@@ -153,7 +153,7 @@ mysql_free_result($request);
 		ORDER BY RAND()
 		LIMIT 0, 10");
 		$context['posts10'] = array();
-		while ($row = mysql_fetch_assoc($request)) {
+		while ($row = mysqli_fetch_assoc($request)) {
 		$row['can_view_post'] = 1;
 		if (!empty($modSettings['allow_hiddenPost']) && $row['hiddenOption'] > 0) {
 			global $sourcedir;
@@ -172,28 +172,28 @@ mysql_free_result($request);
 				'description' => $row['description']
 				);
 		}
-mysql_free_result($request);
+mysqli_free_result($request);
 /* Post Relacionados por Tags */
 
 $topic	=	$_REQUEST['topic'];		
 $request = mysql_query("SELECT t.ID_TOPIC, t.points FROM ({$db_prefix}topics AS t) WHERE t.ID_TOPIC= " . $topic);
-while ($row = mysql_fetch_assoc($request)) {
+while ($row = mysqli_fetch_assoc($request)) {
 $context['points-post'] = $row['points'];
 }	
-mysql_free_result($request);
+mysqli_free_result($request);
 	
 /* Veamos si hay comentarios */
 $request = mysql_query("SELECT * FROM ({$db_prefix}comments) WHERE ID_TOPIC = " . $topic);
-$context['haycom'] = mysql_fetch_assoc($request);
+$context['haycom'] = mysqli_fetch_assoc($request);
 
 /* Si los hay, dice cuantos... */
 $request = mysql_query("SELECT * FROM ({$db_prefix}comments) WHERE ID_TOPIC = " . $topic);
-$context['numcom'] =  mysql_num_rows($request);
+$context['numcom'] =  mysqli_num_rows($request);
 
 /* Marquemos los comentarios */
 $request = mysql_query("SELECT c.comment, c.comment AS comentario2, c.ID_TOPIC, c.ID_MEMBER, mem.ID_MEMBER, mem.memberName, mem.realName, c.ID_COMMENT, c.posterTime FROM ({$db_prefix}comments AS c, {$db_prefix}members AS mem)  WHERE c.ID_TOPIC = $topic AND c.ID_MEMBER = mem.ID_MEMBER ORDER BY c.ID_COMMENT ASC ");
 $context['comentarios'] = array();
-while ($row = mysql_fetch_assoc($request)) {
+while ($row = mysqli_fetch_assoc($request)) {
 $row['comment'] = parse_bbc($row['comment'], '1', $row['ID_MSG']);
 $row['comentario0'] = parse_bbc($row['comentario0'], '0', $row['ID_MSG']);
 censorText($row['comment']);
@@ -210,12 +210,12 @@ $context['comentarios'][] = array(
 'fecha' => $row['posterTime'],
 );
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 
 ssi_grupos();
 	
 $rs = mysql_query("SELECT o.ID_TOPIC FROM ({$db_prefix}bookmarks AS o) WHERE o.ID_TOPIC = $topic AND o.TYPE = 'posts'");
-$context['fav1'] = mysql_num_rows($rs);
+$context['fav1'] = mysqli_num_rows($rs);
 
 $messages_request = mysql_query("
 SELECT m.ID_TOPIC, m.subject, m.posterTime, m.posterIP, m.ID_MEMBER, m.modifiedTime, m.modifiedName, m.body, m.hiddenOption, m.hiddenValue, m.ID_BOARD, b.ID_BOARD, b.description, b.name AS bname, m.smileysEnabled, m.posterName, m.posterEmail
@@ -275,7 +275,7 @@ function prepareDisplayContext($reset = false)
 		$counter = empty($options['view_newest_first']) ? $context['start'] : $context['num_replies'] - $context['start'];
 	if ($reset)
 		return @mysql_data_seek($messages_request, 0);
-	$message = mysql_fetch_assoc($messages_request);
+	$message = mysqli_fetch_assoc($messages_request);
 	if (!$message)
 		return false;
 		
@@ -384,7 +384,7 @@ function theme_quickreply_box()
 				FROM {$db_prefix}smileys
 				WHERE hidden IN (0, 2)
 				ORDER BY smileyRow, smileyOrder");
-			while ($row = mysql_fetch_assoc($request))
+			while ($row = mysqli_fetch_assoc($request))
 			{
 				$row['code'] = htmlspecialchars($row['code']);
 				$row['filename'] = htmlspecialchars($row['filename']);
@@ -392,7 +392,7 @@ function theme_quickreply_box()
 
 				$context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
 			}
-			mysql_free_result($request);
+			mysqli_free_result($request);
 
 			cache_put_data('posting_smileys', $context['smileys'], 480);
 		}

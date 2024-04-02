@@ -3,14 +3,13 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-function Tos()
-{
-	global $settings, $user_info, $language, $context, $txt;
+function Tos() {
+	global $context, $txt;
 
 	loadTemplate('Tos');
 	loadLanguage('Manual');
-	$context['page_title'] = $txt[18];
 
+	$context['page_title'] = $txt[18];
 	$context['all_pages'] = array(
 		'index' => 'intro',
 	);
@@ -22,8 +21,8 @@ function Tos()
 	$context['sub_template'] = 'manual_' . $context['all_pages'][$context['current_page']];
 
 	$context['template_layers'][] = 'manual';
-	  $txt['Titulo'] = $txt[18]; 
+	$txt['Titulo'] = $txt[18]; 
 	$context['page_title'] = $txt[18];
-
 }
+
 ?>

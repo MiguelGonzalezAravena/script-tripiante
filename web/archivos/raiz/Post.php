@@ -12,23 +12,23 @@ function Post()
 
 $dbresult= db_query("SELECT t.tag,l.ID,t.ID_TAG FROM {$db_prefix}tags_log as l, {$db_prefix}tags as t WHERE t.ID_TAG = l.ID_TAG && l.ID_TOPIC = $topic", __FILE__, __LINE__);
 $context['topic_tags'] = array();
-while($row = mysql_fetch_assoc($dbresult)) {
+while($row = mysqli_fetch_assoc($dbresult)) {
 $context['topic_tags'][] = array(
 'ID' => $row['ID'],
 'ID_TAG' => $row['ID_TAG'],
 'tag' => $row['tag'],
 );
 }
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 
 $request = db_query("SELECT b.ID_BOARD, b.name, c.name AS catName FROM {$db_prefix}boards AS b LEFT JOIN {$db_prefix}categories AS c ON (c.ID_CAT = b.ID_CAT) ORDER BY b.name ASC ", __FILE__, __LINE__);
 $context['boards'] = array();
-while ($row = mysql_fetch_assoc($request))
+while ($row = mysqli_fetch_assoc($request))
 $context['boards'][] = array(
 'id' => $row['ID_BOARD'],
 'name' => $row['name'],
 );
-mysql_free_result($request);
+mysqli_free_result($request);
 $categorias = htmlentities(addslashes($_POST['categorias']));
 
 require_once($sourcedir . '/Subs-Post.php');
@@ -41,8 +41,8 @@ SELECT t.locked, t.isSticky, t.numReplies, t.ID_FIRST_MSG
 FROM {$db_prefix}topics AS t
 WHERE t.ID_TOPIC = $topic
 LIMIT 1", __FILE__, __LINE__);
-list ($locked, $sticky, $ID_MEMBER_POSTER, $ID_FIRST_MSG, $first_subject) = mysql_fetch_row($request);
-mysql_free_result($request);
+list ($locked, $sticky, $ID_MEMBER_POSTER, $ID_FIRST_MSG, $first_subject) = mysqli_fetch_row($request);
+mysqli_free_result($request);
 
 if (empty($_REQUEST['msg'])) {
 if ($user_info['is_guest'] && !allowedTo('post_reply_any')) {
@@ -143,9 +143,9 @@ $request = db_query("
 				m.ID_MEMBER, m.posterName, t.ID_MEMBER_STARTED
 			FROM {$db_prefix}messages AS m, {$db_prefix}topics AS t
 			WHERE m.ID_MSG = " . (int) $_REQUEST['msg'] . "", __FILE__, __LINE__);
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('noresponder', false);
-		$row = mysql_fetch_assoc($request);
+		$row = mysqli_fetch_assoc($request);
 
 		if ($row['ID_MEMBER'] != $ID_MEMBER && (!allowedTo('modify_any')))
 		fatal_lang_error('noresponder', false);
@@ -261,8 +261,8 @@ FROM {$db_prefix}messages
 WHERE ID_MSG = " . (int) $_REQUEST['msg'] . "
 AND ID_TOPIC = $topic
 LIMIT 1", __FILE__, __LINE__);
-$row = mysql_fetch_assoc($request);
-mysql_free_result($request);
+$row = mysqli_fetch_assoc($request);
+mysqli_free_result($request);
 
 if (empty($row['ID_MEMBER'])) {
 $context['name'] = htmlspecialchars($row['posterName']);
@@ -279,10 +279,10 @@ WHERE m.ID_MSG = t.ID_FIRST_MSG
 AND t.ID_BOARD = m.ID_BOARD
 AND m.ID_TOPIC = $topic
 AND t.ID_TOPIC = $topic", __FILE__, __LINE__);
-if (mysql_num_rows($request) == 0) {
+if (mysqli_num_rows($request) == 0) {
 fatal_lang_error('smf232', false);
 }
-$row = mysql_fetch_assoc($request);
+$row = mysqli_fetch_assoc($request);
 
 if ($row['ID_MEMBER'] == $ID_MEMBER && !allowedTo('modify_any')) {
 if (!empty($modSettings['edit_disable_time']) && $row['posterTime'] + ($modSettings['edit_disable_time'] + 5) * 60 < time()) {
@@ -337,11 +337,11 @@ WHERE m.ID_MSG = " . (int) $_REQUEST['quote'] . "
 AND b.ID_BOARD = m.ID_BOARD
 AND $user_info[query_see_board]
 LIMIT 1", __FILE__, __LINE__);
-if (mysql_num_rows($request) == 0){
+if (mysqli_num_rows($request) == 0){
 fatal_lang_error('quoted_post_deleted', false);
 }
-list ($form_subject, $mname, $mdate, $form_message) = mysql_fetch_row($request);
-mysql_free_result($request);
+list ($form_subject, $mname, $mdate, $form_message) = mysqli_fetch_row($request);
+mysqli_free_result($request);
 
 if (trim($context['response_prefix']) != '' && $func['strpos']($form_subject, trim($context['response_prefix'])) !== 0) {
 $form_subject = $context['response_prefix'] . $form_subject;
@@ -452,8 +452,8 @@ FROM ({$db_prefix}topics AS t, {$db_prefix}messages AS m)
 WHERE t.ID_TOPIC = $topic
 AND m.ID_MSG = t.ID_FIRST_MSG
 LIMIT 1", __FILE__, __LINE__);
-list ($tmplocked, $tmpstickied, $pollID, $numReplies, $ID_MEMBER_POSTER) = mysql_fetch_row($request);
-mysql_free_result($request);
+list ($tmplocked, $tmpstickied, $pollID, $numReplies, $ID_MEMBER_POSTER) = mysqli_fetch_row($request);
+mysqli_free_result($request);
 
 if ($tmplocked != 0 && !allowedTo('moderate_board')) {
 fatal_lang_error(90, false);
@@ -520,11 +520,11 @@ FROM ({$db_prefix}messages AS m, {$db_prefix}topics AS t)
 WHERE m.ID_MSG = $_REQUEST[msg]
 AND t.ID_TOPIC = $topic
 LIMIT 1", __FILE__, __LINE__);
-if (mysql_num_rows($request) == 0) {
+if (mysqli_num_rows($request) == 0) {
 fatal_lang_error('smf272', false);
 }
-$row = mysql_fetch_assoc($request);
-mysql_free_result($request);
+$row = mysqli_fetch_assoc($request);
+mysqli_free_result($request);
 
 if (!empty($row['locked']) && !allowedTo('moderate_board')) {
 fatal_lang_error(90, false);
@@ -688,9 +688,9 @@ $topic = $topicOptions['id'];
 
 if(isset($_REQUEST['tags']) && !isset($_REQUEST['num_replies'])) {
 $dbresult = db_query("SELECT COUNT(*) as total FROM {$db_prefix}tags_log WHERE ID_TOPIC = " . $topic, __FILE__, __LINE__);
-$row = mysql_fetch_assoc($dbresult);
+$row = mysqli_fetch_assoc($dbresult);
 $totaltags = $row['total'];
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 $tags = explode(',',htmlspecialchars($_REQUEST['tags'],ENT_QUOTES));
 if($totaltags < $modSettings['smftags_set_maxtags']) {
 $tagcount = 0;
@@ -714,24 +714,24 @@ $ID_TAG = db_insert_id();
 db_query("INSERT INTO {$db_prefix}tags_log (ID_TAG,ID_TOPIC, ID_MEMBER) VALUES ($ID_TAG,$topic,$ID_MEMBER)", __FILE__, __LINE__);
 $tagcount++;
 } else {
-$row = mysql_fetch_assoc($dbresult);
+$row = mysqli_fetch_assoc($dbresult);
 $ID_TAG = $row['ID_TAG'];
 $dbresult2= db_query("SELECT ID FROM {$db_prefix}tags_log WHERE ID_TAG  =  $ID_TAG  AND ID_TOPIC = $topic", __FILE__, __LINE__);
 if(db_affected_rows() != 0) {
 continue;
 }
-mysql_free_result($dbresult2);
+mysqli_free_result($dbresult2);
 db_query("INSERT INTO {$db_prefix}tags_log (ID_TAG,ID_TOPIC, ID_MEMBER) VALUES ($ID_TAG,$topic,$ID_MEMBER)", __FILE__, __LINE__);
 $tagcount++;
 }
-mysql_free_result($dbresult);
+mysqli_free_result($dbresult);
 }
 }
 }
 
 if(!empty($_REQUEST['topic'])) {
 $history	=	db_query("SELECT t.ID_TOPIC, m.subject, t.ID_MEMBER_STARTED, m.ID_TOPIC FROM ({$db_prefix}topics AS t, {$db_prefix}messages AS m) WHERE t.ID_TOPIC = $topic AND m.ID_TOPIC = t.ID_TOPIC AND m.ID_TOPIC = $topic", __FILE__, __LINE__);
-$sacarid	=	mysql_fetch_assoc($history);
+$sacarid	=	mysqli_fetch_assoc($history);
 
 $ID_MODERATOR	=	$context['user']['id'];
 $ID_MEMBER		=	$sacarid['ID_MEMBER_STARTED'];
@@ -785,7 +785,7 @@ WHERE m.ID_TOPIC = $topic" . (isset($_REQUEST['msg']) ? "
 AND m.ID_MSG < " . (int) $_REQUEST['msg'] : '') . "
 ORDER BY m.ID_MSG DESC$limit", __FILE__, __LINE__);
 $context['previous_posts'] = array();
-while ($row = mysql_fetch_assoc($request)) {
+while ($row = mysqli_fetch_assoc($request)) {
 $row['can_view_post'] = 1;
 if (!empty($modSettings['allow_hiddenPost']) && $row['hiddenOption'] > 0) {
 global $sourcedir;
@@ -810,6 +810,6 @@ if (!empty($newReplies)) {
 $newReplies--;
 }
 }
-mysql_free_result($request);
+mysqli_free_result($request);
 }
 ?>

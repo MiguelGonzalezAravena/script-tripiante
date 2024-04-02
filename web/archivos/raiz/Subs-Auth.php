@@ -347,7 +347,7 @@ function findMembers($names, $use_wildcards = false, $buddies_only = false, $max
 			" . ($buddies_only ? 'AND ID_MEMBER IN (' . implode(', ', $user_info['buddies']) . ')' : '') . "
 			AND is_activated IN (1, 11)" . ($max == null ? '' : "
 		LIMIT " . (int) $max), __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$results[$row['ID_MEMBER']] = array(
 			'id' => $row['ID_MEMBER'],
@@ -358,7 +358,7 @@ function findMembers($names, $use_wildcards = false, $buddies_only = false, $max
 			'link' => '<a href="' . $scripturl . '?action=profile;u=' . $row['ID_MEMBER'] . '">' . $row['realName'] . '</a>'
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Return all the results.
 	return $results;
@@ -450,7 +450,7 @@ function RequestMembers()
 			AND ID_MEMBER IN (' . implode(', ', $user_info['buddies']) . ')' : '') . "
 			AND is_activated IN (1, 11)
 		LIMIT " . (strlen($_REQUEST['search']) <= 2 ? '100' : '800'), __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		if (function_exists('iconv'))
 		{
@@ -478,7 +478,7 @@ function RequestMembers()
 
 		echo $row['realName'], "\n";
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	obExit(false);
 }
@@ -497,8 +497,8 @@ function resetPassword($memID, $username = null)
 		SELECT memberName, emailAddress
 		FROM {$db_prefix}members
 		WHERE ID_MEMBER = $memID", __FILE__, __LINE__);
-	list ($user, $email) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($user, $email) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	if ($username !== null)
 	{

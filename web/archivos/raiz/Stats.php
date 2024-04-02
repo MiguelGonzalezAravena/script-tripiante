@@ -52,8 +52,8 @@ function DisplayStats()
 			SUM(posts) AS posts, SUM(topics) AS topics, SUM(registers) AS registers,
 			SUM(mostOn) AS mostOn, MIN(date) AS date, SUM(hits) AS hits
 		FROM {$db_prefix}log_activity", __FILE__, __LINE__);
-	$row = mysql_fetch_assoc($result);
-	mysql_free_result($result);
+	$row = mysqli_fetch_assoc($result);
+	mysqli_free_result($result);
 
 	// This would be the amount of time the forum has been up... in days...
 	$total_days_up = ceil((time() - strtotime($row['date'])) / (60 * 60 * 24));
@@ -70,21 +70,21 @@ function DisplayStats()
 	$result = db_query("
 		SELECT COUNT(*)
 		FROM {$db_prefix}log_online", __FILE__, __LINE__);
-	list ($context['users_online']) = mysql_fetch_row($result);
-	mysql_free_result($result);
+	list ($context['users_online']) = mysqli_fetch_row($result);
+	mysqli_free_result($result);
 
 	// Statistics such as number of boards, categories, etc.
 	$result = db_query("
 		SELECT COUNT(*)
 		FROM {$db_prefix}boards AS b", __FILE__, __LINE__);
-	list ($context['num_boards']) = mysql_fetch_row($result);
-	mysql_free_result($result);
+	list ($context['num_boards']) = mysqli_fetch_row($result);
+	mysqli_free_result($result);
 
 	$result = db_query("
 		SELECT COUNT(*)
 		FROM {$db_prefix}categories AS c", __FILE__, __LINE__);
-	list ($context['num_categories']) = mysql_fetch_row($result);
-	mysql_free_result($result);
+	list ($context['num_categories']) = mysqli_fetch_row($result);
+	mysqli_free_result($result);
 
 	$context['num_members'] = &$modSettings['totalMembers'];
 	$context['num_posts'] = &$modSettings['totalMessages'];
@@ -103,13 +103,13 @@ function DisplayStats()
 			FROM {$db_prefix}members
 			GROUP BY gender", __FILE__, __LINE__);
 		$context['gender'] = array();
-		while ($row = mysql_fetch_assoc($result))
+		while ($row = mysqli_fetch_assoc($result))
 		{
 			// Assuming we're telling... male or female?
 			if (!empty($row['gender']))
 				$context['gender'][$row['gender'] == 2 ? 'females' : 'males'] = $row['totalMembers'];
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 
 		// Set these two zero if the didn't get set at all.
 		if (empty($context['gender']['males']))
@@ -140,8 +140,8 @@ function DisplayStats()
 		FROM {$db_prefix}log_activity
 		WHERE date = $date
 		LIMIT 1", __FILE__, __LINE__);
-	list ($context['online_today']) = mysql_fetch_row($result);
-	mysql_free_result($result);
+	list ($context['online_today']) = mysqli_fetch_row($result);
+	mysqli_free_result($result);
 
 	$context['online_today'] = (int) $context['online_today'];
 	$boards_result = db_query("
@@ -153,7 +153,7 @@ function DisplayStats()
 		LIMIT 10", __FILE__, __LINE__);
 	$context['top_boards'] = array();
 	$max_num_posts = 1;
-	while ($row_board = mysql_fetch_assoc($boards_result))
+	while ($row_board = mysqli_fetch_assoc($boards_result))
 	{
 		$context['top_boards'][] = array(
 			'id' => $row_board['ID_BOARD'],
@@ -167,7 +167,7 @@ function DisplayStats()
 		if ($max_num_posts < $row_board['numPosts'])
 			$max_num_posts = $row_board['numPosts'];
 	}
-	mysql_free_result($boards_result);
+	mysqli_free_result($boards_result);
 
 	foreach ($context['top_boards'] as $i => $board)
 		$context['top_boards'][$i]['post_percent'] = round(($board['num_posts'] * 100) / $max_num_posts);
@@ -182,14 +182,14 @@ function DisplayStats()
 			ORDER BY numReplies DESC
 			LIMIT 100", __FILE__, __LINE__);
 		$topic_ids = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$topic_ids[] = $row['ID_TOPIC'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	else
 		$topic_ids = array();
 
-/* Imágenes */
+/* Imï¿½genes */
 $request = db_query("
 SELECT m.ID_MEMBER, i.ID_MEMBER, i.ID_PICTURE, i.title, m.memberName, m.realName
 FROM ({$db_prefix}gallery_pic AS i, {$db_prefix}members AS m)
@@ -198,7 +198,7 @@ ORDER BY i.ID_PICTURE DESC
 LIMIT 10", __FILE__, __LINE__);
 
 	$context['imagenestop'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 
 			$context['imagenestop'][] = array(
@@ -209,9 +209,9 @@ LIMIT 10", __FILE__, __LINE__);
 			'nombrem2' => $row['realName'],
 			);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
-/* Imágenes */
+/* Imï¿½genes */
 $request = db_query("
 SELECT m.ID_MEMBER, i.ID_MEMBER, i.ID_PICTURE, i.title, m.memberName, m.realName, i.views
 FROM ({$db_prefix}gallery_pic AS i, {$db_prefix}members AS m)
@@ -220,7 +220,7 @@ ORDER BY i.views DESC
 LIMIT 0 , 10", __FILE__, __LINE__);
 
 	$context['imgv'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 
 			$context['imgv'][] = array(
@@ -232,7 +232,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 			'nombrem2' => $row['realName'],
 			);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$topic_reply_result = db_query("
 	SELECT *
@@ -241,7 +241,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 	LIMIT 10", __FILE__, __LINE__);
 	$context['top_topics_replies'] = array();
 	$max_num_replies = 1;
-	while ($row_topic_reply = mysql_fetch_assoc($topic_reply_result))
+	while ($row_topic_reply = mysqli_fetch_assoc($topic_reply_result))
 	{
 		censorText($row_topic_reply['subject']);
 
@@ -254,7 +254,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 		if ($max_num_replies < $row_topic_reply['numReplies'])
 			$max_num_replies = $row_topic_reply['numReplies'];
 	}
-	mysql_free_result($topic_reply_result);
+	mysqli_free_result($topic_reply_result);
 
 	foreach ($context['top_topics_replies'] as $i => $topic)
 		$context['top_topics_replies'][$i]['post_percent'] = round(($topic['num_replies'] * 100) / $max_num_replies);
@@ -268,7 +268,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 			ORDER BY moneyBank DESC
 			LIMIT 10", __FILE__, __LINE__);
 		// Loop through all results
-		while ($row = mysql_fetch_array($result, MYSQL_ASSOC))
+		while ($row = mysqli_fetch_array($result, MYSQL_ASSOC))
 			// And add them to the list
 			$context['shop_richest'][] = array(
 				'ID_MEMBER' => $row['ID_MEMBER'],
@@ -284,9 +284,9 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 			ORDER BY numViews DESC
 			LIMIT 100", __FILE__, __LINE__);
 		$topic_ids = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$topic_ids[] = $row['ID_TOPIC'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 	else
 		$topic_ids = array();
@@ -304,7 +304,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 		LIMIT 10", __FILE__, __LINE__);
 	$context['top_topics_views'] = array();
 	$max_num_views = 1;
-	while ($row_topic_views = mysql_fetch_assoc($topic_view_result))
+	while ($row_topic_views = mysqli_fetch_assoc($topic_view_result))
 	{
 		censorText($row_topic_views['subject']);
 
@@ -326,7 +326,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 		if ($max_num_views < $row_topic_views['numViews'])
 			$max_num_views = $row_topic_views['numViews'];
 	}
-	mysql_free_result($topic_view_result);
+	mysqli_free_result($topic_view_result);
 
 	foreach ($context['top_topics_views'] as $i => $topic)
 		$context['top_topics_views'][$i]['post_percent'] = round(($topic['num_views'] * 100) / $max_num_views);
@@ -342,9 +342,9 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 			ORDER BY hits DESC
 			LIMIT 20", __FILE__, __LINE__);
 		$members = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$members[$row['ID_MEMBER_STARTED']] = $row['hits'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		cache_put_data('stats_top_starters', $members, 360);
 	}
@@ -361,7 +361,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 		LIMIT 10", __FILE__, __LINE__);
 	$context['top_starters'] = array();
 	$max_num_topics = 1;
-	while ($row_members = mysql_fetch_assoc($members_result))
+	while ($row_members = mysqli_fetch_assoc($members_result))
 	{
 		$context['top_starters'][] = array(
 			'name' => $row_members['realName'],
@@ -374,7 +374,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 		if ($max_num_topics < $row_members['topics'])
 			$max_num_topics = $row_members['topics'];
 	}
-	mysql_free_result($members_result);
+	mysqli_free_result($members_result);
 
 	foreach ($context['top_starters'] as $i => $topic)
 		$context['top_starters'][$i]['post_percent'] = round(($topic['num_topics'] * 100) / $max_num_topics);
@@ -391,7 +391,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 	$context['top_time_online'] = array();
 	$temp2 = array();
 	$max_time_online = 1;
-	while ($row_members = mysql_fetch_assoc($members_result))
+	while ($row_members = mysqli_fetch_assoc($members_result))
 	{
 		$temp2[] = (int) $row_members['ID_MEMBER'];
 		if (count($context['top_time_online']) >= 10)
@@ -421,7 +421,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 		if ($max_time_online < $row_members['totalTimeLoggedIn'])
 			$max_time_online = $row_members['totalTimeLoggedIn'];
 	}
-	mysql_free_result($members_result);
+	mysqli_free_result($members_result);
 
 	foreach ($context['top_time_online'] as $i => $member)
 		$context['top_time_online'][$i]['time_percent'] = round(($member['seconds_online'] * 100) / $max_time_online);
@@ -437,7 +437,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
 		FROM {$db_prefix}log_activity
 		GROUP BY stats_year, stats_month", __FILE__, __LINE__);
 	$context['monthly'] = array();
-	while ($row_months = mysql_fetch_assoc($months_result))
+	while ($row_months = mysqli_fetch_assoc($months_result))
 	{
 		$ID_MONTH = $row_months['stats_year'] . sprintf('%02d', $row_months['stats_month']);
 		$expanded = !empty($_SESSION['expanded_stats'][$row_months['stats_year']]) && in_array($row_months['stats_month'], $_SESSION['expanded_stats'][$row_months['stats_year']]);
@@ -491,7 +491,7 @@ function getDailyStats($condition)
 		FROM {$db_prefix}log_activity
 		WHERE $condition
 		ORDER BY stats_day ASC", __FILE__, __LINE__);
-	while ($row_days = mysql_fetch_assoc($days_result))
+	while ($row_days = mysqli_fetch_assoc($days_result))
 		$context['monthly'][$row_days['stats_year'] . sprintf('%02d', $row_days['stats_month'])]['days'][] = array(
 			'day' => sprintf('%02d', $row_days['stats_day']),
 			'month' => sprintf('%02d', $row_days['stats_month']),
@@ -502,7 +502,7 @@ function getDailyStats($condition)
 			'most_members_online' => $row_days['mostOn'],
 			'hits' => $row_days['hits']
 		);
-	mysql_free_result($days_result);
+	mysqli_free_result($days_result);
 }
 
 // This is the function which returns stats to simple machines.org IF enabled!
@@ -539,8 +539,8 @@ function SMStats()
 
 	$request = db_query("
 		SELECT VERSION()", __FILE__, __LINE__);
-	list ($stats_to_send['mysql_version']) = mysql_fetch_row($request);
-	mysql_free_result($request);
+	list ($stats_to_send['mysql_version']) = mysqli_fetch_row($request);
+	mysqli_free_result($request);
 
 	// Encode all the data, for security.
 	foreach ($stats_to_send as $k => $v)

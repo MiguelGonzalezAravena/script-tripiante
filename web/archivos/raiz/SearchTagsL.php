@@ -12,14 +12,14 @@ function PlushSearch1()
 	LEFT JOIN {$db_prefix}categories AS c ON (c.ID_CAT = b.ID_CAT)
 	", __FILE__, __LINE__);
 	$context['boards'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['boards'][] = array(
 			'id' => $row['ID_BOARD'],
 			'name' => $row['name'],
 			'category' => $row['catName'],
 			'child_level' => $row['childLevel'],
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 	if (!empty($context['load_average']) && !empty($modSettings['loadavg_search']) && $context['load_average'] >= $modSettings['loadavg_search'])
 		fatal_lang_error('loadavg_search_disabled', false);
 
@@ -74,9 +74,9 @@ function PlushSearch1()
 		FROM {$db_prefix}boards AS b
 			LEFT JOIN {$db_prefix}categories AS c ON (c.ID_CAT = b.ID_CAT)
 		WHERE $user_info[query_see_board]", __FILE__, __LINE__);
-	$context['num_boards'] = mysql_num_rows($request);
+	$context['num_boards'] = mysqli_num_rows($request);
 	$context['categories'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		// This category hasn't been set up yet..
 		if (!isset($context['categories'][$row['ID_CAT']]))
@@ -94,7 +94,7 @@ function PlushSearch1()
 			'selected' => (empty($context['search_params']['brd']) && (empty($modSettings['recycle_enable']) || $row['ID_BOARD'] != $modSettings['recycle_board'])) || (!empty($context['search_params']['brd']) && in_array($row['ID_BOARD'], $context['search_params']['brd']))
 		);
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	$temp_boards = array();
 	foreach ($context['categories'] as $category)
@@ -145,11 +145,11 @@ function PlushSearch1()
 				AND $user_info[query_see_board]
 			LIMIT 1", __FILE__, __LINE__);
 
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('topic_gone', false);
 
-		list ($context['search_topic']['subject']) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($context['search_topic']['subject']) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		$context['search_topic']['link'] = '<a href="' . $context['search_topic']['href'] . '">' . $context['search_topic']['subject'] . '</a>';
 	}
@@ -173,14 +173,14 @@ function PlushSearch2()
 	LEFT JOIN {$db_prefix}categories AS c ON (c.ID_CAT = b.ID_CAT)
 	", __FILE__, __LINE__);
 	$context['boards'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['boards'][] = array(
 			'id' => $row['ID_BOARD'],
 			'name' => $row['name'],
 			'category' => $row['catName'],
 			'child_level' => $row['childLevel'],
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	if (!empty($context['load_average']) && !empty($modSettings['loadavg_search']) && $context['load_average'] >= $modSettings['loadavg_search'])
 		fatal_lang_error('loadavg_search_disabled', false);
@@ -240,10 +240,10 @@ function PlushSearch2()
 		$request = db_query("
 			SHOW VARIABLES
 			LIKE 'ft_min_word_len'", false, false);
-		if ($request !== false && mysql_num_rows($request) == 1)
+		if ($request !== false && mysqli_num_rows($request) == 1)
 		{
-			list (, $min_word_length) = mysql_fetch_row($request);
-			mysql_free_result($request);
+			list (, $min_word_length) = mysqli_fetch_row($request);
+			mysqli_free_result($request);
 		}
 		// 4 is the MySQL default...
 		else
@@ -300,10 +300,10 @@ function PlushSearch2()
 			FROM {$db_prefix}messages
 			WHERE " . (empty($search_params['minage']) ? '1' : 'posterTime <= ' . (time() - 86400 * $search_params['minage'])) . (empty($search_params['maxage']) ? '' : "
 				AND posterTime >= " . (time() - 86400 * $search_params['maxage'])), __FILE__, __LINE__);
-		list ($minMsgID, $maxMsgID) = mysql_fetch_row($request);
+		list ($minMsgID, $maxMsgID) = mysqli_fetch_row($request);
 		if ($minMsgID < 0 || $maxMsgID < 0)
 			$context['search_errors']['no_messages_in_time_frame'] = true;
-		mysql_free_result($request);
+		mysqli_free_result($request);
 	}
 
 	if (!empty($search_params['brd']) && is_array($search_params['brd']))
@@ -325,12 +325,12 @@ function PlushSearch2()
 				AND $user_info[query_see_board]
 			LIMIT 1", __FILE__, __LINE__);
 
-		if (mysql_num_rows($request) == 0)
+		if (mysqli_num_rows($request) == 0)
 			fatal_lang_error('topic_gone', false);
 
 		$search_params['brd'] = array();
-		list ($search_params['brd'][0]) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($search_params['brd'][0]) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 	}
 	// Select all boards you've selected AND are allowed to see.
 	elseif ($user_info['is_admin'] && (!empty($search_params['advanced']) || !empty($_REQUEST['brd'])))
@@ -344,9 +344,9 @@ function PlushSearch2()
 				AND b.ID_BOARD != $modSettings[recycle_board]" : '') : "
 				AND b.ID_BOARD IN (" . implode(', ', $_REQUEST['brd']) . ")"), __FILE__, __LINE__);
 		$search_params['brd'] = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$search_params['brd'][] = $row['ID_BOARD'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 		if (empty($search_params['brd']))
 			$context['search_errors']['no_boards_selected'] = true;
 	}
@@ -355,8 +355,8 @@ function PlushSearch2()
 		$request = db_query("
 			SELECT COUNT(*)
 			FROM {$db_prefix}boards", __FILE__, __LINE__);
-		list ($num_boards) = mysql_fetch_row($request);
-		mysql_free_result($request);
+		list ($num_boards) = mysqli_fetch_row($request);
+		mysqli_free_result($request);
 
 		if (count($search_params['brd']) == $num_boards)
 			$boardQuery = '';
@@ -1249,7 +1249,7 @@ function PlushSearch2()
 		ORDER BY {$search_params['sort']} {$search_params['sort_dir']}
 		LIMIT " . (int) $_REQUEST['start'] . ", $modSettings[search_results_per_page]
 		", __FILE__, __LINE__);
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 	{
 		$context['topics'][$row['ID_MSG']] = array(
 			'id' => $row['ID_TOPIC'],
@@ -1261,7 +1261,7 @@ function PlushSearch2()
 		// By default they didn't participate in the topic!
 		$participants[$row['ID_TOPIC']] = false;
 	}
-	mysql_free_result($request);
+	mysqli_free_result($request);
 
 	// Now that we know how many results to expect we can start calculating the page numbers.
 	$context['page_index'] = constructPageIndex($scripturl . '?action=searchtag2;params=' . $context['params'], $_REQUEST['start'], $_SESSION['search_cache']['num_results'], $modSettings['search_results_per_page'], false);
@@ -1302,9 +1302,9 @@ function PlushSearch2()
 				AND ID_MSG IN (" . implode(', ', array_keys($context['topics'])) . ")
 			LIMIT " . count($context['topics']), __FILE__, __LINE__);
 		$posters = array();
-		while ($row = mysql_fetch_assoc($request))
+		while ($row = mysqli_fetch_assoc($request))
 			$posters[] = $row['ID_MEMBER'];
-		mysql_free_result($request);
+		mysqli_free_result($request);
 
 		if (!empty($posters))
 			loadMemberData(array_unique($posters));
@@ -1347,9 +1347,9 @@ function PlushSearch2()
 					AND ID_MEMBER = $ID_MEMBER
 				GROUP BY ID_TOPIC
 				LIMIT " . count($participants), __FILE__, __LINE__);
-			while ($row = mysql_fetch_assoc($result))
+			while ($row = mysqli_fetch_assoc($result))
 				$participants[$row['ID_TOPIC']] = true;
-			mysql_free_result($result);
+			mysqli_free_result($result);
 		}
 	}
 
@@ -1391,14 +1391,14 @@ function prepareSearchContext($reset = false)
 	LEFT JOIN {$db_prefix}categories AS c ON (c.ID_CAT = b.ID_CAT)
 	", __FILE__, __LINE__);
 	$context['boards'] = array();
-	while ($row = mysql_fetch_assoc($request))
+	while ($row = mysqli_fetch_assoc($request))
 		$context['boards'][] = array(
 			'id' => $row['ID_BOARD'],
 			'name' => $row['name'],
 			'category' => $row['catName'],
 			'child_level' => $row['childLevel'],
 		);
-	mysql_free_result($request);
+	mysqli_free_result($request);
 	static $counter = null;
 	if ($counter == null || $reset)
 		$counter = $_REQUEST['start'] + 1;
@@ -1412,7 +1412,7 @@ function prepareSearchContext($reset = false)
 		return @mysql_data_seek($messages_request, 0);
 
 	// Attempt to get the next message.
-	$message = mysql_fetch_assoc($messages_request);
+	$message = mysqli_fetch_assoc($messages_request);
 	if (!$message)
 		return false;
 

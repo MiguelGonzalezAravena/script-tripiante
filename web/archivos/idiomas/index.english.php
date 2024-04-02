@@ -594,7 +594,7 @@ $txt['change_color'] = 'Cambiar Color';
 $txt['quickmod_delete_selected'] = 'Borrar seleccionados';
 
 // In this string, don't use entities. (&amp;, etc.)
-$txt['show_personal_messages'] = 'Has recibido uno o más mensajes privados.\\n&#191;Deseas verlos ahora (en una nueva ventana)?';
+$txt['show_personal_messages'] = 'Has recibido uno o mï¿½s mensajes privados.\\n&#191;Deseas verlos ahora (en una nueva ventana)?';
 
 $txt['previous_next_back'] = '&laquo; anterior';
 $txt['previous_next_forward'] = 'pr&oacute;ximo &raquo;';
@@ -630,5 +630,5 @@ $txt['ajax_in_progress'] = 'Cargando...';
 $txt['sitemap'] = 'Mapa del Sitio';
 $txt['back'] = 'Volver atras';
 $txt['go_to_index_page'] = 'Ir a la P&aacute;gina principal';
-	  
+
 ?>

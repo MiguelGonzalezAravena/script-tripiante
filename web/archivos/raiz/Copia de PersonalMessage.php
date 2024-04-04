@@ -447,7 +447,7 @@ function prepareMessageContext($reset = false)
 
 	// Reset the data?
 	if ($reset == true)
-		return @mysql_data_seek($messages_request, 0);
+		return @mysqli_data_seek($messages_request, 0);
 
 	// Get the next one... bail if anything goes wrong.
 	$message = mysqli_fetch_assoc($messages_request);

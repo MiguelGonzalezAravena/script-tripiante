@@ -3,8 +3,6 @@ if (!defined('SMF'))
   die('Hacking attempt...');
   
 function ComunidadesMain() {
-  global $context, $settings, $txt;
-
   loadTemplate('Comunidades');
 
   $subActions = array(
@@ -55,7 +53,16 @@ function Main() {
 
   $context['page_title']	=	$txt[18];
 
-  $request	=	db_query("SELECT c.ID_COMMUNITY, c.ID_CATEGORY, c.friendly_url AS friendly_url2, c.title, c.date, c.ID_MEMBER, mem.ID_MEMBER, mem.realName, cc.ID_CATEGORY, cc.friendly_url, cc.name FROM ({$db_prefix}communities AS c, {$db_prefix}members AS mem, {$db_prefix}community_categories AS cc) WHERE c.ID_MEMBER = mem.ID_MEMBER AND c.ID_CATEGORY = cc.ID_CATEGORY ORDER BY ID_COMMUNITY DESC LIMIT " . $modSettings['community_latest'], __FILE__, __LINE__);
+  $request	=	db_query("
+    SELECT
+      c.ID_COMMUNITY, c.ID_CATEGORY, c.friendly_url AS friendly_url2, c.title, c.date,
+      c.ID_MEMBER, mem.ID_MEMBER, mem.realName, cc.ID_CATEGORY, cc.friendly_url, cc.name
+    FROM ({$db_prefix}communities AS c, {$db_prefix}members AS mem, {$db_prefix}community_categories AS cc)
+    WHERE c.ID_MEMBER = mem.ID_MEMBER
+    AND c.ID_CATEGORY = cc.ID_CATEGORY
+    ORDER BY ID_COMMUNITY DESC
+    LIMIT " . $modSettings['community_latest'], __FILE__, __LINE__);
+
   $context['ultimas_comunidades']	=	array();
 
   while ($row	=	mysqli_fetch_assoc($request)) {
@@ -72,7 +79,13 @@ function Main() {
 
   mysqli_free_result($request);
 
-  $requestd	=	db_query("SELECT ID_COMMUNITY, friendly_url, title, logo, oficial FROM {$db_prefix}communities WHERE oficial = 1 ORDER BY RAND() LIMIT 1 ", __FILE__, __LINE__);
+  $requestd	=	db_query("
+    SELECT ID_COMMUNITY, friendly_url, title, logo, oficial
+    FROM {$db_prefix}communities
+    WHERE oficial = 1
+    ORDER BY RAND()
+    LIMIT 1 ", __FILE__, __LINE__);
+
   $context['destacadas']	=	array();
 
   while ($row	=	mysqli_fetch_assoc($requestd)) {
@@ -86,6 +99,7 @@ function Main() {
   mysqli_free_result($requestd);
 
   @require_once('SSI.php');
+
   /* TOP Comunidades */
   $starttime = mktime(0, 0, 0, date("n"), date("j"), date("Y")) - (date("N")*3600*24);
   $starttime = forum_time(false, $starttime);
@@ -195,7 +209,12 @@ function crear() {
 
   mysqli_free_result($dbresult3);
 
-  $dbresult2 = db_query("SELECT ID_MEMBER FROM {$db_prefix}community_members WHERE ID_MEMBER = $ID_MEMBER LIMIT 1", __FILE__, __LINE__);
+  $dbresult2 = db_query("
+    SELECT ID_MEMBER
+    FROM {$db_prefix}community_members
+    WHERE ID_MEMBER = $ID_MEMBER
+    LIMIT 1", __FILE__, __LINE__);
+
   $context['usercrear'] = mysqli_num_rows($dbresult2);
 }
 
@@ -204,73 +223,96 @@ function crear2() {
 
   @require_once('SSI.php');
 
-  $request = db_query("SELECT * FROM {$db_prefix}communities WHERE ID_MEMBER = $ID_MEMBER", __FILE__, __LINE__);
+  $request = db_query("
+    SELECT *
+    FROM {$db_prefix}communities
+    WHERE ID_MEMBER = " . $ID_MEMBER, __FILE__, __LINE__);
+
   $count = mysqli_num_rows($request);
+
   ssi_grupos();
 
-  if($context['Turista']) {
+  if ($context['Turista']) {
     $result = 1 - $count;
-  } elseif($context['Conocido']) {
+  } else if ($context['Conocido']) {
     $result = 2 - $count;
-  } elseif($context['Vecino']) {
+  } else if ($context['Vecino']) {
     $result = 4 - $count;
-  } elseif($context['Amigo']) {
+  } else if ($context['Amigo']) {
     $result = 6 - $count;
-  } elseif($context['Familiar']) {
+  } else if ($context['Familiar']) {
     $result = 8 - $count;
-  } elseif($context['Casero']) {
+  } else if ($context['Casero']) {
     $result = 10 - $count;
-  } elseif($context['Abastecedor']) {
+  } else if ($context['Abastecedor']) {
     $result = 15 - $count;
-  } elseif($context['Heredero']) {
+  } else if ($context['Heredero']) {
     $result = 15 - $count;
-  } elseif($context['Hermano Mayor']) {
+  } else if ($context['Hermano Mayor']) {
     $result = 15 - $count;
-  } elseif($context['Padre']) {
+  } else if ($context['Padre']) {
     $result = 15 - $count;
   }
 
-  if(!isset($_POST['nombre']) && !isset($_POST['shortname']) && !isset($_POST['imagen']) && !isset($_POST['categoria']) && !isset($_POST['descripcion']) && !isset($_POST['privada']) && !isset($_POST['rango_default'])) {
+  if (!isset($_POST['nombre']) && !isset($_POST['shortname']) && !isset($_POST['imagen']) && !isset($_POST['categoria']) && !isset($_POST['descripcion']) && !isset($_POST['privada']) && !isset($_POST['rango_default'])) {
     fatal_error('Rellena todos los campos para poder crear tu comunidad.-', false);
-  } elseif($result <= 0) {
+  } else if ($result <= 0) {
     fatal_error('No puedes crear m&aacute;s comunidades.-', false);
   } else {
-    $title = htmlentities(addslashes($_POST['nombre']), ENT_QUOTES, "UTF-8");
-    $shortname = htmlentities(addslashes($_POST['shortname']), ENT_QUOTES, "UTF-8");
-    $logo = htmlentities(addslashes($_POST['imagen']), ENT_QUOTES, "UTF-8");
-    $country = htmlentities(addslashes($_POST['pais']), ENT_QUOTES, "UTF-8");
-    $ID_CATEGORY = htmlentities(addslashes($_POST['categoria']), ENT_QUOTES, "UTF-8");
-    $description = htmlentities(addslashes($_POST['descripcion']), ENT_QUOTES, "UTF-8");
-    $view = htmlentities(addslashes($_POST['privada']), ENT_QUOTES, "UTF-8");
-    $grade = htmlentities(addslashes($_POST['rango_default']), ENT_QUOTES, "UTF-8");
+    $title = htmlentities(addslashes($_POST['nombre']), ENT_QUOTES, 'UTF-8');
+    $shortname = htmlentities(addslashes($_POST['shortname']), ENT_QUOTES, 'UTF-8');
+    $logo = htmlentities(addslashes($_POST['imagen']), ENT_QUOTES, 'UTF-8');
+    $country = htmlentities(addslashes($_POST['pais']), ENT_QUOTES, 'UTF-8');
+    $ID_CATEGORY = (int) $_POST['categoria'];
+    $description = htmlentities(addslashes($_POST['descripcion']), ENT_QUOTES, 'UTF-8');
+    $view = htmlentities(addslashes($_POST['privada']), ENT_QUOTES, 'UTF-8');
+    $grade = htmlentities(addslashes($_POST['rango_default']), ENT_QUOTES, 'UTF-8');
     $date = time();
-    $request = db_query("INSERT INTO {$db_prefix}communities (title, friendly_url, logo, ID_CATEGORY, description, view, grade, date, ID_MEMBER) VALUES ('$title', '$shortname', '$logo', '$ID_CATEGORY', '$description', '$view', '$grade', '$date', '$ID_MEMBER')", __FILE__, __LINE__);
-    $request5 = db_query("SELECT * FROM {$db_prefix}communities WHERE friendly_url = '$shortname' ", __FILE__, __LINE__);
+
+    $request = db_query("
+      INSERT INTO {$db_prefix}communities (title, friendly_url, logo, ID_CATEGORY, description, view, grade, date, ID_MEMBER)
+      VALUES ('$title', '$shortname', '$logo', $ID_CATEGORY, '$description', '$view', '$grade', $date, $ID_MEMBER)", __FILE__, __LINE__);
+
+    $request5 = db_query("
+      SELECT *
+      FROM {$db_prefix}communities
+      WHERE friendly_url = '$shortname'", __FILE__, __LINE__);
+
     $add = mysqli_fetch_assoc($request5);
     $ID_COMMUNITY	=	$add['ID_COMMUNITY'];
-    $request3 = db_query("INSERT INTO {$db_prefix}community_members (ID_COMMUNITY, ID_MEMBER, grade, date, name) VALUES ($ID_COMMUNITY, $ID_MEMBER, 1, $date, '" . $context['user']['name'] . "')", __FILE__, __LINE__);
-    $request4 = db_query("INSERT INTO {$db_prefix}community_user (ID_COMMUNITY, ID_MEMBER) VALUES ($ID_COMMUNITY, $ID_MEMBER)", __FILE__, __LINE__);
+    $request3 = db_query("
+      INSERT INTO {$db_prefix}community_members (ID_COMMUNITY, ID_MEMBER, grade, date, name)
+      VALUES ($ID_COMMUNITY, $ID_MEMBER, 1, $date, '" . $context['user']['name'] . "')", __FILE__, __LINE__);
 
-    if ($request4) {
+    $request4 = db_query("
+      INSERT INTO {$db_prefix}community_user (ID_COMMUNITY, ID_MEMBER)
+      VALUES ($ID_COMMUNITY, $ID_MEMBER)", __FILE__, __LINE__);
+
+    if ($request3 && $request4) {
       redirectexit($boardurl . '/comunidades/' . $add['friendly_url'] . '/');
     }
   }
 }
 
 function editar() {
-  global $txt, $context, $db_prefix, $ID_MEMBER;
+  global $txt, $context, $db_prefix, $ID_MEMBER, $boardurl;
 
   loadlanguage('Post');
   $context['sub_template'] = 'editar';
   $context['page_title'] = $txt[18];
   $id	=	htmlentities(addslashes($_REQUEST['id']));
-  $result = db_query("SELECT ID_MEMBER FROM {$db_prefix}community_user WHERE ID_MEMBER = $ID_MEMBER LIMIT 1", __FILE__, __LINE__);
-  $alreadyAdded = mysqli_num_rows($result) != 1 ? true : false;
+  $result = db_query("
+    SELECT ID_MEMBER
+    FROM {$db_prefix}community_user
+    WHERE ID_MEMBER = $ID_MEMBER
+    LIMIT 1", __FILE__, __LINE__);
+
+  $alreadyAdded = mysqli_num_rows($result) != 1;
 
   mysqli_free_result($result);
 
   if ($alreadyAdded) {
-    fatal_error('No tenes permiso para editar esta comunidad', false);
+    fatal_error('No tienes permiso para editar esta comunidad', false);
   }
 
   $result = db_query("
@@ -319,8 +361,8 @@ function editar() {
     'friendly_url2' => $row['friendly_url2'],
     'bname' => $row['bname'],
     'oficial' => $row['oficial'],
-    'link_category' => '<a href="/comunidades/home/' . $row['friendly_url2'] . '/" title="' . $row['bname'] . '">' . $row['bname'] . '</a>',
-    'creator' => '<a title="Ver el perfil de ' . $row['realName'] . '" href="/perfil/' . $row['memberName'] . '">' . $row['realName'] . '</a>',
+    'link_category' => '<a href="' . $boardurl . '/comunidades/home/' . $row['friendly_url2'] . '/" title="' . $row['bname'] . '">' . $row['bname'] . '</a>',
+    'creator' => '<a title="Ver el perfil de ' . $row['realName'] . '" href="' . $boardurl . '/perfil/' . $row['memberName'] . '">' . $row['realName'] . '</a>',
   );
 
   mysqli_free_result($dbresult);
@@ -368,14 +410,15 @@ function editar1() {
 
   is_not_guest();
   loadlanguage('Post');
+
   $context['page_title'] = $txt[18];
   $title = htmlentities(addslashes($_POST['nombre']), ENT_QUOTES, "UTF-8");
   $logo = htmlentities(addslashes($_POST['imagen']), ENT_QUOTES, "UTF-8");
-  $ID_CATEGORY = htmlentities(addslashes($_POST['categoria']), ENT_QUOTES, "UTF-8");
+  $ID_CATEGORY = (int) $_POST['categoria'];
   $description = htmlentities(addslashes($_POST['descripcion']), ENT_QUOTES, "UTF-8");
-  $view = htmlentities(addslashes($_POST['privada']), ENT_QUOTES, "UTF-8");
-  $grade = htmlentities(addslashes($_POST['rango_default']), ENT_QUOTES, "UTF-8");
-  $ID_COMMUNITY = htmlentities(addslashes($_POST['idcom']), ENT_QUOTES, "UTF-8");
+  $view = (int) $_POST['privada'];
+  $grade = (int) $_POST['rango_default'];
+  $ID_COMMUNITY = (int) $_POST['idcom'];
 
   if(!empty($title) && !empty($logo) && !empty($ID_CATEGORY) && !empty($description) && !empty($view) && !empty($grade) && !empty($ID_COMMUNITY)) {
     $request	=	db_query("
@@ -385,13 +428,16 @@ function editar1() {
 
     $row	=	mysqli_fetch_assoc($request);
 
-    $result1 = db_query("
+    mysqli_free_result($request);
+
+    $request = db_query("
       UPDATE {$db_prefix}communities
       SET view = $view, grade = $grade, ID_CATEGORY = $ID_CATEGORY, title = '$title', logo = '$logo', description = '$description'
       WHERE ID_COMMUNITY = $ID_COMMUNITY
       LIMIT 1", __FILE__, __LINE__);
 
-    if ($result1) {
+    // TO-DO: ¿Llamar aquí a mysqli_free_result() ?
+    if ($request) {
       redirectexit($boardurl . '/comunidades/' . $row['friendly_url']);
     }
   } else {
@@ -440,51 +486,69 @@ function borrar2() {
   is_not_guest();
   loadlanguage('Post');
 
-  $id = htmlentities(addslashes($_REQUEST['id']));
-  $context['page_title'] = ' Borrar Comunidad';
-  $result = db_query("
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
+  $context['page_title'] = 'Borrar Comunidad';
+
+  $request = db_query("
     SELECT *
     FROM ({$db_prefix}community_user AS cu, {$db_prefix}communities AS c)
     WHERE cu.ID_MEMBER = c.ID_MEMBER
     AND c.friendly_url = '$id'
     LIMIT 1", __FILE__, __LINE__);
 
-  $alreadyAdded = mysqli_num_rows($result) != 1 ? true : false;
-  mysqli_free_result($result);
+  $alreadyAdded = mysqli_num_rows($request) != 1;
+  mysqli_free_result($request);
 
-  $dbresult4 = db_query("
+  $request = db_query("
     SELECT *
     FROM ({$db_prefix}communities AS c, {$db_prefix}members AS mem)
     WHERE c.ID_MEMBER = mem.ID_MEMBER
     AND c.friendly_url = '$id'
     LIMIT 1", __FILE__, __LINE__);
 
-  $row = mysqli_fetch_assoc($dbresult4);
+  $row = mysqli_fetch_assoc($request);
   $context['adminmiembro1'] = array(
     'ID_COMMUNITY' => $row['ID_COMMUNITY'],
   );
 
-  mysqli_free_result($dbresult4);
+  mysqli_free_result($request);
 
   $id_comunidad = $context['adminmiembro1']['ID_COMMUNITY'];
 
   if ($alreadyAdded) {
     fatal_error('No puedes eliminar esta comunidad', false);
   } else {
-    $result1 = db_query("DELETE FROM {$db_prefix}communities WHERE friendly_url = '$id'", __FILE__, __LINE__);
-    db_query("DELETE FROM {$db_prefix}community_user WHERE ID_COMMUNITY = $id_comunidad LIMIT 1", __FILE__, __LINE__);
-    db_query("DELETE FROM {$db_prefix}community_members WHERE ID_COMMUNITY = $id_comunidad", __FILE__, __LINE__);
-    db_query("DELETE FROM {$db_prefix}community_topic WHERE ID_COMMUNITY = $id_comunidad", __FILE__, __LINE__);
-    db_query("DELETE FROM {$db_prefix}community_comment WHERE ID_COMMUNITY = $id_comunidad", __FILE__, __LINE__);
+    // TO-DO: Esta debería ser la última tabla en eliminarse
+    $request = db_query("
+      DELETE FROM {$db_prefix}communities
+      WHERE friendly_url = '$id'", __FILE__, __LINE__);
 
-    if ($result1) {
+    db_query("
+      DELETE FROM {$db_prefix}community_user
+      WHERE ID_COMMUNITY = $id_comunidad
+      LIMIT 1", __FILE__, __LINE__);
+
+    db_query("
+      DELETE FROM {$db_prefix}community_members
+      WHERE ID_COMMUNITY = " . $id_comunidad, __FILE__, __LINE__);
+
+    db_query("
+      DELETE FROM {$db_prefix}community_topic
+      WHERE ID_COMMUNITY = " . $id_comunidad, __FILE__, __LINE__);
+
+    db_query("
+      DELETE FROM {$db_prefix}community_comment
+      WHERE ID_COMMUNITY = " . $id_comunidad, __FILE__, __LINE__);
+
+    if ($request) {
       redirectexit($boardurl . '/comunidades/');
     }
   }
 }
 
+// Pendiente
 function comunidad() {
-  global $txt, $context, $db_prefix, $ID_MEMBER;
+  global $txt, $context, $db_prefix, $ID_MEMBER, $boardurl;
 
   loadlanguage('Post');
   $context['sub_template'] = 'comunidad';
@@ -581,8 +645,8 @@ function comunidad() {
     'friendly_url2' => $row['friendly_url2'],
     'bname' => $row['bname'],
     'oficial' => $row['oficial'],
-    'link_category' => '<a href="/comunidades/categoria/' . $row['friendly_url2'] . '" title="' . $row['bname'] . '" alt="' . $row['bname'] . '">' . $row['bname'] . '</a>',
-    'creator' => '<td  style="padding:4px;" title="' . $row['realName'] . '" alt="' . $row['realName'] . '"><a href="/perfil/' . $row['memberName'] . '" title="' . $row['realName'] . '" alt="' . $row['realName'] . '">' . $row['realName'] . '</a></td>',
+    'link_category' => '<a href="' . $boardurl . '/comunidades/categoria/' . $row['friendly_url2'] . '" title="' . $row['bname'] . '" alt="' . $row['bname'] . '">' . $row['bname'] . '</a>',
+    'creator' => '<td  style="padding:4px;" title="' . $row['realName'] . '" alt="' . $row['realName'] . '"><a href="' . $boardurl . '/perfil/' . $row['memberName'] . '" title="' . $row['realName'] . '" alt="' . $row['realName'] . '">' . $row['realName'] . '</a></td>',
   );
 
   mysqli_free_result($dbresult);
@@ -1247,72 +1311,88 @@ function nuevotema()
   }
 }
 
-function nuevotema2()
-{
-  global $context, $txt, $boardurl, $settings, $options, $ID_MEMBER, $db_prefix, $func;
+function nuevotema2() {
+  global $context, $boardurl, $ID_MEMBER, $db_prefix, $func;
 
   is_not_guest();
   loadLanguage('Post');
-  $context['sub_template']  = 'nuevotema2';
-  $id	 =	htmlentities(addslashes($_REQUEST['id']));
 
-$result = db_query("
-  SELECT cm.ID_MEMBER, cm.ID_COMMUNITY, cm.grade, c.friendly_url, c.ID_COMMUNITY, cm.grade
-  FROM ({$db_prefix}community_members AS cm, {$db_prefix}communities AS c)
-  WHERE cm.ID_MEMBER = $ID_MEMBER
-  AND cm.ID_COMMUNITY = c.ID_COMMUNITY
-  AND c.friendly_url = '$id'
-  LIMIT 1", __FILE__, __LINE__);
-$context['usercomunidad'] = mysqli_num_rows($result);
-$row = mysqli_fetch_assoc($result);
-$context['rango'] = array(
-  'grade' => $row['grade'],
-);
-mysqli_free_result($result);
+  $context['sub_template'] = 'nuevotema2';
+  $id = htmlentities(addslashes($_REQUEST['id']));
 
-  if(empty($_POST['titulo'])) {
-  fatal_error('El campo <b>T&iacute;tulo</b> es requerido para esta operaci&oacute;n.-', false);
-  } elseif(empty($_POST['cuerpo_comment'])) {
-  fatal_error('El campo <b>Cuerpo</b> es requerido para esta operaci&oacute;n.-', false);
-  } elseif(isset($_POST['Enviar']) && isset($_POST['titulo']) && isset($_POST['cuerpo_comment'])) {
-  $request	 =	db_query("SELECT * FROM {$db_prefix}communities WHERE friendly_url = '$id' ", __FILE__, __LINE__);
-  $row2	=	mysqli_fetch_assoc($request);
+  $result = db_query("
+    SELECT cm.ID_MEMBER, cm.ID_COMMUNITY, cm.grade, c.friendly_url, c.ID_COMMUNITY, cm.grade
+    FROM ({$db_prefix}community_members AS cm, {$db_prefix}communities AS c)
+    WHERE cm.ID_MEMBER = $ID_MEMBER
+    AND cm.ID_COMMUNITY = c.ID_COMMUNITY
+    AND c.friendly_url = '$id'
+    LIMIT 1", __FILE__, __LINE__);
 
-  $ID_COMMUNITY		=	$row2['ID_COMMUNITY'];
-  $ID_COMMUNITY2		=	htmlentities($_POST['comun'], ENT_QUOTES, "UTF-8");
-  $subject			=	htmlentities($_POST['titulo'], ENT_QUOTES, "UTF-8");
-  $body				=	$func['htmlspecialchars']($_POST['cuerpo_comment'], ENT_QUOTES, "UTF-8");
-  $isSticky			=	htmlentities($_POST['sticky'], ENT_QUOTES, "UTF-8");
-  $locked				=	htmlentities($_POST['nocoment'], ENT_QUOTES, "UTF-8");
-  $posterName			=	$context['user']['name'];
-  $posterIP			=	$_SERVER['REMOTE_ADDR'];
-  $posterTime			=	time();
-  $grade				=	$context['rango']['grade'];
-  $verify	=	db_query("
-  SELECT * 
-  FROM {$db_prefix}communities
-  WHERE friendly_url = '$ID_COMMUNITY2'
-  ", __FILE__, __LINE__);
-  $verify2	=	mysqli_fetch_assoc($verify);
-  if($verify2['ID_COMMUNITY'] == $ID_COMMUNITY) {
-  db_query("
-    INSERT INTO {$db_prefix}community_topic
-      (ID_MEMBER, ID_COMMUNITY, isSticky, locked, posterTime, posterName, posterIP, subject, body, grade)
-    VALUES
-      ('$ID_MEMBER', '$ID_COMMUNITY', '$isSticky', '$locked', '$posterTime', '$posterName', '$posterIP', '$subject', '$body', '$grade')", __FILE__, __LINE__);
-  $insertar['ID_TOPIC'] = db_insert_id();
-  } else {
-  fatal_error('No perteneces a esta comunidad.-', false);
-  }
-  $request2	=	db_query("SELECT * FROM {$db_prefix}communities AS c, {$db_prefix}community_topic AS ct WHERE c.ID_COMMUNITY = ct.ID_COMMUNITY AND c.ID_COMMUNITY = $ID_COMMUNITY AND ct.ID_COMMUNITY = $ID_COMMUNITY AND ct.posterName = '$posterName' ORDER BY ct.posterTime DESC", __FILE__, __LINE__);
-  $row2	=	mysqli_fetch_assoc($request2);
-  redirectexit($boardurl . '/comunidades/' . $verify2['friendly_url'] . '/');
+  $context['usercomunidad'] = mysqli_num_rows($result);
+  $row = mysqli_fetch_assoc($result);
+  $context['rango'] = array(
+    'grade' => $row['grade'],
+  );
+
+  mysqli_free_result($result);
+
+  if (empty($_POST['titulo'])) {
+    fatal_error('El campo <b>T&iacute;tulo</b> es requerido para esta operaci&oacute;n.-', false);
+  } else if (empty($_POST['cuerpo_comment'])) {
+    fatal_error('El campo <b>Cuerpo</b> es requerido para esta operaci&oacute;n.-', false);
+  } else if (isset($_POST['Enviar']) && isset($_POST['titulo']) && isset($_POST['cuerpo_comment'])) {
+    $request = db_query("
+      SELECT *
+      FROM {$db_prefix}communities
+      WHERE friendly_url = '$id'", __FILE__, __LINE__);
+
+    $row2	=	mysqli_fetch_assoc($request);
+
+    $ID_COMMUNITY = $row2['ID_COMMUNITY'];
+    $ID_COMMUNITY2 = htmlentities($_POST['comun'], ENT_QUOTES, 'UTF-8');
+    $subject = htmlentities($_POST['titulo'], ENT_QUOTES, 'UTF-8');
+    $body = $func['htmlspecialchars']($_POST['cuerpo_comment'], ENT_QUOTES, 'UTF-8');
+    $isSticky = htmlentities($_POST['sticky'], ENT_QUOTES, 'UTF-8');
+    $locked = htmlentities($_POST['nocoment'], ENT_QUOTES, 'UTF-8');
+    $posterName = $context['user']['name'];
+    $posterIP = $_SERVER['REMOTE_ADDR'];
+    $posterTime = time();
+    $grade = $context['rango']['grade'];
+
+    $request = db_query("
+      SELECT * 
+      FROM {$db_prefix}communities
+      WHERE friendly_url = '$ID_COMMUNITY2'", __FILE__, __LINE__);
+
+    $verify2	=	mysqli_fetch_assoc($request);
+
+    if ($verify2['ID_COMMUNITY'] == $ID_COMMUNITY) {
+      db_query("
+        INSERT INTO {$db_prefix}community_topic(ID_MEMBER, ID_COMMUNITY, isSticky, locked, posterTime, posterName, posterIP, subject, body, grade)
+        VALUES ('$ID_MEMBER', '$ID_COMMUNITY', '$isSticky', '$locked', '$posterTime', '$posterName', '$posterIP', '$subject', '$body', '$grade')", __FILE__, __LINE__);
+
+      $insertar['ID_TOPIC'] = db_insert_id();
+    } else {
+      fatal_error('No perteneces a esta comunidad.-', false);
+    }
+
+    $request2	=	db_query("
+      SELECT *
+      FROM {$db_prefix}communities AS c, {$db_prefix}community_topic AS ct
+      WHERE c.ID_COMMUNITY = ct.ID_COMMUNITY
+      AND c.ID_COMMUNITY = $ID_COMMUNITY
+      AND ct.posterName = '$posterName'
+      ORDER BY ct.posterTime DESC", __FILE__, __LINE__);
+
+    $row2	=	mysqli_fetch_assoc($request2);
+
+    redirectexit($boardurl . '/comunidades/' . $verify2['friendly_url'] . '/');
   }
 }
 
 function vertema()
 {
-  global $context, $txt, $boardurl, $settings, $options, $ID_MEMBER, $db_prefix, $func;
+  global $context, $boardurl, $ID_MEMBER, $db_prefix;
 
   loadLanguage('Post');
   $context['sub_template']  = 'vertema';
@@ -1362,8 +1442,8 @@ $tema	=	htmlentities(addslashes($_REQUEST['tema']));
     'friendly_url2' => $row['friendly_url2'],
     'bname' => $row['bname'],
     'oficial' => $row['oficial'],
-    'link_category' => '<a href="/comunidades/home/' . $row['friendly_url2'] . '/" title="' . $row['bname'] . '">' . $row['bname'] . '</a>',
-    'creator' => '<a title="Ver el perfil de ' . $row['realName'] . '" href="/perfil/' . $row['memberName'] . '">' . $row['realName'] . '</a>',
+    'link_category' => '<a href="' . $boardurl . '/comunidades/home/' . $row['friendly_url2'] . '/" title="' . $row['bname'] . '">' . $row['bname'] . '</a>',
+    'creator' => '<a title="Ver el perfil de ' . $row['realName'] . '" href="' . $boardurl . '/perfil/' . $row['memberName'] . '">' . $row['realName'] . '</a>',
   );
   mysqli_free_result($dbresult);
 /* C�digo */
@@ -1962,7 +2042,7 @@ $row0	=	mysqli_fetch_assoc($request);
     'body' => $row0['body'],
     'subject' => $row0['subject'],
   );
-  mysqli_free_result($dbresult);
+  mysqli_free_result($request);
 /* C�digo */
     $dbresult = db_query("
         SELECT c.ID_MEMBER, c.ID_COMMUNITY, c.description, c.publicity, c.ID_CATEGORY, c.view, c.grade, c.title, c.friendly_url, c.logo, c.numMembers, c.date,

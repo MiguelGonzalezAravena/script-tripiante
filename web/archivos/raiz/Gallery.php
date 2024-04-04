@@ -2,6 +2,7 @@
 if (!defined('SMF'))
   die('Hacking attempt...');
 
+// Pendiente
 function GalleryMain() {
   loadtemplate('Gallery');
 

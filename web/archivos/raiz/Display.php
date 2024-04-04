@@ -2,18 +2,18 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-function Display()
-{
-	global $scripturl, $txt, $db_prefix, $modSettings, $context, $settings;
-	global $options, $sourcedir, $user_info, $ID_MEMBER, $board_info, $topic;
-	global $board, $messages_request, $language;
+// Pendiente
+function Display() {
+	global $db_prefix, $modSettings, $context;
+	global $options, $sourcedir, $user_info, $ID_MEMBER, $topic;
+	global $messages_request;
 
-		loadTemplate('Display');
+	loadTemplate('Display');
 	$topicids	=	(int) $_GET['topic'];
 
-if (empty($topic)) {
-fatal_lang_error('smf232', false);
-}
+	if (empty($topic)) {
+		fatal_lang_error('smf232', false);
+	}
 
 
 	if (isset($_SERVER['HTTP_X_MOZ']) && $_SERVER['HTTP_X_MOZ'] == 'prefetch')
@@ -274,7 +274,7 @@ function prepareDisplayContext($reset = false)
 	if ($counter === null || $reset)
 		$counter = empty($options['view_newest_first']) ? $context['start'] : $context['num_replies'] - $context['start'];
 	if ($reset)
-		return @mysql_data_seek($messages_request, 0);
+		return @mysqli_data_seek($messages_request, 0);
 	$message = mysqli_fetch_assoc($messages_request);
 	if (!$message)
 		return false;

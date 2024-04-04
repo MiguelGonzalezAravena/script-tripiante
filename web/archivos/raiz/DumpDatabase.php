@@ -165,7 +165,7 @@ function getTableContent($tableName)
 		return '';
 
 	$fields = array_keys(mysqli_fetch_assoc($result));
-	mysql_data_seek($result, 0);
+	mysqli_data_seek($result, 0);
 
 	// Start it off with the basic INSERT INTO.
 	$data = 'INSERT INTO `' . $tableName . '`' . $crlf . "\t(`" . implode('`, `', $fields) . '`)' . $crlf . 'VALUES ';

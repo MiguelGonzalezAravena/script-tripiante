@@ -2,8 +2,7 @@
 if (!defined('SMF'))
   die('Hacking attempt...');
 
-function ShowHelp()
-{
+function ShowHelp() {
   global $settings, $context, $txt;
 
   loadTemplate('Denunciar2');
@@ -26,4 +25,5 @@ function ShowHelp()
   $context['html_headers'] .= '
     <link rel="stylesheet" type="text/css" href="' . (file_exists($settings['theme_dir'] . '/style.css') ? $settings['theme_url'] : $settings['default_theme_url']) . '/style.css" />';
 }
+
 ?>

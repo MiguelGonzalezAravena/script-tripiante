@@ -134,10 +134,10 @@ function MLAll()
 
 			for ($i = 0, $n = mysqli_num_rows($request); $i < $n; $i += $cache_step_size)
 			{
-				mysql_data_seek($request, $i);
+				mysqli_data_seek($request, $i);
 				list($memberlist_cache['index'][$i]) = mysqli_fetch_row($request);
 			}
-			mysql_data_seek($request, $memberlist_cache['num_members'] - 1);
+			mysqli_data_seek($request, $memberlist_cache['num_members'] - 1);
 			list($memberlist_cache['index'][$i]) = mysqli_fetch_row($request);
 			mysqli_free_result($request);
 

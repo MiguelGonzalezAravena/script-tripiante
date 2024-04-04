@@ -2,9 +2,8 @@
 if (!defined('SMF'))
 	die('Hacking attempt...');
 
-function ModifyFeatureSettings()
-{
-	global $context, $txt, $scripturl, $modSettings, $sourcedir;
+function ModifyFeatureSettings() {
+	global $context, $txt, $scripturl, $sourcedir;
 
 	// You need to be an admin to edit settings!
 	isAllowedTo('admin_forum');
@@ -74,9 +73,8 @@ function ModifyFeatureSettings()
 }
 
 // This function basically just redirects to the right save function.
-function ModifyFeatureSettings2()
-{
-	global $context, $txt, $scripturl, $modSettings, $sourcedir;
+function ModifyFeatureSettings2() {
+	global $sourcedir;
 
 	isAllowedTo('admin_forum');
 	loadLanguage('ModSettings');
@@ -95,6 +93,7 @@ function ModifyFeatureSettings2()
 
 
 	$subActions['contact'] = 'ModifyContactSettings';
+
 	// Default to core (I assume)
 	$_REQUEST['sa'] = isset($_REQUEST['sa']) && isset($subActions[$_REQUEST['sa']]) ? $_REQUEST['sa'] : 'basic';
 
@@ -102,9 +101,8 @@ function ModifyFeatureSettings2()
 	$subActions[$_REQUEST['sa']]();
 }
 
-function ModifyBasicSettings()
-{
-	global $txt, $scripturl, $context, $settings, $sc, $modSettings;
+function ModifyBasicSettings() {
+	global $txt, $scripturl, $context, $modSettings;
 
 	$config_vars = array(
 		'',
@@ -157,8 +155,7 @@ function ModifyBasicSettings()
 	);
 
 	// Saving?
-	if (isset($_GET['save']))
-	{
+	if (isset($_GET['save'])) {
 		// Fix PM settings.
 		$_POST['pm_spam_settings'] = (int) $_POST['max_pm_recipients'] . ',' . (int) $_POST['pm_posts_verification'] . ',' . (int) $_POST['pm_posts_per_hour'];
 		$save_vars = $config_vars;
@@ -182,9 +179,8 @@ function ModifyBasicSettings()
 	prepareDBSettingContext($config_vars);
 }
 
-function ModifyLayoutSettings()
-{
-	global $txt, $scripturl, $context, $settings, $sc;
+function ModifyLayoutSettings() {
+	global $txt, $scripturl, $context;
 
 	$config_vars = array(
 			// Compact pages?
@@ -224,9 +220,8 @@ function ModifyLayoutSettings()
 	prepareDBSettingContext($config_vars);
 }
 
-function ModifyKarmaSettings()
-{
-	global $txt, $scripturl, $context, $settings, $sc;
+function ModifyKarmaSettings() {
+	global $txt, $scripturl, $context;
 
 	$config_vars = array(
 			// Karma - On or off?
@@ -256,9 +251,8 @@ function ModifyKarmaSettings()
 	prepareDBSettingContext($config_vars);
 }
 
-function ModifyOthers()
-{
-	global $txt, $scripturl, $context, $settings, $sc, $modSettings;
+function ModifyOthers() {
+	global $txt, $scripturl, $context;
 
 	$config_vars = array(
 	$txt['index_options'],
@@ -337,9 +331,8 @@ function ModifyOthers()
 }
 
 
-function ModifyContactSettings()
-{
-	global $txt, $scripturl, $context, $settings, $sc, $webmaster_email;
+function ModifyContactSettings() {
+	global $txt, $scripturl, $context, $webmaster_email;
 
 	$config_vars = array(
 
@@ -365,8 +358,7 @@ function ModifyContactSettings()
 		array('text', 'contact_form_tab_label',     '24', 'postinput' => '<span style="color: #444444;" class="middletext">' . $txt['contact_form_label_default'] . $txt['contact_form_default_tab_label'] . '</span>'),
 	);
 
-	if (isset($_GET['save']))
-	{
+	if (isset($_GET['save'])) {
 		checkSession();
 
 		saveDBSettings($config_vars);

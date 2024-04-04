@@ -111,18 +111,18 @@ function ShowUserBox($memCommID, $onlineColor = '') {
     foreach ($context['murocomentarios'] as $muro) {
       if (!empty($muro['subject'])) {
         if ($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
-        echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas borrar este mensaje?\')) return false;" href="/eliminar-muro/', $muro['ID_COMMENT'], '/" title="Eliminar Mensaje"><img alt="Eliminar Mensaje" src="' . $settings['images_url'] . '/eliminar.gif" width="8px" height="8px" /></a>&#32;-&#32;';
+        echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas borrar este mensaje?\')) return false;" href="' . $boardurl . '/eliminar-muro/', $muro['ID_COMMENT'], '/" title="Eliminar Mensaje"><img alt="Eliminar Mensaje" src="' . $settings['images_url'] . '/eliminar.gif" width="8px" height="8px" /></a>&#32;-&#32;';
         } 
         echo '<span style="margin-left:8px;"><img alt="" src="' . $settings['images_url'] . '/user.gif" /><b class="size13">' . parse_bbc2($muro['subject']) . '</b><center><span style="color:grey;font-size:11px;">(' . timeformat($muro['date']) . ')</span></center></span><hr />';
       } else if (!empty($muro['comment'])) {
         if ($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
-          echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas borrar este mensaje?\')) return false;" href="/eliminar-muro/', $muro['ID_COMMENT'], '/" title="Eliminar Mensaje"><img alt="Eliminar Mensaje" src="' . $settings['images_url'] . '/eliminar.gif" width="8px" height="8px" /></a>&#32;-&#32;';
+          echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas borrar este mensaje?\')) return false;" href="' . $boardurl . '/eliminar-muro/', $muro['ID_COMMENT'], '/" title="Eliminar Mensaje"><img alt="Eliminar Mensaje" src="' . $settings['images_url'] . '/eliminar.gif" width="8px" height="8px" /></a>&#32;-&#32;';
         }
 
-        echo '<b><span style="font-size:12px;"><a href="/perfil/', $muro['memberName'], '" title="', $muro['realName'], '">', $muro['realName'], '</a></span> escribi&oacute; </b><span style="color:grey;font-size:10px;">(', timeformat($muro['date']), ')</span><table><tr><td valign="top"><img style="width:50px;height:50px;" alt="" src="', $muro['avatar'], '" onerror="error_avatar(this)" /></td><td valign="top" style="margin:0px;padding:4px;"><div style="overflow: hidden;">', $muro['comment'], '</div>';
+        echo '<b><span style="font-size:12px;"><a href="' . $boardurl . '/perfil/', $muro['memberName'], '" title="', $muro['realName'], '">', $muro['realName'], '</a></span> escribi&oacute; </b><span style="color:grey;font-size:10px;">(', timeformat($muro['date']), ')</span><table><tr><td valign="top"><img style="width:50px;height:50px;" alt="" src="', $muro['avatar'], '" onerror="error_avatar(this)" /></td><td valign="top" style="margin:0px;padding:4px;"><div style="overflow: hidden;">', $muro['comment'], '</div>';
 
         if($context['user']['is_logged']) {
-          echo '<br /><br /><a href="/perfil/', $muro['memberName'], '/muro/" title="Escribe en el Muro de ', $muro['realName'], '">Escribe en el Muro de ', $muro['realName'], '</a>';
+          echo '<br /><br /><a href="' . $boardurl . '/perfil/', $muro['memberName'], '/muro/" title="Escribe en el Muro de ', $muro['realName'], '">Escribe en el Muro de ', $muro['realName'], '</a>';
         }
 
         echo '</td></tr></table><hr />';
@@ -146,18 +146,27 @@ function ShowUserBox($memCommID, $onlineColor = '') {
   if ($residue > 0)
     $lastPage = floor($lastPage) + 1;
 
-  echo '</div><div class="windowbgpag" style="width: 524px;">';
+  echo '
+    </div>
+    <div class="windowbgpag" style="width: 524px;">';
 
-  if ($nextPage < $lastPage)
+  if ($nextPage < $lastPage) {
     echo '';
+  }
 
-  if ($actualPage > 1)
+  if ($actualPage > 1) {
     echo '<a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/muro-pag-' . $previousPage . '">&#171; anterior</a>';
+  }
 
-  if ($actualPage < $lastPage)
+  if ($actualPage < $lastPage) {
     echo '<a href="' . $boardurl . '/perfil/' . $context['member']['name'] . '/muro-pag-' . $nextPage . '">siguiente &#187;</a>';
+  }
 
-  echo '</div><div class="clearBoth"></div></div></div>';
+  echo '
+        </div>
+        <div class="clearBoth"></div>
+      </div>
+    </div>';
 }
 
 ?>

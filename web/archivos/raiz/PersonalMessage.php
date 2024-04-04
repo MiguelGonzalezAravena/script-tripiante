@@ -121,17 +121,16 @@ function MessageMain()
 }
 
 // A sidebar to easily access different areas of the section
-function messageIndexBar($area)
-{
-	global $txt, $context, $scripturl, $sc, $modSettings, $settings, $user_info;
+function messageIndexBar($area) {
+	global $txt, $context, $scripturl, $settings, $user_info, $boardurl;
 
 	$context['pm_areas'] = array(
 		'folders' => array(
 			'title' => $txt['pm_messages'],
 			'areas' => array(
-				'send' => array('link' => '<img src="' . $settings['images_url'] . '/icons/mensaje_enviar.gif" alt=""> <a href="/mensajes/redactar/" title="' . $txt[321] . '"> ' . $txt[321] . '</a>', 'href' => '/mensajes/redactar/'),
-				'inbox' => array('link' => '<br><img src="' . $settings['images_url'] . '/icons/mensaje.gif" alt=""> <a href="/mensajes/recibidos/" title="' . $txt[316] . '"> ' . $txt[316] . ' </a>', 'href' => '/mensajes/recibidos/'),
-				'outbox' => array('link' => '<br><img src="' . $settings['images_url'] . '/icons/mensaje_para.gif" alt=""> <a href="/mensajes/enviados/" title="' . $txt[320] . '"> ' . $txt[320] . '</a>', 'href' => '/mensajes/enviados/'),
+				'send' => array('link' => '<img src="' . $settings['images_url'] . '/icons/mensaje_enviar.gif" alt=""> <a href="' . $boardurl . '/mensajes/redactar/" title="' . $txt[321] . '"> ' . $txt[321] . '</a>', 'href' => '/mensajes/redactar/'),
+				'inbox' => array('link' => '<br><img src="' . $settings['images_url'] . '/icons/mensaje.gif" alt=""> <a href="' . $boardurl . '/mensajes/recibidos/" title="' . $txt[316] . '"> ' . $txt[316] . ' </a>', 'href' => '/mensajes/recibidos/'),
+				'outbox' => array('link' => '<br><img src="' . $settings['images_url'] . '/icons/mensaje_para.gif" alt=""> <a href="' . $boardurl . '/mensajes/enviados/" title="' . $txt[320] . '"> ' . $txt[320] . '</a>', 'href' => '/mensajes/enviados/'),
 			),
 		),
 	);
@@ -445,7 +444,7 @@ function prepareMessageContext($reset = false)
 
 	// Reset the data?
 	if ($reset == true)
-		return @mysql_data_seek($messages_request, 0);
+		return @mysqli_data_seek($messages_request, 0);
 
 	// Get the next one... bail if anything goes wrong.
 	$message = mysqli_fetch_assoc($messages_request);

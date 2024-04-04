@@ -96,7 +96,7 @@ function ViewQuery() {
       if ($result === false) {
         echo '
           <table border="1" cellpadding="4" cellspacing="0" style="empty-cells: show; font-family: serif; margin-bottom: 2ex;">
-            <tr><td>' . mysql_error($db_connection) . '</td></tr>
+            <tr><td>' . mysqli_error($db_connection) . '</td></tr>
           </table>';
         continue;
       }
@@ -111,7 +111,7 @@ function ViewQuery() {
           <th>', array_keys($row)) . '</th>
         </tr>';
 
-      mysql_data_seek($result, 0);
+      mysqli_data_seek($result, 0);
 
       while ($row = mysqli_fetch_assoc($result)) {
         echo '

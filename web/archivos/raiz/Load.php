@@ -811,7 +811,7 @@ function loadMemberContext($user)
 {
 	global $memberContext, $user_profile, $txt, $scripturl, $user_info;
 	global $context, $modSettings, $ID_MEMBER, $board_info, $settings;
-	global $db_prefix, $func;
+	global $db_prefix, $func, $boardurl;
 	static $dataLoaded = array();
 
 	// If this person's data is already loaded, skip it.
@@ -874,8 +874,8 @@ function loadMemberContext($user)
 		'is_reverse_buddy' => in_array($ID_MEMBER, $buddy_list),
 		'buddies' => $buddy_list,
 		'title' => !empty($modSettings['titlesEnable']) ? $profile['usertitle'] : '',
-		'href' => '/perfil/' . $profile['memberName'],
-		'link' => '<a href="/perfil/' . $profile['memberName'] . '" title="' . $profile['memberName'] . '">' . $profile['realName'] . '</a>',
+		'href' => $boardurl . '/perfil/' . $profile['memberName'],
+		'link' => '<a href="' . $boardurl . '/perfil/' . $profile['memberName'] . '" title="' . $profile['memberName'] . '">' . $profile['realName'] . '</a>',
 		'email' => &$profile['emailAddress'],
 		'hide_email' => $profile['emailAddress'] == '' || (!empty($modSettings['guest_hideContacts']) && $user_info['is_guest']) || (!empty($profile['hideEmail']) && !empty($modSettings['allow_hideEmail']) && !allowedTo('moderate_forum') && $ID_MEMBER != $profile['ID_MEMBER']),
 		'email_public' => (empty($profile['hideEmail']) || empty($modSettings['allow_hideEmail'])) && (empty($modSettings['guest_hideContacts']) || !$user_info['is_guest']),

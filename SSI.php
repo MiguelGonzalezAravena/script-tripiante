@@ -54,7 +54,7 @@ reloadSettings();
 cleanRequest();
 
 if (empty($modSettings['rand_seed']) || mt_rand(1, 250) == 69) {
-smf_seed_generator();
+  smf_seed_generator();
 }
 
 if (isset($_REQUEST['GLOBALS']) || isset($_COOKIE['GLOBALS']))
@@ -270,11 +270,15 @@ function ssi_respuestas_temas() {
       $actualPage = 1;
     }
 
-    $request = db_query("
+    $query = "
       SELECT c.comment, c.comment AS comentario2, c.ID_TOPIC, c.ID_MEMBER, c.ID_COMMENT, c.posterTime, c.posterName, c.ID_COMMUNITY
       FROM ({$db_prefix}community_comments AS c) 
       WHERE c.ID_TOPIC = $idTopic
-      ORDER BY c.ID_COMMENT ASC
+      ORDER BY c.ID_COMMENT ASC";
+
+    // Registros paginados
+    $request = db_query("
+      {$query}
       LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
     $count = mysqli_num_rows($request);
@@ -293,18 +297,14 @@ function ssi_respuestas_temas() {
         </div>
         <div class="post-com">';
 
-      $cantidad++;
-      $cantidad2++;
-      $cantidad3++;
-      $cantidad4++;
-      $cantidad5++;
+      $cantidad = 1;
 
       while ($row = mysqli_fetch_assoc($request)) {
         echo '
-          <div class="coment-user" id="' . $cantidad++ . '">
+          <div class="coment-user" id="' . $cantidad . '">
             <div style="float: left;">
               <div class="com-com-info">
-                <a href="#' . $cantidad2++ . '">#' . $cantidad3++ . '</a>
+                <a href="#' . $cantidad . '">#' . $cantidad . '</a>
               </div>
               <b id="autor_cmnt_' . $row['ID_COMMENT'] . '" user_comment="' . $row['posterName'] . '" text_comment="' . $row['comentario2'] . '">
                 <a href="' . $boardurl . '/perfil/' . $row['posterName'] . '" title="' . $row['posterName'] . '">' . $row['posterName'] . '</a>
@@ -332,8 +332,7 @@ function ssi_respuestas_temas() {
               </a>';
           }
 
-          // ¿TO-DO? De dónde sale $coment?
-          if ($coment['ID_MEMBER'] == $ID_MEMBER || $context['allow_admin'] || $context['can_remove']) {
+          if ($row['ID_MEMBER'] == $ID_MEMBER || $context['allow_admin'] || $context['can_remove']) {
             echo '
               <a href="' . $boardurl . '/web/tp-comunidadesEliCom.php?id=' . $row['ID_COMMENT'] . '" title="Eliminar Comentario" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este comentario?\')) return false;">
                 <img src="' . $settings['images_url'] . '/comunidades/eliminar.png" alt="" />
@@ -354,14 +353,12 @@ function ssi_respuestas_temas() {
               <img src="' . $settings['images_url'] . '/comunidades/arriba-com.png" alt="" />
             </a>
           </div>';
+
+        $cantidad++;
       }
 
-      $request = db_query("
-        SELECT c.comment, c.comment AS comentario2, c.ID_TOPIC, c.ID_MEMBER, c.ID_COMMENT, c.posterTime, c.posterName, c.ID_COMMUNITY
-        FROM ({$db_prefix}community_comments AS c) 
-        WHERE c.ID_TOPIC = '$idTopic'
-        ORDER BY c.ID_COMMENT ASC", __FILE__, __LINE__);
-
+      // Registros totales
+      $request = db_query($query, __FILE__, __LINE__);
       $records = mysqli_num_rows($request);
     }
 
@@ -370,8 +367,9 @@ function ssi_respuestas_temas() {
     $lastPage = $records / $end;
     $residue = $records % $end;
 
-    if ($residue > 0)
+    if ($residue > 0) {
       $lastPage = floor($lastPage) + 1;
+    }
 
     echo '
       </div>
@@ -499,7 +497,6 @@ function ssi_abandonar_comunidad() {
         AND ID_COMMUNITY = {$context['selectcom']['ID_COMMUNITY']}
         LIMIT 1", __FILE__, __LINE__);
 
-      // TO-DO: Verificar estado de actualización
       $result2 = db_query("
         UPDATE {$db_prefix}communities
         SET numMembers = $miembros - 1
@@ -571,7 +568,7 @@ function ssi_unir_comunidad() {
 }
 
 function ssi_respuestas() {
-  global $db_prefix, $modSettings;
+  global $db_prefix, $modSettings, $boardurl;
 
   $request = db_query("
     SELECT c.ID_COMMUNITY, cc.ID_COMMUNITY, cc.ID_TOPIC, ct.ID_TOPIC, ct.ID_COMMUNITY, cc.posterName, c.friendly_url, ct.subject, cc.ID_COMMENT
@@ -823,7 +820,7 @@ function ssi_votar() {
 function ssi_comunidades_nooficial() {
   global $context, $db_prefix, $ID_MEMBER, $boardurl;
 
-  $"id" = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
   $request = db_query("
     SELECT ID_MEMBER, ID_COMMUNITY, friendly_url
     FROM {$db_prefix}communities

@@ -26,12 +26,9 @@ if ($context['user']['is_guest']) {
     LIMIT " . $modSettings['number_comments'], __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request)) {
-    $ID_COMMENT = $row['ID_COMMENT'];
-    $ID_TOPIC = $row['ID_TOPIC2'];
-    $ID_MEMBER = $row['ID_MEMBER2'];
     $realName = censorText($row['realName']);
     $description = $row['description'];
-    $subject = htmlentities(ssi_reducir($row['subject']));
+    $subject = ssi_reducir(htmlentities($row['subject'], ENT_QUOTES, 'UTF-8'));
 
     echo '
       <font class="size11">
@@ -39,7 +36,7 @@ if ($context['user']['is_guest']) {
           <a title="" href="' . $boardurl . '/perfil/' . $realName . '">' . $realName . '</a>
         </b>
         &nbsp;-&nbsp;
-        <a title="' . $subject . '"  href="' . $boardurl . '/post/' . $ID_TOPIC . '/' . $description . '/' . ssi_amigable($subject) . '.html#cmt_' . $ID_COMMENT . '">' . $subject . '</a>
+        <a title="' . $subject . '"  href="' . $boardurl . '/post/' . $row['ID_TOPIC2'] . '/' . $description . '/' . ssi_amigable($subject) . '.html#cmt_' . $row['ID_COMMENT'] . '">' . $subject . '</a>
       </font>
       <br style="margin: 0px; padding: 0px;" />';
   }

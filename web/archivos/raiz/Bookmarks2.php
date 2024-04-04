@@ -5,7 +5,7 @@ if (!defined('SMF'))
 @require_once('SSI.php');
 
 function Bookmarks() {
-  global $txt, $context, $ID_MEMBER, $return, $db_prefix;
+  global $txt, $context, $ID_MEMBER, $return, $db_prefix, $boardurl;
 
   loadTemplate('Bookmarks2');
   loadLanguage('Bookmarks2');
@@ -32,7 +32,6 @@ function Bookmarks() {
   $context['bookmarks2'] = array();
 
   while ($row = mysqli_fetch_assoc($request)) {
-    censorText($row['title']);
     $context['bookmarks2'][] = array(
       'id' => $row['ID_PICTURE'],
       'memberName' => $row['memberName'],
@@ -44,7 +43,7 @@ function Bookmarks() {
         'href' => empty($row['ID_MEMBER']) ? '' : $boardurl . '/perfil/' .$row['realName'],
         'link' => empty($row['ID_MEMBER']) ? $row['realName'] : '<a href="' . $boardurl . '/perfil/' . $row['realName'] . '">' . $row['realName'] . '</a>'
       ),
-      'title' => $row['title'],
+      'title' => censorText($row['title']),
       'new_href' => $boardurl . '/imagenes/ver/' . $row['ID_TOPIC'] . '/',
     );
   }
@@ -63,7 +62,12 @@ function deleteBookmark($topic_ids, $id_member = null) {
 
   $topics = implode(',', $topic_ids);
 
-  $result = db_query("DELETE FROM {$db_prefix}bookmarks WHERE ID_TOPIC IN($topics) AND ID_MEMBER = $id_member AND TYPE = 'imagen' ", __FILE__, __LINE__);
+  $result = db_query("
+    DELETE FROM {$db_prefix}bookmarks
+    WHERE ID_TOPIC IN($topics)
+    AND ID_MEMBER = $id_member
+    AND TYPE = 'imagen'", __FILE__, __LINE__);
+
   $deleted = mysqli_affected_rows($db_connection);
 
   if ($result)

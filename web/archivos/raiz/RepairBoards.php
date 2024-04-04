@@ -28,7 +28,8 @@ function RepairBoards()
 			<table width="100%" border="0" cellspacing="0" cellpadding="4" class="tborder">
 				<tr class="titlebg">
 					<td>' . $txt['smf73'] . '</td>
-				</tr><tr>
+				</tr>
+				<tr>
 					<td class="windowbg">';
 
 		if (!empty($to_fix))

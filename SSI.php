@@ -406,12 +406,13 @@ function ssi_denunciar_comunidad() {
   } else if (empty($comentario)) {
     echo '0: Debes rellenar el comentario.-';
   } else if (!empty($id) && !empty($razon) && !empty($comentario)) {
-    // TO-DO: Verificar estado de inserción
     $result = db_query("
       INSERT INTO {$db_prefix}denunciations(ID_TOPIC, ID_MEMBER, reason, comment, TYPE)
       VALUES ($id, $ID_MEMBER, '$razon', '$comentario', 'comunidad')", __FILE__, __LINE__);
 
-    redirectexit($boardurl . '/denuncia/enviada/');
+    if ($result) {
+      redirectexit($boardurl . '/denuncia/enviada/');
+    }
   }
 }
 

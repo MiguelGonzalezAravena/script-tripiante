@@ -254,7 +254,7 @@ function template_main() {
         <b>' . $contador6++ . '</b>&nbsp;-&nbsp;
         <a href="' . $boardurl . '/perfil/' . censorText($row['memberName']) . '" title="' . censorText($row['realName']) . '">' . censorText($row['realName']) . '</a>
         &nbsp;
-        (' . $coments['total'] . ' com)
+        (' . $row['total'] . ' com)
       </span>
       <br />';
     }
@@ -478,7 +478,14 @@ function template_main() {
           <div class="windowbg" style="width: 292px; padding: 4px;">';
 
     foreach ($context['imagenuser'] as $imagenuser) {
-      echo '<span class="size11"><b>'. $contador11++ .' - </b><a href="/perfil/', $imagenuser['memberName'], '" title="', $imagenuser['realName'], '">', $imagenuser['realName'], '</a> (', $imagenuser['cuenta'], ' img)</span><br>';
+      echo '
+        <span class="size11">
+          <b>'. $contador11++ .'&nbsp;-&nbsp;</b>
+          <a href="' . $boardurl . '/perfil/', $imagenuser['memberName'], '" title="', $imagenuser['realName'], '">', $imagenuser['realName'], '</a>
+          &nbsp;
+          (', $imagenuser['cuenta'], ' img)
+        </span>
+        <br />';
     }
 
     echo '

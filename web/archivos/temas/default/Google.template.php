@@ -55,7 +55,7 @@ function template_manual_intro() {
                 <center>Resultados de Google</center>
               </div>
             <div class="box_rss">
-              <img alt="" src="http://casitaweb.net/images/blank.gif" style="width: 14px; height: 12px;" border="0" />
+              <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
             </div>
           </div>
           <div style="width: 912px; padding: 4px;" class="windowbg">

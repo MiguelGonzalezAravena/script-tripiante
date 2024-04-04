@@ -1,7 +1,7 @@
 <?php
 function template_main()
 {
-	global $scripturl, $txt, $context, $modSettings, $us; $slogan;
+	global $scripturl, $txt, $context, $modSettings, $us, $slogan;
 
 	// Permissions
 	isAllowedTo('smfgallery_view');

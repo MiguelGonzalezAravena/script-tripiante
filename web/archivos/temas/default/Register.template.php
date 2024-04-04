@@ -34,7 +34,7 @@ if(bday1 == \'\'){alert(\'Debes ingresar el mes de tu nacimiento.\');return fals
 if(bday3 == \'\'){alert(\'Debes ingresar el a\xf1o de tu nacimiento.\');return false;}}
 function verifyAgree(){if (document.forms.creator.passwrd1.value != document.forms.creator.passwrd2.value){	alert("No coinciden las contrase\xf1as.");return false;}return true;}</script>
 
-<form action="/registrandose/" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator">
+<form action="' . $boardurl . '/registrandose/" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator">
 
 <div style="width:354px;float:left;margin-right:8px;">
 
@@ -332,7 +332,7 @@ if ($context['visual_verification'] || $context['use_recaptcha'])
 {
 echo '<tr valign="top"><td width="40%" align="right" valign="top"><font class="size11">* <strong>', $txt['visual_verification_label'], ':</strong></td>';
 echo '<td><script type="text/javascript">var RecaptchaOptions = {theme : \'', empty($modSettings['recaptcha_theme']) ? 'clean' : $modSettings['recaptcha_theme'] , '\',};</script><script type="text/javascript" src="http://api.recaptcha.net/challenge?k=', $modSettings['recaptcha_public_key'], '"></script><noscript><iframe src="http://api.recaptcha.net/noscript?k=', $modSettings['recaptcha_public_key'], '" frameborder="0"></iframe><br /><textarea name="recaptcha_challenge_field" rows="2" cols="10"></textarea><input type="hidden" name="recaptcha_response_field" value="manual_challenge" /></noscript></td>';
-echo '</tr></div></td></tr></td><tr valign="top"><td align="right" width="40%" align="top">&nbsp;</td><td><label for="regagree"><input tabindex="', $context['tabindex']++, '" type="checkbox" name="regagree" onclick="checkAgree();" id="regagree" class="check" /> ', $txt[585], '</label> <a href="/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a></td></tr></table><br /><div align="center"><font class="size11" style="color: red;">* Campos obligatorios</font><br /><br /><input onclick="return showtags(this.form.name.value,this.form.user.value, this.form.passwrd1.value, this.form.passwrd2.value, this.form.email.value, this.form, this.form.location.value, this.form.bday2.value, this.form.bday1.value, this.form.bday3.value);" class="login" type="submit" name="regSubmit" value="', $txt[97], '" /></div></form></td></tr></table></div><div style="clear:both"></div>';
+echo '</tr></div></td></tr></td><tr valign="top"><td align="right" width="40%" align="top">&nbsp;</td><td><label for="regagree"><input tabindex="', $context['tabindex']++, '" type="checkbox" name="regagree" onclick="checkAgree();" id="regagree" class="check" /> ', $txt[585], '</label> <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a></td></tr></table><br /><div align="center"><font class="size11" style="color: red;">* Campos obligatorios</font><br /><br /><input onclick="return showtags(this.form.name.value,this.form.user.value, this.form.passwrd1.value, this.form.passwrd2.value, this.form.email.value, this.form, this.form.location.value, this.form.bday2.value, this.form.bday1.value, this.form.bday3.value);" class="login" type="submit" name="regSubmit" value="', $txt[97], '" /></div></form></td></tr></table></div><div style="clear:both"></div>';
 }
 }
 

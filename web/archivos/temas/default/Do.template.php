@@ -112,7 +112,9 @@ function template_eliminarci() {
   // TO-DO: Validar permisos antes de eliminar
   if(!empty($_POST['campos'])) 	{
     $aLista = array_keys($_POST['campos']);
-    db_query("DELETE FROM {$db_prefix}gallery_comment WHERE ID_COMMENT IN (" . implode(',', $aLista) . ")", __FILE__, __LINE__);
+    db_query("
+      DELETE FROM {$db_prefix}gallery_comment
+      WHERE ID_COMMENT IN (" . implode(',', $aLista) . ")", __FILE__, __LINE__);
   }
 
   header("Location: {$_SERVER['HTTP_REFERER']}");

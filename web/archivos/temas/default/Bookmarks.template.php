@@ -14,7 +14,7 @@ function template_main() {
     $actualPage = 1;
   }
 
-  $request2	= db_query("
+  $query = "
     SELECT 
       ms.posterTime, t.points, b.ID_BOARD, b.name, b.description, mem.realName, ms.ID_BOARD, t.ID_TOPIC,
       mem.ID_MEMBER, mem.memberName, ms.ID_MEMBER, ms.ID_TOPIC, ms.subject, ms.ID_MEMBER
@@ -26,11 +26,16 @@ function template_main() {
     AND mem.ID_MEMBER = ms.ID_MEMBER
     AND bm.TYPE = 'posts'
     AND $user_info[query_see_board]
-    ORDER BY bm.ID_TOPIC DESC
+    ORDER BY b
+  ";
+
+  $request	= db_query("
+    {$query}
     LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
-  $context['bookmarks'] = mysqli_num_rows($request2);
-  $records = $context['bookmarks'];
+  $context['bookmarks'] = mysqli_num_rows($request);
+  $request2 = db_query($query, __FILE__, __LINE__);
+  $records = mysqli_num_rows($request2);
   $previousPage = $actualPage - 1;
   $nextPage = $actualPage + 1;
   $lastPage = $records / $end;
@@ -65,7 +70,7 @@ function template_main() {
         <form action="' . $boardurl . '/favoritos/eliminar/" method="post">';
 
   if (!empty($context['bookmarks'])) {
-    while ($row	=	mysqli_fetch_assoc($request2)) {
+    while ($row	=	mysqli_fetch_assoc($request)) {
       echo '
         <div class="entryf">
           <div class="icon">
@@ -93,8 +98,9 @@ function template_main() {
         </div>';
     }
 
-    if ($residue > 0)
+    if ($residue > 0) {
       $lastPage = floor($lastPage) + 1;
+    }
 
     echo '
           <div style="clear: left;"></div>
@@ -111,11 +117,13 @@ function template_main() {
     </div>
     <div class="windowbgpag" style="width: 757px;">';
 
-  if ($actualPage > 1)
+  if ($actualPage > 1) {
     echo '<a href="' . $boardurl . '/favoritos/post/pag-' . $previousPage . '">&#171; anterior</a>';
+  }
 
-  if ($actualPage < $lastPage)
+  if ($actualPage < $lastPage) {
     echo '<a href="' . $boardurl . '/favoritos/post/pag-' . $nextPage . '">siguiente &#187;</a>';
+  }
 
   echo '
           </div>

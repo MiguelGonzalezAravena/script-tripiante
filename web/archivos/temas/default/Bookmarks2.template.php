@@ -41,23 +41,31 @@ function template_main() {
     $actualPage = 1;
   }
 
-  $request2	= db_query("
+  $query = "
     SELECT ms.date, ms.points, ms.ID_PICTURE, ms.title, ms.ID_MEMBER, mem.realName, mem.ID_MEMBER, mem.memberName, bm.ID_MEMBER, bm.TYPE, bm.ID_TOPIC
     FROM ({$db_prefix}bookmarks AS bm, {$db_prefix}gallery_pic AS ms, {$db_prefix}members AS mem)
     WHERE bm.ID_MEMBER = $ID_MEMBER
     AND ms.ID_PICTURE = bm.ID_TOPIC
     AND mem.ID_MEMBER = ms.ID_MEMBER
     AND bm.TYPE = 'imagen'
-    ORDER BY bm.ID_TOPIC DESC
+    ORDER BY bm.ID_TOPIC DESC";
+
+  $request	= db_query("
+    {$query}
     LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
-  $context['bookmarks'] = mysqli_num_rows($request2);
+  $context['bookmarks'] = mysqli_num_rows($request);
   $records = $context['bookmarks'];
 
   if (!empty($context['bookmarks'])) {
-    while ($row = mysqli_fetch_assoc($request2)) {
-      echo '<div class="entryf"><div class="icon"><img alt="Imagen" title="Imagen" src="' . $settings['images_url'] . '/icons/foto.gif" /></div><div class="text_container"><div class="title"><a href="/imagenes/ver/', $row['ID_PICTURE'], '/">', $row['title'], '</a></div><div style="margin:0pt;float:left;" class="data"><p style="margin:0px;padding:0px;" align="right">', $txt['was_created_by'], ' <a style="color:#717171;" href="/perfil/', $row['memberName'], '">', $row['realName'], '</a> | pts: ', $row['points'], ' | <a title="', $txt['send_to_friend'], '" href="/enviar-a-amigo/imagen-', $row['ID_PICTURE'], '"><img alt="" src="' . $settings['images_url'] . '/icons/icono-enviar-mensaje.gif" /></a> | <input name="remove_bookmarks[]" type="checkbox" value="', $row['ID_PICTURE'], '" /></p></div></div></div>';
+    while ($row = mysqli_fetch_assoc($request)) {
+      echo '<div class="entryf"><div class="icon"><img alt="Imagen" title="Imagen" src="' . $settings['images_url'] . '/icons/foto.gif" /></div><div class="text_container"><div class="title"><a href="' . $boardurl . '/imagenes/ver/', $row['ID_PICTURE'], '/">', $row['title'], '</a></div><div style="margin:0pt;float:left;" class="data"><p style="margin:0px;padding:0px;" align="right">', $txt['was_created_by'], ' <a style="color:#717171;" href="' . $boardurl . '/perfil/', $row['memberName'], '">', $row['realName'], '</a> | pts: ', $row['points'], ' | <a title="', $txt['send_to_friend'], '" href="' . $boardurl . '/enviar-a-amigo/imagen-', $row['ID_PICTURE'], '"><img alt="" src="' . $settings['images_url'] . '/icons/icono-enviar-mensaje.gif" /></a> | <input name="remove_bookmarks[]" type="checkbox" value="', $row['ID_PICTURE'], '" /></p></div></div></div>';
     }
+
+    mysqli_free_result($request);
+
+    $request = db_query($query, __FILE__, __LINE__);
+    $records = mysqli_num_rows($request);
 
     $previousPage = $actualPage - 1;
     $nextPage = $actualPage + 1;

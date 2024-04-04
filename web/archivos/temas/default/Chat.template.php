@@ -1,7 +1,9 @@
 <?php
 // Version: 1.1; Chat
 function template_manual_above() {}
+
 function template_manual_below() {}
+
 function template_manual_intro() {
   global $settings, $txt, $chatid;
 

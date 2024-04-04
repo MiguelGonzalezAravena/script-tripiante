@@ -14,8 +14,7 @@ function template_manual_intro() {
   while ($row = mysqli_fetch_assoc($request)) {
     $titulo = $row['subject'];
     $id = $row['ID_TOPIC'];
-    $usuario = $row['memberName'];		
-    $user = $row['ID_MEMBER'];		
+    $usuario = $row['memberName'];
     $started = $row['ID_MEMBER_STARTED'];		
   }
 
@@ -31,15 +30,14 @@ function template_manual_intro() {
     fatal_error('Disculpe, pero no puedes denunciar tus post. Si tienes alg&uacute;n problema, b&oacute;rralo o ed&iacute;talo tu mismo.', false);
   } else {
     echo '
-      <script type="text/javascript">
-        function errorrojos(comentario) {
-          if(comentario == \'\') {
-            document.getElementById(\'errorss\').innerHTML = \'<br /><font class="size10" style="color: red;">Es necesario escribir un comentario sobre la denuncia.</font>\';
-            return false;
+        <script type="text/javascript">
+          function errorrojos(comentario) {
+            if(comentario == \'\') {
+              document.getElementById(\'errorss\').innerHTML = \'<br /><font class="size10" style="color: red;">Es necesario escribir un comentario sobre la denuncia.</font>\';
+              return false;
+            }
           }
-        }
-      </script>';
-    echo '
+        </script>
         <div>
           <div class="box_buscador">
             <div class="box_title" style="width: 921px;">
@@ -74,12 +72,17 @@ function template_manual_intro() {
                         <option value="Pide contrasena y no esta">Pide contrase&ntilde;a y no est&aacute;</option>
                         <option value="No cumple con el protocolo">No cumple con el protocolo</option>
                         <option value="Otra razon (especificar)">Otra raz&oacute;n (especificar)</option>
-                      </select><br /><br />
-                      <font class="size11"><b>Aclaraci&oacute;n y comentarios:</b></font><br />
+                      </select>
+                      <br /><br />
+                      <font class="size11"><b>Aclaraci&oacute;n y comentarios:</b></font>
+                      <br />
                       <textarea name="comentario" cols="40" rows="5" wrap="hard" tabindex="6"></textarea>
-                      <label id="errorss"></label><br />
-                      <font size="1">En el caso de ser Re-post se debe indicar el enlace del post original.</font><br /><br />
-                      <input onclick="return errorrojos(this.form.comentario.value);" class="login" type="submit" value="Denunciar Post" /><br />
+                      <label id="errorss"></label>
+                      <br />
+                      <font size="1">En el caso de ser Re-post se debe indicar el enlace del post original.</font>
+                      <br /><br />
+                      <input onclick="return errorrojos(this.form.comentario.value);" class="login" type="submit" value="Denunciar Post" />
+                      <br />
                       <input type="hidden" name="ID_TOPIC" value="' . $id  . '">
                       <input type="hidden" name="tipo" value="post" />
                     </p>

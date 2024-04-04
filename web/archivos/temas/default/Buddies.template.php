@@ -79,7 +79,10 @@ function template_buddy_center() {
       <table border="0" width="85%" cellspacing="1" cellpadding="4" class="bordercolor" align="center">
         <tr class="titlebg">
           <td colspan="9" height="26">
-            &nbsp;<img src="' . $settings['images_url'] . '/icons/profile_sm.gif" alt="" align="top" />&nbsp;' . $txt['buddy_unapproved'] . '
+            &nbsp;
+            <img src="' . $settings['images_url'] . '/icons/profile_sm.gif" alt="" align="top" />
+            &nbsp;
+            ' . $txt['buddy_unapproved'] . '
           </td>
         </tr>
         <tr class="catbg3">

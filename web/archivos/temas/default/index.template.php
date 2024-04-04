@@ -58,7 +58,7 @@ function template_main_above() {
       <div id="maincontainer">
         <div id="head">
           <div id="logo" style="margin-bottom: 10px;">
-            <a href="/" title="' . $context['forum_name'] . ' - ' . $slogan . '" id="logoi">
+            <a href="' . $boardurl . '/" title="' . $context['forum_name'] . ' - ' . $slogan . '" id="logoi">
               <img src="' . $settings['images_url'] . '/espacio.gif" alt="' . $context['forum_name'] . ' - ' . $slogan . '" title="' . $context['forum_name'] . ' - ' . $slogan . '" align="top" border="0" />
             </a>
           </div>

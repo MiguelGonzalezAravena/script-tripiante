@@ -29,10 +29,9 @@ echo '</select></div>
 
 function template_results()
 {
-	global $context, $settings, $options, $txt, $scripturl, $counter, $modSettings;
+	global $context, $settings, $options, $txt, $scripturl, $counter, $modSettings, $boardurl;
 
-	if ($context['compact'])
-	{
+	if ($context['compact']) {
 	
 	echo '
 <script type="text/javascript">function errorr(search){if(search == \'\'){document.getElementById(\'errorss\').innerHTML=\'<br /><font class="size10" style="color: red;">Es necesario escribir una palabra para buscar.</font>\'; return false;}}</script>
@@ -74,7 +73,7 @@ echo '<span class="size12"><b>', implode('<br />', $context['search_errors']['me
 		{
 		echo '<tr id="div_', $topic['id'], '">
 					<td title="', 	$topic['board']['name'], '"><img title="', 	$topic['board']['name'], '" src="' . $settings['images_url'] . '/post/icono_', $topic['board']['id'], '.gif" alt="" /></td>
-					<td style="text-align: left;"><a title="' , $topic['first_post']['subject'] , '" href="/post/', $topic['id'], '/', $topic['board']['description'], '/' , ssi_amigable($topic['first_post']['subject']), '.html" class="titlePost">' , $topic['first_post']['subject'] , '</a></td>
+					<td style="text-align: left;"><a title="' , $topic['first_post']['subject'] , '" href="' . $boardurl . '/post/', $topic['id'], '/', $topic['board']['description'], '/' , ssi_amigable($topic['first_post']['subject']), '.html" class="titlePost">' , $topic['first_post']['subject'] , '</a></td>
 					<td title="' , $topic['first_post']['fecha'] , '">' , $topic['first_post']['fecha'] , '</td>
 					<td><span style="color:green;">' , $topic['first_post']['puntos'] , '</span></td>
 				</tr>';

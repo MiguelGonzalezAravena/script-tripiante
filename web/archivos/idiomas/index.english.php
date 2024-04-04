@@ -194,7 +194,7 @@ $txt[311] = 'a';
 $txt[315] = '&iquest;Olvidaste tu contrase&ntilde;a?';
 
 $txt[317] = 'Recibido';
-$txt['317b']	=	'Enviado';
+$txt['317b'] = 'Enviado';
 // Use numeric entities in the below string.
 $txt[318] = 'Por';
 $txt[319] = 'Asunto';

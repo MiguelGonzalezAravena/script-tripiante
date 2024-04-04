@@ -45,7 +45,7 @@ function PrintImg() {
 
   while ($row = mysqli_fetch_assoc($request)) {
     // Censor the subject and message.
-    censorText($row['title']);	
+    censorText($row['title']);
 
     $context['image'][] = array(
       'title' => $row['title'],

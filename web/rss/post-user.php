@@ -1,8 +1,8 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
-$id	=	htmlentities($_REQUEST['id']); 
-$request	=	mysql_query("
+$id = htmlentities($_REQUEST['id']); 
+$request = mysql_query("
 SELECT *
 FROM ({$db_prefix}messages AS m, {$db_prefix}members AS mem, {$db_prefix}boards AS b)
 WHERE m.ID_MEMBER = mem.ID_MEMBER

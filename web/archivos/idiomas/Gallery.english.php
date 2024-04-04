@@ -44,8 +44,8 @@ $txt['gallery_form_icon'] = 'Icono de la Galer&iacute;a';
 $txt['gallery_warn_category'] = 'La advertencia esto BORRARA esta categor&iacute;a y TODOS los cuadros, comentarios, posiciones que la categor&iacute;a contiene ...';
 
 $txt['gallery_form_addpicture'] = 'Agregar nueva Imagen';
-$txt['gallery_form_category'] =	'Categor&iacute;a:';
-$txt['gallery_form_keywords'] =	'Keywords:';
+$txt['gallery_form_category'] = 'Categor&iacute;a:';
+$txt['gallery_form_keywords'] = 'Keywords:';
 $txt['gallery_form_uploadpic'] = 'Subir Imagen:';
 $txt['gallery_form_maxwidth'] = 'Max anchura ';
 $txt['gallery_form_maxheight'] = 'Max altura ';

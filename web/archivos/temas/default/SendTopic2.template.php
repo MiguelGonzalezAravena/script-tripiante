@@ -3,7 +3,7 @@
 function template_main() {
   global $context, $boardurl, $settings, $options, $txt, $scripturl, $modSettings, $img;
 
-  $id	=	(int) $_REQUEST['img'];
+  $id = (int) $_REQUEST['img'];
   echo '
     <script language="javascript" type="text/javascript">
       function showr_email(comment) {

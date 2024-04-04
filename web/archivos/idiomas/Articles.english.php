@@ -36,7 +36,7 @@ $txt['smfarticles_txtguest'] = 'Guest';
 $txt['smfarticles_pages'] = 'Paginas: ';
 $txt['smfarticles_approvearticles'] = 'Aprobar Articulos';
 $txt['smfarticles_ctitle'] = 'Titulo';
-$txt['smfarticles_text_catnone'] =	'(None)';
+$txt['smfarticles_text_catnone'] = '(None)';
 
 $txt['smfarticles_noarticleselected'] = 'No article selected';
 $txt['smfarticles_err_no_rating_selected'] = 'No rating selected';

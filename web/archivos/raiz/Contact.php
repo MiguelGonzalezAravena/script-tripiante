@@ -139,7 +139,7 @@ function valid_email($email) {
   $domain_len = strlen($domain);
 
   if ($local_len < 1 || $local_len > 64 || $domain_len < 1 || $domain_len > 255)
-    return false;	// local or domain part length invalid
+    return false;// local or domain part length invalid
   else if ($local[0] == '.' || $local[$local_len-1] == '.')
     return false; // local part cannot start or end with dot
   else if (preg_match('/\\.\\./', $local))
@@ -148,7 +148,7 @@ function valid_email($email) {
   return false; // domain part has invalid character
   else if (preg_match('/\\.\\./', $domain))
   return false; // domain part cannot have two consecutive dots
-  else if (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\", "", $local)))	// exception for quoted
+  else if (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\", "", $local))) // exception for quoted
     if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\", "", $local)))
       return false; // local part character invalid except when local part is quoted
 
@@ -157,7 +157,7 @@ function valid_email($email) {
 
   if (function_exists('checkdnsrr'))
     if (!(checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A')))
-      return false;	// domain does not have a valid A or MX record
+      return false;// domain does not have a valid A or MX record
   else
     if (!(win_checkdnsrr($domain, 'MX') || win_checkdnsrr($domain, 'A')))
       return false; // domain does not have a valid A or MX record

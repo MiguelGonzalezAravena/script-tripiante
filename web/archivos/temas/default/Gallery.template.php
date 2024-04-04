@@ -166,7 +166,7 @@ function template_main() {
       AND m.memberName = '$us'
       ORDER BY g.ID_PICTURE DESC";
 
-    $request2	= db_query("
+    $request2 = db_query("
       {$query}      
       LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
@@ -435,7 +435,7 @@ function template_view_picture() {
 
   mysqli_free_result($request);
 
-  $request	=	db_query("
+  $request = db_query("
     SELECT DISTINCT g.ID_PICTURE, g.points, g.title, g.ID_MEMBER, mem.ID_MEMBER
     FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS mem)
     WHERE g.ID_MEMBER = mem.ID_MEMBER
@@ -540,7 +540,7 @@ function template_view_picture() {
     WHERE ID_GROUP = " . $idgrup2, __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request)) {
-    $membergropu2	=	$row['groupName'];
+    $membergropu2 = $row['groupName'];
   }
 
   $medalla = db_query("
@@ -787,7 +787,7 @@ function template_view_picture() {
       <span id="span_opciones1" class="size10">
         <b class="size11">Dar puntos:</b>';
 
-    $puntos	=	$context['user']['money'];
+    $puntos = $context['user']['money'];
 
     for ($o = 1; $o <= $puntos; $o++) {
       echo '<a href="#" onclick="votar_img(\'' . $context['gallery_pic']['ID_PICTURE'] . '\', \'' . $o . '\'); return false;" title="Dar ' . $o . ' puntos">' . $o . '</a>';
@@ -843,7 +843,7 @@ function template_view_picture() {
       </div>';
   }
 
-  $link	=	$boardurl . $_SERVER['REQUEST_URI'];
+  $link = $boardurl . $_SERVER['REQUEST_URI'];
 
   $request = db_query("
     SELECT o.ID_TOPIC
@@ -1369,7 +1369,7 @@ function template_settings() {
           </form>
           <br />
           You can also upgrade to the SMF Gallery Pro edition at <a href="http://www.smfhacks.com/smf-gallery-pro.php" target="blank">http://www.smfhacks.com/smf-gallery-pro.php</a>
-          <br />	
+          <br />
           <table>
             <tr>
               <td>

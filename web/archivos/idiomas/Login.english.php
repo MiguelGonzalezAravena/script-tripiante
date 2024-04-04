@@ -142,7 +142,7 @@ $txt['admin_notify_approval'] = 'Antes de que este usuario pueda publicar mensaj
 
 $txt['coppa_title'] = 'Foro con restricci&oacute;n de edad';
 $txt['coppa_after_registration'] = 'Gracias por registrarte con ' . $context['forum_name'] . '.<br /><br />Debido a que est&aacute;s por debajo de la edad de {MINIMUM_AGE}, hay un requerimiento legal
-	para obtener el permiso de tus padres/tutor antes de que puedas empezar a usar tu cuenta. Para continuar con la activaci&oacute;n de la cuenta por favor imprime el formulario que a continuaci&oacute;n se muestra:';
+  para obtener el permiso de tus padres/tutor antes de que puedas empezar a usar tu cuenta. Para continuar con la activaci&oacute;n de la cuenta por favor imprime el formulario que a continuaci&oacute;n se muestra:';
 $txt['coppa_form_link_popup'] = 'Cargar la forma en una ventana nueva';
 $txt['coppa_form_link_download'] = 'Descargar forma';
 $txt['coppa_send_to_one_option'] = 'Entonces solic&iacute;tale a tus padres/tutor que env&iacute;en la forma propiamente llenada por:';

@@ -80,7 +80,7 @@ function template_main() {
         echo '
           <td>
             <a href="' . $scripturl . '?action=trackip;searchip=' . $member['ip'] . '" target="_blank" title="' . $member['ip'] . '" >' . $member['ip'] . '</a>,&nbsp;
-            (<acronym title="' . $member['query']['USER_AGENT'] . '">' . $member['agent'] . '</acronym>)';	
+            (<acronym title="' . $member['query']['USER_AGENT'] . '">' . $member['agent'] . '</acronym>)';
       }
 
       echo '
@@ -193,7 +193,7 @@ function getAgent(&$user_agent, &$user_name, &$result, $guest) {
     array (
       'agent' => 'Inktomi Slurp',
       'spider' => true,
-    ),		 
+    ),
     array (
       'agent' => 'appie',
       'spidername' => 'Walhello spider',

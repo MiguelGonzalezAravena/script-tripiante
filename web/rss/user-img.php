@@ -1,7 +1,7 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
-$request	=	mysql_query("
+$request = mysql_query("
 SELECT COUNT(p.ID_MEMBER) AS cuenta, p.ID_PICTURE, mem.ID_MEMBER, mem.memberName, mem.realName, p.ID_MEMBER
 FROM ({$db_prefix}gallery_pic AS p, {$db_prefix}members AS mem)
 WHERE p.ID_MEMBER = mem.ID_MEMBER
@@ -20,8 +20,8 @@ mysqli_free_result($request);
 
 echo'<?xml version="1.0" encoding="UTF-8"?>
 <rss version="0.92" xml:lang="spanish">
-	<channel>
-	 <image>
+  <channel>
+   <image>
     <url>' . $boardurl  .'/images/rss.png</url>
     <title>' . $mbname . ' -  Usuarios con mas imagenes</title>
     <link>' . $boardurl . '/</link>
@@ -30,7 +30,7 @@ echo'<?xml version="1.0" encoding="UTF-8"?>
     <height>32</height>
     <description>25 Usuarios con mas imagenes en ' . $mbname . '</description>
   </image>
-	    <title>' . $mbname . ' -  Usuarios con mas imagenes</title>
+      <title>' . $mbname . ' -  Usuarios con mas imagenes</title>
     <link>' . $boardurl . '</link>
     <description>25 Usuarios con mas imagenes en ' . $mbname . '</description>';
 foreach ($context['imagenuser'] as $imagenuser) {
@@ -39,6 +39,6 @@ echo '<item><title><![CDATA[' . $imagenuser['realName'] . ' (' . $imagenuser['cu
 <description><![CDATA[]]></description>
 <comments>' . $boardurl . '/perfil/' . $imagenuser['memberName'] . '</comments></item>';
 }
-echo'	</channel>
+echo' </channel>
 </rss>
 ';  ?> 

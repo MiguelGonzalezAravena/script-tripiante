@@ -15,8 +15,8 @@ mysqli_free_result($comment);
 $contando=1;
 echo'<?xml version="1.0" encoding="UTF-8"?>
 <rss version="0.92" xml:lang="spanish">
-	<channel>
-	 <image>
+  <channel>
+   <image>
     <url>'.$boardurl.'/images/rss.png</url>
     <title>'.$mbname.' - Comentarios de los post</title>
     <link>'.$boardurl.'</link>
@@ -25,21 +25,20 @@ echo'<?xml version="1.0" encoding="UTF-8"?>
     <height>32</height>
     <description>Ultimos 25 comentarios de los post en '.$mbname.'</description>
   </image>
-	    <title>'.$mbname.' - Comentarios de los post</title>
+      <title>'.$mbname.' - Comentarios de los post</title>
     <link>'.$boardurl.'</link>
     <description>Ultimos 25 comentarios de los post en '.$mbname.'</description>';
-foreach($context['comment'] AS $comment){
-
+foreach($context['comment'] AS $comment) {
 echo '<item>
-			<title><![CDATA['. $comment['nom-user'] .' - '. $comment['titulo'] .']]></title>
-			<link>'.$boardurl.'/post/'. $comment['id'] .'#cmt_'. $comment['id_comment'] .'</link>
-			<description><![CDATA['. $comment['comment'] .']]>
-			</description>
-			<comments>'.$boardurl.'/post/'. $comment_img['id'] .'#comentar</comments>
-		</item>';
+      <title><![CDATA['. $comment['nom-user'] .' - '. $comment['titulo'] .']]></title>
+      <link>'.$boardurl.'/post/'. $comment['id'] .'#cmt_'. $comment['id_comment'] .'</link>
+      <description><![CDATA['. $comment['comment'] .']]>
+      </description>
+      <comments>'.$boardurl.'/post/'. $comment_img['id'] .'#comentar</comments>
+    </item>';
 
-		}
+    }
 
-echo'	</channel>
+echo '</channel>
 </rss>
 ';  ?> 

@@ -1,6 +1,7 @@
 <?php
 // Version: 1.1; Search
-	global $slogan;
+global $slogan;
+
 $txt[183] = $slogan;
 $txt[189] = 'Escoge un foro en el que se buscar&aacute;, o buscar en todos';
 $txt[343] = 'Coincidir todas las palabras';
@@ -56,7 +57,7 @@ $txt['search_method_kilobytes'] = 'KB ';
 $txt['search_method_fulltext_index'] = '&Iacute;ndice Fulltext';
 $txt['search_method_no_index_exists'] = 'no existe actualmente';
 $txt['search_method_fulltext_create'] = 'crear un &iacute;ndice fulltext';
-$txt['search_method_fulltext_cannot_create'] = 'no puede ser creado porque el tama&ntilde;o máximo del mensaje excede 65,535';
+$txt['search_method_fulltext_cannot_create'] = 'no puede ser creado porque el tama&ntilde;o mï¿½ximo del mensaje excede 65,535';
 $txt['search_method_index_already_exsits'] = 'ya fue creado con anterioridad';
 $txt['search_method_fulltext_remove'] = 'eliminar &iacute;ndice fulltext';
 $txt['search_method_index_partial'] = 'parcialmente creado';

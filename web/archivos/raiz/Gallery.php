@@ -431,7 +431,7 @@ function EditPicture2() {
       WHERE ID_PICTURE = $id
       LIMIT 1", __FILE__, __LINE__);
 
-    $ID_MODERATOR =	 $context['user']['id'];
+    $ID_MODERATOR =  $context['user']['id'];
     $ID_MEMBER = $memID;
     $ID_TOPIC = $id;
     $TYPE = 'Imagen';

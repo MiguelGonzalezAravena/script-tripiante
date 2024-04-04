@@ -171,7 +171,7 @@ function AddTag2() {
   if (db_affected_rows() == 0) {
     db_query("
       INSERT INTO {$db_prefix}tags(tag, approved)
-      VALUES ('$tag',1)", __FILE__, __LINE__);	
+      VALUES ('$tag',1)", __FILE__, __LINE__);
 
     $ID_TAG = db_insert_id();
 

@@ -1,6 +1,6 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-$request	=	mysql_query("SELECT * FROM {$db_prefix}community_topic AS ct, {$db_prefix}communities AS c WHERE ct.ID_COMMUNITY = c.ID_COMMUNITY ORDER BY ct.ID_TOPIC DESC LIMIT 0, 25");
+$request = mysql_query("SELECT * FROM {$db_prefix}community_topic AS ct, {$db_prefix}communities AS c WHERE ct.ID_COMMUNITY = c.ID_COMMUNITY ORDER BY ct.ID_TOPIC DESC LIMIT 0, 25");
 echo '<?xml version="1.0" encoding="UTF-8" ?><rss version="0.92" xml:lang="es-es">
 <channel>
 <image>

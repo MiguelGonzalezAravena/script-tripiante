@@ -30,7 +30,7 @@ function template_main() {
     $actualPage = 1;
   }
 
-  $categoria	=	htmlentities(addslashes($_REQUEST['categoria']), ENT_QUOTES, 'UTF-8');
+  $categoria = htmlentities(addslashes($_REQUEST['categoria']), ENT_QUOTES, 'UTF-8');
 
   echo '<div class="windowbg" style="width: 370px; padding: 4px;">';
 
@@ -38,7 +38,7 @@ function template_main() {
     $add = "AND b.description = '$categoria' ";
   }
 
-  $request	= db_query("
+  $request = db_query("
     SELECT m.ID_TOPIC, m.ID_BOARD, m.hiddenOption, m.subject, b.name, b.description, b.ID_BOARD, t.isSticky, t.ID_TOPIC, t.ID_BOARD
     FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t)
     WHERE m.ID_TOPIC = t.ID_TOPIC
@@ -50,7 +50,7 @@ function template_main() {
     ORDER BY t.ID_TOPIC ASC
     LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
-  $request2	= db_query("
+  $request2 = db_query("
     SELECT m.ID_TOPIC, m.ID_BOARD, m.hiddenOption, m.subject, b.name, b.description, b.ID_BOARD, t.isSticky, t.ID_TOPIC, t.ID_BOARD
     FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t)
     WHERE m.ID_TOPIC = t.ID_TOPIC
@@ -106,7 +106,7 @@ function template_main() {
       </div>
       <div class="hrs"></div>';
 
-    $index_color	=	1	+	$index_color;
+    $index_color = 1 + $index_color;
   }
 
   if ($rows == 0) {

@@ -14,7 +14,7 @@ function template_manual_intro()
 
   $switch = true;
 
-  echo '	
+  echo '
   <script type="text/javascript">
     var ancho = new Array();
     var alto = new Array();
@@ -50,7 +50,7 @@ function template_manual_intro()
       }
 
       if (document.getElementById("cantidad").value > 50) {
-        alert("La cantidad maxima de posts listados es 50	");
+        alert("La cantidad maxima de posts listados es 50");
         document.getElementById("cantidad").focus();
         return;
       }

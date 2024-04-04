@@ -534,7 +534,7 @@ return Post();
 }
 $posterIsGuest = $user_info['is_guest'];
 } elseif (empty($topic)) {
-if (isset($_POST['lock'])) 	{
+if (isset($_POST['lock']))   {
 if (empty($_POST['lock'])) {
 unset($_POST['lock']);
 } elseif (!allowedTo(array('lock_any', 'lock_own'))) {
@@ -773,16 +773,16 @@ mysqli_free_result($dbresult);
 }
 
 if(!empty($_REQUEST['topic'])) {
-$history	=	db_query("SELECT t.ID_TOPIC, m.subject, t.ID_MEMBER_STARTED, m.ID_TOPIC FROM ({$db_prefix}topics AS t, {$db_prefix}messages AS m) WHERE t.ID_TOPIC = $topic AND m.ID_TOPIC = t.ID_TOPIC AND m.ID_TOPIC = $topic", __FILE__, __LINE__);
-$sacarid	=	mysqli_fetch_assoc($history);
+$history = db_query("SELECT t.ID_TOPIC, m.subject, t.ID_MEMBER_STARTED, m.ID_TOPIC FROM ({$db_prefix}topics AS t, {$db_prefix}messages AS m) WHERE t.ID_TOPIC = $topic AND m.ID_TOPIC = t.ID_TOPIC AND m.ID_TOPIC = $topic", __FILE__, __LINE__);
+$sacarid = mysqli_fetch_assoc($history);
 
-$ID_MODERATOR	=	$context['user']['id'];
-$ID_MEMBER		=	$sacarid['ID_MEMBER_STARTED'];
-$ID_TOPIC		=	$topic;
-$TYPE			=	'Post';
-$ACTION			=	'modify';
-$subject		=	$sacarid['subject'];
-$reason			=	htmlentities($_POST['causa'], ENT_QUOTES, "UTF-8");
+$ID_MODERATOR = $context['user']['id'];
+$ID_MEMBER = $sacarid['ID_MEMBER_STARTED'];
+$ID_TOPIC = $topic;
+$TYPE = 'Post';
+$ACTION = 'modify';
+$subject = $sacarid['subject'];
+$reason = htmlentities($_POST['causa'], ENT_QUOTES, "UTF-8");
 if (!empty($modSettings['modlog_enabled']) && allowedTo('modify_any')) {
 db_query("INSERT INTO {$db_prefix}mod_history (ID_MODERATOR, ID_MEMBER, ID_TOPIC, TYPE, ACTION, subject, reason) VALUES ('" . $ID_MODERATOR . "', '" . $ID_MEMBER . "', '" . $ID_TOPIC . "', '" . $TYPE . "', '" . $ACTION . "', '" . $subject . "', '" . $reason . "')", __FILE__, __LINE__);
 }

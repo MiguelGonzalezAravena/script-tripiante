@@ -135,9 +135,9 @@ $txt['ip_address'] = 'Direcci&oacute;n IP';
 $txt['member_id'] = 'ID';
 
 $txt['security_wrong'] = '&iexcl;Intento de ingreso a administraci&oacute;n!' . "\n" .
-	'Referer: ' . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'desconocido') . "\n" .
-	'User agent: ' . $_SERVER['HTTP_USER_AGENT'] . "\n" .
-	'IP: ' . $GLOBALS['user_info']['ip'];
+  'Referer: ' . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'desconocido') . "\n" .
+  'User agent: ' . $_SERVER['HTTP_USER_AGENT'] . "\n" .
+  'IP: ' . $GLOBALS['user_info']['ip'];
 
 $txt['email_as_html'] = 'Enviar en formato HTML.  (con esto, puedes poner HTML en el email.)';
 $txt['email_parsed_html'] = 'Agregar &lt;br /&gt;s y &amp;nbsp;s a este mensaje.';
@@ -475,7 +475,7 @@ $txt['permission_mode_read_only'] = 'S&oacute;lo leer';
 
 $txt['update_available'] = '&iexcl;Actualizaci&oacute;n Disponible!';
 $txt['update_message'] = 'Est&aacute;s usando una versi&oacute;n desactualizada de SMF, que contiene algunos errores ya solucionados.
-	Te recomendamos que <a href="" id="update-link">actualices tu foro</a> a la &uacute;ltima versi&oacute;n cuanto antes. &iexcl;S&oacute;lo te llevar&aacute; un minuto!';
+  Te recomendamos que <a href="" id="update-link">actualices tu foro</a> a la &uacute;ltima versi&oacute;n cuanto antes. &iexcl;S&oacute;lo te llevar&aacute; un minuto!';
 
 $txt['salvaged_category_name'] = 'Area de Recuperaci&oacute;n';
 $txt['salvaged_category_error'] = '&iexcl;No se pudo crear una categor&iacute;a en el Area de Recuperaci&oacute;n!';
@@ -553,9 +553,9 @@ $txt['utf8_title'] = 'Convertir la base de datos y los datos a UTF-8';
 $txt['utf8_introduction'] = 'UTF-8 es una codificaci&oacute;n de caracteres internacional que engloba casi todos los idiomas del mundo. Al convertir tu base de datos y los datos a UTF-8 es m&aacute;s sencillo soportar m&uacute;ltiples idiomas en el mismo foro. Tambi&eacute;n puede mejorar las b&uacute;squedas y ordenaciones en idiomas que contienen caracteres no latinos.';
 $txt['utf8_warning'] = 'Si quieres convertir tus datos y base de datos a UTF-8, ten en cuenta lo siguiente:
 <ul>
-	<li>&iexcl;Convertir c&oacute;digos de caracteres puede ser <em>perjudicial</em> para tus datos! Aseg&uacute;rate de realizar una copia de seguridad de tu base de datos <i>antes</i> de convertirla.</li>
-	<li>Como UTF-8 es una codificaci&oacute;n de caracteres m&aacute;s rica que la mayor&iacute;a de las otras codificaciones de caracteres, no hay marcha atr&aacute;s, a menos que restaures tu base de datos al momento anterior a la conversi&oacute;n.</li>
-	<li>Una vez convertidos tus datos y base de datos a UTF-8, necesitar&aacute;s archivos de idiomas compatibles con UTF-8.</li>
+  <li>&iexcl;Convertir c&oacute;digos de caracteres puede ser <em>perjudicial</em> para tus datos! Aseg&uacute;rate de realizar una copia de seguridad de tu base de datos <i>antes</i> de convertirla.</li>
+  <li>Como UTF-8 es una codificaci&oacute;n de caracteres m&aacute;s rica que la mayor&iacute;a de las otras codificaciones de caracteres, no hay marcha atr&aacute;s, a menos que restaures tu base de datos al momento anterior a la conversi&oacute;n.</li>
+  <li>Una vez convertidos tus datos y base de datos a UTF-8, necesitar&aacute;s archivos de idiomas compatibles con UTF-8.</li>
 </ul>';
 $txt['utf8_charset_not_supported'] = 'La conversi&oacute;n de %s a UTF-8 no est&aacute; soportada.';
 $txt['utf8_detected_charset'] = 'Basandonos en tu archivo de idioma predeterminado (\'%1$s\'), la codificaci&oacute;n de caracteres de tus datos debe de ser \'%2$s\'.';

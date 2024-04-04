@@ -1,28 +1,28 @@
 <?php
 if (!defined('SMF'))
-	die('Hacking attempt...');
+  die('Hacking attempt...');
 
 function Denuncias() {
-	global $context;
+  global $context;
 
-	loadTemplate('Denuncias');
-	isAllowedTo('manage_bans');
-	adminIndex('denuncias');
+  loadTemplate('Denuncias');
+  isAllowedTo('manage_bans');
+  adminIndex('denuncias');
 
-	$context['all_pages'] = array(
-		'index' => 'main',
-		'imagen' => 'imagen',
-		'user' => 'user',
-		'comunidades' => 'comunidades',
-		'eliminar' => 'eliminar',
-	);
+  $context['all_pages'] = array(
+    'index' => 'main',
+    'imagen' => 'imagen',
+    'user' => 'user',
+    'comunidades' => 'comunidades',
+    'eliminar' => 'eliminar',
+  );
 
-	if (!isset($_GET['m']) || !isset($context['all_pages'][$_GET['m']]))
-		$_GET['m'] = 'index';
+  if (!isset($_GET['m']) || !isset($context['all_pages'][$_GET['m']]))
+    $_GET['m'] = 'index';
 
-	$context['current_page'] = $_GET['m'];
-	$context['sub_template'] = $context['all_pages'][$context['current_page']];
-	$context['page_title'] = 'Panel de Denuncias';
+  $context['current_page'] = $_GET['m'];
+  $context['sub_template'] = $context['all_pages'][$context['current_page']];
+  $context['page_title'] = 'Panel de Denuncias';
 }
 
 ?>

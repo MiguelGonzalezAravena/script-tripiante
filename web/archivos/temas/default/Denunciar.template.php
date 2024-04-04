@@ -15,7 +15,7 @@ function template_manual_intro() {
     $titulo = $row['subject'];
     $id = $row['ID_TOPIC'];
     $usuario = $row['memberName'];
-    $started = $row['ID_MEMBER_STARTED'];		
+    $started = $row['ID_MEMBER_STARTED'];
   }
 
   mysqli_free_result($request);

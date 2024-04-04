@@ -1,4 +1,6 @@
 <?php
+
+// Pendiente
 function reducir_amigos($tipo)
 {
 censorText($tipo);
@@ -120,7 +122,7 @@ return $valor;
 
 function menu()
 {
-	global $db_prefix, $txt, $context, $boardurl, $settings;
+  global $db_prefix, $txt, $context, $boardurl, $settings;
 
 echo '<div class="box_140" style="float:left;margin-right:8px;margin-bottom:8px;">
 <div class="box_title" style="width: 138px;"><div class="box_txt box_140-34">Mis opciones</div>
@@ -136,7 +138,7 @@ echo '<div class="box_140" style="float:left;margin-right:8px;margin-bottom:8px;
 
 function menu2()
 {
-	global $context, $txt, $settings, $db_prefix, $boardurl;
+  global $context, $txt, $settings, $db_prefix, $boardurl;
 
 echo '<div style="text-align:left;width:100%;padding:0px;margin:0px;"><div style="float:left;margin-bottom:10px;margin-right:8px;"><div style="background-color:#E3F0FF;border:1px solid #B3D4F8;width:152px;padding:4px;"><center>';
 if(!empty($context['member']['avatar']['name'])) {
@@ -148,16 +150,16 @@ echo '</center></div>';
 
 if($context['user']['is_logged']) {
 echo '<div class="userOption"><ul>';
-	if($context['user']['name'] == $context['member']['name']) {
-	echo '<li><a href="' . $boardurl . '/editar-perfil/" title="Editar mi perfil">Editar mi perfil</a></li>';
-	} else {
-	echo '<li><a href="' . $boardurl . '/mensajes/a/', $context['member']['name'], '" title="Enviarle mensaje privado">Enviarle mensaje privado</a></li>
+  if($context['user']['name'] == $context['member']['name']) {
+  echo '<li><a href="' . $boardurl . '/editar-perfil/" title="Editar mi perfil">Editar mi perfil</a></li>';
+  } else {
+  echo '<li><a href="' . $boardurl . '/mensajes/a/', $context['member']['name'], '" title="Enviarle mensaje privado">Enviarle mensaje privado</a></li>
 
 <li><a class="profile_actions" href="' . $boardurl . '/imagenes/', $context['member']['name'], '" title="Ver sus im&aacute;genes">Ver sus im&aacute;genes</a></li>
 
 ';
-$request	=	db_query("SELECT * FROM ({$db_prefix}buddies AS b) WHERE b.ID_MEMBER = " . $context['user']['id'] . " AND b.BUDDY_ID = " . $context['member']['id'] . " AND b.requested = " . $context['user']['id'] . "", __FILE__, __LINE__);
-$row		=	mysqli_num_rows($request);
+$request = db_query("SELECT * FROM ({$db_prefix}buddies AS b) WHERE b.ID_MEMBER = " . $context['user']['id'] . " AND b.BUDDY_ID = " . $context['member']['id'] . " AND b.requested = " . $context['user']['id'] . "", __FILE__, __LINE__);
+$row = mysqli_num_rows($request);
 if($row <= 0) {
 echo '<li><a href="' . $boardurl . '/amigos-agregar/', $context['member']['name'], '" title="Agregar a mis amistades">Agregar a mis amistades</a></li>';
 } else {
@@ -168,8 +170,8 @@ echo '
 <li><a class="profile_actions" href="' . $boardurl . '/denunciar-usuario/', $context['member']['name'], '" title="Denunciar usuario">Denunciar usuario</a></li>
 ';
 
-$request	=	db_query("SELECT * FROM {$db_prefix}ignored WHERE ID_MEMBER = " . $context['user']['id'] . " AND ID_IGNORED = " . $context['member']['id'], __FILE__, __LINE__);
-$ignore		=	mysqli_num_rows($request);
+$request = db_query("SELECT * FROM {$db_prefix}ignored WHERE ID_MEMBER = " . $context['user']['id'] . " AND ID_IGNORED = " . $context['member']['id'], __FILE__, __LINE__);
+$ignore = mysqli_num_rows($request);
 if($ignore <= 0) {
 echo '<li id="ac_no"><a href="#" onclick="ignorar2(\'', $context['member']['name'], '\'); return false;" title="Ignorar usuario">Ignorar usuario</a></li>
 
@@ -214,12 +216,12 @@ echo '</div></div>';
 
 function sidebar()
 {
-	global $context, $txt, $settings, $db_prefix, $boardurl;
+  global $context, $txt, $settings, $db_prefix, $boardurl;
 
 if($context['member']['sidebar'] == 'si') {
 if($context['member']['name'] != $context['user']['name']) {
 /* Amigos en com&#250;n */
-$request	=	db_query("
+$request = db_query("
 SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2)
 WHERE b.ID_MEMBER = " . $context['member']['id'] . "
 AND b.BUDDY_ID = b2.BUDDY_ID
@@ -229,7 +231,7 @@ AND b2.ID_MEMBER = mem2.ID_MEMBER
 AND mem2.ID_MEMBER = " . $context['user']['id'] . "
 ORDER BY RAND()
 LIMIT 6", __FILE__, __LINE__);
-$count1		=	mysqli_num_rows($request);
+$count1 = mysqli_num_rows($request);
 if (isset($context['member']['buddies_data2'])) {
 $iq = 1;
 if ($iq == 1) {
@@ -260,8 +262,8 @@ echo '</tr></table></center></div></div>';
 }
 
 /* Amigos */
-$request	=	db_query("SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b) WHERE b.ID_MEMBER = " . $context['member']['id'] . " AND b.BUDDY_ID = mem.ID_MEMBER ORDER BY RAND() LIMIT 6", __FILE__, __LINE__);
-$count3		=	mysqli_num_rows($request);
+$request = db_query("SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b) WHERE b.ID_MEMBER = " . $context['member']['id'] . " AND b.BUDDY_ID = mem.ID_MEMBER ORDER BY RAND() LIMIT 6", __FILE__, __LINE__);
+$count3 = mysqli_num_rows($request);
 if (isset($context['member']['buddies_data'])) {
 $i = 1;
 if ($i == 1) {
@@ -294,7 +296,7 @@ echo '</tr></table></center></div></div>';
 
 function menu3()
 {
-	global $context, $txt, $settings, $db_prefix, $boardurl;
+  global $context, $txt, $settings, $db_prefix, $boardurl;
 
 
 /* Conteo de comentarios */
@@ -305,22 +307,22 @@ FROM ({$db_prefix}comments AS c, {$db_prefix}topics AS t)
 WHERE c.ID_MEMBER = {$iduser}
 AND c.ID_TOPIC = t.ID_TOPIC
 ", __FILE__, __LINE__);
-$request2	=	db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, m.ID_MEMBER, m.memberName FROM {$db_prefix}gallery_comment AS c, {$db_prefix}members AS m WHERE c.ID_MEMBER = m.ID_MEMBER AND m.memberName = '{$context['member']['name']}' ", __FILE__, __LINE__);
+$request2 = db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, m.ID_MEMBER, m.memberName FROM {$db_prefix}gallery_comment AS c, {$db_prefix}members AS m WHERE c.ID_MEMBER = m.ID_MEMBER AND m.memberName = '{$context['member']['name']}' ", __FILE__, __LINE__);
 $context['comentuser'] = mysqli_num_rows($request);
-$context['comentimguser']	=	mysqli_num_rows($request2);
+$context['comentimguser'] = mysqli_num_rows($request2);
 /* Conteo de comentarios */
 
 /* Conteo de Im&#225;genes */
-$request3	=	db_query("SELECT * FROM {$db_prefix}gallery_pic AS c, {$db_prefix}members AS mem WHERE c.ID_MEMBER = mem.ID_MEMBER AND mem.ID_MEMBER = {$iduser} ", __FILE__, __LINE__);
+$request3 = db_query("SELECT * FROM {$db_prefix}gallery_pic AS c, {$db_prefix}members AS mem WHERE c.ID_MEMBER = mem.ID_MEMBER AND mem.ID_MEMBER = {$iduser} ", __FILE__, __LINE__);
 $context['imguser'] = mysqli_num_rows($request3);
 
-/* Conteo de Im&#225;genes */	
+/* Conteo de Im&#225;genes */
 
 /* Conteo de Mensajes del Muro */
-$request4	=	db_query("SELECT * FROM ({$db_prefix}members AS m, {$db_prefix}profile_comments AS p) WHERE p.ID_MEMBER = m.ID_MEMBER AND p.COMMENT_MEMBER_ID = " . $context['member']['id'] . " ", __FILE__, __LINE__);
-$context['muromsg']	=	mysqli_num_rows($request4);
+$request4 = db_query("SELECT * FROM ({$db_prefix}members AS m, {$db_prefix}profile_comments AS p) WHERE p.ID_MEMBER = m.ID_MEMBER AND p.COMMENT_MEMBER_ID = " . $context['member']['id'] . " ", __FILE__, __LINE__);
+$context['muromsg'] = mysqli_num_rows($request4);
 /* Conteo de Mensajes del Muro */
-	
+  
 echo '<div style="margin-top:8px;">
 <div class="box_title" style="width:160px;"><div class="box_txt box_perfil-36">Estad&iacute;sticas</div>
 <div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div>
@@ -329,27 +331,27 @@ echo '<div style="margin-top:8px;">
 
 function menu4()
 {
-	global $context, $txt, $settings, $db_prefix, $boardurl, $modSettings;
+  global $context, $txt, $settings, $db_prefix, $boardurl, $modSettings;
 
 echo '<div style="float:left;margin-bottom:8px;margin-left:8px;"><div style="margin-bottom:10px;">
 
 <div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimos post</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div>
 
 <div class="windowbg" style="width:193px;padding:4px;">';
-$request	=	db_query("SELECT * FROM ({$db_prefix}messages AS m, {$db_prefix}topics AS t, {$db_prefix}boards AS b, {$db_prefix}members AS mem) WHERE m.ID_TOPIC = t.ID_TOPIC AND m.ID_BOARD = t.ID_BOARD AND m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = mem.ID_MEMBER AND mem.ID_MEMBER = {$context['member']['id']} ORDER BY m.ID_TOPIC DESC LIMIT " . $modSettings['profile_posts_limit'], __FILE__, __LINE__);
-$count		=	mysqli_num_rows($request);
+$request = db_query("SELECT * FROM ({$db_prefix}messages AS m, {$db_prefix}topics AS t, {$db_prefix}boards AS b, {$db_prefix}members AS mem) WHERE m.ID_TOPIC = t.ID_TOPIC AND m.ID_BOARD = t.ID_BOARD AND m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = mem.ID_MEMBER AND mem.ID_MEMBER = {$context['member']['id']} ORDER BY m.ID_TOPIC DESC LIMIT " . $modSettings['profile_posts_limit'], __FILE__, __LINE__);
+$count = mysqli_num_rows($request);
 if($count <= 0) {
 echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;n post hecho.-</div>';
 } else {
-$context['posts']	=	array();
-	while ($row = mysqli_fetch_assoc($request))
-		$context['posts'][] = array(
-			'name' => $row['name'],
-			'ID_BOARD' => $row['ID_BOARD'],
-			'ID_TOPIC' => $row['ID_TOPIC'],
-			'description' => $row['description'],
-			'subject' => $row['subject'],
-		);
+$context['posts'] = array();
+  while ($row = mysqli_fetch_assoc($request))
+    $context['posts'][] = array(
+      'name' => $row['name'],
+      'ID_BOARD' => $row['ID_BOARD'],
+      'ID_TOPIC' => $row['ID_TOPIC'],
+      'description' => $row['description'],
+      'subject' => $row['subject'],
+    );
 foreach ($context['posts'] as $post) {
 echo '<table width="100%"><tr><td width="100%">
 <div class="box_icono4"><img alt="" title="', $post['name'], '" src="', $settings['images_url'], '/post/icono_', $post['ID_BOARD'], '.gif" /></div><a href="' . $boardurl . '/post/', $post['ID_TOPIC'], '/', $post['description'], '/', ssi_amigable($post['subject']), '.html">', ssi_reducir2(htmlentities($post['subject'], ENT_QUOTES, "UTF-8")), '</a></td></tr></table>';
@@ -361,23 +363,23 @@ echo '</div></div>';
 
 function menu5()
 {
-	global $context, $txt, $settings, $db_prefix, $boardurl, $modSettings, $scripturl;
+  global $context, $txt, $settings, $db_prefix, $boardurl, $modSettings, $scripturl;
 
 echo '<div style="margin-bottom:10px;">
 <div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimas im&aacute;genes</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div>
 <div class="windowbg" style="width:193px;padding:4px;">';
-$request	=	db_query("SELECT * FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS m) WHERE g.ID_MEMBER = m.ID_MEMBER AND m.ID_MEMBER = {$context['member']['id']} ORDER BY g.ID_PICTURE DESC LIMIT " . $modSettings['profile_images_limit'], __FILE__, __LINE__);
-$count		=	mysqli_num_rows($request);
+$request = db_query("SELECT * FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS m) WHERE g.ID_MEMBER = m.ID_MEMBER AND m.ID_MEMBER = {$context['member']['id']} ORDER BY g.ID_PICTURE DESC LIMIT " . $modSettings['profile_images_limit'], __FILE__, __LINE__);
+$count = mysqli_num_rows($request);
 if($count <= 0) {
 echo '<div class="noesta">', $context['member']['name'], ' no tiene ninguna imagen.-</div>';
 } else {
-$context['imagenes']	=	array();
-	while ($row = mysqli_fetch_assoc($request))
-		$context['imagenes'][] = array(
-			'ID_PICTURE' => $row['ID_PICTURE'],
-			'filename' => $row['filename'],
-			'commenttotal' => $row['commenttotal'],
-		);
+$context['imagenes'] = array();
+  while ($row = mysqli_fetch_assoc($request))
+    $context['imagenes'][] = array(
+      'ID_PICTURE' => $row['ID_PICTURE'],
+      'filename' => $row['filename'],
+      'commenttotal' => $row['commenttotal'],
+    );
 foreach ($context['imagenes'] as $img) {
 $total = db_query("SELECT COUNT(ID_COMMENT) AS total FROM {$db_prefix}gallery_comment WHERE ID_PICTURE = " . $img['ID_PICTURE'], __FILE__, __LINE__);
 $total2 = mysqli_fetch_assoc($total);
@@ -405,7 +407,7 @@ echo '
 
 function template_perfil()
 {
-	global $db_prefix, $txt, $context, $boardurl, $settings;
+  global $db_prefix, $txt, $context, $boardurl, $settings;
 
 menu();
 echo '<form action="/perfil-editando/" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data"><div class="box_780" style="float:left;"><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Editar mi perfil</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div>
@@ -417,22 +419,22 @@ echo '<form action="/perfil-editando/" method="post" accept-charset="', $context
 </td></tr>';
 if ($context['allow_edit_membergroups']) {
 echo '<tr><td width="40%"><b class="size11">', $txt['primary_membergroup'], '</b></td><td><select name="ID_GROUP">';
-		// Fill the select box with all primary member groups that can be assigned to a member.
+    // Fill the select box with all primary member groups that can be assigned to a member.
 foreach ($context['member_groups'] as $member_group) {
 echo '<option value="', $member_group['id'], '"', $member_group['is_primary'] ? ' selected="selected"' : '', '>', $member_group['name'], '</option>';
 }
 echo '</td></tr>';
 }
 echo '<tr><td width="40%"><b class="size11">Nick:</b></td><td>' . $context['member']['name'] . '</td></tr>
-	<tr>
+  <tr>
 
-								<td width="40%">
-									<b class="size11">Fecha de nacimiento:</b>
-									<div class="smalltext">&#40;d&iacute;a&#47;mes&#47;a&ntilde;o&#41;</div>
-								</td>
-								<td>
-								<select tabindex="1" name="bday2" id="bday2" autocomplete="off">
-								
+                <td width="40%">
+                  <b class="size11">Fecha de nacimiento:</b>
+                  <div class="smalltext">&#40;d&iacute;a&#47;mes&#47;a&ntilde;o&#41;</div>
+                </td>
+                <td>
+                <select tabindex="1" name="bday2" id="bday2" autocomplete="off">
+                
 <option value="', $context['member']['birth_date']['day'], '">D&iacute;a:</option>
 <option '; if($context['member']['birth_date']['day'] == '1') { echo 'selected="selected" '; } echo 'value="1">1</option>
 <option '; if($context['member']['birth_date']['day'] == '2') { echo 'selected="selected" '; } echo 'value="2">2</option>
@@ -614,136 +616,138 @@ echo '<tr><td width="40%"><b class="size11">Nick:</b></td><td>' . $context['memb
 <option '; if($context['member']['birth_date']['year'] == '1901') { echo 'selected="selected" '; } echo 'value="1901">1901</option>
 <option '; if($context['member']['birth_date']['year'] == '1900') { echo 'selected="selected" '; } echo 'value="1900">1900</option>
 </select>
-							
-								
-								</td>
-							</tr>
-							<tr>
-								<td width="40%"><b class="size11">Pa&iacute;s: </b></td>
+              
+                
+                </td>
+              </tr>
+              <tr>
+                <td width="40%"><b class="size11">Pa&iacute;s: </b></td>
 
-								<td><select name="usertitle" id="usertitle">
-						<option value="', $context['member']['title'], '">Pa&iacute;s</option>
-						<option '; if($context['member']['title'] == 'ar') { echo 'selected="selected" '; } echo 'value="ar">Argentina</option>
-						<option '; if($context['member']['title'] == 'bo') { echo 'selected="selected" '; } echo 'value="bo">Bolivia</option>
-						<option '; if($context['member']['title'] == 'br') { echo 'selected="selected" '; } echo 'value="br">Brasil</option>
-						<option '; if($context['member']['title'] == 'cl') { echo 'selected="selected" '; } echo 'value="cl">Chile</option>
+                <td><select name="usertitle" id="usertitle">
+            <option value="', $context['member']['title'], '">Pa&iacute;s</option>
+            <option '; if($context['member']['title'] == 'ar') { echo 'selected="selected" '; } echo 'value="ar">Argentina</option>
+            <option '; if($context['member']['title'] == 'bo') { echo 'selected="selected" '; } echo 'value="bo">Bolivia</option>
+            <option '; if($context['member']['title'] == 'br') { echo 'selected="selected" '; } echo 'value="br">Brasil</option>
+            <option '; if($context['member']['title'] == 'cl') { echo 'selected="selected" '; } echo 'value="cl">Chile</option>
 
-						<option '; if($context['member']['title'] == 'co') { echo 'selected="selected" '; } echo 'alue="co">Colombia</option>
-						<option '; if($context['member']['title'] == 'cr') { echo 'selected="selected" '; } echo 'value="cr">Costa Rica</option>
-						<option '; if($context['member']['title'] == 'cu') { echo 'selected="selected" '; } echo 'value="cu">Cuba</option>
-						<option '; if($context['member']['title'] == 'ec') { echo 'selected="selected" '; } echo 'value="ec">Ecuador</option>
-						<option '; if($context['member']['title'] == 'es') { echo 'selected="selected" '; } echo 'value="es">Espa&ntilde;a</option>
-						<option '; if($context['member']['title'] == 'gt') { echo 'selected="selected" '; } echo 'value="gt">Guatemala</option>
+            <option '; if($context['member']['title'] == 'co') { echo 'selected="selected" '; } echo 'alue="co">Colombia</option>
+            <option '; if($context['member']['title'] == 'cr') { echo 'selected="selected" '; } echo 'value="cr">Costa Rica</option>
+            <option '; if($context['member']['title'] == 'cu') { echo 'selected="selected" '; } echo 'value="cu">Cuba</option>
+            <option '; if($context['member']['title'] == 'ec') { echo 'selected="selected" '; } echo 'value="ec">Ecuador</option>
+            <option '; if($context['member']['title'] == 'es') { echo 'selected="selected" '; } echo 'value="es">Espa&ntilde;a</option>
+            <option '; if($context['member']['title'] == 'gt') { echo 'selected="selected" '; } echo 'value="gt">Guatemala</option>
 
-						<option '; if($context['member']['title'] == 'it') { echo 'selected="selected" '; } echo 'value="it">Italia</option>
-						<option '; if($context['member']['title'] == 'mx') { echo 'selected="selected" '; } echo 'value="mx">Mexico</option>
-						<option '; if($context['member']['title'] == 'py') { echo 'selected="selected" '; } echo 'value="py">Paraguay</option>
-						<option '; if($context['member']['title'] == 'pe') { echo 'selected="selected" '; } echo 'value="pe">Peru</option>
-						<option '; if($context['member']['title'] == 'pt') { echo 'selected="selected" '; } echo 'value="pt">Portugal</option>
-						<option '; if($context['member']['title'] == 'pr') { echo 'selected="selected" '; } echo 'value="pr">Puerto Rico</option>
+            <option '; if($context['member']['title'] == 'it') { echo 'selected="selected" '; } echo 'value="it">Italia</option>
+            <option '; if($context['member']['title'] == 'mx') { echo 'selected="selected" '; } echo 'value="mx">Mexico</option>
+            <option '; if($context['member']['title'] == 'py') { echo 'selected="selected" '; } echo 'value="py">Paraguay</option>
+            <option '; if($context['member']['title'] == 'pe') { echo 'selected="selected" '; } echo 'value="pe">Peru</option>
+            <option '; if($context['member']['title'] == 'pt') { echo 'selected="selected" '; } echo 'value="pt">Portugal</option>
+            <option '; if($context['member']['title'] == 'pr') { echo 'selected="selected" '; } echo 'value="pr">Puerto Rico</option>
 
-						<option '; if($context['member']['title'] == 'uy') { echo 'selected="selected" '; } echo 'value="uy">Uruguay</option>
-						<option '; if($context['member']['title'] == 've') { echo 'selected="selected" '; } echo 'value="ve">Venezuela</option>
-						<option '; if($context['member']['title'] == 'ot') { echo 'selected="selected" '; } echo 'value="ot">Otro</option>						
-						</select></td>
-							</tr>
-							<tr>
-								<td width="40%"><b class="size11">Ciudad: </b></td>
+            <option '; if($context['member']['title'] == 'uy') { echo 'selected="selected" '; } echo 'value="uy">Uruguay</option>
+            <option '; if($context['member']['title'] == 've') { echo 'selected="selected" '; } echo 'value="ve">Venezuela</option>
+            <option '; if($context['member']['title'] == 'ot') { echo 'selected="selected" '; } echo 'value="ot">Otro</option>
+            </select></td>
+              </tr>
+              <tr>
+                <td width="40%"><b class="size11">Ciudad: </b></td>
 
-								<td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="location" size="30" value="', $context['member']['location'], '" /></td>
-							</tr>
-							<tr>
-								<td width="40%"><b class="size11">Sexo: </b></td>
-								<td>
-									<select name="gender" size="1">
-										<option value="1"'; if($context['member']['gender']['name'] == 'm') { echo ' selected="selected"'; } echo '>Masculino</option>
-										<option value="2"'; if($context['member']['gender']['name'] == 'f') { echo ' selected="selected" '; } echo '>Femenino</option>
+                <td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="location" size="30" value="', $context['member']['location'], '" /></td>
+              </tr>
+              <tr>
+                <td width="40%"><b class="size11">Sexo: </b></td>
+                <td>
+                  <select name="gender" size="1">
+                    <option value="1"'; if($context['member']['gender']['name'] == 'm') { echo ' selected="selected"'; } echo '>Masculino</option>
+                    <option value="2"'; if($context['member']['gender']['name'] == 'f') { echo ' selected="selected" '; } echo '>Femenino</option>
 
-									</select>
-								</td>
-							</tr><tr>						<td width="40%"><b class="size11">Mostrar apariencia a:</b></td>
-								<td><select name="quienve" size="1">
-								<option value="0"'; if($context['member']['quienve'] == '0') { echo ' selected="selected" '; } echo '>A todos</option>
-								<option value="1"'; if($context['member']['quienve'] == '1') { echo ' selected="selected" '; } echo '>Nadie</option>
-								<option value="2"'; if($context['member']['quienve'] == '2') { echo ' selected="selected" '; } echo '>Amigos</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td width="40%"><b class="size11">Mostrar apariencia a:</b></td>
+                <td><select name="quienve" size="1">
+                <option value="0"'; if($context['member']['quienve'] == '0') { echo ' selected="selected" '; } echo '>A todos</option>
+                <option value="1"'; if($context['member']['quienve'] == '1') { echo ' selected="selected" '; } echo '>Nadie</option>
+                <option value="2"'; if($context['member']['quienve'] == '2') { echo ' selected="selected" '; } echo '>Amigos</option>
 
-								<option value="3"'; if($context['member']['quienve'] == '3') { echo ' selected="selected" '; } echo '>Registrados</option>
-								</select>
-								</td>
-							</tr>
-							
-							
-								<tr>
-								<td width="40%"><b class="size11">Sidebar:</b></td>
-								<td><select name="sidebar" size="1">
-								<option value="no"'; if($context['member']['sidebar'] == 'no') { echo ' selected="selected"'; } echo '>No</option>
+                <option value="3"'; if($context['member']['quienve'] == '3') { echo ' selected="selected" '; } echo '>Registrados</option>
+                </select>
+                </td>
+              </tr>
+              
+              
+                <tr>
+                <td width="40%"><b class="size11">Sidebar:</b></td>
+                <td><select name="sidebar" size="1">
+                <option value="no"'; if($context['member']['sidebar'] == 'no') { echo ' selected="selected"'; } echo '>No</option>
 
-								<option value="si"'; if($context['member']['sidebar'] == 'si') { echo ' selected="selected"'; } echo '>Si</option>
-								</select>
-								</td>
-							</tr>
-							
-							<tr>
-								<td width="40%"><b class="size11">Avisar si me borran posts e im&aacute;genes:</b></td>
-								<td><select name="recibir" size="1">
+                <option value="si"'; if($context['member']['sidebar'] == 'si') { echo ' selected="selected"'; } echo '>Si</option>
+                </select>
+                </td>
+              </tr>
+              
+              <tr>
+                <td width="40%"><b class="size11">Avisar si me borran posts e im&aacute;genes:</b></td>
+                <td><select name="recibir" size="1">
 
-								<option value="no"'; if($context['member']['recibir'] == 'no') { echo ' selected="selected"'; } echo '>No</option>
-								<option value="si"'; if($context['member']['recibir'] == 'si') { echo ' selected="selected"'; } echo '>Si</option>
-								</select>
-								</td>
-							</tr>
+                <option value="no"'; if($context['member']['recibir'] == 'no') { echo ' selected="selected"'; } echo '>No</option>
+                <option value="si"'; if($context['member']['recibir'] == 'si') { echo ' selected="selected"'; } echo '>Si</option>
+                </select>
+                </td>
+              </tr>
 
-							<tr>
-								<td width="20%"><b class="size11">Texto personal:</b><div class="smalltext">(aparecera debajo del avatar)</div></td>
+              <tr>
+                <td width="20%"><b class="size11">Texto personal:</b><div class="smalltext">(aparecera debajo del avatar)</div></td>
 
-								<td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="personalText" size="30" maxlength="21" value="', $context['member']['blurb'], '" /></td>
-							</tr><tr><td width="20%"><b class="size11">Firma:</b><div class="smalltext">(aparecera debajo tu post)</div></td><td><textarea class="editor" onkeyup="calcCharLeft();" name="signature" rows="5" cols="50">', $context['member']['signature'], '</textarea><br /><span class="smalltext">Max 400; caracteres restantes:  <span id="signatureLeft">400</span></span><script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
-										function tick()
-										{
-											if (typeof(document.forms.creator) != "undefined")
-											{
-												calcCharLeft();
-												setTimeout("tick()", 1000);
-											}
-											else
-												setTimeout("tick()", 800);
-										}
+                <td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="personalText" size="30" maxlength="21" value="', $context['member']['blurb'], '" /></td>
+              </tr><tr><td width="20%"><b class="size11">Firma:</b><div class="smalltext">(aparecera debajo tu post)</div></td><td><textarea class="editor" onkeyup="calcCharLeft();" name="signature" rows="5" cols="50">', $context['member']['signature'], '</textarea><br /><span class="smalltext">Max 400; caracteres restantes:  <span id="signatureLeft">400</span></span><script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
+                    function tick()
+                    {
+                      if (typeof(document.forms.creator) != "undefined")
+                      {
+                        calcCharLeft();
+                        setTimeout("tick()", 1000);
+                      }
+                      else
+                        setTimeout("tick()", 800);
+                    }
 
-										function calcCharLeft()
-										{
-											var maxLength = 400;
-											var oldSignature = "", currentSignature = document.forms.creator.signature.value;
+                    function calcCharLeft()
+                    {
+                      var maxLength = 400;
+                      var oldSignature = "", currentSignature = document.forms.creator.signature.value;
 
-											if (!document.getElementById("signatureLeft"))
-												return;
+                      if (!document.getElementById("signatureLeft"))
+                        return;
 
-											if (oldSignature != currentSignature)
-											{
-												oldSignature = currentSignature;
+                      if (oldSignature != currentSignature)
+                      {
+                        oldSignature = currentSignature;
 
-												if (currentSignature.replace(/\r/, "").length > maxLength)
-													document.forms.creator.signature.value = currentSignature.replace(/\r/, "").substring(0, maxLength);
-												currentSignature = document.forms.creator.signature.value.replace(/\r/, "");
-											}
+                        if (currentSignature.replace(/\r/, "").length > maxLength)
+                          document.forms.creator.signature.value = currentSignature.replace(/\r/, "").substring(0, maxLength);
+                        currentSignature = document.forms.creator.signature.value.replace(/\r/, "");
+                      }
 
-											setInnerHTML(document.getElementById("signatureLeft"), maxLength - currentSignature.length);
-										}
+                      setInnerHTML(document.getElementById("signatureLeft"), maxLength - currentSignature.length);
+                    }
 
-										setTimeout("tick()", 800);
-									// ]]></script></td></tr><tr><td width="20%"><b class="size11">Mensajero: </b><div class="smalltext">(msn, gtalk, yahoo)</div></td><td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="MSN" value="', $context['member']['MSN'], '" size="30"/></td></tr>
+                    setTimeout("tick()", 800);
+                  // ]]></script></td></tr><tr><td width="20%"><b class="size11">Mensajero: </b><div class="smalltext">(msn, gtalk, yahoo)</div></td><td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="MSN" value="', $context['member']['MSN'], '" size="30"/></td></tr>
 
 <tr><td width="20%"><b class="size11">Sitio Web / Blog: </b><div class="smalltext">(debe ser un url completo)</div></td>
 <td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="websiteTitle" size="30" value="', $context['member']['websiteTitle'], '" /></td></tr><tr><td width="40%"><b class="size11" >Email: </b><div class="smalltext">Debe ser una direcci&oacute;n v&aacute;lida de email.</div></td>
 
-								<td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="emailAddress" size="30" value="', $context['member']['emailAddress'], '" /></td>
-							</tr>
-						<td width="40%"><b class="size11"', (isset($context['modify_error']['bad_new_password']) ? ' style="color: red;"' : ''), '>Escoge contrase&ntilde;a: </b><div class="smalltext">Te sugerimos que utilices 6 o m&aacute;s caracteres combinando n&uacute;meros y letras.</div></td>
-								<td><input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd1" size="20" autocomplete="off" /></td>
-							</tr><tr>
-								<td width="40%"><b class="size11">Verifica contrase&ntilde;a: </b></td>
+                <td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="emailAddress" size="30" value="', $context['member']['emailAddress'], '" /></td>
+              </tr>
+            <td width="40%"><b class="size11"', (isset($context['modify_error']['bad_new_password']) ? ' style="color: red;"' : ''), '>Escoge contrase&ntilde;a: </b><div class="smalltext">Te sugerimos que utilices 6 o m&aacute;s caracteres combinando n&uacute;meros y letras.</div></td>
+                <td><input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd1" size="20" autocomplete="off" /></td>
+              </tr><tr>
+                <td width="40%"><b class="size11">Verifica contrase&ntilde;a: </b></td>
 
-								<td><input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd2" size="20" autocomplete="off" /></td>
-							</tr><tr><td align="center" colspan="2"><br /><br />
+                <td><input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd2" size="20" autocomplete="off" /></td>
+              </tr><tr><td align="center" colspan="2"><br /><br />
 <input class="login" type="submit" value="Modificar mi perfil" />
 <input type="hidden" name="sc" value="', $context['session_id'], '" />
 <input type="hidden" name="userID" value="', $context['member']['id'], '" />
@@ -752,38 +756,38 @@ echo '<tr><td width="40%"><b class="size11">Nick:</b></td><td>' . $context['memb
 
 function template_avatar()
 {
-	global $db_prefix, $txt, $context, $boardurl, $settings, $boardurl;
+  global $db_prefix, $txt, $context, $boardurl, $settings, $boardurl;
 
 echo '<script type="text/javascript">
 function load_new_avatar()
 {
-	var f=document.forms.per;
+  var f=document.forms.per;
 
-	if(f.avatar.value.substring(0, 7)!=\'http://\')
-	{
-		f.avatar.focus();
-		alert(\'La direccion debe comenzar con http://\');
-		return;
-	}
+  if(f.avatar.value.substring(0, 7)!=\'http://\')
+  {
+    f.avatar.focus();
+    alert(\'La direccion debe comenzar con http://\');
+    return;
+  }
 
-	window.newAvatar = new Image();
-	window.newAvatar.src = f.avatar.value;
-	newAvatar.loadBeginTime = (new Date()).getTime();
-	newAvatar.onerror = show_error;
-	newAvatar.onload = show_new_avatar;
-	avatar_check_timeout();
+  window.newAvatar = new Image();
+  window.newAvatar.src = f.avatar.value;
+  newAvatar.loadBeginTime = (new Date()).getTime();
+  newAvatar.onerror = show_error;
+  newAvatar.onload = show_new_avatar;
+  avatar_check_timeout();
 }
 
 function avatar_check_timeout()
 {
-	if(((new Date()).getTime()-newAvatar.loadBeginTime)>15)
-	{
-		alert(\'Avatar no recomendable. Razon: Muy lento\');
-		document.forms.per.avatar.focus();
+  if(((new Date()).getTime()-newAvatar.loadBeginTime)>15)
+  {
+    alert(\'Avatar no recomendable. Razon: Muy lento\');
+    document.forms.per.avatar.focus();
 
 }}
 function show_error(){
-	alert(\'Hubo un error al leer la imagen. Por favor, verifica que la direccion sea correcta.\');
+  alert(\'Hubo un error al leer la imagen. Por favor, verifica que la direccion sea correcta.\');
 
 document.forms.per.avatar.focus();}
 
@@ -796,18 +800,18 @@ menu();
 
 echo '<form name="per" method="post" onsubmit="return load_new_avatar();" action="/enviar-avatar/"><div class="box_780" style="float:left;">
 <div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Modificar mi avatar</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 764px; padding: 4px;margin-bottom:8px;"><table width="100%" cellpadding="4">
-						<tr valign="top">
-							<td width="130px" valign="top">
-							<div class="fondoavatar" style="overflow: auto; width: 130px;" align="right"><img alt="" src="', $context['member']['avatar']['name'], '" width="120" weight="120" align="left" vspace="4" hspace="4" id="miAvatar" onerror="error_avatar(this)" /></div></td>
+            <tr valign="top">
+              <td width="130px" valign="top">
+              <div class="fondoavatar" style="overflow: auto; width: 130px;" align="right"><img alt="" src="', $context['member']['avatar']['name'], '" width="120" weight="120" align="left" vspace="4" hspace="4" id="miAvatar" onerror="error_avatar(this)" /></div></td>
 
-							<td width="640px" valign="top"><br /><br /><center>Escribe la direcci&oacute;n de tu <i>avatar</i>.<br />Ejemplo: <b>' , $boardurl, '/avatar.gif</b><br /><br />
-							<input type="text" onfocus="foco(this);" onblur="no_foco(this);" size="64" maxlength="255" name="avatar" id="avatar" value="', $context['member']['avatar']['name'], '" /><input type="button" class="login" value="Previsualizar" onclick="load_new_avatar()" /><br /><label id="errorss"></label><label id="sinavatar"><input name="sinavatar" id="sinavatar" value="1" type="checkbox" '; if($context['member']['avatar']['external'] == $boardurl . '/avatar.gif'){ echo 'checked="checked"'; } echo '> Sin avatar <span style="font-size:10px;">(avatar default)</span>.</label></center>
-							</td>
-						</tr>
+              <td width="640px" valign="top"><br /><br /><center>Escribe la direcci&oacute;n de tu <i>avatar</i>.<br />Ejemplo: <b>' , $boardurl, '/avatar.gif</b><br /><br />
+              <input type="text" onfocus="foco(this);" onblur="no_foco(this);" size="64" maxlength="255" name="avatar" id="avatar" value="', $context['member']['avatar']['name'], '" /><input type="button" class="login" value="Previsualizar" onclick="load_new_avatar()" /><br /><label id="errorss"></label><label id="sinavatar"><input name="sinavatar" id="sinavatar" value="1" type="checkbox" '; if($context['member']['avatar']['external'] == $boardurl . '/avatar.gif'){ echo 'checked="checked"'; } echo '> Sin avatar <span style="font-size:10px;">(avatar default)</span>.</label></center>
+              </td>
+            </tr>
 
-		  <tr>
-			 <td colspan="3" align="center"><hr /><b class="size11" style="color: red;">* Si el avatar contiene pornograf&iacute;a, es morboso. Se borrar&aacute;.</b><br /><input onclick="return errorrojos(this.form.avatar.value); this.form.submit()" type="submit" class="button" style="font-size:15px" value="Modificar mi perfil" title="Modificar mi perfil" /><input type="hidden" name="sc" value="', $context['session_id'], '" /><input type="hidden" name="userID" value="', $context['member']['id'], '" /><input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></table></div></div></div></form><div style="clear:both"></div>';
-		  
+      <tr>
+       <td colspan="3" align="center"><hr /><b class="size11" style="color: red;">* Si el avatar contiene pornograf&iacute;a, es morboso. Se borrar&aacute;.</b><br /><input onclick="return errorrojos(this.form.avatar.value); this.form.submit()" type="submit" class="button" style="font-size:15px" value="Modificar mi perfil" title="Modificar mi perfil" /><input type="hidden" name="sc" value="', $context['session_id'], '" /><input type="hidden" name="userID" value="', $context['member']['id'], '" /><input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></table></div></div></div></form><div style="clear:both"></div>';
+      
 if($_POST['sinavatar'] == '1') {
 $context['member']['avatar']['name'] = $boardurl . '/avatar.gif';
 }
@@ -816,7 +820,7 @@ $context['member']['avatar']['name'] = $boardurl . '/avatar.gif';
 
 function template_paso1()
 {
-	global $db_prefix, $txt, $context, $boardurl, $settings;
+  global $db_prefix, $txt, $context, $boardurl, $settings;
 
 menu();
 
@@ -825,7 +829,7 @@ echo '<div class="box_780" style="float:left;margin-bottom:8px;"><div class="box
 
 function template_paso2()
 {
-	global $db_prefix, $txt, $context, $boardurl, $settings;
+  global $db_prefix, $txt, $context, $boardurl, $settings;
 
 menu();
 
@@ -836,7 +840,7 @@ echo '<div class="box_780" style="float:left;margin-bottom:8px;">
 
 function template_paso3()
 {
-	global $db_prefix, $txt, $context, $boardurl, $settings;
+  global $db_prefix, $txt, $context, $boardurl, $settings;
 
 menu();
 
@@ -845,8 +849,8 @@ echo '<div class="box_780" style="float:left;margin-bottom:8px;"><div class="box
 
 function template_paso4()
 {
-	global $db_prefix, $txt, $context, $boardurl, $settings;
-	
+  global $db_prefix, $txt, $context, $boardurl, $settings;
+  
 menu();
 
 echo '<div class="box_780" style="float:left;margin-bottom:8px;">
@@ -858,10 +862,10 @@ echo '<div class="box_780" style="float:left;margin-bottom:8px;">
 
 function template_agregarimagen()
 {
-	global $context, $txt, $settings, $db_prefix, $slogan;
+  global $settings;
 
 echo '<script language="JavaScript" type="text/javascript">
-function requerido(title, filename){	
+function requerido(title, filename){
 if(title == \'\'){alert(\'No has escrito el titulo de la imagen.\');return false;}
 if(filename == \'\'){alert(\'No has agregado ning\xfan enlace de imagen.\');return false;}}</script>';
 menu();
@@ -874,27 +878,27 @@ echo '<form method="POST" enctype="multipart/form-data" name="forma" id="forma" 
 
 function template_editarimagen()
 {
-	global $context, $txt, $settings, $db_prefix, $slogan;
+  global $context, $txt, $settings, $db_prefix, $slogan;
 
-$id			=	htmlentities(addslashes($_REQUEST['id']));
-$request	=	db_query("SELECT ID_PICTURE, title, filename FROM {$db_prefix}gallery_pic WHERE ID_PICTURE = $id", __FILE__, __LINE__);
-$row		=	mysqli_fetch_assoc($request);
-$causa		=	htmlentities(addslashes($_POST['causa']));
+$id = htmlentities(addslashes($_REQUEST['id']));
+$request = db_query("SELECT ID_PICTURE, title, filename FROM {$db_prefix}gallery_pic WHERE ID_PICTURE = $id", __FILE__, __LINE__);
+$row = mysqli_fetch_assoc($request);
+$causa = htmlentities(addslashes($_POST['causa']));
 
 echo '<script language="JavaScript" type="text/javascript">
-function requerido(title, filename){	
-			if(title == \'\')
-			{
-				alert(\'No has escrito el titulo de la imagen.\');
-				return false;
-			}
-			if(filename == \'\')
-			{
-				alert(\'No has agregado ning\xfan enlace de imagen.\');
-				return false;
-			}
+function requerido(title, filename){
+      if(title == \'\')
+      {
+        alert(\'No has escrito el titulo de la imagen.\');
+        return false;
+      }
+      if(filename == \'\')
+      {
+        alert(\'No has agregado ning\xfan enlace de imagen.\');
+        return false;
+      }
 
-			}</script>';
+      }</script>';
 menu();
 echo '<form method="POST" enctype="multipart/form-data" name="forma2" id="forma2" action="/imagenes/editar/enviar/">
 <div class="box_780" style="float:left;margin-bottom:8px;">
@@ -909,11 +913,11 @@ echo '
 
 function template_misnotas()
 {
-	global $context, $settings, $options, $txt, $notes, $scripturl, $ID_MEMBER, $modSettings, $boardurl, $db_prefix;
+  global $context, $settings, $options, $txt, $notes, $scripturl, $ID_MEMBER, $modSettings, $boardurl, $db_prefix;
 
-	menu();
+  menu();
 
-	
+  
 if(!empty($context['nojs']['id'])) {
 echo '<div style="float:left;"><div class="box_780"><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Mi nota</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width:764px;padding:4px;">
 
@@ -923,30 +927,30 @@ echo '<div style="float:left;"><div class="box_780"><div class="box_title" style
 
 <input type="button" value="Eliminar nota" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta nota?\')) return false;location.href=\'/mis-notas/eliminar-', $context['nojs']['id'], '\'" class="login" /><input type="hidden" name="id" value="', $context['nojs']['id'], '" /><input type="hidden" name="sa" value="edit" /></p></form></div></div></div><div style="clear:both"></div>';
 } else {
-$RegistrosAMostrar		=	$modSettings['notes'];
+$RegistrosAMostrar = $modSettings['notes'];
 if(isset($_GET['pag'])) {
-$RegistrosAEmpezar	=	($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct	=	(int) $_GET['pag'];
+$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+$PagAct = (int) $_GET['pag'];
 } else {
-$RegistrosAEmpezar	=	0;
-$PagAct				=	1;
+$RegistrosAEmpezar = 0;
+$PagAct = 1;
 }
-$request2	= db_query("
+$request2 = db_query("
 SELECT id_note, subject, body, posterTime
 FROM {$db_prefix}member_notes
 WHERE ID_MEMBER = $ID_MEMBER
 ORDER BY id_note DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count	=	mysqli_num_rows($request2);
+$count = mysqli_num_rows($request2);
 if($count <= 0) {
 echo '<div style="float:left;"><div class="noesta" style="width:774px;">No tienes notas agregadas.</div>';
 } else {
 echo '<div style="float:left;"><table class="linksList" style="width:774px;"><thead align="center"><tr><th style="text-align:left;">Nota</th><th>Fecha</th><th>Eliminar</th></tr></thead><tbody>';
-while($row	=	mysqli_fetch_assoc($request2)) {
+while($row = mysqli_fetch_assoc($request2)) {
 echo '<tr><td style="text-align:left;"><a title="', parse_bbc(strip_tags($row['subject'])), '" href="' . $boardurl . '/mis-notas/ver-', $row['id_note'], '/">', parse_bbc(strip_tags($row['subject'])), '</a></td>
 <td title="', timeformat($row['posterTime']), '">', timeformat($row['posterTime']), '</td> <td><a title="Eliminar nota" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta nota?\')) return false;" href="' . $boardurl . '/mis-notas/eliminar-', $row['id_note'], '"><img alt="Eliminar nota" title="Eliminar nota" style="width:16px;height:16px;" src="', $settings['images_url'], '/icons/eliminar-notas.gif" /></a></td></tr>';
 }
-$NroRegistros	=	mysqli_num_rows(db_query("SELECT id_note, subject, body, posterTime FROM {$db_prefix}member_notes WHERE ID_MEMBER = $ID_MEMBER ORDER BY id_note DESC ", __FILE__, __LINE__));
+$NroRegistros = mysqli_num_rows(db_query("SELECT id_note, subject, body, posterTime FROM {$db_prefix}member_notes WHERE ID_MEMBER = $ID_MEMBER ORDER BY id_note DESC ", __FILE__, __LINE__));
 echo '</tbody></table>';
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;
@@ -965,8 +969,8 @@ echo '<div class="clearBoth"></div></div><div style="clear:both"></div>';
 
 function template_agregarnota()
 {
-	global $context, $settings, $options, $txt, $notes, $scripturl;
-	
+  global $context, $settings, $options, $txt, $notes, $scripturl;
+  
 menu();
 
 echo '<div class="box_780" style="float:left;"><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Agregar nota</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width:764px;padding:4px;"><form action="/mis-notas/enviar/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data"><input type="text" title="', $txt['notes_add_new_title'], '" onfocus="if(this.value==\'', $txt['notes_add_new_title'], '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'', $txt['notes_add_new_title'], '\'; no_foco(this);" value="', $txt['notes_add_new_title'], '" style="width:758px;font-family:arial;font-size:12px;" name="titulo" maxlength="60" id="titulo" /><br/><textarea name="contenido" id="contenido" style="width:758px;height:185px;font-family:arial;font-size:12px;" title="', $txt['notes_add_new_text'], '" onfocus="if(this.value==\'', $txt['notes_add_new_text'], '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'', $txt['notes_add_new_text'], '\'; no_foco(this);">', $txt['notes_add_new_text'], '</textarea><br/><p align="right" style="margin:0px;padding:0px;"><input type="submit" value="Crear nota" name="agregar" class="login" /></p><input type="hidden" name="sa" value="add" /><input type="hidden" name="nojs" value="" /><input type="hidden" name="sc" value="', $context['session_id'], '" /></form></div></div><div style="clear:both"></div>';
@@ -975,7 +979,7 @@ echo '<div class="box_780" style="float:left;"><div class="box_title" style="wid
 
 function template_summary()
 {
-	global $context, $settings, $options, $scripturl, $modSettings, $txt, $boardurl, $db_prefix, $sourcedir;
+  global $context, $settings, $options, $scripturl, $modSettings, $txt, $boardurl, $db_prefix, $sourcedir;
 
 menu2();
 sidebar();
@@ -1024,7 +1028,7 @@ menu5();
 
 function ver_apariencia()
 {
-	global $context, $txt, $settings;
+  global $context, $txt, $settings;
 
 echo '<p class="datosp">Mide:</p> '; if(empty($context['member']['altura'])) { echo 'Sin datos'; } else { echo $context['member']['altura'] . ' cent&iacute;metros'; } echo '<br /><br />';
 echo '<p class="datosp">Pesa:</p> '; if(empty($context['member']['peso'])) { echo 'Sin datos'; } else { echo $context['member']['peso'] . ' kilos'; } echo '<br /><br />';
@@ -1056,7 +1060,7 @@ echo '<p class="datosp">Sus heroes son:</p> '; if(empty($context['member']['mis_
 
 function template_apariencia()
 {
-	global $context, $settings, $options, $scripturl, $modSettings, $txt, $boardurl, $db_prefix;
+  global $context, $settings, $options, $scripturl, $modSettings, $txt, $boardurl, $db_prefix;
 
 menu2();
 sidebar();
@@ -1084,8 +1088,8 @@ ver_apariencia();
 } elseif($context['member']['quienve'] == '1') {
 echo '<div class="noesta">No puedes ver la apariencia de ', $context['member']['name'], '.</div>';
 } elseif($context['member']['quienve'] == '2') {
-$request	=	db_query("SELECT * FROM {$db_prefix}buddies AS b WHERE b.BUDDY_ID = " . $context['user']['id'] . "", __FILE__, __LINE__);
-$row		=	mysqli_num_rows($request);
+$request = db_query("SELECT * FROM {$db_prefix}buddies AS b WHERE b.BUDDY_ID = " . $context['user']['id'] . "", __FILE__, __LINE__);
+$row = mysqli_num_rows($request);
 if($row > 0) {
 ver_apariencia();
 } elseif($row <= 0) {
@@ -1105,7 +1109,7 @@ menu5();
 
 function template_comunidades()
 {
-	global $context, $settings, $options, $scripturl, $modSettings, $txt, $boardurl, $db_prefix;
+  global $context, $settings, $options, $scripturl, $modSettings, $txt, $boardurl, $db_prefix;
 
 menu2();
 sidebar();
@@ -1148,1118 +1152,1118 @@ menu5();
 // Template for showing all the buddies of the current user.
 function template_editBuddies()
 {
-	global $context, $settings, $options, $scripturl, $modSettings, $txt;
+  global $context, $settings, $options, $scripturl, $modSettings, $txt;
 
-	echo '
-		<table border="0" width="85%" cellspacing="1" cellpadding="4" class="bordercolor" align="center">
-			<tr class="titlebg">
-				<td colspan="8" height="26">
-					&nbsp;<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" align="top" />&nbsp;', $txt['editBuddies'], '
-				</td>
-			</tr>
-			<tr class="catbg3">
-				<td width="20%">', $txt[68], '</td>
-				<td>', $txt['online8'], '</td>
-				<td>', $txt[69], '</td>
-				<td align="center">', $txt[513], '</td>
-				<td align="center">', $txt[603], '</td>
-				<td align="center">', $txt[604], '</td>
-				<td align="center">', $txt['MSN'], '</td>
-				<td></td>
-			</tr>';
+  echo '
+    <table border="0" width="85%" cellspacing="1" cellpadding="4" class="bordercolor" align="center">
+      <tr class="titlebg">
+        <td colspan="8" height="26">
+          &nbsp;<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" align="top" />&nbsp;', $txt['editBuddies'], '
+        </td>
+      </tr>
+      <tr class="catbg3">
+        <td width="20%">', $txt[68], '</td>
+        <td>', $txt['online8'], '</td>
+        <td>', $txt[69], '</td>
+        <td align="center">', $txt[513], '</td>
+        <td align="center">', $txt[603], '</td>
+        <td align="center">', $txt[604], '</td>
+        <td align="center">', $txt['MSN'], '</td>
+        <td></td>
+      </tr>';
 
-	// If they don't have any buddies don't list them!
-	if (empty($context['buddies']))
-		echo '
-			<tr class="windowbg">
-				<td colspan="8" align="center"><b>', $txt['no_buddies'], '</b></td>
-			</tr>';
+  // If they don't have any buddies don't list them!
+  if (empty($context['buddies']))
+    echo '
+      <tr class="windowbg">
+        <td colspan="8" align="center"><b>', $txt['no_buddies'], '</b></td>
+      </tr>';
 
-	// Now loop through each buddy showing info on each.
-	$alternate = false;
-	foreach ($context['buddies'] as $buddy)
-	{
-		echo '
-			<tr class="', $alternate ? 'windowbg' : 'windowbg2', '">
-				<td>', $buddy['link'], '</td>
-				<td align="center"><a href="', $buddy['online']['href'], '"><img src="', $buddy['online']['image_href'], '" alt="', $buddybuddy['online']['label'], '" title="', $buddy['online']['label'], '" /></a></td>
-				<td align="center">', ($buddy['hide_email'] ? '' : '<a href="mailto:' . $buddy['email'] . '"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt[69] . '" title="' . $txt[69] . ' ' . $buddy['name'] . '" /></a>'), '</td>
-				<td align="center">', $buddy['icq']['link'], '</td>
-				<td align="center">', $buddy['aim']['link'], '</td>
-				<td align="center">', $buddy['yim']['link'], '</td>
-				<td align="center">', $buddy['msn']['link'], '</td>
-				<td align="center"><a href="', $scripturl, '?action=profile;u=', $context['member']['id'], ';sa=editBuddies;remove=', $buddy['id'], '"><img src="', $settings['images_url'], '/icons/delete.gif" alt="', $txt['buddy_remove'], '" title="', $txt['buddy_remove'], '" /></a></td>
-			</tr>';
+  // Now loop through each buddy showing info on each.
+  $alternate = false;
+  foreach ($context['buddies'] as $buddy)
+  {
+    echo '
+      <tr class="', $alternate ? 'windowbg' : 'windowbg2', '">
+        <td>', $buddy['link'], '</td>
+        <td align="center"><a href="', $buddy['online']['href'], '"><img src="', $buddy['online']['image_href'], '" alt="', $buddybuddy['online']['label'], '" title="', $buddy['online']['label'], '" /></a></td>
+        <td align="center">', ($buddy['hide_email'] ? '' : '<a href="mailto:' . $buddy['email'] . '"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt[69] . '" title="' . $txt[69] . ' ' . $buddy['name'] . '" /></a>'), '</td>
+        <td align="center">', $buddy['icq']['link'], '</td>
+        <td align="center">', $buddy['aim']['link'], '</td>
+        <td align="center">', $buddy['yim']['link'], '</td>
+        <td align="center">', $buddy['msn']['link'], '</td>
+        <td align="center"><a href="', $scripturl, '?action=profile;u=', $context['member']['id'], ';sa=editBuddies;remove=', $buddy['id'], '"><img src="', $settings['images_url'], '/icons/delete.gif" alt="', $txt['buddy_remove'], '" title="', $txt['buddy_remove'], '" /></a></td>
+      </tr>';
 
-		$alternate = !$alternate;
-	}
+    $alternate = !$alternate;
+  }
 
-	echo '
-		</table>';
+  echo '
+    </table>';
 
-	// Add a new buddy?
-	echo '
-	<br />
-	<form action="', $scripturl, '?action=profile;u=', $context['member']['id'], ';sa=editBuddies" method="post" accept-charset="', $context['character_set'], '">
-		<table width="65%" cellpadding="4" cellspacing="0" class="tborder" align="center">
-			<tr class="titlebg">
-				<td colspan="2">', $txt['buddy_add'], '</td>
-			</tr>
-			<tr class="windowbg">
-				<td width="45%">
-					<b>', $txt['who_member'], ':</b>
-				</td>
-				<td width="55%">
-					<input type="text" name="new_buddy" id="new_buddy" size="25" />
-					<a href="', $scripturl, '?action=findmember;input=new_buddy;quote=1;sesc=', $context['session_id'], '" onclick="return reqWin(this.href, 350, 400);"><img src="', $settings['images_url'], '/icons/assist.gif" alt="', $txt['find_members'], '" align="top" /></a>
-				</td>
-			</tr>
-			<tr class="windowbg">
-				<td colspan="2" align="right">
-					<input type="submit" value="', $txt['buddy_add_button'], '" />
-				</td>
-			</tr>
-		</table>
-	</form>';
+  // Add a new buddy?
+  echo '
+  <br />
+  <form action="', $scripturl, '?action=profile;u=', $context['member']['id'], ';sa=editBuddies" method="post" accept-charset="', $context['character_set'], '">
+    <table width="65%" cellpadding="4" cellspacing="0" class="tborder" align="center">
+      <tr class="titlebg">
+        <td colspan="2">', $txt['buddy_add'], '</td>
+      </tr>
+      <tr class="windowbg">
+        <td width="45%">
+          <b>', $txt['who_member'], ':</b>
+        </td>
+        <td width="55%">
+          <input type="text" name="new_buddy" id="new_buddy" size="25" />
+          <a href="', $scripturl, '?action=findmember;input=new_buddy;quote=1;sesc=', $context['session_id'], '" onclick="return reqWin(this.href, 350, 400);"><img src="', $settings['images_url'], '/icons/assist.gif" alt="', $txt['find_members'], '" align="top" /></a>
+        </td>
+      </tr>
+      <tr class="windowbg">
+        <td colspan="2" align="right">
+          <input type="submit" value="', $txt['buddy_add_button'], '" />
+        </td>
+      </tr>
+    </table>
+  </form>';
 }
 
 // This template shows an admin information on a users IP addresses used and errors attributed to them.
 function template_trackUser()
 {
-	global $context, $settings, $options, $scripturl, $txt;
+  global $context, $settings, $options, $scripturl, $txt;
 
-	// The first table shows IP information about the user.
-	echo '
-		<table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
-			<table border="0" cellspacing="1" cellpadding="4" align="left" width="100%">
-				<tr class="titlebg">
-					<td colspan="2">
-						<b>', $txt['view_ips_by'], ' ', $context['member']['name'], '</b>
-					</td>
-				</tr>';
+  // The first table shows IP information about the user.
+  echo '
+    <table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
+      <table border="0" cellspacing="1" cellpadding="4" align="left" width="100%">
+        <tr class="titlebg">
+          <td colspan="2">
+            <b>', $txt['view_ips_by'], ' ', $context['member']['name'], '</b>
+          </td>
+        </tr>';
 
-	// The last IP the user used.
-	echo '
-				<tr>
-					<td class="windowbg2" align="left" width="200">', $txt['most_recent_ip'], ':</td>
-					<td class="windowbg2" align="left">
-						<a href="', $scripturl, '?action=trackip;searchip=', $context['last_ip'], ';">', $context['last_ip'], '</a>
-					</td>
-				</tr>';
+  // The last IP the user used.
+  echo '
+        <tr>
+          <td class="windowbg2" align="left" width="200">', $txt['most_recent_ip'], ':</td>
+          <td class="windowbg2" align="left">
+            <a href="', $scripturl, '?action=trackip;searchip=', $context['last_ip'], ';">', $context['last_ip'], '</a>
+          </td>
+        </tr>';
 
-	// Lists of IP addresses used in messages / error messages.
-	echo '
-				<tr>
-					<td class="windowbg2" align="left">', $txt['ips_in_messages'], ':</td>
-					<td class="windowbg2" align="left">
-						', (count($context['ips']) > 0 ? implode(', ', $context['ips']) : '(' . $txt['none'] . ')'), '
-					</td>
-				</tr><tr>
-					<td class="windowbg2" align="left">', $txt['ips_in_errors'], ':</td>
-					<td class="windowbg2" align="left">
-						', (count($context['error_ips']) > 0 ? implode(', ', $context['error_ips']) : '(' . $txt['none'] . ')'), '
-					</td>
-				</tr>';
+  // Lists of IP addresses used in messages / error messages.
+  echo '
+        <tr>
+          <td class="windowbg2" align="left">', $txt['ips_in_messages'], ':</td>
+          <td class="windowbg2" align="left">
+            ', (count($context['ips']) > 0 ? implode(', ', $context['ips']) : '(' . $txt['none'] . ')'), '
+          </td>
+        </tr><tr>
+          <td class="windowbg2" align="left">', $txt['ips_in_errors'], ':</td>
+          <td class="windowbg2" align="left">
+            ', (count($context['error_ips']) > 0 ? implode(', ', $context['error_ips']) : '(' . $txt['none'] . ')'), '
+          </td>
+        </tr>';
 
-	// List any members that have used the same IP addresses as the current member.
-	echo '
-				<tr>
-					<td class="windowbg2" align="left">', $txt['members_in_range'], ':</td>
-					<td class="windowbg2" align="left">
-						', (count($context['members_in_range']) > 0 ? implode(', ', $context['members_in_range']) : '(' . $txt['none'] . ')'), '
-					</td>
-				</tr>
-			</table>
-		</td></tr></table>
-		<br />';
+  // List any members that have used the same IP addresses as the current member.
+  echo '
+        <tr>
+          <td class="windowbg2" align="left">', $txt['members_in_range'], ':</td>
+          <td class="windowbg2" align="left">
+            ', (count($context['members_in_range']) > 0 ? implode(', ', $context['members_in_range']) : '(' . $txt['none'] . ')'), '
+          </td>
+        </tr>
+      </table>
+    </td></tr></table>
+    <br />';
 
-	// The second table lists all the error messages the user has caused/received.
-	echo '
-		<table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
-			<table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
-				<tr class="titlebg">
-					<td colspan="4">
-						', $txt['errors_by'], ' ', $context['member']['name'], '
-					</td>
-				</tr><tr class="windowbg">
-					<td class="smalltext" colspan="4" style="padding: 2ex;">
-						', $txt['errors_desc'], '
-					</td>
-				</tr><tr class="titlebg">
-					<td colspan="4">
-						', $txt[139], ': ', $context['page_index'], '
-					</td>
-				</tr><tr class="catbg3">
-					<td>', $txt['ip_address'], '</td>
-					<td>', $txt[72], '</td>
-					<td>', $txt[317], '</td>
-				</tr>';
+  // The second table lists all the error messages the user has caused/received.
+  echo '
+    <table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
+      <table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
+        <tr class="titlebg">
+          <td colspan="4">
+            ', $txt['errors_by'], ' ', $context['member']['name'], '
+          </td>
+        </tr><tr class="windowbg">
+          <td class="smalltext" colspan="4" style="padding: 2ex;">
+            ', $txt['errors_desc'], '
+          </td>
+        </tr><tr class="titlebg">
+          <td colspan="4">
+            ', $txt[139], ': ', $context['page_index'], '
+          </td>
+        </tr><tr class="catbg3">
+          <td>', $txt['ip_address'], '</td>
+          <td>', $txt[72], '</td>
+          <td>', $txt[317], '</td>
+        </tr>';
 
-	// If there arn't any messages just give a message stating this.
-	if (empty($context['error_messages']))
-		echo '
-				<tr><td class="windowbg2" colspan="4"><i>', $txt['no_errors_from_user'], '</i></td></tr>';
+  // If there arn't any messages just give a message stating this.
+  if (empty($context['error_messages']))
+    echo '
+        <tr><td class="windowbg2" colspan="4"><i>', $txt['no_errors_from_user'], '</i></td></tr>';
 
-	// Otherwise print every error message out.
-	else
-		// For every error message print the IP address that caused it, the message displayed and the date it occurred.
-		foreach ($context['error_messages'] as $error)
-			echo '
-				<tr>
-					<td class="windowbg2">
-						<a href="', $scripturl, '?action=trackip;searchip=', $error['ip'], ';">', $error['ip'], '</a>
-					</td>
-					<td class="windowbg2">
-						', $error['message'], '<br />
-						<a href="', $error['url'], '">', $error['url'], '</a>
-					</td>
-					<td class="windowbg2">', $error['time'], '</td>
-				</tr>';
-	echo '
-			</table>
-		</td></tr></table>';
+  // Otherwise print every error message out.
+  else
+    // For every error message print the IP address that caused it, the message displayed and the date it occurred.
+    foreach ($context['error_messages'] as $error)
+      echo '
+        <tr>
+          <td class="windowbg2">
+            <a href="', $scripturl, '?action=trackip;searchip=', $error['ip'], ';">', $error['ip'], '</a>
+          </td>
+          <td class="windowbg2">
+            ', $error['message'], '<br />
+            <a href="', $error['url'], '">', $error['url'], '</a>
+          </td>
+          <td class="windowbg2">', $error['time'], '</td>
+        </tr>';
+  echo '
+      </table>
+    </td></tr></table>';
 }
 
 // The template for trackIP, allowing the admin to see where/who a certain IP has been used.
 function template_trackIP()
 {
-	global $context, $settings, $options, $scripturl, $txt;
+  global $context, $settings, $options, $scripturl, $txt;
 
-	// This function always defaults to the last IP used by a member but can be set to track any IP.
-	echo '
-		<form action="', $scripturl, '?action=trackip" method="post" accept-charset="', $context['character_set'], '">';
+  // This function always defaults to the last IP used by a member but can be set to track any IP.
+  echo '
+    <form action="', $scripturl, '?action=trackip" method="post" accept-charset="', $context['character_set'], '">';
 
-	// The first table in the template gives an input box to allow the admin to enter another IP to track.
-	echo '
-			<table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
-				<table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
-					<tr class="titlebg">
-						<td>', $txt['trackIP'], '</td>
-					</tr><tr>
-						<td class="windowbg2">
-							', $txt['enter_ip'], ':&nbsp;&nbsp;<input type="text" name="searchip" value="', $context['ip'], '" />&nbsp;&nbsp;<input type="submit" value="', $txt['trackIP'], '" />
-						</td>
-					</tr>
-				</table>
-			</td></tr></table>
-		</form>
-		<br />';
+  // The first table in the template gives an input box to allow the admin to enter another IP to track.
+  echo '
+      <table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
+        <table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
+          <tr class="titlebg">
+            <td>', $txt['trackIP'], '</td>
+          </tr><tr>
+            <td class="windowbg2">
+              ', $txt['enter_ip'], ':&nbsp;&nbsp;<input type="text" name="searchip" value="', $context['ip'], '" />&nbsp;&nbsp;<input type="submit" value="', $txt['trackIP'], '" />
+            </td>
+          </tr>
+        </table>
+      </td></tr></table>
+    </form>
+    <br />';
 
-	// The table inbetween the first and second table shows links to the whois server for every region.
-	if ($context['single_ip'])
-	{
-		echo '
-		<table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
-			<table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
-				<tr class="titlebg">
-					<td colspan="2">
-						', $txt['whois_title'], ' ', $context['ip'], '
-					</td>
-				</tr><tr>
-					<td class="windowbg2">';
-		foreach ($context['whois_servers'] as $server)
-			echo '
-						<a href="', $server['url'], '" target="_blank"', isset($context['auto_whois_server']) && $context['auto_whois_server']['name'] == $server['name'] ? ' style="font-weight: bold;"' : '', '>', $server['name'], '</a><br />';
-		echo '
-					</td>
-				</tr>
-			</table>
-		</td></tr></table>
-		<br />';
-	}
+  // The table inbetween the first and second table shows links to the whois server for every region.
+  if ($context['single_ip'])
+  {
+    echo '
+    <table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
+      <table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
+        <tr class="titlebg">
+          <td colspan="2">
+            ', $txt['whois_title'], ' ', $context['ip'], '
+          </td>
+        </tr><tr>
+          <td class="windowbg2">';
+    foreach ($context['whois_servers'] as $server)
+      echo '
+            <a href="', $server['url'], '" target="_blank"', isset($context['auto_whois_server']) && $context['auto_whois_server']['name'] == $server['name'] ? ' style="font-weight: bold;"' : '', '>', $server['name'], '</a><br />';
+    echo '
+          </td>
+        </tr>
+      </table>
+    </td></tr></table>
+    <br />';
+  }
 
-	// The second table lists all the members who have been logged as using this IP address.
-	echo '
-		<table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
-			<table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
-				<tr class="titlebg">
-					<td colspan="2">
-						', $txt['members_from_ip'], ' ', $context['ip'], '
-					</td>
-				</tr><tr class="catbg3">
-					<td>', $txt['ip_address'], '</td>
-					<td>', $txt['display_name'], '</td>
-				</tr>';
-	if (empty($context['ips']))
-		echo '
-				<tr><td class="windowbg2" colspan="2"><i>', $txt['no_members_from_ip'], '</i></td></tr>';
-	else
-		// Loop through each of the members and display them.
-		foreach ($context['ips'] as $ip => $memberlist)
-			echo '
-				<tr>
-					<td class="windowbg2"><a href="', $scripturl, '?action=trackip;searchip=', $ip, ';">', $ip, '</a></td>
-					<td class="windowbg2">', implode(', ', $memberlist), '</td>
-				</tr>';
-	echo '
-			</table>
-		</td></tr></table>
-		<br />';
+  // The second table lists all the members who have been logged as using this IP address.
+  echo '
+    <table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
+      <table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
+        <tr class="titlebg">
+          <td colspan="2">
+            ', $txt['members_from_ip'], ' ', $context['ip'], '
+          </td>
+        </tr><tr class="catbg3">
+          <td>', $txt['ip_address'], '</td>
+          <td>', $txt['display_name'], '</td>
+        </tr>';
+  if (empty($context['ips']))
+    echo '
+        <tr><td class="windowbg2" colspan="2"><i>', $txt['no_members_from_ip'], '</i></td></tr>';
+  else
+    // Loop through each of the members and display them.
+    foreach ($context['ips'] as $ip => $memberlist)
+      echo '
+        <tr>
+          <td class="windowbg2"><a href="', $scripturl, '?action=trackip;searchip=', $ip, ';">', $ip, '</a></td>
+          <td class="windowbg2">', implode(', ', $memberlist), '</td>
+        </tr>';
+  echo '
+      </table>
+    </td></tr></table>
+    <br />';
 
-	// The third table in the template displays a list of all the messages sent using this IP (can be quite long).
-	echo '
-		<table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
-			<table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
-				<tr class="titlebg">
-					<td colspan="4">
-						', $txt['messages_from_ip'], ' ', $context['ip'], '
-					</td>
-				</tr><tr class="windowbg">
-					<td class="smalltext" colspan="4" style="padding: 2ex;">
-						', $txt['messages_from_ip_desc'], '
-					</td>
-				</tr><tr class="titlebg">
-					<td colspan="4">
-						<b>', $txt[139], ':</b> ', $context['message_page_index'], '
-					</td>
-				</tr><tr class="catbg3">
-					<td>', $txt['ip_address'], '</td>
-					<td>', $txt['rtm8'], '</td>
-					<td>', $txt[319], '</td>
-					<td>', $txt[317], '</td>
-				</tr>';
+  // The third table in the template displays a list of all the messages sent using this IP (can be quite long).
+  echo '
+    <table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
+      <table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
+        <tr class="titlebg">
+          <td colspan="4">
+            ', $txt['messages_from_ip'], ' ', $context['ip'], '
+          </td>
+        </tr><tr class="windowbg">
+          <td class="smalltext" colspan="4" style="padding: 2ex;">
+            ', $txt['messages_from_ip_desc'], '
+          </td>
+        </tr><tr class="titlebg">
+          <td colspan="4">
+            <b>', $txt[139], ':</b> ', $context['message_page_index'], '
+          </td>
+        </tr><tr class="catbg3">
+          <td>', $txt['ip_address'], '</td>
+          <td>', $txt['rtm8'], '</td>
+          <td>', $txt[319], '</td>
+          <td>', $txt[317], '</td>
+        </tr>';
 
-	// No message means nothing to do!
-	if (empty($context['messages']))
-		echo '
-				<tr><td class="windowbg2" colspan="4"><i>', $txt['no_messages_from_ip'], '</i></td></tr>';
-	else
-		// For every message print the IP, member who posts it, subject (with link) and date posted.
-		foreach ($context['messages'] as $message)
-			echo '
-				<tr>
-					<td class="windowbg2">
-						<a href="', $scripturl, '?action=trackip;searchip=', $message['ip'], '">', $message['ip'], '</a>
-					</td>
-					<td class="windowbg2">
-						', $message['member']['link'], '
-					</td>
-					<td class="windowbg2">
-						<a href="', $scripturl, '?topic=', $message['topic'], '.msg', $message['id'], '#msg', $message['id'], '">
-							', $message['subject'], '
-						</a>
-					</td>
-					<td class="windowbg2">', $message['time'], '</td>
-				</tr>';
-	echo '
-			</table>
-		</td></tr></table>
-		<br />';
+  // No message means nothing to do!
+  if (empty($context['messages']))
+    echo '
+        <tr><td class="windowbg2" colspan="4"><i>', $txt['no_messages_from_ip'], '</i></td></tr>';
+  else
+    // For every message print the IP, member who posts it, subject (with link) and date posted.
+    foreach ($context['messages'] as $message)
+      echo '
+        <tr>
+          <td class="windowbg2">
+            <a href="', $scripturl, '?action=trackip;searchip=', $message['ip'], '">', $message['ip'], '</a>
+          </td>
+          <td class="windowbg2">
+            ', $message['member']['link'], '
+          </td>
+          <td class="windowbg2">
+            <a href="', $scripturl, '?topic=', $message['topic'], '.msg', $message['id'], '#msg', $message['id'], '">
+              ', $message['subject'], '
+            </a>
+          </td>
+          <td class="windowbg2">', $message['time'], '</td>
+        </tr>';
+  echo '
+      </table>
+    </td></tr></table>
+    <br />';
 
-	// The final table in the template lists all the error messages caused/received by anyone using this IP address.
-	echo '
-		<table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
-			<table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
-				<tr class="titlebg">
-					<td colspan="4">
-						', $txt['errors_from_ip'], ' ', $context['ip'], '
-					</td>
-				</tr><tr class="windowbg">
-					<td class="smalltext" colspan="4" style="padding: 2ex;">
-						', $txt['errors_from_ip_desc'], '
-					</td>
-				</tr><tr class="titlebg">
-					<td colspan="4">
-						', $txt[139], ': ', $context['error_page_index'], '
-					</td>
-				</tr><tr class="catbg3">
-					<td>', $txt['ip_address'], '</td>
-					<td>', $txt['display_name'], '</td>
-					<td>', $txt[72], '</td>
-					<td>', $txt[317], '</td>
-				</tr>';
-	if (empty($context['error_messages']))
-		echo '
-				<tr><td class="windowbg2" colspan="4"><i>', $txt['no_errors_from_ip'], '</i></td></tr>';
-	else
-		// For each error print IP address, member, message received and date caused.
-		foreach ($context['error_messages'] as $error)
-			echo '
-				<tr>
-					<td class="windowbg2">
-						<a href="', $scripturl, '?action=trackip;searchip=', $error['ip'], '">', $error['ip'], '</a>
-					</td>
-					<td class="windowbg2">
-						', $error['member']['link'], '
-					</td>
-					<td class="windowbg2">
-						', $error['message'], '<br />
-						<a href="', $error['url'], '">', $error['url'], '</a>
-					</td>
-					<td class="windowbg2">', $error['error_time'], '</td>
-				</tr>';
-	echo '
-			</table>
-		</td></tr></table>';
+  // The final table in the template lists all the error messages caused/received by anyone using this IP address.
+  echo '
+    <table cellpadding="0" cellspacing="0" border="0" class="bordercolor" align="center" width="90%"><tr><td>
+      <table border="0" cellspacing="1" cellpadding="4" align="center" width="100%">
+        <tr class="titlebg">
+          <td colspan="4">
+            ', $txt['errors_from_ip'], ' ', $context['ip'], '
+          </td>
+        </tr><tr class="windowbg">
+          <td class="smalltext" colspan="4" style="padding: 2ex;">
+            ', $txt['errors_from_ip_desc'], '
+          </td>
+        </tr><tr class="titlebg">
+          <td colspan="4">
+            ', $txt[139], ': ', $context['error_page_index'], '
+          </td>
+        </tr><tr class="catbg3">
+          <td>', $txt['ip_address'], '</td>
+          <td>', $txt['display_name'], '</td>
+          <td>', $txt[72], '</td>
+          <td>', $txt[317], '</td>
+        </tr>';
+  if (empty($context['error_messages']))
+    echo '
+        <tr><td class="windowbg2" colspan="4"><i>', $txt['no_errors_from_ip'], '</i></td></tr>';
+  else
+    // For each error print IP address, member, message received and date caused.
+    foreach ($context['error_messages'] as $error)
+      echo '
+        <tr>
+          <td class="windowbg2">
+            <a href="', $scripturl, '?action=trackip;searchip=', $error['ip'], '">', $error['ip'], '</a>
+          </td>
+          <td class="windowbg2">
+            ', $error['member']['link'], '
+          </td>
+          <td class="windowbg2">
+            ', $error['message'], '<br />
+            <a href="', $error['url'], '">', $error['url'], '</a>
+          </td>
+          <td class="windowbg2">', $error['error_time'], '</td>
+        </tr>';
+  echo '
+      </table>
+    </td></tr></table>';
 }
 
 function template_account()
 {
-	global $context, $settings, $options, $scripturl, $modSettings, $txt;
+  global $context, $settings, $options, $scripturl, $modSettings, $txt;
 
-	// Javascript for checking if password has been entered / taking admin powers away from themselves.
-	echo '
-		<script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
-			function checkProfileSubmit()
-			{';
+  // Javascript for checking if password has been entered / taking admin powers away from themselves.
+  echo '
+    <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
+      function checkProfileSubmit()
+      {';
 
-	// If this part requires a password, make sure to give a warning.
-	if ($context['user']['is_owner'] && $context['require_password'])
-		echo '
-				// Did you forget to type your password?
-				if (document.forms.creator.oldpasswrd.value == "")
-				{
-					alert("', $txt['smf244'], '");
-					return false;
-				}';
+  // If this part requires a password, make sure to give a warning.
+  if ($context['user']['is_owner'] && $context['require_password'])
+    echo '
+        // Did you forget to type your password?
+        if (document.forms.creator.oldpasswrd.value == "")
+        {
+          alert("', $txt['smf244'], '");
+          return false;
+        }';
 
-	// This part checks if they are removing themselves from administrative power on accident.
-	if ($context['allow_edit_membergroups'] && $context['user']['is_owner'] && $context['member']['group'] == 1)
-		echo '
-				if (typeof(document.forms.creator.ID_GROUP) != "undefined" && document.forms.creator.ID_GROUP.value != "1")
-					return confirm("', $txt['deadmin_confirm'], '");';
+  // This part checks if they are removing themselves from administrative power on accident.
+  if ($context['allow_edit_membergroups'] && $context['user']['is_owner'] && $context['member']['group'] == 1)
+    echo '
+        if (typeof(document.forms.creator.ID_GROUP) != "undefined" && document.forms.creator.ID_GROUP.value != "1")
+          return confirm("', $txt['deadmin_confirm'], '");';
 
-	echo '
-				return true;
-			}
-		// ]]></script>';
+  echo '
+        return true;
+      }
+    // ]]></script>';
 
-	// The main containing header.
-	echo '
-		<form action="', $scripturl, '?action=profile2" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" onsubmit="return checkProfileSubmit();">
-			<table border="0" width="85%" cellspacing="1" cellpadding="4" align="center" class="bordercolor">
-				<tr class="titlebg">
-					<td height="26">
-						&nbsp;<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" align="top" />&nbsp;
-						', $txt[79], '
-					</td>
-				</tr>';
+  // The main containing header.
+  echo '
+    <form action="', $scripturl, '?action=profile2" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" onsubmit="return checkProfileSubmit();">
+      <table border="0" width="85%" cellspacing="1" cellpadding="4" align="center" class="bordercolor">
+        <tr class="titlebg">
+          <td height="26">
+            &nbsp;<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" align="top" />&nbsp;
+            ', $txt[79], '
+          </td>
+        </tr>';
 
-	// Display Name, language and date user registered.
-	echo '
-				<tr class="windowbg">
-					<td class="smalltext" height="25" style="padding: 2ex;">
-						', $txt['account_info'], '
-					</td>
-				</tr>
-				<tr>
-					<td class="windowbg2" style="padding-bottom: 2ex;">
-						<table width="100%" cellpadding="3" cellspacing="0" border="0">';
+  // Display Name, language and date user registered.
+  echo '
+        <tr class="windowbg">
+          <td class="smalltext" height="25" style="padding: 2ex;">
+            ', $txt['account_info'], '
+          </td>
+        </tr>
+        <tr>
+          <td class="windowbg2" style="padding-bottom: 2ex;">
+            <table width="100%" cellpadding="3" cellspacing="0" border="0">';
 
-	// Only show these settings if you're allowed to edit the account itself (not just the membergroups).
-	if ($context['allow_edit_account'])
-	{
-		if ($context['user']['is_admin'] && !empty($context['allow_edit_username']))
-			echo '
-							<tr>
-								<td colspan="2" align="center" style="color: red">', $txt['username_warning'], '</td>
-							</tr>
-							<tr>
-								<td width="40%">
-									<b>', $txt[35], ': </b>
-								</td>
-								<td>
-									<input type="text" name="memberName" size="30" value="', $context['member']['username'], '" />
-								</td>
-							</tr>';
-		else
-			echo '
-							<tr>
-								<td width="40%">
-									<b>', $txt[35], ': </b>', $context['user']['is_admin'] ? '
-									<div class="smalltext">(<a href="' . $scripturl . '?action=profile;u=' . $context['member']['id'] . ';sa=account;changeusername" style="font-style: italic;">' . $txt['username_change'] . '</a>)</div>' : '', '
-								</td>
-								<td>
-									', $context['member']['username'], '
-								</td>
-							</tr>';
+  // Only show these settings if you're allowed to edit the account itself (not just the membergroups).
+  if ($context['allow_edit_account'])
+  {
+    if ($context['user']['is_admin'] && !empty($context['allow_edit_username']))
+      echo '
+              <tr>
+                <td colspan="2" align="center" style="color: red">', $txt['username_warning'], '</td>
+              </tr>
+              <tr>
+                <td width="40%">
+                  <b>', $txt[35], ': </b>
+                </td>
+                <td>
+                  <input type="text" name="memberName" size="30" value="', $context['member']['username'], '" />
+                </td>
+              </tr>';
+    else
+      echo '
+              <tr>
+                <td width="40%">
+                  <b>', $txt[35], ': </b>', $context['user']['is_admin'] ? '
+                  <div class="smalltext">(<a href="' . $scripturl . '?action=profile;u=' . $context['member']['id'] . ';sa=account;changeusername" style="font-style: italic;">' . $txt['username_change'] . '</a>)</div>' : '', '
+                </td>
+                <td>
+                  ', $context['member']['username'], '
+                </td>
+              </tr>';
 
-		echo '
-							<tr>
-								<td>
-									<b', (isset($context['modify_error']['no_name']) || isset($context['modify_error']['name_taken']) ? ' style="color: red;"' : ''), '>', $txt[68], ': </b>
-									<div class="smalltext">', $txt[518], '</div>
-								</td>
-								<td>', ($context['allow_edit_name'] ? '<input type="text" name="realName" size="30" value="' . $context['member']['name'] . '" maxlength="60" />' : $context['member']['name']), '</td>
-							</tr>';
+    echo '
+              <tr>
+                <td>
+                  <b', (isset($context['modify_error']['no_name']) || isset($context['modify_error']['name_taken']) ? ' style="color: red;"' : ''), '>', $txt[68], ': </b>
+                  <div class="smalltext">', $txt[518], '</div>
+                </td>
+                <td>', ($context['allow_edit_name'] ? '<input type="text" name="realName" size="30" value="' . $context['member']['name'] . '" maxlength="60" />' : $context['member']['name']), '</td>
+              </tr>';
 
-		// Allow the administrator to change the date they registered on and their post count.
-		if ($context['user']['is_admin'])
-			echo '
-							<tr>
-								<td><b>', $txt[233], ':</b></td>
-								<td><input type="text" name="dateRegistered" size="30" value="', $context['member']['registered'], '" /></td>
-							</tr>
-							<tr>
-								<td><b>', $txt[86], ': </b></td>
-								<td><input type="text" name="posts" size="4" value="', $context['member']['posts'], '" /></td>
-							</tr>';
+    // Allow the administrator to change the date they registered on and their post count.
+    if ($context['user']['is_admin'])
+      echo '
+              <tr>
+                <td><b>', $txt[233], ':</b></td>
+                <td><input type="text" name="dateRegistered" size="30" value="', $context['member']['registered'], '" /></td>
+              </tr>
+              <tr>
+                <td><b>', $txt[86], ': </b></td>
+                <td><input type="text" name="posts" size="4" value="', $context['member']['posts'], '" /></td>
+              </tr>';
 
-		// Only display if admin has enabled "user selectable language".
-		if (!empty($modSettings['userLanguage']) && count($context['languages']) > 1)
-		{
-			echo '
-							<tr>
-								<td width="40%"><b>', $txt[349], ':</b></td>
-								<td>
-									<select name="lngfile">';
+    // Only display if admin has enabled "user selectable language".
+    if (!empty($modSettings['userLanguage']) && count($context['languages']) > 1)
+    {
+      echo '
+              <tr>
+                <td width="40%"><b>', $txt[349], ':</b></td>
+                <td>
+                  <select name="lngfile">';
 
-			// Fill a select box with all the languages installed.
-			foreach ($context['languages'] as $language)
-				echo '
-										<option value="', $language['filename'], '"', $language['selected'] ? ' selected="selected"' : '', '>', $language['name'], '</option>';
-			echo '
-									</select>
-								</td>
-							</tr>';
-		}
-	}
+      // Fill a select box with all the languages installed.
+      foreach ($context['languages'] as $language)
+        echo '
+                    <option value="', $language['filename'], '"', $language['selected'] ? ' selected="selected"' : '', '>', $language['name'], '</option>';
+      echo '
+                  </select>
+                </td>
+              </tr>';
+    }
+  }
 
-	// Only display member group information/editing with the proper permissions.
-	if ($context['allow_edit_membergroups'])
-	{
-		echo '
-							<tr>
-								<td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
-							</tr><tr>
-								<td valign="top">
-									<b>', $txt['primary_membergroup'], ': </b>
-									<div class="smalltext">(<a href="', $scripturl, '?action=helpadmin;help=moderator_why_missing" onclick="return reqWin(this.href);">', $txt['moderator_why_missing'], '</a>)</div>
-								</td>
-								<td>
-									<select name="ID_GROUP">';
-		// Fill the select box with all primary member groups that can be assigned to a member.
-		foreach ($context['member_groups'] as $member_group)
-			echo '
-										<option value="', $member_group['id'], '"', $member_group['is_primary'] ? ' selected="selected"' : '', '>
-											', $member_group['name'], '
-										</option>';
-		echo '
-									</select>
-								</td>
-							</tr><tr>
-								<td valign="top"><b>', $txt['additional_membergroups'], ':</b></td>
-								<td>
-									<div id="additionalGroupsList">
-										<input type="hidden" name="additionalGroups[]" value="0" />';
-		// For each membergroup show a checkbox so members can be assigned to more than one group.
-		foreach ($context['member_groups'] as $member_group)
-			if ($member_group['can_be_additional'])
-				echo '
-										<label for="additionalGroups-', $member_group['id'], '"><input type="checkbox" name="additionalGroups[]" value="', $member_group['id'], '" id="additionalGroups-', $member_group['id'], '"', $member_group['is_additional'] ? ' checked="checked"' : '', ' class="check" /> ', $member_group['name'], '</label><br />';
-		echo '
-									</div>
-									<a href="javascript:void(0);" onclick="document.getElementById(\'additionalGroupsList\').style.display = \'block\'; document.getElementById(\'additionalGroupsLink\').style.display = \'none\'; return false;" id="additionalGroupsLink" style="display: none;">', $txt['additional_membergroups_show'], '</a>
-									<script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
-										document.getElementById("additionalGroupsList").style.display = "none";
-										document.getElementById("additionalGroupsLink").style.display = "";
-									// ]]></script>
-								</td>
-							</tr>';
-	}
+  // Only display member group information/editing with the proper permissions.
+  if ($context['allow_edit_membergroups'])
+  {
+    echo '
+              <tr>
+                <td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
+              </tr><tr>
+                <td valign="top">
+                  <b>', $txt['primary_membergroup'], ': </b>
+                  <div class="smalltext">(<a href="', $scripturl, '?action=helpadmin;help=moderator_why_missing" onclick="return reqWin(this.href);">', $txt['moderator_why_missing'], '</a>)</div>
+                </td>
+                <td>
+                  <select name="ID_GROUP">';
+    // Fill the select box with all primary member groups that can be assigned to a member.
+    foreach ($context['member_groups'] as $member_group)
+      echo '
+                    <option value="', $member_group['id'], '"', $member_group['is_primary'] ? ' selected="selected"' : '', '>
+                      ', $member_group['name'], '
+                    </option>';
+    echo '
+                  </select>
+                </td>
+              </tr><tr>
+                <td valign="top"><b>', $txt['additional_membergroups'], ':</b></td>
+                <td>
+                  <div id="additionalGroupsList">
+                    <input type="hidden" name="additionalGroups[]" value="0" />';
+    // For each membergroup show a checkbox so members can be assigned to more than one group.
+    foreach ($context['member_groups'] as $member_group)
+      if ($member_group['can_be_additional'])
+        echo '
+                    <label for="additionalGroups-', $member_group['id'], '"><input type="checkbox" name="additionalGroups[]" value="', $member_group['id'], '" id="additionalGroups-', $member_group['id'], '"', $member_group['is_additional'] ? ' checked="checked"' : '', ' class="check" /> ', $member_group['name'], '</label><br />';
+    echo '
+                  </div>
+                  <a href="javascript:void(0);" onclick="document.getElementById(\'additionalGroupsList\').style.display = \'block\'; document.getElementById(\'additionalGroupsLink\').style.display = \'none\'; return false;" id="additionalGroupsLink" style="display: none;">', $txt['additional_membergroups_show'], '</a>
+                  <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
+                    document.getElementById("additionalGroupsList").style.display = "none";
+                    document.getElementById("additionalGroupsLink").style.display = "";
+                  // ]]></script>
+                </td>
+              </tr>';
+  }
 
-	// Show this part if you're not only here for assigning membergroups.
-	if ($context['allow_edit_account'])
-	{
-		// Show email address box.
-		echo '
-							<tr>
-								<td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
-							</tr><tr>
-								<td width="40%"><b', (isset($context['modify_error']['bad_email']) || isset($context['modify_error']['no_email']) || isset($context['modify_error']['email_taken']) ? ' style="color: red;"' : ''), '>', $txt[69], ': </b><div class="smalltext">', $txt[679], '</div></td>
-								<td><input type="text" name="emailAddress" size="30" value="', $context['member']['email'], '" /></td>
-							</tr>';
+  // Show this part if you're not only here for assigning membergroups.
+  if ($context['allow_edit_account'])
+  {
+    // Show email address box.
+    echo '
+              <tr>
+                <td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
+              </tr><tr>
+                <td width="40%"><b', (isset($context['modify_error']['bad_email']) || isset($context['modify_error']['no_email']) || isset($context['modify_error']['email_taken']) ? ' style="color: red;"' : ''), '>', $txt[69], ': </b><div class="smalltext">', $txt[679], '</div></td>
+                <td><input type="text" name="emailAddress" size="30" value="', $context['member']['email'], '" /></td>
+              </tr>';
 
-		// If the user is allowed to hide their email address from the public give them the option to here.
-		if ($context['allow_hide_email'])
-		{
-			echo '
-							<tr>
-								<td width="40%"><b>', $txt[721], '</b></td>
-								<td><input type="hidden" name="hideEmail" value="0" /><input type="checkbox" name="hideEmail"', $context['member']['hide_email'] ? ' checked="checked"' : '', ' value="1" class="check" /></td>
-							</tr>';
-	}
+    // If the user is allowed to hide their email address from the public give them the option to here.
+    if ($context['allow_hide_email'])
+    {
+      echo '
+              <tr>
+                <td width="40%"><b>', $txt[721], '</b></td>
+                <td><input type="hidden" name="hideEmail" value="0" /><input type="checkbox" name="hideEmail"', $context['member']['hide_email'] ? ' checked="checked"' : '', ' value="1" class="check" /></td>
+              </tr>';
+  }
 
-		// Option to show online status - if they are allowed to.
-		if ($context['allow_hide_online'])
-		{
-			echo '
-							<tr>
-								<td width="40%"><b>', $txt['show_online'], '</b></td>
-								<td><input type="hidden" name="showOnline" value="0" /><input type="checkbox" name="showOnline"', $context['member']['show_online'] ? ' checked="checked"' : '', ' value="1" class="check" /></td>
-							</tr>';
-		}
+    // Option to show online status - if they are allowed to.
+    if ($context['allow_hide_online'])
+    {
+      echo '
+              <tr>
+                <td width="40%"><b>', $txt['show_online'], '</b></td>
+                <td><input type="hidden" name="showOnline" value="0" /><input type="checkbox" name="showOnline"', $context['member']['show_online'] ? ' checked="checked"' : '', ' value="1" class="check" /></td>
+              </tr>';
+    }
 
-		// Show boxes so that the user may change his or her password.
-		echo '
-							<tr>
-								<td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
-							</tr><tr>
-								<td width="40%"><b', (isset($context['modify_error']['bad_new_password']) ? ' style="color: red;"' : ''), '>', $txt[81], ': </b><div class="smalltext">', $txt[596], '</div></td>
-								<td><input type="password" name="passwrd1" size="20" /></td>
-							</tr><tr>
-								<td width="40%"><b>', $txt[82], ': </b></td>
-								<td><input type="password" name="passwrd2" size="20" /></td>
-							</tr>';
+    // Show boxes so that the user may change his or her password.
+    echo '
+              <tr>
+                <td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
+              </tr><tr>
+                <td width="40%"><b', (isset($context['modify_error']['bad_new_password']) ? ' style="color: red;"' : ''), '>', $txt[81], ': </b><div class="smalltext">', $txt[596], '</div></td>
+                <td><input type="password" name="passwrd1" size="20" /></td>
+              </tr><tr>
+                <td width="40%"><b>', $txt[82], ': </b></td>
+                <td><input type="password" name="passwrd2" size="20" /></td>
+              </tr>';
 
-		// This section allows the user to enter secret question/answer so they can reset a forgotten password.
-		echo '
-							<tr>
-								<td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
-							</tr><tr>
-								<td width="40%"><b>', $txt['pswd1'], ':</b><div class="smalltext">', $txt['secret_desc'], '</div></td>
-								<td><input type="text" name="secretQuestion" size="50" value="', $context['member']['secret_question'], '" /></td>
-							</tr><tr>
-								<td width="40%"><b>', $txt['pswd2'], ':</b><div class="smalltext">', $txt['secret_desc2'], '</div></td>
-								<td><input type="text" name="secretAnswer" size="20" /><span class="smalltext" style="margin-left: 4ex;"><a href="', $scripturl, '?action=helpadmin;help=secret_why_blank" onclick="return reqWin(this.href);">', $txt['secret_why_blank'], '</a></span></td>
-							</tr>';
-	}
-	// Show the standard "Save Settings" profile button.
-	template_profile_save();
+    // This section allows the user to enter secret question/answer so they can reset a forgotten password.
+    echo '
+              <tr>
+                <td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
+              </tr><tr>
+                <td width="40%"><b>', $txt['pswd1'], ':</b><div class="smalltext">', $txt['secret_desc'], '</div></td>
+                <td><input type="text" name="secretQuestion" size="50" value="', $context['member']['secret_question'], '" /></td>
+              </tr><tr>
+                <td width="40%"><b>', $txt['pswd2'], ':</b><div class="smalltext">', $txt['secret_desc2'], '</div></td>
+                <td><input type="text" name="secretAnswer" size="20" /><span class="smalltext" style="margin-left: 4ex;"><a href="', $scripturl, '?action=helpadmin;help=secret_why_blank" onclick="return reqWin(this.href);">', $txt['secret_why_blank'], '</a></span></td>
+              </tr>';
+  }
+  // Show the standard "Save Settings" profile button.
+  template_profile_save();
 
-	echo '
-						</table>
-					</td>
-				</tr>
-			</table>
-		</form>';
+  echo '
+            </table>
+          </td>
+        </tr>
+      </table>
+    </form>';
 }
 
 // Template for forum specific options - avatar, signature etc.
 function template_forumProfile()
 {
-	global $context, $settings, $options, $scripturl, $modSettings, $txt;
+  global $context, $settings, $options, $scripturl, $modSettings, $txt;
 
-	// The main containing header.
-	echo '
-		<form action="', $scripturl, '?action=profile2" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data">
-			<table border="0" width="85%" cellspacing="1" cellpadding="4" align="center" class="bordercolor">
-				<tr class="titlebg">
-					<td height="26">
-						&nbsp;<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" align="top" />&nbsp;
-						', $txt[79], '
-					</td>
-				</tr><tr class="windowbg">
-					<td class="smalltext" height="25" style="padding: 2ex;">
-						', $txt['forumProfile_info'], '
-					</td>
-				</tr><tr>
-					<td class="windowbg2" style="padding-bottom: 2ex;">
-						<table border="0" width="100%" cellpadding="5" cellspacing="0">';
+  // The main containing header.
+  echo '
+    <form action="', $scripturl, '?action=profile2" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data">
+      <table border="0" width="85%" cellspacing="1" cellpadding="4" align="center" class="bordercolor">
+        <tr class="titlebg">
+          <td height="26">
+            &nbsp;<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" align="top" />&nbsp;
+            ', $txt[79], '
+          </td>
+        </tr><tr class="windowbg">
+          <td class="smalltext" height="25" style="padding: 2ex;">
+            ', $txt['forumProfile_info'], '
+          </td>
+        </tr><tr>
+          <td class="windowbg2" style="padding-bottom: 2ex;">
+            <table border="0" width="100%" cellpadding="5" cellspacing="0">';
 
-	// This is the avatar selection table that is only displayed if avatars are enabled!
-	if (!empty($context['member']['avatar']['allow_server_stored']) || !empty($context['member']['avatar']['allow_upload']) || !empty($context['member']['avatar']['allow_external']))
-	{
-		// If users are allowed to choose avatars stored on the server show selection boxes to choice them from.
-		if (!empty($context['member']['avatar']['allow_server_stored']))
-		{
-			echo '
-							<tr>
-								<td width="40%" valign="top" style="padding: 0 2px;">
-									<table width="100%" cellpadding="5" cellspacing="0" border="0" style="height: 25ex;"><tr>
-										<td valign="top" width="20" class="windowbg"><input type="radio" name="avatar_choice" id="avatar_choice_server_stored" value="server_stored"', ($context['member']['avatar']['choice'] == 'server_stored' ? ' checked="checked"' : ''), ' class="check" /></td>
-										<td valign="top" style="padding-left: 1ex;">
-											<b', (isset($context['modify_error']['bad_avatar']) ? ' style="color: red;"' : ''), '><label for="avatar_choice_server_stored">', $txt[229], ':</label></b>
-											<div style="margin: 2ex;"><img name="avatar" id="avatar" src="', !empty($context['member']['avatar']['allow_external']) && $context['member']['avatar']['choice'] == 'external' ? $context['member']['avatar']['external'] : $modSettings['avatar_url'] . '/blank.gif', '" alt="Do Nothing" /></div>
-										</td>
-									</tr></table>
-								</td>
-								<td>
-									<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-										<td style="width: 20ex;">
-											<select name="cat" id="cat" size="10" onchange="changeSel(\'\');" onfocus="selectRadioByName(document.forms.creator.avatar_choice, \'server_stored\');">';
-			// This lists all the file catergories.
-			foreach ($context['avatars'] as $avatar)
-				echo '
-												<option value="', $avatar['filename'] . ($avatar['is_dir'] ? '/' : ''), '"', ($avatar['checked'] ? ' selected="selected"' : ''), '>', $avatar['name'], '</option>';
-			echo '
-											</select>
-										</td>
-										<td>
-											<select name="file" id="file" size="10" style="display: none;" onchange="showAvatar()" onfocus="selectRadioByName(document.forms.creator.avatar_choice, \'server_stored\');" disabled="disabled"><option></option></select>
-										</td>
-									</tr></table>
-								</td>
-							</tr>';
-		}
+  // This is the avatar selection table that is only displayed if avatars are enabled!
+  if (!empty($context['member']['avatar']['allow_server_stored']) || !empty($context['member']['avatar']['allow_upload']) || !empty($context['member']['avatar']['allow_external']))
+  {
+    // If users are allowed to choose avatars stored on the server show selection boxes to choice them from.
+    if (!empty($context['member']['avatar']['allow_server_stored']))
+    {
+      echo '
+              <tr>
+                <td width="40%" valign="top" style="padding: 0 2px;">
+                  <table width="100%" cellpadding="5" cellspacing="0" border="0" style="height: 25ex;"><tr>
+                    <td valign="top" width="20" class="windowbg"><input type="radio" name="avatar_choice" id="avatar_choice_server_stored" value="server_stored"', ($context['member']['avatar']['choice'] == 'server_stored' ? ' checked="checked"' : ''), ' class="check" /></td>
+                    <td valign="top" style="padding-left: 1ex;">
+                      <b', (isset($context['modify_error']['bad_avatar']) ? ' style="color: red;"' : ''), '><label for="avatar_choice_server_stored">', $txt[229], ':</label></b>
+                      <div style="margin: 2ex;"><img name="avatar" id="avatar" src="', !empty($context['member']['avatar']['allow_external']) && $context['member']['avatar']['choice'] == 'external' ? $context['member']['avatar']['external'] : $modSettings['avatar_url'] . '/blank.gif', '" alt="Do Nothing" /></div>
+                    </td>
+                  </tr></table>
+                </td>
+                <td>
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                    <td style="width: 20ex;">
+                      <select name="cat" id="cat" size="10" onchange="changeSel(\'\');" onfocus="selectRadioByName(document.forms.creator.avatar_choice, \'server_stored\');">';
+      // This lists all the file catergories.
+      foreach ($context['avatars'] as $avatar)
+        echo '
+                        <option value="', $avatar['filename'] . ($avatar['is_dir'] ? '/' : ''), '"', ($avatar['checked'] ? ' selected="selected"' : ''), '>', $avatar['name'], '</option>';
+      echo '
+                      </select>
+                    </td>
+                    <td>
+                      <select name="file" id="file" size="10" style="display: none;" onchange="showAvatar()" onfocus="selectRadioByName(document.forms.creator.avatar_choice, \'server_stored\');" disabled="disabled"><option></option></select>
+                    </td>
+                  </tr></table>
+                </td>
+              </tr>';
+    }
 
-		// If the user can link to an off server avatar, show them a box to input the address.
-		if (!empty($context['member']['avatar']['allow_external']))
-		{
-			echo '
-							<tr>
-								<td valign="top" style="padding: 0 2px;">
-									<table width="100%" cellpadding="5" cellspacing="0" border="0"><tr>
-										<td valign="top" width="20" class="windowbg"><input type="radio" name="avatar_choice" id="avatar_choice_external" value="external"', ($context['member']['avatar']['choice'] == 'external' ? ' checked="checked"' : ''), ' class="check" /></td>
-										<td valign="top" style="padding-left: 1ex;"><b><label for="avatar_choice_external">', $txt[475], ':</label></b><div class="smalltext">', $txt[474], '</div></td>
-									</tr></table>
-								</td>
-								<td valign="top">
-									<input type="text" name="userpicpersonal" size="45" value="', $context['member']['avatar']['external'], '" onfocus="selectRadioByName(document.forms.creator.avatar_choice, \'external\');" onchange="if (typeof(previewExternalAvatar) != \'undefined\') previewExternalAvatar(this.value);" />
-								</td>
-							</tr>';
-		}
+    // If the user can link to an off server avatar, show them a box to input the address.
+    if (!empty($context['member']['avatar']['allow_external']))
+    {
+      echo '
+              <tr>
+                <td valign="top" style="padding: 0 2px;">
+                  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr>
+                    <td valign="top" width="20" class="windowbg"><input type="radio" name="avatar_choice" id="avatar_choice_external" value="external"', ($context['member']['avatar']['choice'] == 'external' ? ' checked="checked"' : ''), ' class="check" /></td>
+                    <td valign="top" style="padding-left: 1ex;"><b><label for="avatar_choice_external">', $txt[475], ':</label></b><div class="smalltext">', $txt[474], '</div></td>
+                  </tr></table>
+                </td>
+                <td valign="top">
+                  <input type="text" name="userpicpersonal" size="45" value="', $context['member']['avatar']['external'], '" onfocus="selectRadioByName(document.forms.creator.avatar_choice, \'external\');" onchange="if (typeof(previewExternalAvatar) != \'undefined\') previewExternalAvatar(this.value);" />
+                </td>
+              </tr>';
+    }
 
-		// If the user is able to upload avatars to the server show them an upload box.
-		if (!empty($context['member']['avatar']['allow_upload']))
-			echo '
-							<tr>
-								<td valign="top" style="padding: 0 2px;">
-									<table width="100%" cellpadding="5" cellspacing="0" border="0"><tr>
-										<td valign="top" width="20" class="windowbg"><input type="radio" name="avatar_choice" id="avatar_choice_upload" value="upload"', ($context['member']['avatar']['choice'] == 'upload' ? ' checked="checked"' : ''), ' class="check" /></td>
-										<td valign="top" style="padding-left: 1ex;"><b><label for="avatar_choice_upload">', $txt['avatar_will_upload'], ':</label></b></td>
-									</tr></table>
-								</td>
-								<td valign="top">
-									', ($context['member']['avatar']['ID_ATTACH'] > 0 ? '<img src="' . $context['member']['avatar']['href'] . '" /><input type="hidden" name="ID_ATTACH" value="' . $context['member']['avatar']['ID_ATTACH'] . '" /><br /><br />' : ''), '
-									<input type="file" size="48" name="attachment" value="" onfocus="selectRadioByName(document.forms.creator.avatar_choice, \'upload\');" />
-								</td>
-							</tr>';
-	}
+    // If the user is able to upload avatars to the server show them an upload box.
+    if (!empty($context['member']['avatar']['allow_upload']))
+      echo '
+              <tr>
+                <td valign="top" style="padding: 0 2px;">
+                  <table width="100%" cellpadding="5" cellspacing="0" border="0"><tr>
+                    <td valign="top" width="20" class="windowbg"><input type="radio" name="avatar_choice" id="avatar_choice_upload" value="upload"', ($context['member']['avatar']['choice'] == 'upload' ? ' checked="checked"' : ''), ' class="check" /></td>
+                    <td valign="top" style="padding-left: 1ex;"><b><label for="avatar_choice_upload">', $txt['avatar_will_upload'], ':</label></b></td>
+                  </tr></table>
+                </td>
+                <td valign="top">
+                  ', ($context['member']['avatar']['ID_ATTACH'] > 0 ? '<img src="' . $context['member']['avatar']['href'] . '" /><input type="hidden" name="ID_ATTACH" value="' . $context['member']['avatar']['ID_ATTACH'] . '" /><br /><br />' : ''), '
+                  <input type="file" size="48" name="attachment" value="" onfocus="selectRadioByName(document.forms.creator.avatar_choice, \'upload\');" />
+                </td>
+              </tr>';
+  }
 
-	// Personal text...
-	echo '
-							<tr>
-								<td width="40%"><b>', $txt[228], ': </b></td>
-								<td><input type="text" name="personalText" size="50" maxlength="50" value="', $context['member']['blurb'], '" /></td>
-							</tr>
-							<tr>
-								<td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
-							</tr>';
+  // Personal text...
+  echo '
+              <tr>
+                <td width="40%"><b>', $txt[228], ': </b></td>
+                <td><input type="text" name="personalText" size="50" maxlength="50" value="', $context['member']['blurb'], '" /></td>
+              </tr>
+              <tr>
+                <td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
+              </tr>';
 
-	// Gender, birthdate and location.
-	echo '
-							<tr>
-								<td width="40%">
-									<b>', $txt[563], ':</b>
-									<div class="smalltext">', $txt[566], ' - ', $txt[564], ' - ', $txt[565], '</div>
-								</td>
-								<td class="smalltext">
-									<input type="text" name="bday3" size="4" maxlength="4" value="', $context['member']['birth_date']['year'], '" /> -
-									<input type="text" name="bday1" size="2" maxlength="2" value="', $context['member']['birth_date']['month'], '" /> -
-									<input type="text" name="bday2" size="2" maxlength="2" value="', $context['member']['birth_date']['day'], '" />
-								</td>
-							</tr><tr>
-								<td width="40%"><b>', $txt[227], ': </b></td>
-								<td><input type="text" name="location" size="50" value="', $context['member']['location'], '" /></td>
-							</tr>
-							<tr>
-								<td width="40%"><b>', $txt[231], ': </b></td>
-								<td>
-									<select name="gender" size="1">
-										<option value="0"></option>
-										<option value="1"', ($context['member']['gender']['name'] == 'm' ? ' selected="selected"' : ''), '>', $txt[238], '</option>
-										<option value="2"', ($context['member']['gender']['name'] == 'f' ? ' selected="selected"' : ''), '>', $txt[239], '</option>
-									</select>
-								</td>
-							</tr><tr>
-								<td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
-							</tr>';
+  // Gender, birthdate and location.
+  echo '
+              <tr>
+                <td width="40%">
+                  <b>', $txt[563], ':</b>
+                  <div class="smalltext">', $txt[566], ' - ', $txt[564], ' - ', $txt[565], '</div>
+                </td>
+                <td class="smalltext">
+                  <input type="text" name="bday3" size="4" maxlength="4" value="', $context['member']['birth_date']['year'], '" /> -
+                  <input type="text" name="bday1" size="2" maxlength="2" value="', $context['member']['birth_date']['month'], '" /> -
+                  <input type="text" name="bday2" size="2" maxlength="2" value="', $context['member']['birth_date']['day'], '" />
+                </td>
+              </tr><tr>
+                <td width="40%"><b>', $txt[227], ': </b></td>
+                <td><input type="text" name="location" size="50" value="', $context['member']['location'], '" /></td>
+              </tr>
+              <tr>
+                <td width="40%"><b>', $txt[231], ': </b></td>
+                <td>
+                  <select name="gender" size="1">
+                    <option value="0"></option>
+                    <option value="1"', ($context['member']['gender']['name'] == 'm' ? ' selected="selected"' : ''), '>', $txt[238], '</option>
+                    <option value="2"', ($context['member']['gender']['name'] == 'f' ? ' selected="selected"' : ''), '>', $txt[239], '</option>
+                  </select>
+                </td>
+              </tr><tr>
+                <td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
+              </tr>';
 
-	// All the messenger type contact info.
-	echo '
-							<tr>
-								<td width="40%"><b>', $txt[513], ': </b><div class="smalltext">', $txt[600], '</div></td>
-								<td><input type="text" name="ICQ" size="24" value="', $context['member']['icq']['name'], '" /></td>
-							</tr><tr>
-								<td width="40%"><b>', $txt[603], ': </b><div class="smalltext">', $txt[601], '</div></td>
-								<td><input type="text" name="AIM" maxlength="16" size="24" value="', $context['member']['aim']['name'], '" /></td>
-							</tr><tr>
-								<td width="40%"><b>', $txt['MSN'], ': </b><div class="smalltext">', $txt['smf237'], '.</div></td>
-								<td><input type="text" name="MSN" size="24" value="', $context['member']['msn']['name'], '" /></td>
-							</tr><tr>
-								<td width="40%"><b>', $txt[604], ': </b><div class="smalltext">', $txt[602], '</div></td>
-								<td><input type="text" name="YIM" maxlength="32" size="24" value="', $context['member']['yim']['name'], '" /></td>
-							</tr><tr>
-								<td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
-							</tr>';
+  // All the messenger type contact info.
+  echo '
+              <tr>
+                <td width="40%"><b>', $txt[513], ': </b><div class="smalltext">', $txt[600], '</div></td>
+                <td><input type="text" name="ICQ" size="24" value="', $context['member']['icq']['name'], '" /></td>
+              </tr><tr>
+                <td width="40%"><b>', $txt[603], ': </b><div class="smalltext">', $txt[601], '</div></td>
+                <td><input type="text" name="AIM" maxlength="16" size="24" value="', $context['member']['aim']['name'], '" /></td>
+              </tr><tr>
+                <td width="40%"><b>', $txt['MSN'], ': </b><div class="smalltext">', $txt['smf237'], '.</div></td>
+                <td><input type="text" name="MSN" size="24" value="', $context['member']['msn']['name'], '" /></td>
+              </tr><tr>
+                <td width="40%"><b>', $txt[604], ': </b><div class="smalltext">', $txt[602], '</div></td>
+                <td><input type="text" name="YIM" maxlength="32" size="24" value="', $context['member']['yim']['name'], '" /></td>
+              </tr><tr>
+                <td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
+              </tr>';
 
-	// Input box for custom titles, if they can edit it...
-	if (!empty($modSettings['titlesEnable']) && $context['allow_edit_title'])
-		echo '
-							<tr>
-								<td width="40%"><b>' . $txt['title1'] . ': </b></td>
-								<td><input type="text" name="usertitle" size="50" value="' . $context['member']['title'] . '" /></td>
-							</tr>';
+  // Input box for custom titles, if they can edit it...
+  if (!empty($modSettings['titlesEnable']) && $context['allow_edit_title'])
+    echo '
+              <tr>
+                <td width="40%"><b>' . $txt['title1'] . ': </b></td>
+                <td><input type="text" name="usertitle" size="50" value="' . $context['member']['title'] . '" /></td>
+              </tr>';
 
-	// Show the signature box.
-	echo '
-							<tr>
-								<td width="40%" valign="top">
-									<b>', $txt[85], ':</b>
-									<div class="smalltext">', $txt[606], '</div><br />
-									<br />';
+  // Show the signature box.
+  echo '
+              <tr>
+                <td width="40%" valign="top">
+                  <b>', $txt[85], ':</b>
+                  <div class="smalltext">', $txt[606], '</div><br />
+                  <br />';
 
-	if ($context['show_spellchecking'])
-		echo '
-									<input type="button" value="', $txt['spell_check'], '" onclick="spellCheck(\'creator\', \'signature\');" />';
+  if ($context['show_spellchecking'])
+    echo '
+                  <input type="button" value="', $txt['spell_check'], '" onclick="spellCheck(\'creator\', \'signature\');" />';
 
-	echo '
-								</td>
-								<td>
-									<textarea class="editor" onkeyup="calcCharLeft();" name="signature" rows="5" cols="50">', $context['member']['signature'], '</textarea><br />';
+  echo '
+                </td>
+                <td>
+                  <textarea class="editor" onkeyup="calcCharLeft();" name="signature" rows="5" cols="50">', $context['member']['signature'], '</textarea><br />';
 
-	// If there is a limit at all!
-	if (!empty($context['max_signature_length']))
-		echo '
-									<span class="smalltext">', $txt[664], ' <span id="signatureLeft">', $context['max_signature_length'], '</span></span>';
+  // If there is a limit at all!
+  if (!empty($context['max_signature_length']))
+    echo '
+                  <span class="smalltext">', $txt[664], ' <span id="signatureLeft">', $context['max_signature_length'], '</span></span>';
 
-	// Load the spell checker?
-	if ($context['show_spellchecking'])
-		echo '
-									<script language="JavaScript" type="text/javascript" src="', $settings['default_theme_url'], '/spellcheck.js"></script>';
+  // Load the spell checker?
+  if ($context['show_spellchecking'])
+    echo '
+                  <script language="JavaScript" type="text/javascript" src="', $settings['default_theme_url'], '/spellcheck.js"></script>';
 
-	// Some javascript used to count how many characters have been used so far in the signature.
-	echo '
-									<script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
-										function tick()
-										{
-											if (typeof(document.forms.creator) != "undefined")
-											{
-												calcCharLeft();
-												setTimeout("tick()", 1000);
-											}
-											else
-												setTimeout("tick()", 800);
-										}
+  // Some javascript used to count how many characters have been used so far in the signature.
+  echo '
+                  <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
+                    function tick()
+                    {
+                      if (typeof(document.forms.creator) != "undefined")
+                      {
+                        calcCharLeft();
+                        setTimeout("tick()", 1000);
+                      }
+                      else
+                        setTimeout("tick()", 800);
+                    }
 
-										function calcCharLeft()
-										{
-											var maxLength = ', $context['max_signature_length'], ';
-											var oldSignature = "", currentSignature = document.forms.creator.signature.value;
+                    function calcCharLeft()
+                    {
+                      var maxLength = ', $context['max_signature_length'], ';
+                      var oldSignature = "", currentSignature = document.forms.creator.signature.value;
 
-											if (!document.getElementById("signatureLeft"))
-												return;
+                      if (!document.getElementById("signatureLeft"))
+                        return;
 
-											if (oldSignature != currentSignature)
-											{
-												oldSignature = currentSignature;
+                      if (oldSignature != currentSignature)
+                      {
+                        oldSignature = currentSignature;
 
-												if (currentSignature.replace(/\r/, "").length > maxLength)
-													document.forms.creator.signature.value = currentSignature.replace(/\r/, "").substring(0, maxLength);
-												currentSignature = document.forms.creator.signature.value.replace(/\r/, "");
-											}
+                        if (currentSignature.replace(/\r/, "").length > maxLength)
+                          document.forms.creator.signature.value = currentSignature.replace(/\r/, "").substring(0, maxLength);
+                        currentSignature = document.forms.creator.signature.value.replace(/\r/, "");
+                      }
 
-											setInnerHTML(document.getElementById("signatureLeft"), maxLength - currentSignature.length);
-										}
+                      setInnerHTML(document.getElementById("signatureLeft"), maxLength - currentSignature.length);
+                    }
 
-										setTimeout("tick()", 800);
-									// ]]></script>
-								</td>
-							</tr>';
+                    setTimeout("tick()", 800);
+                  // ]]></script>
+                </td>
+              </tr>';
 
-	// Website details.
-	echo '
-							<tr>
-								<td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
-							</tr>
-							<tr>
-								<td width="40%"><b>', $txt[83], ': </b><div class="smalltext">', $txt[598], '</div></td>
-								<td><input type="text" name="websiteTitle" size="50" value="', $context['member']['website']['title'], '" /></td>
-							</tr><tr>
-								<td width="40%"><b>', $txt[84], ': </b><div class="smalltext">', $txt[599], '</div></td>
-								<td><input type="text" name="websiteUrl" size="50" value="', $context['member']['website']['url'], '" /></td>
-							</tr>';
+  // Website details.
+  echo '
+              <tr>
+                <td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
+              </tr>
+              <tr>
+                <td width="40%"><b>', $txt[83], ': </b><div class="smalltext">', $txt[598], '</div></td>
+                <td><input type="text" name="websiteTitle" size="50" value="', $context['member']['website']['title'], '" /></td>
+              </tr><tr>
+                <td width="40%"><b>', $txt[84], ': </b><div class="smalltext">', $txt[599], '</div></td>
+                <td><input type="text" name="websiteUrl" size="50" value="', $context['member']['website']['url'], '" /></td>
+              </tr>';
 
-	// If karma is enabled let the admin edit it...
-	if ($context['user']['is_admin'] && !empty($modSettings['karmaMode']))
-	{
-		echo '
-							<tr>
-								<td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
-							</tr><tr>
-								<td valign="top"><b>', $modSettings['karmaLabel'], '</b></td>
-								<td>
-									', $modSettings['karmaApplaudLabel'], ' <input type="text" name="karmaGood" size="4" value="', $context['member']['karma']['good'], '" onchange="setInnerHTML(document.getElementById(\'karmaTotal\'), this.value - this.form.karmaBad.value);" style="margin-right: 2ex;" /> ', $modSettings['karmaSmiteLabel'], ' <input type="text" name="karmaBad" size="4" value="', $context['member']['karma']['bad'], '" onchange="this.form.karmaGood.onchange();" /><br />
-									(', $txt[94], ': <span id="karmaTotal">', ($context['member']['karma']['good'] - $context['member']['karma']['bad']), '</span>)
-								</td>
-							</tr>';
-	}
+  // If karma is enabled let the admin edit it...
+  if ($context['user']['is_admin'] && !empty($modSettings['karmaMode']))
+  {
+    echo '
+              <tr>
+                <td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
+              </tr><tr>
+                <td valign="top"><b>', $modSettings['karmaLabel'], '</b></td>
+                <td>
+                  ', $modSettings['karmaApplaudLabel'], ' <input type="text" name="karmaGood" size="4" value="', $context['member']['karma']['good'], '" onchange="setInnerHTML(document.getElementById(\'karmaTotal\'), this.value - this.form.karmaBad.value);" style="margin-right: 2ex;" /> ', $modSettings['karmaSmiteLabel'], ' <input type="text" name="karmaBad" size="4" value="', $context['member']['karma']['bad'], '" onchange="this.form.karmaGood.onchange();" /><br />
+                  (', $txt[94], ': <span id="karmaTotal">', ($context['member']['karma']['good'] - $context['member']['karma']['bad']), '</span>)
+                </td>
+              </tr>';
+  }
 
-	// Show the standard "Save Settings" profile button.
-	template_profile_save();
+  // Show the standard "Save Settings" profile button.
+  template_profile_save();
 
-	echo '
-						</table>
-					</td>
-				</tr>
-			</table>';
+  echo '
+            </table>
+          </td>
+        </tr>
+      </table>';
 
-	/* If the user is allowed to choose avatars stored on the server, the below javascript is used to update the
-		file listing of avatars as the user changes catergory. It also updates the preview image as they choose
-		different files on the select box. */
-	if (!empty($context['member']['avatar']['allow_server_stored']))
-		echo '
-			<script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
-				var files = ["' . implode('", "', $context['avatar_list']) . '"];
-				var avatar = document.getElementById("avatar");
-				var cat = document.getElementById("cat");
-				var selavatar = "' . $context['avatar_selected'] . '";
-				var avatardir = "' . $modSettings['avatar_url'] . '/";
-				var size = avatar.alt.substr(3, 2) + " " + avatar.alt.substr(0, 2) + String.fromCharCode(117, 98, 116);
-				var file = document.getElementById("file");
+  /* If the user is allowed to choose avatars stored on the server, the below javascript is used to update the
+    file listing of avatars as the user changes catergory. It also updates the preview image as they choose
+    different files on the select box. */
+  if (!empty($context['member']['avatar']['allow_server_stored']))
+    echo '
+      <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
+        var files = ["' . implode('", "', $context['avatar_list']) . '"];
+        var avatar = document.getElementById("avatar");
+        var cat = document.getElementById("cat");
+        var selavatar = "' . $context['avatar_selected'] . '";
+        var avatardir = "' . $modSettings['avatar_url'] . '/";
+        var size = avatar.alt.substr(3, 2) + " " + avatar.alt.substr(0, 2) + String.fromCharCode(117, 98, 116);
+        var file = document.getElementById("file");
 
-				if (avatar.src.indexOf("blank.gif") > -1)
-					changeSel(selavatar);
-				else
-					previewExternalAvatar(avatar.src)
+        if (avatar.src.indexOf("blank.gif") > -1)
+          changeSel(selavatar);
+        else
+          previewExternalAvatar(avatar.src)
 
-				function changeSel(selected)
-				{
-					if (cat.selectedIndex == -1)
-						return;
+        function changeSel(selected)
+        {
+          if (cat.selectedIndex == -1)
+            return;
 
-					if (cat.options[cat.selectedIndex].value.indexOf("/") > 0)
-					{
-						var i;
-						var count = 0;
+          if (cat.options[cat.selectedIndex].value.indexOf("/") > 0)
+          {
+            var i;
+            var count = 0;
 
-						file.style.display = "inline";
-						file.disabled = false;
+            file.style.display = "inline";
+            file.disabled = false;
 
-						for (i = file.length; i >= 0; i = i - 1)
-							file.options[i] = null;
+            for (i = file.length; i >= 0; i = i - 1)
+              file.options[i] = null;
 
-						for (i = 0; i < files.length; i++)
-							if (files[i].indexOf(cat.options[cat.selectedIndex].value) == 0)
-							{
-								var filename = files[i].substr(files[i].indexOf("/") + 1);
-								var showFilename = filename.substr(0, filename.lastIndexOf("."));
-								showFilename = showFilename.replace(/[_]/g, " ");
+            for (i = 0; i < files.length; i++)
+              if (files[i].indexOf(cat.options[cat.selectedIndex].value) == 0)
+              {
+                var filename = files[i].substr(files[i].indexOf("/") + 1);
+                var showFilename = filename.substr(0, filename.lastIndexOf("."));
+                showFilename = showFilename.replace(/[_]/g, " ");
 
-								file.options[count] = new Option(showFilename, files[i]);
+                file.options[count] = new Option(showFilename, files[i]);
 
-								if (filename == selected)
-								{
-									if (file.options.defaultSelected)
-										file.options[count].defaultSelected = true;
-									else
-										file.options[count].selected = true;
-								}
+                if (filename == selected)
+                {
+                  if (file.options.defaultSelected)
+                    file.options[count].defaultSelected = true;
+                  else
+                    file.options[count].selected = true;
+                }
 
-								count++;
-							}
+                count++;
+              }
 
-						if (file.selectedIndex == -1 && file.options[0])
-							file.options[0].selected = true;
+            if (file.selectedIndex == -1 && file.options[0])
+              file.options[0].selected = true;
 
-						showAvatar();
-					}
-					else
-					{
-						file.style.display = "none";
-						file.disabled = true;
-						document.getElementById("avatar").src = avatardir + cat.options[cat.selectedIndex].value;
-						document.getElementById("avatar").style.width = "";
-						document.getElementById("avatar").style.height = "";
-					}
-				}
+            showAvatar();
+          }
+          else
+          {
+            file.style.display = "none";
+            file.disabled = true;
+            document.getElementById("avatar").src = avatardir + cat.options[cat.selectedIndex].value;
+            document.getElementById("avatar").style.width = "";
+            document.getElementById("avatar").style.height = "";
+          }
+        }
 
-				function showAvatar()
-				{
-					if (file.selectedIndex == -1)
-						return;
+        function showAvatar()
+        {
+          if (file.selectedIndex == -1)
+            return;
 
-					document.getElementById("avatar").src = avatardir + file.options[file.selectedIndex].value;
-					document.getElementById("avatar").alt = file.options[file.selectedIndex].text;
-					document.getElementById("avatar").alt += file.options[file.selectedIndex].text == size ? "!" : "";
-					document.getElementById("avatar").style.width = "";
-					document.getElementById("avatar").style.height = "";
-				}
+          document.getElementById("avatar").src = avatardir + file.options[file.selectedIndex].value;
+          document.getElementById("avatar").alt = file.options[file.selectedIndex].text;
+          document.getElementById("avatar").alt += file.options[file.selectedIndex].text == size ? "!" : "";
+          document.getElementById("avatar").style.width = "";
+          document.getElementById("avatar").style.height = "";
+        }
 
-				function previewExternalAvatar(src)
-				{
-					if (!document.getElementById("avatar"))
-						return;
+        function previewExternalAvatar(src)
+        {
+          if (!document.getElementById("avatar"))
+            return;
 
-					var maxHeight = ', !empty($modSettings['avatar_max_height_external']) ? $modSettings['avatar_max_height_external'] : 0, ';
-					var maxWidth = ', !empty($modSettings['avatar_max_width_external']) ? $modSettings['avatar_max_width_external'] : 0, ';
-					var tempImage = new Image();
+          var maxHeight = ', !empty($modSettings['avatar_max_height_external']) ? $modSettings['avatar_max_height_external'] : 0, ';
+          var maxWidth = ', !empty($modSettings['avatar_max_width_external']) ? $modSettings['avatar_max_width_external'] : 0, ';
+          var tempImage = new Image();
 
-					tempImage.src = src;
-					if (maxWidth != 0 && tempImage.width > maxWidth)
-					{
-						document.getElementById("avatar").style.height = parseInt((maxWidth * tempImage.height) / tempImage.width) + "px";
-						document.getElementById("avatar").style.width = maxWidth + "px";
-					}
-					else if (maxHeight != 0 && tempImage.height > maxHeight)
-					{
-						document.getElementById("avatar").style.width = parseInt((maxHeight * tempImage.width) / tempImage.height) + "px";
-						document.getElementById("avatar").style.height = maxHeight + "px";
-					}
-					document.getElementById("avatar").src = src;
-				}
-			// ]]></script>';
-	echo '
-		</form>';
+          tempImage.src = src;
+          if (maxWidth != 0 && tempImage.width > maxWidth)
+          {
+            document.getElementById("avatar").style.height = parseInt((maxWidth * tempImage.height) / tempImage.width) + "px";
+            document.getElementById("avatar").style.width = maxWidth + "px";
+          }
+          else if (maxHeight != 0 && tempImage.height > maxHeight)
+          {
+            document.getElementById("avatar").style.width = parseInt((maxHeight * tempImage.width) / tempImage.height) + "px";
+            document.getElementById("avatar").style.height = maxHeight + "px";
+          }
+          document.getElementById("avatar").src = src;
+        }
+      // ]]></script>';
+  echo '
+    </form>';
 
-	if ($context['show_spellchecking'])
-		echo '
-		<form action="', $scripturl, '?action=spellcheck" method="post" accept-charset="', $context['character_set'], '" name="spell_form" id="spell_form" target="spellWindow"><input type="hidden" name="spellstring" value="" /></form>';
+  if ($context['show_spellchecking'])
+    echo '
+    <form action="', $scripturl, '?action=spellcheck" method="post" accept-charset="', $context['character_set'], '" name="spell_form" id="spell_form" target="spellWindow"><input type="hidden" name="spellstring" value="" /></form>';
 }
 
 function template_deleteAccount()
 {
-	global $context, $settings, $options, $scripturl, $txt, $scripturl;
+  global $context, $settings, $options, $scripturl, $txt, $scripturl;
 
-	// The main containing header.
-	echo '
-		<form action="', $scripturl, '?action=profile2" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator">
-			<table border="0" width="85%" cellspacing="1" cellpadding="4" align="center" class="bordercolor">
-				<tr class="titlebg">
-					<td height="26">
-						&nbsp;<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" align="top" />&nbsp;
-						', $txt['deleteAccount'], '
-					</td>
-				</tr>';
-	// If deleting another account give them a lovely info box.
-	if (!$context['user']['is_owner'])
-	echo '
-					<tr class="windowbg">
-						<td class="smalltext" colspan="2" style="padding-top: 2ex; padding-bottom: 2ex;">
-							', $txt['deleteAccount_desc'], '
-						</td>
-					</tr>';
-	echo '
-				<tr>
-					<td class="windowbg2">
-						<table width="100%" cellspacing="0" cellpadding="3"><tr>
-							<td align="center" colspan="2">';
+  // The main containing header.
+  echo '
+    <form action="', $scripturl, '?action=profile2" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator">
+      <table border="0" width="85%" cellspacing="1" cellpadding="4" align="center" class="bordercolor">
+        <tr class="titlebg">
+          <td height="26">
+            &nbsp;<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" align="top" />&nbsp;
+            ', $txt['deleteAccount'], '
+          </td>
+        </tr>';
+  // If deleting another account give them a lovely info box.
+  if (!$context['user']['is_owner'])
+  echo '
+          <tr class="windowbg">
+            <td class="smalltext" colspan="2" style="padding-top: 2ex; padding-bottom: 2ex;">
+              ', $txt['deleteAccount_desc'], '
+            </td>
+          </tr>';
+  echo '
+        <tr>
+          <td class="windowbg2">
+            <table width="100%" cellspacing="0" cellpadding="3"><tr>
+              <td align="center" colspan="2">';
 
-	// If they are deleting their account AND the admin needs to approve it - give them another piece of info ;)
-	if ($context['needs_approval'])
-		echo '
-								<div style="color: red; border: 2px dashed red; padding: 4px;">', $txt['deleteAccount_approval'], '</div><br />
-							</td>
-						</tr><tr>
-							<td align="center" colspan="2">';
+  // If they are deleting their account AND the admin needs to approve it - give them another piece of info ;)
+  if ($context['needs_approval'])
+    echo '
+                <div style="color: red; border: 2px dashed red; padding: 4px;">', $txt['deleteAccount_approval'], '</div><br />
+              </td>
+            </tr><tr>
+              <td align="center" colspan="2">';
 
-	// If the user is deleting their own account warn them first - and require a password!
-	if ($context['user']['is_owner'])
-	{
-		echo '
-								<span style="color: red;">', $txt['own_profile_confirm'], '</span><br /><br />
-							</td>
-						</tr><tr>
-							<td class="windowbg2" align="', !$context['right_to_left'] ? 'right' : 'left', '">
-								<b', (isset($context['modify_error']['bad_password']) || isset($context['modify_error']['no_password']) ? ' style="color: red;"' : ''), '>', $txt['smf241'], ': </b>
-							</td>
-							<td class="windowbg2" align="', !$context['right_to_left'] ? 'left' : 'right', '">
-								<input type="password" name="oldpasswrd" size="20" />&nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="submit" value="', $txt[163], '" />
-								<input type="hidden" name="sc" value="', $context['session_id'], '" />
-								<input type="hidden" name="userID" value="', $context['member']['id'], '" />
-								<input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
-							</td>';
-	}
-	// Otherwise an admin doesn't need to enter a password - but they still get a warning - plus the option to delete lovely posts!
-	else
-	{
-		echo '
-								<div style="color: red; margin-bottom: 2ex;">', $txt['deleteAccount_warning'], '</div>
-							</td>
-						</tr>';
+  // If the user is deleting their own account warn them first - and require a password!
+  if ($context['user']['is_owner'])
+  {
+    echo '
+                <span style="color: red;">', $txt['own_profile_confirm'], '</span><br /><br />
+              </td>
+            </tr><tr>
+              <td class="windowbg2" align="', !$context['right_to_left'] ? 'right' : 'left', '">
+                <b', (isset($context['modify_error']['bad_password']) || isset($context['modify_error']['no_password']) ? ' style="color: red;"' : ''), '>', $txt['smf241'], ': </b>
+              </td>
+              <td class="windowbg2" align="', !$context['right_to_left'] ? 'left' : 'right', '">
+                <input type="password" name="oldpasswrd" size="20" />&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="submit" value="', $txt[163], '" />
+                <input type="hidden" name="sc" value="', $context['session_id'], '" />
+                <input type="hidden" name="userID" value="', $context['member']['id'], '" />
+                <input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
+              </td>';
+  }
+  // Otherwise an admin doesn't need to enter a password - but they still get a warning - plus the option to delete lovely posts!
+  else
+  {
+    echo '
+                <div style="color: red; margin-bottom: 2ex;">', $txt['deleteAccount_warning'], '</div>
+              </td>
+            </tr>';
 
-		// Only actually give these options if they are kind of important.
-		if ($context['can_delete_posts'])
-			echo '
-						<tr>
-							<td colspan="2" align="center">
-								', $txt['deleteAccount_posts'], ': <select name="remove_type">
-									<option value="none">', $txt['deleteAccount_none'], '</option>
-									<option value="posts">', $txt['deleteAccount_all_posts'], '</option>
-									<option value="topics">', $txt['deleteAccount_topics'], '</option>
-								</select>
-							</td>
-						</tr>';
+    // Only actually give these options if they are kind of important.
+    if ($context['can_delete_posts'])
+      echo '
+            <tr>
+              <td colspan="2" align="center">
+                ', $txt['deleteAccount_posts'], ': <select name="remove_type">
+                  <option value="none">', $txt['deleteAccount_none'], '</option>
+                  <option value="posts">', $txt['deleteAccount_all_posts'], '</option>
+                  <option value="topics">', $txt['deleteAccount_topics'], '</option>
+                </select>
+              </td>
+            </tr>';
 
-		echo '
-						<tr>
-							<td colspan="2" align="center">
-								<label for="deleteAccount"><input type="checkbox" name="deleteAccount" id="deleteAccount" value="1" class="check" onclick="if (this.checked) return confirm(\'', $txt['deleteAccount_confirm'], '\');" /> ', $txt['deleteAccount_member'], '.</label>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2" class="windowbg2" align="center" style="padding-top: 2ex;">
-								<input type="submit" value="', $txt['smf138'], '" />
-								<input type="hidden" name="sc" value="', $context['session_id'], '" />
-								<input type="hidden" name="userID" value="', $context['member']['id'], '" />
-								<input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
-							</td>';
-	}
-	echo '
-						</tr></table>
-					</td>
-				</tr>
-			</table>
-		</form>';
+    echo '
+            <tr>
+              <td colspan="2" align="center">
+                <label for="deleteAccount"><input type="checkbox" name="deleteAccount" id="deleteAccount" value="1" class="check" onclick="if (this.checked) return confirm(\'', $txt['deleteAccount_confirm'], '\');" /> ', $txt['deleteAccount_member'], '.</label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="windowbg2" align="center" style="padding-top: 2ex;">
+                <input type="submit" value="', $txt['smf138'], '" />
+                <input type="hidden" name="sc" value="', $context['session_id'], '" />
+                <input type="hidden" name="userID" value="', $context['member']['id'], '" />
+                <input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
+              </td>';
+  }
+  echo '
+            </tr></table>
+          </td>
+        </tr>
+      </table>
+    </form>';
 }
 
 // Template for the password box/save button stuck at the bottom of every profile page.
 function template_profile_save()
 {
-	global $context, $settings, $options, $txt;
+  global $context, $settings, $options, $txt;
 
-	echo '
-							<tr>
-								<td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
-							</tr><tr>';
+  echo '
+              <tr>
+                <td colspan="2"><hr width="100%" size="1" class="hrcolor" /></td>
+              </tr><tr>';
 
-	// Only show the password box if it's actually needed.
-	if ($context['user']['is_owner'] && $context['require_password'])
-		echo '
-								<td width="40%">
-									<b', isset($context['modify_error']['bad_password']) || isset($context['modify_error']['no_password']) ? ' style="color: red;"' : '', '>', $txt['smf241'], ': </b>
-									<div class="smalltext">', $txt['smf244'], '</div>
-								</td>
-								<td>
-									<input type="password" name="oldpasswrd" size="20" style="margin-right: 4ex;" />';
-	else
-		echo '
-								<td align="right" colspan="2">';
+  // Only show the password box if it's actually needed.
+  if ($context['user']['is_owner'] && $context['require_password'])
+    echo '
+                <td width="40%">
+                  <b', isset($context['modify_error']['bad_password']) || isset($context['modify_error']['no_password']) ? ' style="color: red;"' : '', '>', $txt['smf241'], ': </b>
+                  <div class="smalltext">', $txt['smf244'], '</div>
+                </td>
+                <td>
+                  <input type="password" name="oldpasswrd" size="20" style="margin-right: 4ex;" />';
+  else
+    echo '
+                <td align="right" colspan="2">';
 
-	echo '
-									<input type="submit" value="', $txt[88], '" />
-									<input type="hidden" name="sc" value="', $context['session_id'], '" />
-									<input type="hidden" name="userID" value="', $context['member']['id'], '" />
-									<input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
-								</td>
-							</tr>';
+  echo '
+                  <input type="submit" value="', $txt[88], '" />
+                  <input type="hidden" name="sc" value="', $context['session_id'], '" />
+                  <input type="hidden" name="userID" value="', $context['member']['id'], '" />
+                  <input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
+                </td>
+              </tr>';
 }
 
 // Small template for showing an error message upon a save problem in the profile.
 function template_error_message()
 {
-	global $context, $txt;
+  global $context, $txt;
 
-	echo '
-		<div class="windowbg" style="margin: 1ex; padding: 1ex 2ex; border: 1px dashed red; color: red;">
-			<span style="text-decoration: underline;">', $txt['profile_errors_occurred'], ':</span>
-			<ul>';
+  echo '
+    <div class="windowbg" style="margin: 1ex; padding: 1ex 2ex; border: 1px dashed red; color: red;">
+      <span style="text-decoration: underline;">', $txt['profile_errors_occurred'], ':</span>
+      <ul>';
 
-		// Cycle through each error and display an error message.
-		foreach ($context['post_errors'] as $error)
-			//if (isset($txt['profile_error_' . $error]))
-				echo '
-				<li>', $txt['profile_error_' . $error], '.</li>';
+    // Cycle through each error and display an error message.
+    foreach ($context['post_errors'] as $error)
+      //if (isset($txt['profile_error_' . $error]))
+        echo '
+        <li>', $txt['profile_error_' . $error], '.</li>';
 
-		echo '
-			</ul>
-		</div>';
+    echo '
+      </ul>
+    </div>';
 }
 
 function template_post() {
-	global $settings, $db_prefix, $context, $modSettings, $boardurl;
+  global $settings, $db_prefix, $context, $modSettings, $boardurl;
 
-$RegistrosAMostrar		=	$modSettings['user_posts'];
+$RegistrosAMostrar = $modSettings['user_posts'];
 if(isset($_GET['pag'])) {
-$RegistrosAEmpezar	=	($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct	=	(int) $_GET['pag'];
+$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+$PagAct = (int) $_GET['pag'];
 } else {
-$RegistrosAEmpezar	=	0;
-$PagAct				=	1;
+$RegistrosAEmpezar = 0;
+$PagAct = 1;
 }
-$request2	= db_query("
+$request2 = db_query("
 SELECT m.ID_TOPIC, m.ID_BOARD, m.hiddenOption, m.subject, m.ID_MEMBER, b.name, b.description, b.ID_BOARD, t.isSticky, t.ID_TOPIC, t.ID_BOARD, m.posterTime, t.points, m2.ID_MEMBER, m.posterName
 FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t, {$db_prefix}members AS m2)
 WHERE m.ID_TOPIC = t.ID_TOPIC
@@ -2270,7 +2274,7 @@ AND m.posterName = '" . $context['member']['name'] . "'
 GROUP BY t.ID_TOPIC
 ORDER BY m.posterTime DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count	=	mysqli_num_rows($request2);
+$count = mysqli_num_rows($request2);
 if($count <= 0) {
 echo '<div class="noesta" style="width:922px;">', $context['member']['name'], ' no tiene posts hechos.</div>';
 } else {
@@ -2281,7 +2285,7 @@ echo '<div style="float:left;width:757px;">
 <th>Puntos</th>
 <th>Enviar</th></tr></thead><tbody>
 ';
-while($row	=	mysqli_fetch_assoc($request2)) {
+while($row = mysqli_fetch_assoc($request2)) {
 echo '<tr>
 <td><img alt="" title="' . $row['name'] . '" src="' . $settings['images_url'] . '/post/icono_' . $row['ID_BOARD'] . '.gif" /></td>
 
@@ -2293,7 +2297,7 @@ echo '<tr>
 
 <td><a title="Enviar a amigo" href="' . $boardurl . '/enviar-a-amigo/' . $row['ID_TOPIC'] . '"><img alt="" src="' . $settings['images_url'] . '/icons/icono-enviar-mensaje.gif" /></a></td></tr>';
 }
-$NroRegistros	=	mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}members as m2) WHERE m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = m2.ID_MEMBER AND m2.memberName = '" . $context['member']['name'] . "' ", __FILE__, __LINE__));
+$NroRegistros = mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}members as m2) WHERE m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = m2.ID_MEMBER AND m2.memberName = '" . $context['member']['name'] . "' ", __FILE__, __LINE__));
 
 
  $PagAnt=$PagAct-1;
@@ -2317,31 +2321,31 @@ echo '</div><div class="clearBoth"></div></div>
 }
 
 function template_comentarios() {
-	global $settings, $db_prefix, $context, $modSettings, $boardurl;
+  global $settings, $db_prefix, $context, $modSettings, $boardurl;
 
-$RegistrosAMostrar		=	$modSettings['user_comments_posts'];
+$RegistrosAMostrar = $modSettings['user_comments_posts'];
 if(isset($_GET['pag'])) {
-$RegistrosAEmpezar	=	($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct	=	(int) $_GET['pag'];
+$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+$PagAct = (int) $_GET['pag'];
 } else {
-$RegistrosAEmpezar	=	0;
-$PagAct				=	1;
+$RegistrosAEmpezar = 0;
+$PagAct = 1;
 }
-$request	=	db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, c.ID_TOPIC, mem.ID_MEMBER, m.ID_TOPIC, m.posterName, mem.memberName, t.ID_TOPIC, t.ID_MEMBER_STARTED, mem.realName
+$request = db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, c.ID_TOPIC, mem.ID_MEMBER, m.ID_TOPIC, m.posterName, mem.memberName, t.ID_TOPIC, t.ID_MEMBER_STARTED, mem.realName
 FROM ({$db_prefix}comments AS c, {$db_prefix}members AS mem, {$db_prefix}topics AS t, {$db_prefix}messages AS m)
 WHERE m.ID_TOPIC = t.ID_TOPIC
 AND c.ID_TOPIC = t.ID_TOPIC
 AND c.ID_TOPIC = m.ID_TOPIC
 AND c.ID_MEMBER = mem.ID_MEMBER
 AND mem.memberName = '" . $context['member']['name'] . "' ", __FILE__, __LINE__);
-$request2	=	db_query("SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
+$request2 = db_query("SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
 FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
 WHERE c.ID_PICTURE = g.ID_PICTURE
 AND c.ID_MEMBER = " . $context['member']['id'] . "
 AND g.ID_PICTURE = c.ID_PICTURE
 ", __FILE__, __LINE__);
-$count_c	=	mysqli_num_rows($request);
-$count_c_img	=	mysqli_num_rows($request2);
+$count_c = mysqli_num_rows($request);
+$count_c_img = mysqli_num_rows($request2);
 
 echo '<div style="float:left;width:757px;">
 <div class="mennes"><div class="botnes"><ul>
@@ -2355,11 +2359,11 @@ echo '<div style="float:left;width:757px;">
 
 </ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>
 <div class="box_757" style="margin-bottom:8px;"><div class="box_title" style="width:755px;"><div class="box_txt box_757-34"><center>Comentarios de <i>', $context['member']['name'], '</i> en posts</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:747px;padding:4px;">
-';	
+';
 if($count_c <= 0) {
 echo '<div class="noesta">', $context['member']['name'], ' no tiene comentarios en posts hechos.</div>';
 } else {
-$request3	= db_query("
+$request3 = db_query("
 SELECT m.ID_TOPIC, m.ID_BOARD, m.hiddenOption, m.subject, m.ID_MEMBER, b.name, b.description, b.ID_BOARD, t.isSticky, t.ID_TOPIC, t.ID_BOARD, c.posterTime, t.points, c.ID_MEMBER, c.ID_TOPIC, c.comment, c.ID_COMMENT, m2.ID_MEMBER, m2.memberName
 FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t, {$db_prefix}comments AS c, {$db_prefix}members AS m2)
 WHERE m.ID_TOPIC = t.ID_TOPIC
@@ -2372,7 +2376,7 @@ AND m2.memberName = '" . $context['member']['name'] . "'
 ORDER BY c.ID_COMMENT DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
 
-while($row	=	mysqli_fetch_assoc($request3)) {
+while($row = mysqli_fetch_assoc($request3)) {
 echo '<table width="100%"><tr><td valign="top" style="width:16px;"><img alt="" src="' . $settings['images_url'] . '/post/icono_' . $row['ID_BOARD'] . '.gif" title="' . $row['name'] . '" /></td><td><b class="size11"><a title="' . $row['subject'] . '" href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" >' . $row['subject'] . '</a></b><div class="size11">' . timeformat($row['posterTime']) . ': <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html#cmt_' . $row['ID_COMMENT'] . '" >' . $row['comment'] . '</a></div></td></tr></table>
 ';
 }
@@ -2406,31 +2410,31 @@ echo '</div><div class="clearBoth"></div><div style="clear: both;"></div></div><
 
 function template_comentariosimg()
 {
-	global $settings, $db_prefix, $context, $modSettings, $boardurl;
+  global $settings, $db_prefix, $context, $modSettings, $boardurl;
 
-$RegistrosAMostrar		=	$modSettings['user_comments_images'];
+$RegistrosAMostrar = $modSettings['user_comments_images'];
 if(isset($_GET['pag'])){
-$RegistrosAEmpezar	=	($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct	=	(int) $_GET['pag'];
+$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+$PagAct = (int) $_GET['pag'];
 } else {
-$RegistrosAEmpezar	=	0;
-$PagAct				=	1;
+$RegistrosAEmpezar = 0;
+$PagAct = 1;
 }
-$request	=	db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, c.ID_TOPIC, mem.ID_MEMBER, m.ID_TOPIC, m.posterName, mem.memberName, t.ID_TOPIC, t.ID_MEMBER_STARTED
+$request = db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, c.ID_TOPIC, mem.ID_MEMBER, m.ID_TOPIC, m.posterName, mem.memberName, t.ID_TOPIC, t.ID_MEMBER_STARTED
 FROM ({$db_prefix}comments AS c, {$db_prefix}members AS mem, {$db_prefix}topics AS t, {$db_prefix}messages AS m)
 WHERE m.ID_TOPIC = t.ID_TOPIC
 AND c.ID_TOPIC = t.ID_TOPIC
 AND c.ID_TOPIC = m.ID_TOPIC
 AND c.ID_MEMBER = mem.ID_MEMBER
 AND mem.memberName = '" . $context['member']['name'] . "'", __FILE__, __LINE__);
-$count_c	=	mysqli_num_rows($request);
+$count_c = mysqli_num_rows($request);
 
-$request2	=	db_query("SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
+$request2 = db_query("SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
 FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
 WHERE c.ID_PICTURE = g.ID_PICTURE
 AND c.ID_MEMBER = " . $context['member']['id'] . "
 AND g.ID_PICTURE = c.ID_PICTURE", __FILE__, __LINE__);
-$count_c_img	=	mysqli_num_rows($request2);
+$count_c_img = mysqli_num_rows($request2);
 
 echo '<div style="float:left;width:757px;">
 <div class="mennes"><div class="botnes"><ul>
@@ -2448,7 +2452,7 @@ echo '<div style="float:left;width:757px;">
 if($count_c_img <= 0) {
 echo '<div class="noesta">', $context['member']['name'], ' no tiene comentarios en im&aacute;genes hechas.</div>';
 } else {
-$request3	= db_query("
+$request3 = db_query("
 SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
 FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
 WHERE c.ID_PICTURE = g.ID_PICTURE
@@ -2456,7 +2460,7 @@ AND c.ID_MEMBER = " . $context['member']['id'] . "
 AND g.ID_PICTURE = c.ID_PICTURE
 ORDER BY c.ID_COMMENT DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-while($row	=	mysqli_fetch_assoc($request3)) {
+while($row = mysqli_fetch_assoc($request3)) {
 echo '<table width="100%"><tr><td valign="top" style="width:16px;"><span class="icons fot2"> </span></td><td><b class="size11"><a title="' . $row['title'] . '" href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" >' . $row['title'] . '</a></b><div class="size11">' . timeformat($row['date']) . ': <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '#cmt_' . $row['ID_COMMENT'] . '" >' . $row['comment'] . '</a></div></td></tr></table>
 ';
 }
@@ -2487,21 +2491,21 @@ echo '</div><div class="clearBoth"></div><div style="clear: both;"></div></div><
 
 function template_buddies()
 {
-	global $db_prefix, $ID_MEMBER, $context, $user_profile, $memberContext, $txt, $settings, $scripturl, $modSettings, $boardurl;
+  global $db_prefix, $ID_MEMBER, $context, $user_profile, $memberContext, $txt, $settings, $scripturl, $modSettings, $boardurl;
 
 menu2();
 sidebar();
 menu3();
 echo '<div style="float:left;margin-bottom:8px;"><div class="windowbg" style="border:1px solid #D7CFC6;width:523px;padding:8px;font-size:11px;">';
-$RegistrosAMostrar		=	$modSettings['user_friends'];
+$RegistrosAMostrar = $modSettings['user_friends'];
 if(isset($_GET['pag'])) {
-$RegistrosAEmpezar	=	($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct	=	(int) $_GET['pag'];
+$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+$PagAct = (int) $_GET['pag'];
 } else {
-$RegistrosAEmpezar	=	0;
-$PagAct				=	1;
+$RegistrosAEmpezar = 0;
+$PagAct = 1;
 }
-$request2	= db_query("
+$request2 = db_query("
 SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, lo.ID_MEMBER AS MONLINE, lo.logTime 
 FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}log_online AS lo)
 WHERE b.ID_MEMBER = " . $context['member']['id'] . "
@@ -2509,7 +2513,7 @@ AND b.BUDDY_ID = mem.ID_MEMBER
 GROUP BY b.BUDDY_ID DESC
 ORDER BY b.time_updated DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count	= db_query("
+$count = db_query("
 SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE
 FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}log_online AS o)
 WHERE IFNULL(mem.showOnline, 1) = 1
@@ -2523,7 +2527,7 @@ echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;
 echo '<p align="right" style="margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/">' . mysqli_num_rows($count) . ' amigos</a></p><hr />
 ';
 
-while($row	=	mysqli_fetch_assoc($request2)) {
+while($row = mysqli_fetch_assoc($request2)) {
 echo '<table><tbody><tr><td valign="top"><img style="width: 50px; height: 50px;" alt="" src="';
 if(!empty($row['avatar'])) {
 echo $row['avatar'];
@@ -2548,7 +2552,7 @@ echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif
 echo '</span><br /><span style="color: green; font-size: 10px;"><b>Es amigo desde:</b> ', timeformat($row['time_updated']), ' </span></td></tr></tbody></table><hr>';
 }
 
-$NroRegistros	=	mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b) WHERE b.BUDDY_ID = mem.ID_MEMBER AND b.ID_MEMBER = " . $context['member']['id'] . " ", __FILE__, __LINE__));
+$NroRegistros = mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b) WHERE b.BUDDY_ID = mem.ID_MEMBER AND b.ID_MEMBER = " . $context['member']['id'] . " ", __FILE__, __LINE__));
 }
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;
@@ -2569,21 +2573,21 @@ menu5();
 
 function template_buddies2()
 {
-	global $db_prefix, $context, $settings, $modSettings, $boardurl;
+  global $db_prefix, $context, $settings, $modSettings, $boardurl;
 
 menu2();
 sidebar();
 menu3();
 echo '<div style="float:left;margin-bottom:8px;"><div class="windowbg" style="border:1px solid #D7CFC6;width:523px;padding:8px;font-size:11px;">';
-$RegistrosAMostrar		=	$modSettings['user_friends2'];
+$RegistrosAMostrar = $modSettings['user_friends2'];
 if(isset($_GET['pag'])){
-$RegistrosAEmpezar	=	($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct	=	(int) $_GET['pag'];
+$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+$PagAct = (int) $_GET['pag'];
 } else {
-$RegistrosAEmpezar	=	0;
-$PagAct				=	1;
+$RegistrosAEmpezar = 0;
+$PagAct = 1;
 }
-$request2	= db_query("
+$request2 = db_query("
 SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE, b2.BUDDY_ID, b2.ID_MEMBER, mem2.ID_MEMBER
 FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2, {$db_prefix}log_online AS o)
 WHERE b.ID_MEMBER = " . $context['member']['id'] . "
@@ -2595,14 +2599,14 @@ AND mem2.ID_MEMBER = " . $context['user']['id'] . "
 GROUP BY b.BUDDY_ID DESC
 ORDER BY b.time_updated DESC
 LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$total	=	db_query("
-	SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b)
-	WHERE b.ID_MEMBER = " . $context['member']['id'] . "
-	AND b.BUDDY_ID = mem.ID_MEMBER
-	GROUP BY b.BUDDY_ID DESC
-	ORDER BY b.time_updated DESC", __FILE__, __LINE__);
-$count	=	mysqli_num_rows($request2);
-$contartotal	=	mysqli_num_rows($total);
+$total = db_query("
+  SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b)
+  WHERE b.ID_MEMBER = " . $context['member']['id'] . "
+  AND b.BUDDY_ID = mem.ID_MEMBER
+  GROUP BY b.BUDDY_ID DESC
+  ORDER BY b.time_updated DESC", __FILE__, __LINE__);
+$count = mysqli_num_rows($request2);
+$contartotal = mysqli_num_rows($total);
 if($count <= 0) {
 echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;n amigo a&ntilde;adido.</div>';
 } elseif($context['member']['name'] == $context['user']['name']) {
@@ -2611,7 +2615,7 @@ echo '<b class="size11">Acci&oacute;n no reconocida.-</b><hr/>';
 echo '<p style="margin:0px;padding:0px;float:left;width:250px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/amigos-en-comun/">' . $count . ' amigos en com&uacute;n</a></p><p align="right" style="margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/">' . $contartotal . ' amigos</a></p><hr />
 ';
 
-while($row	=	mysqli_fetch_assoc($request2)) {
+while($row = mysqli_fetch_assoc($request2)) {
 echo '<table><tbody><tr><td valign="top"><img style="width: 50px; height: 50px;" alt="" src="';
 if(!empty($row['avatar'])) {
 echo $row['avatar'];
@@ -2636,7 +2640,7 @@ echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif
 echo '</span><br /><span style="color: green; font-size: 10px;"><b>Es amigo desde:</b> ', timeformat($row['time_updated']), ' </span></td></tr></tbody></table><hr>';
 }
 
-$NroRegistros	=	mysqli_num_rows(db_query("SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE, b2.BUDDY_ID, b2.ID_MEMBER, mem2.ID_MEMBER FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2, {$db_prefix}log_online AS o) WHERE b.ID_MEMBER = " . $context['member']['id'] . " AND b.BUDDY_ID = b2.BUDDY_ID AND mem.ID_MEMBER = b2.BUDDY_ID AND b2.ID_MEMBER = " . $context['user']['id'] . " AND b2.ID_MEMBER = mem2.ID_MEMBER AND mem2.ID_MEMBER = " . $context['user']['id'] . " GROUP BY b.BUDDY_ID DESC ", __FILE__, __LINE__));
+$NroRegistros = mysqli_num_rows(db_query("SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE, b2.BUDDY_ID, b2.ID_MEMBER, mem2.ID_MEMBER FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2, {$db_prefix}log_online AS o) WHERE b.ID_MEMBER = " . $context['member']['id'] . " AND b.BUDDY_ID = b2.BUDDY_ID AND mem.ID_MEMBER = b2.BUDDY_ID AND b2.ID_MEMBER = " . $context['user']['id'] . " AND b2.ID_MEMBER = mem2.ID_MEMBER AND mem2.ID_MEMBER = " . $context['user']['id'] . " GROUP BY b.BUDDY_ID DESC ", __FILE__, __LINE__));
 }
  $PagAnt=$PagAct-1;
  $PagSig=$PagAct+1;

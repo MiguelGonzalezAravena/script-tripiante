@@ -2,12 +2,11 @@
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
 function reemplazar($valor) {
-	
 $valor = str_replace('<br />', "\n", $valor);
 return $valor;
 }
 
-$existe	=	mysql_query("SELECT m.ID_TOPIC, m.ID_MEMBER, m.subject, m.body, m.hiddenOption, m.ID_MSG FROM {$db_prefix}messages AS m GROUP BY m.ID_TOPIC
+$existe = mysql_query("SELECT m.ID_TOPIC, m.ID_MEMBER, m.subject, m.body, m.hiddenOption, m.ID_MSG FROM {$db_prefix}messages AS m GROUP BY m.ID_TOPIC
 ORDER BY m.ID_TOPIC DESC LIMIT 0, 25");
 $context['rssuser'] = array();
 while ($row = mysqli_fetch_assoc($existe)){

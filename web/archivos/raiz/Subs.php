@@ -7,7 +7,7 @@ function db_query($db_string, $file, $line) {
 
   $db_count = !isset($db_count) ? 1 : $db_count + 1;
 
-  if (isset($db_show_debug) && $db_show_debug === true) 	{
+  if (isset($db_show_debug) && $db_show_debug === true)   {
     if (!isset($db_cache))
       $db_cache = array();
 
@@ -3034,7 +3034,6 @@ function reducir22($tipo) {
 function ssi_destacados() {
   global $db_prefix;
 
-  // TO-DO: Usar db_query
   $Array = mt_rand(1, 2);
   $request = db_query("
     SELECT value
@@ -3054,7 +3053,7 @@ function ssi_sexo1($valor) {
 }
 
 function ssi_sexo2($valor) {
-  global	$settings;
+  global $settings;
 
   $valor = str_replace('*', ' <img alt="Hombre" title="Hombre" src="' . $settings['images_url']  . '/Male.gif"> ', $valor);
   $valor = str_replace('^', ' <img alt="Mujer" title="Mujer" src="' . $settings['images_url']  . '/Female.gif"> ', $valor);
@@ -3163,7 +3162,7 @@ function ssi_vistaprevia() {
       FROM {$db_prefix}membergroups
       WHERE ID_GROUP = {$idgrup}", __FILE__, __LINE__);
 
-    while($row2	=	mysqli_fetch_assoc($userse2)) {
+    while($row2 = mysqli_fetch_assoc($userse2)) {
       $membergropu = $row2['groupName'];
     }
 
@@ -3172,8 +3171,8 @@ function ssi_vistaprevia() {
       FROM {$db_prefix}membergroups
       WHERE ID_GROUP = {$idgrup2}", __FILE__, __LINE__);
 
-    while($row2	=	mysqli_fetch_assoc($userse3)) {
-      $membergropu2	=	$row2['groupName'];
+    while($row2 = mysqli_fetch_assoc($userse3)) {
+      $membergropu2 = $row2['groupName'];
     }
 
     $medallasa = db_query("
@@ -3181,8 +3180,8 @@ function ssi_vistaprevia() {
       FROM {$db_prefix}membergroups
       WHERE ID_GROUP = " . (!empty($idgrup2) ? $idgrup2 : $idgrup), __FILE__, __LINE__);
 
-    while($rows	=	mysqli_fetch_assoc($medallasa)) {
-      $medalla	=	$rows['stars'];
+    while($rows = mysqli_fetch_assoc($medallasa)) {
+      $medalla = $rows['stars'];
     }
 
     if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {

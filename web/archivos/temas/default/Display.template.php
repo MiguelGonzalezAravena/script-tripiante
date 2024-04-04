@@ -102,7 +102,7 @@ function template_main() {
       echo '&nbsp;<img title="Estado: ' . ssi_estado_icon($message['member']['estado_icon']) . '" src="' . $settings['images_url'] . '/icons/estado/' . $message['member']['estado_icon'] . '.gif" alt="" />';
     }
 
-    echo '<br /><br />';	
+    echo '<br /><br />';
 
     if ($settings['show_profile_buttons']) {
       if ($context['can_send_pm']) {
@@ -116,7 +116,7 @@ function template_main() {
           </div>';
       }
 
-      if ($context['user']['is_logged'])	 {
+      if ($context['user']['is_logged']) {
         echo '
           <div style="margin-bottom: 4px;">
             <span class="icons fot2" style="font-size: 12px;">
@@ -264,7 +264,7 @@ function template_main() {
         <span id="span_opciones1" class="size10">
           <b class="size11">Dar puntos:</b>';
 
-      $puntos	=	$context['user']['money'];
+      $puntos = $context['user']['money'];
       $contarpuntos = 1;
 
       if ($context['user']['money'] > 0) {

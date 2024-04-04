@@ -54,7 +54,7 @@ function template_pm_below(){}
 function template_folder() {
   global $context, $settings, $modSettings, $txt, $boardurl;
 
-  if (!isset($context['sl-singlepm'])) {	
+  if (!isset($context['sl-singlepm'])) {
     echo '<div style="margin-left: 8px; width: 757px; float: left;">';
 
     if ($context['show_delete']) {
@@ -162,7 +162,7 @@ function template_folder() {
 }
 
 function template_search(){}
-function template_search_results(){}	
+function template_search_results() {}
 
 function template_send() {
   global $context, $settings, $boardurl, $txt;
@@ -330,12 +330,15 @@ function template_labels() {
 
   echo '
     <form action="' . $scripturl . '?action=pm;sa=manlabels;sesc=' . $context['session_id'] . '" method="post" accept-charset="' . $context['character_set'] . '">
-      <table width="100%" cellpadding="3" cellspacing="0" border="0">	
-      <tr>
-      <td width="100%" class="titulo_a">&nbsp;</td>
-      <td width="100%" class="titulo_b"><center>' . $txt['pm_label_add_new'] . '</center></td>
-      <td width="100%" class="titulo_c">&nbsp;</td>
-      </tr></table>	
+      <table width="100%" cellpadding="3" cellspacing="0" border="0">
+        <tr>
+          <td width="100%" class="titulo_a">&nbsp;</td>
+          <td width="100%" class="titulo_b">
+            <center>' . $txt['pm_label_add_new'] . '</center>
+          </td>
+          <td width="100%" class="titulo_c">&nbsp;</td>
+        </tr>
+      </table>
       <table width="100%" cellpadding="4" cellspacing="0" border="0" align="center" class="windowbg2">
         <tr class="windowbg2">
           <td align="right" width="40%">
@@ -353,14 +356,15 @@ function template_labels() {
       </table>
     </form>
     <form action="' . $scripturl . '?action=pm;sa=manlabels;sesc=' . $context['session_id'] . '" method="post" accept-charset="' . $context['character_set'] . '" style="margin-top: 8px;">
-      <table width="100%" cellpadding="3" cellspacing="0" border="0">	
-        <tr>
-        <td width="100%" class="titulo_a">&nbsp;</td>
-        <td width="100%" class="titulo_b">
-          <center>' . $txt['pm_manage_labels'] . '</center>
-        </td>
-        <td width="100%" class="titulo_c">&nbsp;</td>
-        </tr></table>	
+      <table width="100%" cellpadding="3" cellspacing="0" border="0">
+          <tr>
+            <td width="100%" class="titulo_a">&nbsp;</td>
+            <td width="100%" class="titulo_b">
+              <center>' . $txt['pm_manage_labels'] . '</center>
+            </td>
+            <td width="100%" class="titulo_c">&nbsp;</td>
+          </tr>
+        </table>
         <table width="100%" class="windowbg">
           <tr class="windowbg2">
             <td colspan="2" style="padding: 1ex;">

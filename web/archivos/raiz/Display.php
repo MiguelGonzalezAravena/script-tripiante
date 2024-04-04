@@ -10,7 +10,7 @@ function Display() {
 
   loadTemplate('Display');
 
-  $topicids	=	(int) $_GET['topic'];
+  $topicids = (int) $_GET['topic'];
 
   if (empty($topic)) {
     fatal_lang_error('smf232', false);

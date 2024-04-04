@@ -5,7 +5,7 @@ function template_main() {
   
   @require_once('SSI.php');
 
-  $request	=	db_query("
+  $request = db_query("
     SELECT m.subject, m.ID_TOPIC, m.ID_BOARD, b.ID_BOARD, b.description, t.ID_TOPIC, t.ID_BOARD
     FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t)
     WHERE m.ID_BOARD = b.ID_BOARD

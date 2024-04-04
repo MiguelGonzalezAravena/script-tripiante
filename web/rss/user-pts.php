@@ -1,7 +1,7 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
-$request	=	mysql_query("SELECT * FROM {$db_prefix}members ORDER BY moneyBank DESC LIMIT 0, 25");
+$request = mysql_query("SELECT * FROM {$db_prefix}members ORDER BY moneyBank DESC LIMIT 0, 25");
 echo '<?xml version="1.0" encoding="UTF-8"?>
 <rss version="0.92" xml:lang="spanish"><channel>
 <image>

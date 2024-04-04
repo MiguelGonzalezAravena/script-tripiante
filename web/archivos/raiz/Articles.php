@@ -87,12 +87,13 @@ function MainView() {
   $context['addarticle'] = $addarticle;
 
   // MyArticles
-  if ($addarticle && !($context['user']['is_guest']))	
+  if ($addarticle && !($context['user']['is_guest'])) {
     $context['articles']['buttons']['mylisting'] =  array(
       'text' => 'smfarticles_myarticles',
       'url' =>$scripturl . '?action=articles;sa=myarticles;u=' . $ID_MEMBER,
       'lang' => true,
     );
+  }
 
   // Search
   $context['articles']['buttons']['search'] =  array(
@@ -1949,7 +1950,7 @@ function UpdateCategoryTotalByArticleID($id) {
   UpdateCategoryTotals($row['ID_CAT']);
 }
 
-function DoToolBarStrip($button_strip, $direction) {	
+function DoToolBarStrip($button_strip, $direction) {
   global $settings, $txt;
 
   if (!empty($settings['use_tabs'])) {

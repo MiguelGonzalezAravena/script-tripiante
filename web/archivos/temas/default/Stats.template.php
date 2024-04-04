@@ -1,6 +1,7 @@
 <?php
+
 function template_main() {
-  global $context, $settings, $options, $txt, $scripturl, $modSettings, $db_prefix, $boardurl;
+  global $context, $settings, $txt, $scripturl, $modSettings, $db_prefix, $boardurl;
 
   if ($context['user']['is_guest']) {
     header('Location: /ingresar/');
@@ -264,7 +265,7 @@ function template_main() {
       </div>';
 
     // 10 Imágenes más comentadas
-    $request	=	db_query("
+    $request = db_query("
       SELECT COUNT(c.ID_PICTURE) AS cuenta, p.ID_PICTURE, c.ID_PICTURE, p.title
       FROM ({$db_prefix}gallery_pic AS p, {$db_prefix}gallery_comment AS c)
       WHERE c.ID_PICTURE = p.ID_PICTURE
@@ -372,7 +373,7 @@ function template_main() {
       );
     }
 
-    mysqli_free_result($request);					
+    mysqli_free_result($request);
 
     foreach ($context['comment-img3'] as $row) {
       echo '
@@ -408,7 +409,7 @@ function template_main() {
       );
     }
 
-    mysqli_free_result($request);	
+    mysqli_free_result($request);
 
     echo '
       </div>
@@ -443,7 +444,7 @@ function template_main() {
       </div>';
 
     // 10 Usuarios con más imágenes
-    $request	=	db_query("
+    $request = db_query("
       SELECT COUNT(p.ID_MEMBER) AS cuenta, p.ID_PICTURE, mem.ID_MEMBER, mem.memberName, mem.realName, p.ID_MEMBER
       FROM ({$db_prefix}gallery_pic AS p, {$db_prefix}members AS mem)
       WHERE p.ID_MEMBER = mem.ID_MEMBER

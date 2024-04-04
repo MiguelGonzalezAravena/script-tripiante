@@ -296,7 +296,7 @@ function template_main() {
   $categoria = htmlentities(addslashes($_GET['categoria']), ENT_QUOTES, 'UTF-8');
 
   if (!empty($categoria)) {
-    $AND	=	"AND cc.friendly_url = '$categoria'";
+    $AND = "AND cc.friendly_url = '$categoria'";
   }
 
   $query = "
@@ -310,7 +310,7 @@ function template_main() {
     ORDER BY ct.ID_TOPIC DESC";
 
   // Registros paginados
-  $request	= db_query("
+  $request = db_query("
     {$query}
     LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
@@ -1397,7 +1397,7 @@ function template_vermiembros() {
   $row = mysqli_fetch_assoc($request);
 
   if ($context['comunidad']['view'] == 2 && $context['user']['is_guest']) {
-    $context['page_title']	=	$txt[18];
+    $context['page_title'] = $txt[18];
     fatal_error('S&oacute;lo usuarios registrados tienen acceso a esta comunidad.-', false);
   } else if ($ban >= 1 && $row['expire'] < time()) {
     db_query("
@@ -1451,7 +1451,7 @@ function template_vermiembros() {
       fatal_error('S&oacute;lo usuarios registrados tienen acceso a esta comunidad.-', false);
     }
 
-    $id	=	htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
+    $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
     panel();
 
@@ -1480,7 +1480,7 @@ function template_vermiembros() {
       ORDER BY cm.date DESC";
 
     // Registros paginados
-    $request	= db_query("
+    $request = db_query("
       {$query}
       LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
@@ -1535,7 +1535,7 @@ function template_vermiembros() {
 
     // Registros totales
     $request = db_query($query, __FILE__, __LINE__);
-    $records	=	mysqli_num_rows($request);
+    $records = mysqli_num_rows($request);
 
     $previousPage = $actualPage - 1;
     $nextPage = $actualPage + 1;
@@ -1756,7 +1756,7 @@ function template_denunciar() {
   $row = mysqli_fetch_assoc($request);
 
   if ($context['comunidad']['view'] == 2 && $context['user']['is_guest']) {
-    $context['page_title']	=	$txt[18];
+    $context['page_title'] = $txt[18];
     fatal_error('S&oacute;lo usuarios registrados tienen acceso a esta comunidad.-', false);
   } else if ($ban >= 1 && $row['expire'] < time()) {
     db_query("
@@ -1800,29 +1800,29 @@ function template_denunciar() {
       <div style="clear:both"></div>';
   } else if ($ban <= 0) {
     if($context['comunidad']['view'] == 2 && $context['user']['is_guest']) {
-      $context['page_title']	=	$txt[18];
+      $context['page_title'] = $txt[18];
       fatal_error('S&oacute;lo usuarios registrados tienen acceso a esta comunidad.-', false);
     }
 
-    $id	=	htmlentities(addslashes($_REQUEST['id']));
+    $id = htmlentities(addslashes($_REQUEST['id']));
 
-    $request	=	db_query("
+    $request = db_query("
       SELECT *
       FROM {$db_prefix}communities
       WHERE friendly_url = '$id'", __FILE__, __LINE__);
 
-    $row	=	mysqli_fetch_assoc($request);
+    $row = mysqli_fetch_assoc($request);
 
     panel();
 
-    $request2	=	db_query("
+    $request2 = db_query("
       SELECT *
       FROM {$db_prefix}community_members
       WHERE ID_COMMUNITY = {$context['editor']['ID_COMMUNITY']}
       AND ID_MEMBER = $ID_MEMBER
       LIMIT 1", __FILE__, __LINE__);
 
-    $row2	=	mysqli_num_rows($request2);
+    $row2 = mysqli_num_rows($request2);
 
     if ($row2 > 0 || $context['user']['is_guest']) {
       echo '<div class="noesta" style="width: 541px; margin-bottom: 8px; float: left;">No puedes denunciar esta comunidad.-</div>';
@@ -2172,7 +2172,7 @@ function template_vertema() {
   } else if ($ban <= 0) {
     panel();
 
-    $link	=	$boardurl . '/comunidades/' . $context['comunidad']['friendly_url'] . '/' . $context['tema']['ID_TOPIC'] . '/' . ssi_amigable($context['tema']['subject']) . '.html';
+    $link = $boardurl . '/comunidades/' . $context['comunidad']['friendly_url'] . '/' . $context['tema']['ID_TOPIC'] . '/' . ssi_amigable($context['tema']['subject']) . '.html';
 
     echo '
       <div style="float: left;">
@@ -2277,13 +2277,13 @@ function template_vertema() {
                   </td>
                   <div class="clearBoth"></div>';
 
-    $cuenta	=	db_query("
+    $cuenta = db_query("
       SELECT *
       FROM ({$db_prefix}community_comments AS cc, {$db_prefix}community_topic AS ct)
       WHERE cc.ID_TOPIC = ct.ID_TOPIC
       AND cc.ID_TOPIC = " . $context['tema']['ID_TOPIC'], __FILE__, __LINE__);
 
-    $contarcomentarios	=	mysqli_num_rows($cuenta);
+    $contarcomentarios = mysqli_num_rows($cuenta);
 
     echo '
             </tr>
@@ -2473,7 +2473,7 @@ function template_publicitar() {
 function template_editartema() {
   global $context, $db_prefix, $boardurl, $txt, $modSettings, $ID_MEMBER, $settings;
   
-  $id	=	htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']));
 
   echo '
     <div class="tagacom2">
@@ -2505,7 +2505,7 @@ function template_editartema() {
   $row = mysqli_fetch_assoc($request);
 
   if ($context['editar']['view'] == 2 && $context['user']['is_guest']) {
-    $context['page_title']	=	$txt[18];
+    $context['page_title'] = $txt[18];
     fatal_error('S&oacute;lo usuarios registrados tienen acceso a esta comunidad.-', false);
   } else if ($ban >= 1 && $row['expire'] < time()) {
     db_query("

@@ -1,28 +1,28 @@
 <?php
 
 if (!defined('SMF'))
-	die('Hacking attempt...');
+  die('Hacking attempt...');
 
 function Tos() {
-	global $context, $txt;
+  global $context, $txt;
 
-	loadTemplate('Tos');
-	loadLanguage('Manual');
+  loadTemplate('Tos');
+  loadLanguage('Manual');
 
-	$context['page_title'] = $txt[18];
-	$context['all_pages'] = array(
-		'index' => 'intro',
-	);
+  $context['page_title'] = $txt[18];
+  $context['all_pages'] = array(
+    'index' => 'intro',
+  );
 
-	if (!isset($_GET['page']) || !isset($context['all_pages'][$_GET['page']]))
-		$_GET['page'] = 'index';
+  if (!isset($_GET['page']) || !isset($context['all_pages'][$_GET['page']])) {
+    $_GET['page'] = 'index';
+  }
 
-	$context['current_page'] = $_GET['page'];
-	$context['sub_template'] = 'manual_' . $context['all_pages'][$context['current_page']];
-
-	$context['template_layers'][] = 'manual';
-	$txt['Titulo'] = $txt[18]; 
-	$context['page_title'] = $txt[18];
+  $context['current_page'] = $_GET['page'];
+  $context['sub_template'] = 'manual_' . $context['all_pages'][$context['current_page']];
+  $context['template_layers'][] = 'manual';
+  $txt['Titulo'] = $txt[18];
+  $context['page_title'] = $txt[18];
 }
 
 ?>

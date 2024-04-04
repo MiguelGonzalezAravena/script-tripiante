@@ -10,9 +10,11 @@ $txt['bookmark_add'] = 'Agregar Favorito';
 $txt['bookmark_add_success'] = 'El mensaje fue agregado exitosamente a tus favoritos!';
 $txt['bookmark_add_exists'] = 'Este mensaje ya ha sido agregado a tus favoritos!';
 $txt['bookmark_add_failed'] = 'Error al intentar agregar el mensaje a tus favoritos.';
-$txt['was_created_by']	=	'Fue creado por';
-$txt['send_to_friend']	=	'Enviar a amigo';
+$txt['was_created_by'] = 'Fue creado por';
+$txt['send_to_friend'] = 'Enviar a amigo';
+
 // Untranslated!
 $txt['permissionname_make_bookmarks'] = 'Create bookmarks for topics';
 $txt['cannot_make_bookmarks'] = 'Sorry, you don\'t have permission to make bookmarks.';
+
 ?>

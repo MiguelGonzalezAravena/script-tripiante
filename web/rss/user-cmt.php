@@ -1,7 +1,7 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
-$request	=	mysql_query("SELECT COUNT(c.ID_COMMENT + gc.ID_COMMENT) AS total, c.ID_MEMBER, mem.ID_MEMBER, mem.realName, mem.memberName, gc.ID_MEMBER, c.ID_COMMENT, gc.ID_COMMENT
+$request = mysql_query("SELECT COUNT(c.ID_COMMENT + gc.ID_COMMENT) AS total, c.ID_MEMBER, mem.ID_MEMBER, mem.realName, mem.memberName, gc.ID_MEMBER, c.ID_COMMENT, gc.ID_COMMENT
 FROM ({$db_prefix}comments as c, {$db_prefix}members as mem, {$db_prefix}gallery_comment AS gc)
 WHERE c.ID_MEMBER = mem.ID_MEMBER
 AND mem.ID_MEMBER = gc.ID_MEMBER

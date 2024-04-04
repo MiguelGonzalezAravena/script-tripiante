@@ -766,7 +766,7 @@ function template_package_confirm()
           <a href="', $context['proceed_href'], '">[ ', $txt['package_confirm_proceed'], ' ]</a> <a href="JavaScript:history.go(-1);">[ ', $txt['package_confirm_go_back'], ' ]</a>
         </td>
       </tr>
-    </table>';	
+    </table>';
 }
   
 function template_package_list()

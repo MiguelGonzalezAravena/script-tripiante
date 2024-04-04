@@ -51,14 +51,16 @@ function template_buddy_center() {
         else
           echo '&nbsp;';
 
-    echo '	
+    echo '
         </td>
         <td align="center">';
+
         if (!$last)
           echo '<a href="' . $scripturl . '?action=buddies;sa=order;u=' . $buddy['id'] . ';dir=down;sesc=' . $context['session_id'] . '"><img src="' . $settings['images_url'] . '/smiley_select_spot.gif" alt="' . $txt['buddy_remove'] . '" title="' . $txt['buddy_order_down'] . '" /></a>';
         else
           echo '&nbsp;';
-    echo '	
+
+    echo '
         </td>
         <td align="center"><a href="' . $scripturl . '?action=buddies;sa=remove;u=' . $buddy['id'] . ';sesc=' . $context['session_id'] . '"><img src="' . $settings['images_url'] . '/icons/delete.gif" alt="' . $txt['buddy_remove'] . '" title="' . $txt['buddy_remove'] . '" /></a></td>
       </tr>';

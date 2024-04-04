@@ -50,7 +50,7 @@ function template_main() {
     AND bm.TYPE = 'imagen'
     ORDER BY bm.ID_TOPIC DESC";
 
-  $request	= db_query("
+  $request = db_query("
     {$query}
     LIMIT {$start}, {$end}", __FILE__, __LINE__);
 

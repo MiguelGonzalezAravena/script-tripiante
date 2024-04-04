@@ -1,7 +1,7 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
 
-$request	=	mysql_query("
+$request = mysql_query("
 SELECT points, ID_PICTURE, title
 FROM {$db_prefix}gallery_pic
 GROUP BY ID_PICTURE, title DESC

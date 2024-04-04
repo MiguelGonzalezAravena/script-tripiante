@@ -101,9 +101,9 @@ $txt['package57'] = 'Ejecutar C&oacute;digo';
 
 $txt['package_install_actions'] = 'Acciones de Instalaciones para';
 $txt['package_will_fail_title'] = 'Error en la Instalaci&oacute;n del Paquete';
-$txt['package_will_fail_warning'] = 'Se ha encontrado algún error durante la prueba de la instalaci&oacute;n de este paquete.
-	Es <b>altamente</b> recomendado que no contin&uacute;es la instalaci&oacute;n a menos que sepas lo que est&aacute;s haciendo, y hayas realizado una copia de seguridad muy recientemente.
-	Este error puede haber sido causado por un conflicto entre el paquete que est&aacute;s intentando instalar y otro paquete que ya has instalado, un error en el paquete, un paquete que requiere otro paquete que no has instalado a&ucute;n, o un paquete dise&ntilde;ado para otra versi&oacute;n de SMF.';
+$txt['package_will_fail_warning'] = 'Se ha encontrado algï¿½n error durante la prueba de la instalaci&oacute;n de este paquete.
+  Es <b>altamente</b> recomendado que no contin&uacute;es la instalaci&oacute;n a menos que sepas lo que est&aacute;s haciendo, y hayas realizado una copia de seguridad muy recientemente.
+  Este error puede haber sido causado por un conflicto entre el paquete que est&aacute;s intentando instalar y otro paquete que ya has instalado, un error en el paquete, un paquete que requiere otro paquete que no has instalado a&ucute;n, o un paquete dise&ntilde;ado para otra versi&oacute;n de SMF.';
 // Don't use entities in the below string.
 $txt['package_will_fail_popup'] = '&#191;Est&#225;s seguro de que quieres continuar instalando esta modificaci&#243;n, aunque no se instalar&#225; correctamente?';
 $txt['package_install_now'] = 'Instalar Ahora';

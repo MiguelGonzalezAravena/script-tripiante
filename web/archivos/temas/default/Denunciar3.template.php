@@ -16,7 +16,7 @@ function template_manual_intro() {
 
   while ($row = mysqli_fetch_assoc($request)) {
     $memberName = $row['memberName'];
-    $ID_MEMBER = $row['ID_MEMBER'];	
+    $ID_MEMBER = $row['ID_MEMBER'];
   }
 
   mysqli_free_result($request);

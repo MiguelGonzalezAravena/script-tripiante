@@ -12,7 +12,7 @@ function template_message() {
 
   echo '
     <div>
-      <table align="center" width="392px" cellpadding="3" cellspacing="0" border="0">	
+      <table align="center" width="392px" cellpadding="3" cellspacing="0" border="0">
         <tr>
           <td width="100%" class="titulo_a">&nbsp;</td>
           <td width="100%" class="titulo_b"><center>Puntos</center></td>

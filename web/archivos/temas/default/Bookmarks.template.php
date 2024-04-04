@@ -29,7 +29,7 @@ function template_main() {
     ORDER BY b
   ";
 
-  $request	= db_query("
+  $request = db_query("
     {$query}
     LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
@@ -70,7 +70,7 @@ function template_main() {
         <form action="' . $boardurl . '/favoritos/eliminar/" method="post">';
 
   if (!empty($context['bookmarks'])) {
-    while ($row	=	mysqli_fetch_assoc($request)) {
+    while ($row = mysqli_fetch_assoc($request)) {
       echo '
         <div class="entryf">
           <div class="icon">

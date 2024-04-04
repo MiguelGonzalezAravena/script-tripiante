@@ -27,7 +27,7 @@ $request = db_query("
 $rows = mysqli_num_rows($request);
 
 if ($rows == 0) {
-  echo '<div class="noesta" style="width:541px;">Este usuario no tiene comunidades creadas.</div>';	
+  echo '<div class="noesta" style="width:541px;">Este usuario no tiene comunidades creadas.</div>';
 } else if ($rows > 0) {
   echo '
     <div id="ComuCrePerfil">

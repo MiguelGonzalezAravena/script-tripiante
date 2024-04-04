@@ -60,13 +60,13 @@ function template_articlesmain() {
       </div>
       <div style="width: 448px; padding: 4px;" class="windowbg">';
 
-  $request	=	db_query("
+  $request = db_query("
     SELECT * 
     FROM {$db_prefix}articles
     ORDER BY date DESC
     LIMIT 5", __FILE__, __LINE__);
 
-  while ($row	=	mysqli_fetch_assoc($request)) {
+  while ($row = mysqli_fetch_assoc($request)) {
     echo '
       <img alt="' . $row['title'] . '" src="' . $settings['images_url'] . '/ayuda/articulo.png" title="' . $row['title'] . '" />
       &nbsp;
@@ -1327,7 +1327,7 @@ function template_search_results() {
     $spancount++;
   }
 
-  if (!empty($modSettings['smfarticles_disp_totalcomment'])) {	
+  if (!empty($modSettings['smfarticles_disp_totalcomment'])) {
     echo '<td class="titlebg">' . $txt['smfarticles_txt_comments'] . '</td>';
     $spancount++;
   }

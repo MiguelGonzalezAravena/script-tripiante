@@ -24,8 +24,8 @@
 if (!defined('SMF'))
   die('Hacking attempt...');
 
-/*	This file is mainly concerned, or that is to say only concerned, with the
-  Who's Online list.  It contains only the following functions:
+/*  This file is mainly concerned, or that is to say only concerned, with the
+    Who's Online list.  It contains only the following functions:
 
   void Who()
     - prepares the who's online data for the Who template.
@@ -245,7 +245,7 @@ function determineActions($urls) {
         $board_ids[$actions['board']][$k] = $txt['who_board'];
       }
       // It's the board index!!  It must be!
-      else {	
+      else {
         $data[$k] = $txt['who_index'];
         // ...or maybe it's just integrated into another system...
         if (isset($modSettings['integrate_whos_online']) && function_exists($modSettings['integrate_whos_online']))

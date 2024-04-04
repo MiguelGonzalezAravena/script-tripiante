@@ -3,7 +3,7 @@
 function template_postagregado() {
   global $settings, $db_prefix, $ID_MEMBER, $boardurl;
   
-  $idpost	=	(int) $_REQUEST['idpost'];
+  $idpost = (int) $_REQUEST['idpost'];
 
   $request = db_query("
     SELECT m.ID_TOPIC, m.subject, m.ID_BOARD, b.ID_BOARD, b.description, m.ID_MEMBER
@@ -12,7 +12,7 @@ function template_postagregado() {
     AND m.ID_BOARD = b.ID_BOARD
     LIMIT 1", __FILE__, __LINE__);
 
-  $row	=	mysqli_fetch_assoc($request);
+  $row = mysqli_fetch_assoc($request);
 
   if ($ID_MEMBER != $row['ID_MEMBER']) {
     fatal_error('No agregaste nada.-', false);
@@ -92,14 +92,12 @@ function template_eliminarc() {
 
   // TO-DO: ¿Está bien esta validación?
   // TO-DO: Validar permisos antes de eliminar
-  /*
   if ($userid == $memberid || $context['allow_admin']) {
     if (!empty($_POST['campos'])) {
       $aLista = array_keys($_POST['campos']);
       db_query("DELETE FROM {$db_prefix}comments WHERE ID_COMMENT IN (" . implode(',', $aLista) . ")", __FILE__, __LINE__);
     }
   }
-  */
 
   header("Location: {$_SERVER['HTTP_REFERER']}");
 }
@@ -110,7 +108,7 @@ function template_eliminarci() {
   $idimg = (int) $_POST['idimg'];
 
   // TO-DO: Validar permisos antes de eliminar
-  if(!empty($_POST['campos'])) 	{
+  if(!empty($_POST['campos']))   {
     $aLista = array_keys($_POST['campos']);
     db_query("
       DELETE FROM {$db_prefix}gallery_comment
@@ -125,7 +123,7 @@ function template_enviardenuncia() {
   global $context, $db_prefix, $boardurl;
 
   $ID_TOPIC2 = (int) $_POST['ID_TOPIC'];
-  $ID_MEMBER2 =	$context['user']['id'];
+  $ID_MEMBER2 = $context['user']['id'];
   $comlimpito = htmlentities(addslashes($_POST['comentario']), ENT_QUOTES, 'UTF-8');
   $comentario = strip_tags($comlimpito);
   $razon = htmlentities(addslashes($_POST['razon']), ENT_QUOTES, 'UTF-8');
@@ -162,8 +160,9 @@ function template_eliminarres() {
   $userid = (int) $_POST['userid'];
   $memberid = (int) $_POST['memberid'];
 
+  // TO-DO: Validar permisos antes de eliminar
   if ($userid == $memberid || $context['allow_admin']) {
-    if (!empty($_POST['campos'])) 	{
+    if (!empty($_POST['campos']))   {
       $aLista = array_keys($_POST['campos']);
 
       db_query("
@@ -218,39 +217,45 @@ function template_comunidadagregada() {
 }
 
 function template_temaagregado() {
-  global $context, $boardurl, $settings, $txt, $modSettings, $db_prefix;
+  global $context, $boardurl, $settings, $txt, $db_prefix;
 
-$id	 =	htmlentities(addslashes($_GET['id']));
-$context['page_title'] = $txt[18];
+  $id = (int) $_GET['id'];
+  $context['page_title'] = $txt[18];
 
-$request	 =	db_query("SELECT * FROM {$db_prefix}communities AS c, {$db_prefix}community_topic AS ct WHERE c.ID_COMMUNITY = ct.ID_COMMUNITY AND ct.ID_TOPIC = $id ", __FILE__, __LINE__);
-$row	=	mysqli_fetch_assoc($request);
+  $request = db_query("
+    SELECT *
+    FROM {$db_prefix}communities AS c, {$db_prefix}community_topic AS ct
+    WHERE c.ID_COMMUNITY = ct.ID_COMMUNITY
+    AND ct.ID_TOPIC = " . $id, __FILE__, __LINE__);
+  $row = mysqli_fetch_assoc($request);
 
-echo '
-  <div align="center">
-    <div class="box_errors">
-      <div class="box_title" style="width: 388px">
-        <div class="box_txt box_error" align="left">&iexcl;Atenci&oacute;n!</div>
-        <div class="box_rss">
-          <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+  echo '
+    <div align="center">
+      <div class="box_errors">
+        <div class="box_title" style="width: 388px">
+          <div class="box_txt box_error" align="left">&iexcl;Atenci&oacute;n!</div>
+          <div class="box_rss">
+            <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+          </div>
+        </div>
+        <div class="windowbg" style="width: 380px; padding: 4px;">
+          <br />El nuevo tema fue agregado a la comunidad.-
+          <br /><br />
+          <input class="login" style="font-size: 11px;" type="submit" title="Ir al tema" value="Ir al tema" onclick="location.href=\'' . $boardurl . '/comunidades/' . $row['friendly_url'] . '/' . $row['ID_TOPIC'] . '/' . ssi_amigable($row['subject']) . '.html\'" />
+          <br /><br />
         </div>
       </div>
-      <div class="windowbg" style="width: 380px; padding: 4px;">
-        <br />El nuevo tema fue agregado a la comunidad.-
-        <br /><br />
-        <input class="login" style="font-size: 11px;" type="submit" title="Ir al tema" value="Ir al tema" onclick="location.href=\'' . $boardurl . '/comunidades/' . $row['friendly_url'] . '/' . $row['ID_TOPIC'] . '/' . ssi_amigable($row['subject']) . '.html\'" />
-        <br /><br />
-      </div>
+      <br />
     </div>
-    <br />
-  </div>
-  <div style="clear:both"></div>';
+    <div style="clear:both"></div>';
 }
 
 function template_manual_above() {}
+
 function template_manual_below() {}
+
 function template_intro() {
-  header("Location: /");
+  header('Location: /');
 }
 
 ?>

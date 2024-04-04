@@ -86,7 +86,7 @@ function ShowUserBox($memCommID, $onlineColor = '') {
   if ($count <= 0) {
     echo '<div id="no_muro" class="noesta">' . $context['member']['name'] . ' no tiene ning&uacute;n mensaje en su muro.</div>';
   } else {
-    $request	=	db_query("
+    $request = db_query("
       SELECT m.ID_MEMBER, m.realName, m.memberName, m.avatar, p.ID_MEMBER, p.ID_COMMENT, p.subject, p.COMMENT_MEMBER_ID, p.date, p.comment
       FROM ({$db_prefix}members AS m, {$db_prefix}profile_comments AS p)
       WHERE p.ID_MEMBER = m.ID_MEMBER

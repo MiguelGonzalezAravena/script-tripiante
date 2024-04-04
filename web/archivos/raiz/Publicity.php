@@ -11,7 +11,7 @@ function Publicity() {
 
   $context['all_pages'] = array(
     'index' => 'main',
-    'guardar' => 'guardar',			
+    'guardar' => 'guardar',
   );
 
   if (!isset($_GET['m']) || !isset($context['all_pages'][$_GET['m']]))

@@ -31,7 +31,7 @@ $request = db_query("
 $rows = mysqli_num_rows($request);
 
 if ($rows == 0) {
-  echo '<div class="noesta" style="width: 541px;">Este usuario no tiene temas creados.</div>';	
+  echo '<div class="noesta" style="width: 541px;">Este usuario no tiene temas creados.</div>';
 } else if ($rows > 0) {
   echo '
     <div id="ComuTemPerfil">

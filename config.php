@@ -5,7 +5,7 @@ $language = 'english';
 $boardurl = 'http://tripiante.net';
 $webmaster_email = 'staff.tripiante@gmail.com';
 $cookiename = 'Tripiante2010';
-$chatid	=	'80701498';
+$chatid = '80701498';
 $maintenance = 0;
 $mtitle = '<b style="color:Red;font-size:13px;font-family:Verdana;">Tripiante se encuentra en mantenimiento.</b><br/>';
 $mmessage = '<b style="color:Green;font-size:11px;font-family:Verdana;">Sepa disculpar las molestias causadas, si desea contactarse con nosotros: <a href="mailto:staff.tripiante@gmail.com" title="e-mail">staff.tripiante@gmail.com</a></b>';
@@ -20,7 +20,7 @@ $boarddir = '/home/tripiant/public_html';
 $sourcedir = '/home/tripiant/public_html/web/archivos/raiz';
 $db_last_error = 0;
 if (!file_exists($sourcedir) && file_exists($boarddir . '/web/archivos/raiz'))
-	$sourcedir = $boarddir . '/web/archivos/raiz';
+  $sourcedir = $boarddir . '/web/archivos/raiz';
 $db_character_set = 'UTF8';
 $db_connection = @mysql_connect($db_server, $db_user, $db_passwd);
 @mysql_select_db($db_name, $db_connection);

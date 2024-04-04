@@ -89,7 +89,7 @@ function TopicDisplay($start) {
       'views' => $row['numViews'],
       'puntos' => $row['puntos'],
       'id' => $row['ID_TOPIC'],
-      'fecha' => timeformat($row['posterTime']),		
+      'fecha' => timeformat($row['posterTime']),
       'href' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '',
       'board_name' => $row['name'],
       'ID_BOARD' => $row['ID_BOARD'],

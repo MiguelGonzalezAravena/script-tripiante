@@ -4,7 +4,7 @@ function template_manual_above() { }
 function template_manual_below() { }
 
 function template_manual_intro() {
-	global $context, $settings, $boardurl;
+  global $context, $settings, $boardurl;
 
   echo '
         <script type="text/javascript">

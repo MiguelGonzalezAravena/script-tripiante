@@ -13,7 +13,7 @@ function Bookmarks() {
   $context['page_title'] = $txt['bookmarks'];
   $context['sub_action'] = isset($_REQUEST['sa']) ? $_REQUEST['sa'] : '';
 
-  switch ($context['sub_action'])	{
+  switch ($context['sub_action'])  {
     case 'delete':
     $return = !empty($_POST['remove_bookmarks']) ? deleteBookmark($_POST['remove_bookmarks']) : '';
     break;

@@ -1,8 +1,8 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
-$id	=	htmlentities(addslashes($_REQUEST['id']));
-$request	=	mysql_query("
+$id = htmlentities(addslashes($_REQUEST['id']));
+$request = mysql_query("
 SELECT *
 FROM ({$db_prefix}community_comments AS cc, {$db_prefix}community_topic AS ct, {$db_prefix}communities AS c, {$db_prefix}members AS mem)
 WHERE cc.ID_TOPIC = ct.ID_TOPIC

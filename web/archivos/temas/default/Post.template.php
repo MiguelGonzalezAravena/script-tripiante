@@ -194,7 +194,7 @@ function template_postbox(&$message) {
       WHERE men.ID_TOPIC = {$topic}
       AND men.ID_TOPIC = t.ID_TOPIC", __FILE__, __LINE__);
 
-    while ($row = mysqli_fetch_assoc($request)) {	
+    while ($row = mysqli_fetch_assoc($request)) {
       $context['ID_BOARD'] = $row['ID_BOARD'];
       $context['hiddenOption'] = $row['hiddenOption'];
       $context['isSticky'] = $row['isSticky'];

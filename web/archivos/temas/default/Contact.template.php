@@ -47,7 +47,7 @@ function template_main() {
               <label id="errorr"></label><br />
               <b class="size11">Empresa:</b><br />
               <input style="width: 184px;" name="empresa" tabindex="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
-              <br />			
+              <br />
               <b class="size11">Tel&eacute;fono:</b><br />
               <input style="width:184px;" name="tel" value="" tabindex="4" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
               <br />
@@ -92,7 +92,7 @@ function template_main() {
     <div style="clear:both"></div>';
 
   //--------------------------------------------------------------------------------------------------
-  //		Visual verification
+  //  Visual verification
   //--------------------------------------------------------------------------------------------------
   if ($context['visual_verification'] || isset($context['contact_form_error_visual_verification'])) {
     echo '

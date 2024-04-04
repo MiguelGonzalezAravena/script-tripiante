@@ -69,7 +69,7 @@ if (!empty($cat)) {
   $add = "AND t.ID_BOARD = $cat";
 }
 
-$request	= db_query("
+$request = db_query("
   SELECT m.ID_TOPIC, m.ID_BOARD AS ID_BOARD2, m.hiddenOption, m.subject, b.name, b.description, b.ID_BOARD, t.isSticky, t.ID_TOPIC
   FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t)
   WHERE m.ID_TOPIC = t.ID_TOPIC

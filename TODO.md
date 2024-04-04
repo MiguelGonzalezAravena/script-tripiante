@@ -13,7 +13,7 @@ A continuación se muestran las tareas que se encuentran pendientes o si es que 
 
 ### In Progress
 
-- [ ] Embellecer código con tabulaciones correspondientes.
+- [ ] Embellecer código con tabulaciones correspondientes (Cambiar `	` por `  `).
 - [ ] Eliminar o actualizar funciones deprecadas.
 - [ ] Cambiar los `"` por los `'` (dentro de lo posible). Excepto cuando se trata de expresiones regulares o consultas MySQL.
 - [ ] Usar únicamente archivo `Settings.php` y dejar de usar `config.php`.

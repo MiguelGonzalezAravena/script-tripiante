@@ -5,9 +5,9 @@ function template_manual_above() {}
 function template_manual_below() {}
 
 function template_manual_intro() {
-  global $context, $settings, $options, $txt, $scripturl, $modSettings, $db_prefix, $boardurl;
+  global $context, $settings, $db_prefix, $boardurl;
 
-  $context['NOMBRE_USER'] = $_GET['id'];
+  $context['NOMBRE_USER'] = htmlentities(addslashes($_GET['id']), ENT_QUOTES, 'UTF-8');
   $request = db_query("
     SELECT mem.ID_MEMBER, mem.memberName, mem.realName
     FROM ({$db_prefix}members AS mem)

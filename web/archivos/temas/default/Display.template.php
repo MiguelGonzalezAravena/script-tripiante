@@ -331,7 +331,6 @@ function template_main() {
       echo 'No hay posts relacionados.';
     }
 
-    // TO-DO: Seguir mejorando
     echo '</span>
           </div>
         </div>
@@ -347,16 +346,26 @@ function template_main() {
           <div class="windowbg" style="width: 376px; padding: 4px;">
             <span class="size11">
               <center>
-                <span class="icons visitas">&nbsp;' . $context['num_views'] . '&nbsp;visitas</span>
+                <span class="icons visitas">
+                  &nbsp;
+                  ' . $context['num_views'] . '
+                  &nbsp;
+                  visitas</span>
                 <span class="icons fav">
-                  <span id="cant_favs_post">' . $context['fav1'] . '</span>&nbsp;favoritos
+                  <span id="cant_favs_post">' . $context['fav1'] . '</span>
+                  &nbsp;
+                  favoritos
                 </span>
                 <span class="icons puntos">
-                  <span id="cant_pts_post_dos">' . $context['points-post'] . '</span> puntos
+                  <span id="cant_pts_post_dos">' . $context['points-post'] . '</span>
+                  &nbsp;
+                  puntos
                 </span>
               </center>
               <div class="hrs"></div>
-              <b>Creado el:</b>&nbsp;<span property="dc:date" content="' . $message['time'] . '">' . $message['time'] . '</span>
+              <b>Creado el:</b>
+              &nbsp;
+              <span property="dc:date" content="' . $message['time'] . '">' . $message['time'] . '</span>
               <div class="hrs"></div>
               <b>Categor&iacute;a:</b>&nbsp;<a href="' . $boardurl . '/categoria/' . $message['board']['description'] . '" title="' . $message['board']['name'] . '">' . $message['board']['name'] . '</a>
               <div class="hrs"></div>

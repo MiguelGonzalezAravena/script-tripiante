@@ -1,7 +1,7 @@
 <?php
 
 function template_init() {
-  global $context, $settings, $options, $txt;
+  global  $settings;
 
   $settings['use_default_images'] = 'never';
   $settings['doctype'] = 'xhtml';
@@ -12,7 +12,7 @@ function template_init() {
 }
 
 function template_main_above() {
-  global $context, $settings, $options, $scripturl, $txt, $modSettings, $slogan, $boardurl;
+  global $context, $settings, $txt, $slogan, $boardurl;
 
   $action = $_REQUEST['action'];
 
@@ -66,13 +66,14 @@ function template_main_above() {
 
   if ($context['user']['is_logged']) {
     // Is the forum in maintenance mode?
-    if ($context['in_maintenance'] && $context['user']['is_admin'])
+    if ($context['in_maintenance'] && $context['user']['is_admin']) {
       echo '
         <div align="center" style="font-family: Verdana; font-weight: bold;">
           <p>
             <img src="' . $settings['images_url'] . '/construction.png" alt="Mantenci&oacute;n" title="Mantenci&oacute;n">&nbsp;' . $txt[616] . '&nbsp;<img src="' . $settings['images_url'] . '/construction.png" alt="Mantenci&oacute;n" title="Mantenci&oacute;n">
           </p>
         </div>';
+    }
   }
 
   echo '
@@ -98,7 +99,7 @@ function template_main_above() {
 }
 
 function template_main_below() {
-  global $context, $settings, $options, $scripturl, $txt;
+  global $context, $settings, $boardurl, $txt;
 
   echo '
                 </div>
@@ -161,7 +162,7 @@ function template_main_below() {
 }
 
 function template_menu() {
-  global $context, $settings, $options, $scripturl, $txt, $boardurl;
+  global $context, $settings, $boardurl;
 
   echo '
     <div style="margin: 0px; padding: 0px;">
@@ -225,8 +226,9 @@ function template_menu() {
 
     if ($context['user']['unread_messages']) {
       $unread_messages = ($context['user']['unread_messages'] > 0 ? $context['user']['unread_messages'] : '');
+
       echo '
-        <a valign="middle" href="' . $boardurl . '/mensajes/" title="' . $unread_messages ' MP Nuevo">
+        <a valign="middle" href="' . $boardurl . '/mensajes/" title="' . $unread_messages . ' MP Nuevo">
           <img alt="" src="' . $settings['images_url'] . '/icons/mensaje_nuevo.gif" style="padding-top: 6px; #padding-top: 0px; _padding-top: 0px;" align="top" border="0" />
         </a>
         <a href="' . $boardurl . '/mensajes/" title="' . $unread_messages  . ' MP Nuevo">
@@ -281,7 +283,7 @@ function template_menu() {
 }
 
 function categorias($output_method = 'echo') {
-  global $db_prefix, $txt, $scripturl, $modSettings;
+  global $db_prefix;
 
   $action = $_REQUEST['action'];
 

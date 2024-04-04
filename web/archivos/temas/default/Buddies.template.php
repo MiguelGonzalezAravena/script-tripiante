@@ -97,28 +97,40 @@ function template_buddy_center() {
           <td></td>
         </tr>';
 
-  // Now loop through each buddy showing info on each.
-  $alternate = false;
+    // Now loop through each buddy showing info on each.
+    $alternate = false;
 
-  foreach ($context['unapproved'] as $buddy) {
+    foreach ($context['unapproved'] as $buddy) {
+      echo '
+        <tr class="' . ($alternate ? 'windowbg' : 'windowbg2') . '">
+          <td>' . $buddy['link'] . '</td>
+          <td align="center">
+            <a href="' . $buddy['online']['href'] . '">
+              <img src="' . $buddy['online']['image_href'] . '" alt="' . $buddy['online']['label'] . '" title="' . $buddy['online']['label'] . '" />
+            </a>
+          </td>
+          <td align="center">' . ($buddy['hide_email'] ? '' : '<a href="mailto:' . $buddy['email'] . '"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt[69] . '" title="' . $txt[69] . ' ' . $buddy['name'] . '" /></a>') . '</td>
+          <td align="center">' . $buddy['icq']['link'] . '</td>
+          <td align="center">' . $buddy['aim']['link'] . '</td>
+          <td align="center">' . $buddy['yim']['link'] . '</td>
+          <td align="center">' . $buddy['msn']['link'] . '</td>
+          <td align="center">
+            <a href="' . $scripturl . '?action=buddies;sa=approve;u=' . $buddy['id'] . ';sesc=' . $context['session_id'] . '">
+              <img src="' . $settings['images_url'] . '/icons/online.gif" alt="' . $txt['buddy_approve'] . '" title="' . $txt['buddy_approve'] . '" />
+            </a>
+          </td>
+          <td align="center">
+            <a href="' . $scripturl . '?action=buddies;sa=remove;u=' . $buddy['id'] . ';sesc=' . $context['session_id'] . '">
+              <img src="' . $settings['images_url'] . '/icons/delete.gif" alt="' . $txt['buddy_remove'] . '" title="' . $txt['buddy_remove'] . '" />
+            </a>
+          </td>
+        </tr>';
+
+      $alternate = !$alternate;
+    }
+
     echo '
-      <tr class="' . ($alternate ? 'windowbg' : 'windowbg2') . '">
-        <td>' . $buddy['link'] . '</td>
-        <td align="center"><a href="' . $buddy['online']['href'] . '"><img src="' . $buddy['online']['image_href'] . '" alt="' . $buddy['online']['label'] . '" title="' . $buddy['online']['label'] . '" /></a></td>
-        <td align="center">' . ($buddy['hide_email'] ? '' : '<a href="mailto:' . $buddy['email'] . '"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt[69] . '" title="' . $txt[69] . ' ' . $buddy['name'] . '" /></a>') . '</td>
-        <td align="center">' . $buddy['icq']['link'] . '</td>
-        <td align="center">' . $buddy['aim']['link'] . '</td>
-        <td align="center">' . $buddy['yim']['link'] . '</td>
-        <td align="center">' . $buddy['msn']['link'] . '</td>
-        <td align="center"><a href="' . $scripturl . '?action=buddies;sa=approve;u=' . $buddy['id'] . ';sesc=' . $context['session_id'] . '"><img src="' . $settings['images_url'] . '/icons/online.gif" alt="' . $txt['buddy_approve'] . '" title="' . $txt['buddy_approve'] . '" /></a></td>
-        <td align="center"><a href="' . $scripturl . '?action=buddies;sa=remove;u=' . $buddy['id'] . ';sesc=' . $context['session_id'] . '"><img src="' . $settings['images_url'] . '/icons/delete.gif" alt="' . $txt['buddy_remove'] . '" title="' . $txt['buddy_remove'] . '" /></a></td>
-      </tr>';
-
-    $alternate = !$alternate;
-  }
-
-  echo '
-    </table>';
+      </table>';
   }
   
   if (isset($context['pending'])) {
@@ -141,27 +153,27 @@ function template_buddy_center() {
           <td></td>
         </tr>';
 
-  // Now loop through each buddy showing info on each.
-  $alternate = false;
+    // Now loop through each buddy showing info on each.
+    $alternate = false;
 
-  foreach ($context['pending'] as $buddy) {
+    foreach ($context['pending'] as $buddy) {
+      echo '
+        <tr class="' . ($alternate ? 'windowbg' : 'windowbg2') . '">
+          <td>' . $buddy['link'] . '</td>
+          <td align="center"><a href="' . $buddy['online']['href'] . '"><img src="' . $buddy['online']['image_href'] . '" alt="' . $buddy['online']['label'] . '" title="' . $buddy['online']['label'] . '" /></a></td>
+          <td align="center">' . ($buddy['hide_email'] ? '' : '<a href="mailto:' . $buddy['email'] . '"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt[69] . '" title="' . $txt[69] . ' ' . $buddy['name'] . '" /></a>') . '</td>
+          <td align="center">' . $buddy['icq']['link'] . '</td>
+          <td align="center">' . $buddy['aim']['link'] . '</td>
+          <td align="center">' . $buddy['yim']['link'] . '</td>
+          <td align="center">' . $buddy['msn']['link'] . '</td>
+          <td align="center"><a href="' . $scripturl . '?action=buddies;sa=remove;u=' . $buddy['id'] . ';sesc=' . $context['session_id'] . '"><img src="' . $settings['images_url'] . '/icons/delete.gif" alt="' . $txt['buddy_remove'] . '" title="' . $txt['buddy_remove'] . '" /></a></td>
+        </tr>';
+
+      $alternate = !$alternate;
+    }
+
     echo '
-      <tr class="' . ($alternate ? 'windowbg' : 'windowbg2') . '">
-        <td>' . $buddy['link'] . '</td>
-        <td align="center"><a href="' . $buddy['online']['href'] . '"><img src="' . $buddy['online']['image_href'] . '" alt="' . $buddy['online']['label'] . '" title="' . $buddy['online']['label'] . '" /></a></td>
-        <td align="center">' . ($buddy['hide_email'] ? '' : '<a href="mailto:' . $buddy['email'] . '"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt[69] . '" title="' . $txt[69] . ' ' . $buddy['name'] . '" /></a>') . '</td>
-        <td align="center">' . $buddy['icq']['link'] . '</td>
-        <td align="center">' . $buddy['aim']['link'] . '</td>
-        <td align="center">' . $buddy['yim']['link'] . '</td>
-        <td align="center">' . $buddy['msn']['link'] . '</td>
-        <td align="center"><a href="' . $scripturl . '?action=buddies;sa=remove;u=' . $buddy['id'] . ';sesc=' . $context['session_id'] . '"><img src="' . $settings['images_url'] . '/icons/delete.gif" alt="' . $txt['buddy_remove'] . '" title="' . $txt['buddy_remove'] . '" /></a></td>
-      </tr>';
-
-    $alternate = !$alternate;
-  }
-
-  echo '
-    </table>';
+      </table>';
   }
 }
 

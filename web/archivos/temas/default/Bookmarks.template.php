@@ -85,7 +85,9 @@ function template_main() {
                 ' . $txt['was_created_by'] . '&nbsp;
                 <a style="color: #717171;" href="' . $boardurl . '/perfil/'. $row['memberName'] . '">' . $row['realName'] . '</a>
                 &nbsp;|&nbsp;
-                pts: ' . $row['points'] . '
+                pts:
+                &nbsp;
+                ' . $row['points'] . '
                 &nbsp;|&nbsp;
                 <a title="' . $txt['send_to_friend'] . '" href="' . $boardurl . '/enviar-a-amigo/' . $row['ID_TOPIC'] . '">
                   <img alt="" src="' . $settings['images_url'] . '/icons/icono-enviar-mensaje.gif" />

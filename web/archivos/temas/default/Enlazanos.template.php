@@ -1,5 +1,7 @@
 <?php
+
 function template_manual_above() {}
+
 function template_manual_below() {}
 
 function template_manual_intro() {

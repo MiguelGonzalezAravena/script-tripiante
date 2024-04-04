@@ -586,19 +586,20 @@ function template_editarticle() {
           <table align="center">';
               
     foreach($context['articles_images'] as $row) {
-      echo '<tr>
-        <td>
-          <a href="javascript:void(0);" onclick="replaceText(\'[img]' . $modSettings['articles_url'] . $row['filename']  . '[/img]\', document.forms.editarticle.message); return false;">
-            <img src="' . $modSettings['articles_url'] . $row['thumbnail'] . '" alt="" />
-          </a>
-        </td>
-        <td>
-          ' . round($row['filesize'] / 1024, 2) . 'kb
-        </td>
-        <td>
-          <a href="' . $scripturl . '?action=articles;sa=delimage;id=' . $row['ID_FILE'] . '">' . $txt['smfarticles_txtdel'] . '</a>
-        </td>
-      </tr>';
+      echo '
+        <tr>
+          <td>
+            <a href="javascript:void(0);" onclick="replaceText(\'[img]' . $modSettings['articles_url'] . $row['filename']  . '[/img]\', document.forms.editarticle.message); return false;">
+              <img src="' . $modSettings['articles_url'] . $row['thumbnail'] . '" alt="" />
+            </a>
+          </td>
+          <td>
+            ' . round($row['filesize'] / 1024, 2) . 'kb
+          </td>
+          <td>
+            <a href="' . $scripturl . '?action=articles;sa=delimage;id=' . $row['ID_FILE'] . '">' . $txt['smfarticles_txtdel'] . '</a>
+          </td>
+        </tr>';
     }
 
     echo '
@@ -717,9 +718,9 @@ function template_approvearticles() {
       echo '<a href="' . $scripturl . '?action=articles;sa=deletearticle&id=' . $row['ID_ARTICLE'] . '">' . $txt['smfarticles_txtdel'] . '</a>';
     }
 
-    echo '</td>
-    </tr>';
-
+    echo '
+        </td>
+      </tr>';
   }
 
    // Show the pages
@@ -1009,11 +1010,11 @@ function template_myarticles() {
   $addarticle = $context['addarticle'];
   $editarticle = $context['editarticle'];
   $deletearticle = $context['deletearticle'];
-  
+
   echo '<div style="padding: 3px;">' . theme_linktree() . '</div>';
 
   echo '
-    <table border="0" cellspacing="0" cellpadding="4" align="center" width="90%" class="tborder" >
+    <table border="0" cellspacing="0" cellpadding="4" align="center" width="90%" class="tborder">
       <tr class="titlebg">
         <td align="center">' . $txt['smfarticles_indextitle'] . '</td>
       </tr>

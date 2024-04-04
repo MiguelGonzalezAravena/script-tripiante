@@ -532,6 +532,7 @@ function template_comunidades() {
     AND den.TYPE = 'comunidad'
     ORDER BY den.ID_DENUNCIATIONS DESC";
 
+  // Registros paginados
   $request2 = db_query("
     {$query}
     LIMIT {$start}, {$end}", __FILE__, __LINE__);
@@ -615,6 +616,7 @@ function template_comunidades() {
         </tr>';
     }
 
+    // Registros totales
     $request = db_query($query, __FILE__, __LINE__);
     $records = mysqli_num_rows($request);
   }

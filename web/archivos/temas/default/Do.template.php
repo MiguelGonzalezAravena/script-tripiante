@@ -177,7 +177,7 @@ function template_eliminarres() {
 function template_comunidadagregada() {
   global $context, $settings, $txt, $db_prefix, $boardurl;
 
-  $id = htmlentities(addslashes($_GET['id']));
+  $id = htmlentities(addslashes($_GET['id']), ENT_QUOTES, 'UTF-8');
   $context['page_title'] = $txt[18];
 
   $request = db_query("

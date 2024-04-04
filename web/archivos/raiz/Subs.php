@@ -3114,24 +3114,27 @@ function ssi_vistaprevia() {
   $reason = htmlentities(addslashes($_POST['causa']), ENT_QUOTES, 'UTF-8');
 
   if ($context['user']['is_guest']) {
-    echo '<div class="noesta" style="width:922px;margin-bottom:4px;">Debes estar logueado para estar ac&aacute;.-</div>';
+    echo '<div class="noesta" style="width: 922px; margin-bottom: 4px;">Debes estar logueado para estar ac&aacute;.-</div>';
   } else if (strlen($subject) < $modSettings['title_post_preview']) {
-    echo '<div class="noesta" style="width:922px;margin-bottom:4px;">El t&iacute;tulo no puede tener menos de ', $modSettings['title_post_preview'], ' letras.-</div><div style="clear: both;"></div>';
+    echo '
+      <div class="noesta" style="width: 922px; margin-bottom: 4px;">El t&iacute;tulo no puede tener menos de ' . $modSettings['title_post_preview'] . ' letras.-</div>
+      <div style="clear: both;"></div>';
   } else if (strlen($_REQUEST['message']) < $modSettings['body_post_preview']) {
-    echo '<div class="noesta" style="width: 922px; margin-bottom: 4px;">El post no puede tener menos de ', $modSettings['body_post_preview'], ' letras.-</div>';
+    echo '<div class="noesta" style="width: 922px; margin-bottom: 4px;">El post no puede tener menos de ' . $modSettings['body_post_preview'] . ' letras.-</div>';
   } else {
-    echo '<div class="box_140" style="float: left; margin-right: 8px;">
-      <div class="box_title" style="width: 138px;">
-        <div class="box_txt box_140-34">Publicado por:</div>
-        <div class="box_rss">
-          <div class="icon_img">
-            <a href="' . $boardurl . '/rss/post-user/', $context['user']['name'], '">
-              <img alt="" src="' . $settings['images_url'] . '/icons/tpbig-v1-iconos.gif?v3.2.3" style="cursor: pointer; margin-top: -352px; display: inline;">
-            </a>
+    echo '
+      <div class="box_140" style="float: left; margin-right: 8px;">
+        <div class="box_title" style="width: 138px;">
+          <div class="box_txt box_140-34">Publicado por:</div>
+          <div class="box_rss">
+            <div class="icon_img">
+              <a href="' . $boardurl . '/rss/post-user/' . $context['user']['name'] . '">
+                <img alt="" src="' . $settings['images_url'] . '/icons/tpbig-v1-iconos.gif?v3.2.3" style="cursor: pointer; margin-top: -352px; display: inline;">
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="windowbg" style="padding: 4px; width: 130px;">';
+        <div class="windowbg" style="padding: 4px; width: 130px;">';
 
     $userse = db_query("
       SELECT *
@@ -3192,7 +3195,10 @@ function ssi_vistaprevia() {
         $context['user']['avatar']['height'] = $modSettings['avatar_max_height_external'];
     }
 
-    echo '<center><div class="fondoavatar" style="overflow:hidden;width:130px;" align="center"><a href="' . $boardurl . '/perfil/' . $context['memberName'] . '" title="Ver perfil">';
+    echo '
+      <center>
+        <div class="fondoavatar" style="overflow: hidden; width: 130px;" align="center">
+          <a href="' . $boardurl . '/perfil/' . $context['memberName'] . '" title="Ver perfil">';
 
     if (!empty($context['avatar']))
       $context['user']['avatar']['image'] = '<img src="'  .$context['avatar'] . '" width="105" alt="" class="avatar" border="0" />';
@@ -3203,11 +3209,28 @@ function ssi_vistaprevia() {
       echo '<img src="' . $boardurl . '/avatar.gif" alt="Sin avatar" border="0">';
     }
 
-    echo '</a><br /><span class="mp">' . $context['personalText'] . '</span></div></center><br/>';
-    echo '<b><a href="' . $boardurl . '/perfil/' . $context['memberName'] . '" style="font-size: 14px; color: rgb(255, 102, 0);">' . $context['realName'] . '</a></b><br />';
-    echo '<b style="font-size: 12px; color: rgb(116, 116, 116); text-shadow: 0px 1px 1px rgb(106, 86, 69);">' . (!empty($membergropu2) ? $membergropu2 : $membergropu) . '</b><br>';
-    echo '<span title="', (!empty($membergropu2) ? $membergropu2 : $membergropu), '"><img alt="" src="' . str_replace('1#rangos', $settings['images_url'] . '/rangos', $medalla) . '"></span>';
-    echo '<span title="' . ssi_sexo1($context['gender']) . '">' . ssi_sexo2(ssi_sexo3($context['gender'])) . '</span> ';
+    echo '
+          </a>
+          <br />
+          <span class="mp">' . $context['personalText'] . '</span>
+        </div>
+      </center>
+      <br/>';
+
+    echo '
+      <b>
+        <a href="' . $boardurl . '/perfil/' . $context['memberName'] . '" style="font-size: 14px; color: rgb(255, 102, 0);">' . $context['realName'] . '</a>
+      </b>
+      <br />';
+
+    echo '
+      <b style="font-size: 12px; color: rgb(116, 116, 116); text-shadow: 0px 1px 1px rgb(106, 86, 69);">' . (!empty($membergropu2) ? $membergropu2 : $membergropu) . '</b>
+      <br/>';
+    echo '
+      <span title="', (!empty($membergropu2) ? $membergropu2 : $membergropu), '">
+        <img alt="" src="' . str_replace('1#rangos', $settings['images_url'] . '/rangos', $medalla) . '">
+      </span>';
+    echo '<span title="' . ssi_sexo1($context['gender']) . '">' . ssi_sexo2(ssi_sexo3($context['gender'])) . '</span>&nbsp;';
 
     if($context['usertitle']) {
       echo '<img alt="" title="'. ssi_pais($context['usertitle'])  . '" src="' . $settings['images_url'] . '/icons/banderas/' . $context['usertitle'] . '.gif"> ';
@@ -3215,10 +3238,31 @@ function ssi_vistaprevia() {
       echo '<img alt="" title="" src="' . $settings['images_url'] . '/icons/banderas/ot.gif"> ';
     }
 
-    echo '<img title="Estado: ' . ssi_estado_icon($context['estado_icon']) . '" src="' . $settings['images_url'] . '/icons/estado/' . $context['estado_icon'] . '.gif" alt=""><br />';
-    echo '<br /><div style="margin-bottom: 2px;"><span style="font-size: 12px;"><img alt="" src="' . $settings['images_url'] . '/icons/mensaje_para.gif" border="0"> <a href="' . $boardurl . '/mensajes/a/' . $context['memberName'] . '" title="Enviar mensaje">Enviar mensaje</a></span></div><div style="margin-bottom: 4px;"><span class="icons fot2" style="font-size: 12px;"><a href="' . $boardurl . '/imagenes/' . $context['memberName'] . '" title="Sus im&aacute;genes"> Sus im&aacute;genes</a></span></div><br><hr class="divider">';
+    echo '
+      <img title="Estado: ' . ssi_estado_icon($context['estado_icon']) . '" src="' . $settings['images_url'] . '/icons/estado/' . $context['estado_icon'] . '.gif" alt="">
+      <br />';
 
-    /* Contar los comentarios del usuario */
+    echo '
+      <br />
+      <div style="margin-bottom: 2px;">
+        <span style="font-size: 12px;">
+          <img alt="" src="' . $settings['images_url'] . '/icons/mensaje_para.gif" border="0">
+          &nbsp;
+          <a href="' . $boardurl . '/mensajes/a/' . $context['memberName'] . '" title="Enviar mensaje">Enviar mensaje</a>
+        </span>
+      </div>
+      <div style="margin-bottom: 4px;">
+        <span class="icons fot2" style="font-size: 12px;">
+          <a href="' . $boardurl . '/imagenes/' . $context['memberName'] . '" title="Sus im&aacute;genes">
+            &nbsp;
+            Sus im&aacute;genes
+          </a>
+        </span>
+      </div>
+      <br />
+      <hr class="divider">';
+
+    // Contar los comentarios del usuario
     $request = db_query("
       SELECT *
       FROM {$db_prefix}comments
@@ -3226,12 +3270,51 @@ function ssi_vistaprevia() {
 
     $context['comentuser'] = mysqli_num_rows($request);
 
-    echo '<br /><div class="fondoavatar" style="overflow: hidden; width: 130px;"><b style="color: rgb(254, 143, 71); text-shadow: 0px 1px 1px rgb(106, 86, 69);">PUNTOS:</b> <b><span id="cant_pts_post">' . $context['moneyBank'] . '</span></b><br>
-      <b style="color: rgb(254, 143, 71); text-shadow: 0px 1px 1px rgb(106, 86, 69);">POST:</b> <b><a href="' . $boardurl . '/user-post/' . $context['memberName'] . '">' . $context['topics'] . '</a></b><br />
-      <b style="color: rgb(254, 143, 71); text-shadow: 0px 1px 1px rgb(106, 86, 69);">COMENTARIOS:</b> <b><a href="' . $boardurl . '/user-comment/' . $context['memberName'] . '">' . $context['comentuser'] . '</a></b></div><br><span class="size11"></span></div></div><div><div class="box_780" style="float: left;"><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>' . $subject . '</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0"></div></div>
-      <div class="windowbg" style="padding: 4px; width: 764px;" id="vista_previa">' . $message . '</div>
-      <div style="margin-top: 4px; margin-bottom: 4px;" align="center"><input onclick="cerrar_vprevia()" class="button" style="font-size: 13px;" value="Cerrar la previsualizaci&oacute;n" title="Cerrar la previsualizaci&oacute;n" type="button"> <input onclick="return oblig(this.form.subject.value, this.form.message.value, this.form.tags.value, this.form);" class="button" style="font-size: 13px;" value="Ok, est&aacute; perfecto!" title="Ok, est&aacute; perfecto!" type="submit">
-      </div></div></div><div style="clear: both;"></div><br />';
+    echo '
+          <br />
+          <div class="fondoavatar" style="overflow: hidden; width: 130px;">
+            <b style="color: rgb(254, 143, 71); text-shadow: 0px 1px 1px rgb(106, 86, 69);">PUNTOS:</b>
+            &nbsp;
+            <b>
+              <span id="cant_pts_post">' . $context['moneyBank'] . '</span>
+            </b>
+            <br />
+            <b style="color: rgb(254, 143, 71); text-shadow: 0px 1px 1px rgb(106, 86, 69);">POST:</b>
+            &nbsp;
+            <b>
+              <a href="' . $boardurl . '/user-post/' . $context['memberName'] . '">' . $context['topics'] . '</a>
+            </b>
+            <br />
+            <b style="color: rgb(254, 143, 71); text-shadow: 0px 1px 1px rgb(106, 86, 69);">COMENTARIOS:</b>
+            &nbsp;
+            <b>
+              <a href="' . $boardurl . '/user-comment/' . $context['memberName'] . '">' . $context['comentuser'] . '</a>
+            </b>
+          </div>
+          <br />
+          <span class="size11"></span>
+        </div>
+      </div>
+      <div>
+        <div class="box_780" style="float: left;">
+          <div class="box_title" style="width: 772px;">
+            <div class="box_txt box_780-34">
+              <center>' . $subject . '</center>
+            </div>
+            <div class="box_rss">
+              <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0">
+            </div>
+          </div>
+          <div class="windowbg" style="padding: 4px; width: 764px;" id="vista_previa">' . $message . '</div>
+          <div style="margin-top: 4px; margin-bottom: 4px;" align="center">
+            <input onclick="cerrar_vprevia()" class="button" style="font-size: 13px;" value="Cerrar la previsualizaci&oacute;n" title="Cerrar la previsualizaci&oacute;n" type="button" />
+            &nbsp;
+            <input onclick="return oblig(this.form.subject.value, this.form.message.value, this.form.tags.value, this.form);" class="button" style="font-size: 13px;" value="Ok, est&aacute; perfecto!" title="Ok, est&aacute; perfecto!" type="submit" />
+          </div>
+        </div>
+      </div>
+      <div style="clear: both;"></div>
+      <br />';
   }
 }
 

@@ -1,7 +1,7 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
-$user = htmlentities(addslashes($_REQUEST['user']));
+$user = htmlentities(addslashes($_REQUEST['user']), ENT_QUOTES, 'UTF-8');
 
 $end = 10;
 $page = (int) $_GET['pag'];
@@ -26,7 +26,7 @@ $request = db_query("
 $rows = mysqli_num_rows($request);
 
 if ($rows == 0) {
-  echo '<div class="noesta" style="width:541px;">Este usuario no est&aacute; unido a comunidades.</div>';
+  echo '<div class="noesta" style="width: 541px;">Este usuario no est&aacute; unido a comunidades.</div>';
 } else if ($rows > 0) {
   echo '
     <div id="ComuMemPerfil">

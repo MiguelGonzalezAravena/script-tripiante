@@ -104,7 +104,7 @@ function MainView() {
 
   // Check if there was a category
   if (isset($_REQUEST['cat'])) {
-    $cat = htmlentities(addslashes($_REQUEST['cat']));
+    $cat = htmlentities(addslashes($_REQUEST['cat']), ENT_QUOTES, 'UTF-8');
 
     // Check category level permission to view
     GetCatPermission($cat, 'view');

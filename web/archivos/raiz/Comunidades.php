@@ -302,7 +302,7 @@ function editar() {
 
   $context['sub_template'] = 'editar';
   $context['page_title'] = $txt[18];
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
   $result = db_query("
     SELECT ID_MEMBER
@@ -415,10 +415,10 @@ function editar1() {
   loadlanguage('Post');
 
   $context['page_title'] = $txt[18];
-  $title = htmlentities(addslashes($_POST['nombre']), ENT_QUOTES, "UTF-8");
-  $logo = htmlentities(addslashes($_POST['imagen']), ENT_QUOTES, "UTF-8");
+  $title = htmlentities(addslashes($_POST['nombre']), ENT_QUOTES, 'UTF-8');
+  $logo = htmlentities(addslashes($_POST['imagen']), ENT_QUOTES, 'UTF-8');
   $ID_CATEGORY = (int) $_POST['categoria'];
-  $description = htmlentities(addslashes($_POST['descripcion']), ENT_QUOTES, "UTF-8");
+  $description = htmlentities(addslashes($_POST['descripcion']), ENT_QUOTES, 'UTF-8');
   $view = (int) $_POST['privada'];
   $grade = (int) $_POST['rango_default'];
   $ID_COMMUNITY = (int) $_POST['idcom'];
@@ -457,7 +457,7 @@ function borrar() {
   $context['sub_template'] = 'borrar';
   $context['page_title'] = ' Borrar Comunidad';
 
-  $id = htmlentities(addslashes($_GET['id']));
+  $id = htmlentities(addslashes($_GET['id']), ENT_QUOTES, 'UTF-8');
 
   $dbresult = db_query("
     SELECT c.ID_MEMBER, c.ID_COMMUNITY, c.description, c.ID_CATEGORY, c.view, c.grade, c.title, c.friendly_url, c.logo, c.numMembers, mem.ID_MEMBER
@@ -559,7 +559,7 @@ function comunidad() {
   loadlanguage('Post');
   $context['sub_template'] = 'comunidad';
 
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
   $temasimpo = db_query("
     SELECT ct.ID_TOPIC, ct.ID_MEMBER, ct.isSticky, ct.ID_COMMUNITY, ct.locked, ct.subject, ct.posterTime, c.friendly_url, c.ID_COMMUNITY
@@ -711,7 +711,7 @@ function vermiembros() {
   loadlanguage('Post');
   $context['sub_template'] = 'vermiembros';
 
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
   // Para saber si eres administrador
   $result = db_query("
@@ -825,8 +825,8 @@ function adminmiembro() {
   loadlanguage('Post');
 
   $context['sub_template']  = 'adminmiembro';
-  $id = htmlentities(addslashes($_REQUEST['id']));
-  $us = htmlentities(addslashes($_REQUEST['us']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
+  $us = htmlentities(addslashes($_REQUEST['us']), ENT_QUOTES, 'UTF-8');
 
   $dbresult = db_query("
     SELECT
@@ -1002,7 +1002,7 @@ function denunciar() {
   loadlanguage('Post');
 
   $context['sub_template'] = 'denunciar';
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
   $request = db_query("
     SELECT

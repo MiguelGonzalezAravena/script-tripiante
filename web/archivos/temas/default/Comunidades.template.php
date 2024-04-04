@@ -24,7 +24,7 @@ function rango_img($valor) {
 function panel() {
   global $context, $settings, $boardurl, $db_prefix, $modSettings;
 
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
   $request = db_query("
     SELECT *
@@ -111,7 +111,7 @@ function panel() {
 function ultimos_miembros() {
   global $context, $db_prefix, $boardurl, $modSettings, $settings;
 
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
   $request = db_query("
     SELECT cm.ID, cm.ID_COMMUNITY, cm.ID_MEMBER, cm.date, cm.name, c.ID_COMMUNITY, c.friendly_url
@@ -1137,7 +1137,7 @@ function template_comunidad() {
   } else if ($ban <= 0) {
     panel();
 
-    $id = htmlentities(addslashes($_REQUEST['id']));
+    $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
     echo '
       <div style="margin-bottom: 8px; float: left;">
@@ -1284,7 +1284,7 @@ function template_comunidad() {
 function template_ultimospost() {
   global $context, $settings, $db_prefix, $modSettings, $boardurl;
 
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
   $end = $modSettings['community_topics'];
   $page = (int) $_GET['pag'];
@@ -1804,7 +1804,7 @@ function template_denunciar() {
       fatal_error('S&oacute;lo usuarios registrados tienen acceso a esta comunidad.-', false);
     }
 
-    $id = htmlentities(addslashes($_REQUEST['id']));
+    $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
     $request = db_query("
       SELECT *
@@ -2473,7 +2473,7 @@ function template_publicitar() {
 function template_editartema() {
   global $context, $db_prefix, $boardurl, $txt, $modSettings, $ID_MEMBER, $settings;
   
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
   echo '
     <div class="tagacom2">

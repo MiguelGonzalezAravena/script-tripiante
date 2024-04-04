@@ -151,7 +151,7 @@ function ssi_eliminar_respuesta() {
 function ssi_eliminar_comunidad() {
   global $context, $db_prefix, $ID_MEMBER, $boardurl;
 
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
   $request = db_query("
     SELECT * FROM
     {$db_prefix}communities
@@ -210,7 +210,7 @@ function ssi_eliminar_comunidad() {
 function ssi_ultimas_respuestas() {
   global $context, $db_prefix, $modSettings, $boardurl;
 
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
   $request = db_query("
     SELECT cc.ID_COMMUNITY, cc.ID_TOPIC, cc.posterName, cc.ID_COMMENT, c.ID_COMMUNITY, c.friendly_url, ct.ID_COMMUNITY, ct.ID_TOPIC, ct.subject
     FROM ({$db_prefix}community_comments AS cc, {$db_prefix}communities AS c, {$db_prefix}community_topic AS ct)
@@ -423,7 +423,7 @@ function ssi_abandonar_comunidad() {
   loadlanguage('Post');
 
   $context['page_title'] = 'Salir de la Comunidad';
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
 
   $result = db_query("
     SELECT cm.ID_MEMBER, cm.ID_COMMUNITY, cm.grade, c.friendly_url, c.ID_COMMUNITY, cm.grade
@@ -515,7 +515,7 @@ function ssi_unir_comunidad() {
   global $context, $db_prefix, $ID_MEMBER, $boardurl;
 
   if ($context['user']['is_logged']) {
-    $id = htmlentities(addslashes($_REQUEST['id']));
+    $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
     $fecha = time();
 
     $result = db_query("
@@ -636,8 +636,8 @@ function ssi_responder_tema() {
 function ssi_permitir_mp() {
   global $context, $db_prefix;
 
-  $action = htmlentities(addslashes($_REQUEST['action']));
-  $user = htmlentities(addslashes($_REQUEST['user']));
+  $action = htmlentities(addslashes($_REQUEST['action']), ENT_QUOTES, 'UTF-8');
+  $user = htmlentities(addslashes($_REQUEST['user']), ENT_QUOTES, 'UTF-8');
 
   $request = db_query("
     SELECT *
@@ -869,7 +869,7 @@ function ssi_comunidades_nooficial() {
 function ssi_comunidades_oficial() {
   global $context, $db_prefix, $ID_MEMBER;
 
-  $id = htmlentities(addslashes($_REQUEST['id']));
+  $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
   $request = db_query("
     SELECT ID_MEMBER, ID_COMMUNITY, friendly_url
     FROM {$db_prefix}communities

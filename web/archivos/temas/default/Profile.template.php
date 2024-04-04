@@ -1,1158 +1,1643 @@
 <?php
 
-// Pendiente
-function reducir_amigos($tipo)
-{
-censorText($tipo);
-if(strlen($tipo) > 6) {
-$tipo = substr($tipo,0,6)."...";
-}
-return $tipo;
-}
+function reducir_amigos($tipo) {
+  $tipo = censorText($tipo);
 
-function pelo_color($valor)
-{
-$valor = str_replace("negro", "Negro", $valor);
-$valor = str_replace("castano_oscuro", "Casta&ntilde;o oscuro", $valor);
-$valor = str_replace("castano_claro", "Casta&ntilde;o claro", $valor);
-$valor = str_replace("rubio", "Rubio", $valor);
-$valor = str_replace("pelirrojo", "Pelirrojo", $valor);
-$valor = str_replace("gris", "Gris", $valor);
-$valor = str_replace("canoso", "Canoso", $valor);
-$valor = str_replace("tenido", "Te&ntilde;ido", $valor);
-$valor = str_replace("rapado", "Rapado", $valor);
-$valor = str_replace("calvo", "Calvo", $valor);
-return $valor;
+  if (strlen($tipo) > 6) {
+    $tipo = substr($tipo, 0, 6) . '...';
+  }
+
+  return $tipo;
 }
 
-function ojos_color($valor)
-{
-$valor = str_replace("negros", "Negros", $valor);
-$valor = str_replace("marrones", "Marrones", $valor);
-$valor = str_replace("celestes", "Celestes", $valor);
-$valor = str_replace("verdes", "Verdes", $valor);
-$valor = str_replace("grises", "Grises", $valor);
-return $valor;
+function pelo_color($valor) {
+  $valor = str_replace('negro', 'Negro', $valor);
+  $valor = str_replace('castano_oscuro', 'Casta&ntilde;o oscuro', $valor);
+  $valor = str_replace('castano_claro', 'Casta&ntilde;o claro', $valor);
+  $valor = str_replace('rubio', 'Rubio', $valor);
+  $valor = str_replace('pelirrojo', 'Pelirrojo', $valor);
+  $valor = str_replace('gris', 'Gris', $valor);
+  $valor = str_replace('canoso', 'Canoso', $valor);
+  $valor = str_replace('tenido', 'Te&ntilde;ido', $valor);
+  $valor = str_replace('rapado', 'Rapado', $valor);
+  $valor = str_replace('calvo', 'Calvo', $valor);
+
+  return $valor;
 }
 
-function fisico($valor)
-{
-$valor = str_replace("delgado", "Delgado/a", $valor);
-$valor = str_replace("atletico", "Atl&eacute;tico", $valor);
-$valor = str_replace("normal", "Normal", $valor);
-$valor = str_replace("kilos_de_mas", "Algunos kilos de m&aacute;s", $valor);
-$valor = str_replace("corpulento", "Corpulento/a", $valor);
-return $valor;
+function ojos_color($valor) {
+  $valor = str_replace('negros', 'Negros', $valor);
+  $valor = str_replace('marrones', 'Marrones', $valor);
+  $valor = str_replace('celestes', 'Celestes', $valor);
+  $valor = str_replace('verdes', 'Verdes', $valor);
+  $valor = str_replace('grises', 'Grises', $valor);
+
+  return $valor;
 }
 
-function dieta($valor)
-{
-$valor = str_replace("vegetariana", "Vegetariana", $valor);
-$valor = str_replace("lacto_vegetariana", "Lacto Vegetariana", $valor);
-$valor = str_replace("organica", "Org&aacute;nica", $valor);
-$valor = str_replace("de_todo", "De todo", $valor);
-$valor = str_replace("comida_basura", "Comida basura", $valor);
-return $valor;
+function fisico($valor) {
+  $valor = str_replace('delgado', 'Delgado/a', $valor);
+  $valor = str_replace('atletico', 'Atl&eacute;tico', $valor);
+  $valor = str_replace('normal', 'Normal', $valor);
+  $valor = str_replace('kilos_de_mas', 'Algunos kilos de m&aacute;s', $valor);
+  $valor = str_replace('corpulento', 'Corpulento/a', $valor);
+
+  return $valor;
 }
 
-function fumo($valor)
-{
-$valor = str_replace("no", "No", $valor);
-$valor = str_replace("casualmente", "Casualmente", $valor);
-$valor = str_replace("socialmente", "Socialmente", $valor);
-$valor = str_replace("regularmente", "Regularmente", $valor);
-$valor = str_replace("mucho", "Mucho", $valor);
-return $valor;
+function dieta($valor) {
+  $valor = str_replace('vegetariana', 'Vegetariana', $valor);
+  $valor = str_replace('lacto_vegetariana', 'Lacto Vegetariana', $valor);
+  $valor = str_replace('organica', 'Org&aacute;nica', $valor);
+  $valor = str_replace('de_todo', 'De todo', $valor);
+  $valor = str_replace('comida_basura', 'Comida basura', $valor);
+
+  return $valor;
 }
 
-function me_gustaria($valor)
-{
-$valor = str_replace("hacer_amigos", "Hacer Amigos", $valor);
-$valor = str_replace("conocer_gente_con_mis_intereses", "Conocer gente con mis intereses", $valor);
-$valor = str_replace("conocer_gente_para_hacer_negocios", "Conocer gente para hacer negocios", $valor);
-$valor = str_replace("encontrar_pareja", "Encontrar pareja", $valor);
-$valor = str_replace("de_todo", "De todo", $valor);
-return $valor;
+function fumo($valor) {
+  $valor = str_replace('no', 'No', $valor);
+  $valor = str_replace('casualmente', 'Casualmente', $valor);
+  $valor = str_replace('socialmente', 'Socialmente', $valor);
+  $valor = str_replace('regularmente', 'Regularmente', $valor);
+  $valor = str_replace('mucho', 'Mucho', $valor);
+
+  return $valor;
 }
 
-function estado($valor)
-{
-$valor = str_replace("soltero", "Soltero/a", $valor);
-$valor = str_replace("novio", "De novio/a", $valor);
-$valor = str_replace("casado", "Casado/a", $valor);
-$valor = str_replace("divorciado", "Divorciado/a", $valor);
-$valor = str_replace("viudo", "Viudo/a", $valor);
-$valor = str_replace("algo", "En algo...", $valor);
-return $valor;
+function me_gustaria($valor) {
+  $valor = str_replace('hacer_amigos', 'Hacer Amigos', $valor);
+  $valor = str_replace('conocer_gente_con_mis_intereses', 'Conocer gente con mis intereses', $valor);
+  $valor = str_replace('conocer_gente_para_hacer_negocios', 'Conocer gente para hacer negocios', $valor);
+  $valor = str_replace('encontrar_pareja', 'Encontrar pareja', $valor);
+  $valor = str_replace('de_todo', 'De todo', $valor);
+
+  return $valor;
 }
 
-function hijos($valor)
-{
-$valor = str_replace("no", "No tengo", $valor);
-$valor = str_replace("algun_dia", "Alg&uacute;n d&iacute;a", $valor);
-$valor = str_replace("no_quiero", "No son lo m&iacute;o", $valor);
-$valor = str_replace("viven_conmigo", "Tengo, vivo con ellos", $valor);
-$valor = str_replace("no_viven_conmigo", "Tengo, no vivo con ellos", $valor);
-return $valor;
+function estado($valor) {
+  $valor = str_replace('soltero', 'Soltero/a', $valor);
+  $valor = str_replace('novio', 'De novio/a', $valor);
+  $valor = str_replace('casado', 'Casado/a', $valor);
+  $valor = str_replace('divorciado', 'Divorciado/a', $valor);
+  $valor = str_replace('viudo', 'Viudo/a', $valor);
+  $valor = str_replace('algo', 'En algo...', $valor);
+
+  return $valor;
 }
 
-function estudios($valor)
-{
-$valor = str_replace("sin", "Sin Estudios", $valor);
-$valor = str_replace("pri", "Primario completo", $valor);
-$valor = str_replace("sec_curso", "Secundario en curso", $valor);
-$valor = str_replace("sec_completo", "Secundario completo", $valor);
-$valor = str_replace("ter_curso", "Terciario en curso", $valor);
-$valor = str_replace("ter_completo", "Terciario completo", $valor);
-$valor = str_replace("univ_curso", "Universitario en curso", $valor);
-$valor = str_replace("univ_completo", "Universitario completo", $valor);
-$valor = str_replace("post_curso", "Post-grado en curso", $valor);
-$valor = str_replace("post_completo", "Post-grado completo", $valor);
-return $valor;
+function hijos($valor) {
+  $valor = str_replace('no', 'No tengo', $valor);
+  $valor = str_replace('algun_dia', 'Alg&uacute;n d&iacute;a', $valor);
+  $valor = str_replace('no_quiero', 'No son lo m&iacute;o', $valor);
+  $valor = str_replace('viven_conmigo', 'Tengo, vivo con ellos', $valor);
+  $valor = str_replace('no_viven_conmigo', 'Tengo, no vivo con ellos', $valor);
+
+  return $valor;
 }
 
-function ingresos($valor)
-{
-$valor = str_replace("sin", "Sin ingresos", $valor);
-$valor = str_replace("bajos", "Bajos", $valor);
-$valor = str_replace("intermedios", "Intermedios", $valor);
-$valor = str_replace("altos", "Altos", $valor);
-return $valor;
+function estudios($valor) {
+  $valor = str_replace('sin', 'Sin Estudios', $valor);
+  $valor = str_replace('pri', 'Primario completo', $valor);
+  $valor = str_replace('sec_curso', 'Secundario en curso', $valor);
+  $valor = str_replace('sec_completo', 'Secundario completo', $valor);
+  $valor = str_replace('ter_curso', 'Terciario en curso', $valor);
+  $valor = str_replace('ter_completo', 'Terciario completo', $valor);
+  $valor = str_replace('univ_curso', 'Universitario en curso', $valor);
+  $valor = str_replace('univ_completo', 'Universitario completo', $valor);
+  $valor = str_replace('post_curso', 'Post-grado en curso', $valor);
+  $valor = str_replace('post_completo', 'Post-grado completo', $valor);
+
+  return $valor;
 }
 
-function menu()
-{
-  global $db_prefix, $txt, $context, $boardurl, $settings;
+function ingresos($valor) {
+  $valor = str_replace('sin', 'Sin ingresos', $valor);
+  $valor = str_replace('bajos', 'Bajos', $valor);
+  $valor = str_replace('intermedios', 'Intermedios', $valor);
+  $valor = str_replace('altos', 'Altos', $valor);
 
-echo '<div class="box_140" style="float:left;margin-right:8px;margin-bottom:8px;">
-<div class="box_title" style="width: 138px;"><div class="box_txt box_140-34">Mis opciones</div>
-<div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="smalltext windowbg" style="width:130px;padding:4px;">
-
-<div align="left" style="margin-bottom:4px;"><span style="margin-bottom:5px;" class="icons cuenta2"><a href="' . $boardurl . '/editar-perfil/">Editar mi perfil</a></span></div><div class="hrs"></div><span class="size10" style="font-family:arial;"><img src="' . $settings['images_url'] . '/user.gif" alt="" /> <b>Editar mi apariencia:</b><br/>
- <ul style="margin:0px;padding-left:15px;"><li style="margin:0px;padding-left:0px;"><a href="' . $boardurl . '/editar-apariencia/paso1/">Formaci&oacute;n y trabajo</a></li>
-
-<li style="margin:0px;padding-left:0px;"><a href="' . $boardurl . '/editar-apariencia/paso2/">M&aacute;s sobre mi</a></li>
-<li style="margin:0px;padding-left:0px;"><a href="' . $boardurl . '/editar-apariencia/paso3/">Como soy</a></li>
-<li style="margin:0px;padding-left:0px;"><a href="' . $boardurl . '/editar-apariencia/paso4/">Intereses y preferencias</a></li></ul></span><div class="hrs"></div><div align="left" style="margin-bottom:4px;"><span class="icons mavatar"><a href="' . $boardurl . '/editar-perfil/avatar/">Modificar mi avatar</a></span></div><div align="left" style="margin-bottom:4px;"><span class="icons aimg"><a href="' . $boardurl . '/imagenes/agregar/">Agregar imagen</a></span></div><div align="left" style="margin-bottom:4px;"><span style="padding-left:2px;"><img alt="" src="' . $settings['images_url'] . '/icons/notas.gif" /> <a href="' . $boardurl . '/mis-notas/">Mis notas</a></span></div></div></div>';
+  return $valor;
 }
 
-function menu2()
-{
-  global $context, $txt, $settings, $db_prefix, $boardurl;
+function menu() {
+  global $boardurl, $settings;
 
-echo '<div style="text-align:left;width:100%;padding:0px;margin:0px;"><div style="float:left;margin-bottom:10px;margin-right:8px;"><div style="background-color:#E3F0FF;border:1px solid #B3D4F8;width:152px;padding:4px;"><center>';
-if(!empty($context['member']['avatar']['name'])) {
-echo '<img src="', $context['member']['avatar']['name'], '" width="105" alt="" class="avatar" border="0" />';
-} else {
-echo '<img alt="" src="', $boardurl, '/avatar.gif" border="0" alt="Sin Avatar" onerror="error_avatar(this)" />';
+  echo '
+    <div class="box_140" style="float: left; margin-right: 8px; margin-bottom: 8px;">
+      <div class="box_title" style="width: 138px;">
+        <div class="box_txt box_140-34">Mis opciones</div>
+        <div class="box_rss">
+          <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+        </div>
+      </div>
+      <div class="smalltext windowbg" style="width: 130px; padding: 4px;">
+        <div align="left" style="margin-bottom: 4px;">
+          <span style="margin-bottom: 5px;" class="icons cuenta2">
+            <a href="' . $boardurl . '/editar-perfil/">Editar mi perfil</a>
+          </span>
+        </div>
+        <div class="hrs"></div>
+        <span class="size10" style="font-family: arial;">
+          <img src="' . $settings['images_url'] . '/user.gif" alt="" />
+          &nbsp;
+          <b>Editar mi apariencia:</b>
+          <br />
+          <ul style="margin: 0px; padding-left: 15px;">
+            <li style="margin: 0px; padding-left: 0px;">
+              <a href="' . $boardurl . '/editar-apariencia/paso1/">Formaci&oacute;n y trabajo</a>
+            </li>
+            <li style="margin: 0px; padding-left: 0px;">
+              <a href="' . $boardurl . '/editar-apariencia/paso2/">M&aacute;s sobre mi</a>
+            </li>
+            <li style="margin: 0px; padding-left: 0px;">
+              <a href="' . $boardurl . '/editar-apariencia/paso3/">Como soy</a>
+            </li>
+            <li style="margin: 0px; padding-left: 0px;">
+              <a href="' . $boardurl . '/editar-apariencia/paso4/">Intereses y preferencias</a>
+            </li>
+          </ul>
+        </span>
+        <div class="hrs"></div>
+        <div align="left" style="margin-bottom: 4px;">
+          <span class="icons mavatar">
+            <a href="' . $boardurl . '/editar-perfil/avatar/">Modificar mi avatar</a>
+          </span>
+        </div>
+        <div align="left" style="margin-bottom: 4px;">
+          <span class="icons aimg">
+            <a href="' . $boardurl . '/imagenes/agregar/">Agregar imagen</a>
+          </span>
+        </div>
+        <div align="left" style="margin-bottom: 4px;">
+          <span style="padding-left: 2px;">
+            <img alt="" src="' . $settings['images_url'] . '/icons/notas.gif" />
+            &nbsp;
+            <a href="' . $boardurl . '/mis-notas/">Mis notas</a>
+          </span>
+        </div>
+      </div>
+    </div>';
 }
-echo '</center></div>';
 
-if($context['user']['is_logged']) {
-echo '<div class="userOption"><ul>';
-  if($context['user']['name'] == $context['member']['name']) {
-  echo '<li><a href="' . $boardurl . '/editar-perfil/" title="Editar mi perfil">Editar mi perfil</a></li>';
+function menu2() {
+  global $context, $settings, $db_prefix, $boardurl;
+
+  $memberName = censorText($context['member']['name']);
+
+  echo '
+    <div style="text-align: left; width: 100%; padding: 0px; margin: 0px;">
+      <div style="float: left; margin-bottom: 10px; margin-right: 8px;">
+        <div style="background-color: #E3F0FF; border: 1px solid #B3D4F8; width: 152px; padding: 4px;">
+          <center>';
+
+  if (!empty($context['member']['avatar']['name'])) {
+    echo '<img src="' . $context['member']['avatar']['name'] . '" width="105" alt="" class="avatar" border="0" />';
   } else {
-  echo '<li><a href="' . $boardurl . '/mensajes/a/', $context['member']['name'], '" title="Enviarle mensaje privado">Enviarle mensaje privado</a></li>
+    echo '<img alt="" src="' . $boardurl . '/avatar.gif" border="0" alt="Sin Avatar" onerror="error_avatar(this)" />';
+  }
 
-<li><a class="profile_actions" href="' . $boardurl . '/imagenes/', $context['member']['name'], '" title="Ver sus im&aacute;genes">Ver sus im&aacute;genes</a></li>
+  echo '
+      </center>
+    </div>';
 
-';
-$request = db_query("SELECT * FROM ({$db_prefix}buddies AS b) WHERE b.ID_MEMBER = " . $context['user']['id'] . " AND b.BUDDY_ID = " . $context['member']['id'] . " AND b.requested = " . $context['user']['id'] . "", __FILE__, __LINE__);
-$row = mysqli_num_rows($request);
-if($row <= 0) {
-echo '<li><a href="' . $boardurl . '/amigos-agregar/', $context['member']['name'], '" title="Agregar a mis amistades">Agregar a mis amistades</a></li>';
-} else {
-echo '<li><a href="' . $boardurl . '/amigos-eliminar/', $context['member']['name'], '" title="Quitar amistad">Quitar amistad</a></li>';
+  if ($context['user']['is_logged']) {
+    echo '
+      <div class="userOption">
+        <ul>';
+
+    if ($context['user']['name'] == $memberName) {
+      echo '
+        <li>
+          <a href="' . $boardurl . '/editar-perfil/" title="Editar mi perfil">Editar mi perfil</a>
+        </li>';
+    } else {
+      echo '
+        <li>
+          <a href="' . $boardurl . '/mensajes/a/' . $memberName . '" title="Enviarle mensaje privado">Enviarle mensaje privado</a>
+        </li>
+        <li>
+          <a class="profile_actions" href="' . $boardurl . '/imagenes/' . $memberName . '" title="Ver sus im&aacute;genes">Ver sus im&aacute;genes</a>
+        </li>';
+
+      $request = db_query("
+        SELECT *
+        FROM {$db_prefix}buddies
+        WHERE ID_MEMBER = " . $context['user']['id'] . "
+        AND BUDDY_ID = " . $context['member']['id'] . "
+        AND requested = " . $context['user']['id'], __FILE__, __LINE__);
+
+      $row = mysqli_num_rows($request);
+
+      if ($row <= 0) {
+        echo '
+          <li>
+            <a href="' . $boardurl . '/amigos-agregar/' . $memberName . '" title="Agregar a mis amistades">Agregar a mis amistades</a>
+          </li>';
+      } else {
+        echo '
+          <li>
+            <a href="' . $boardurl . '/amigos-eliminar/' . $memberName . '" title="Quitar amistad">Quitar amistad</a>
+          </li>';
+      }
+
+      echo '
+        <li>
+          <a class="profile_actions" href="' . $boardurl . '/denunciar-usuario/' . $memberName . '" title="Denunciar usuario">Denunciar usuario</a>
+        </li>';
+
+      $request = db_query("
+        SELECT *
+        FROM {$db_prefix}ignored
+        WHERE ID_MEMBER = " . $context['user']['id'] . "
+        AND ID_IGNORED = " . $context['member']['id'], __FILE__, __LINE__);
+
+      $ignore = mysqli_num_rows($request);
+
+      if ($ignore <= 0) {
+        echo '
+          <li id="ac_no">
+            <a href="#" onclick="ignorar2(\'' . $memberName . '\'); return false;" title="Ignorar usuario">Ignorar usuario</a>
+          </li>
+          <li id="ac_no3" style="display: none;">
+            <a href="#" onclick="ignorar(\'' . $memberName . '\'); return false;" title="No ignorar usuario">No ignorar usuario</a>
+          </li>
+          <li id="ac_no2" style="display: none;">
+            <a href="#" onclick="ignorar2(\'' . $memberName . '\'); return false;" title="Ignorar usuario">Ignorar usuario</a>
+          </li>';
+      } else {
+        echo '
+          <li id="ac_no">
+            <a href="#" onclick="ignorar(\'' . $memberName . '\'); return false;" title="No ignorar usuario">No ignorar usuario</a>
+          </li>
+          <li id="ac_no2" style="display: none;">
+            <a href="#" onclick="ignorar2(\'' . $memberName . '\'); return false;" title="Ignorar usuario">Ignorar usuario</a>
+          </li>
+          <li id="ac_no3" style="display: none;">
+            <a href="#" onclick="ignorar(\'' . $memberName . '\'); return false;" title="No ignorar usuario">No ignorar usuario</a>
+          </li>';
+      }
+    }
+
+    echo '
+      </ul>
+      <div style="clear: both;"></div>';
+  }
+
+  if ($context['user']['is_logged']) {
+    echo '
+      </div>
+      <div id="gif_cargando_ign" style="display: none;">
+        <p align="right" style="padding: 0px; margin: 0px;">
+          <img alt="" src="' . $settings['images_url'] . '/icons/cargando.gif" style="width: 16px; height: 16px;" border="0"  />
+        </p>
+        <div style="clear: both;"></div>
+      </div>';
+  }
+
+  echo '
+    <div style="margin-bottom: 10px; margin-top: 8px;">
+      <div class="box_title" style="width: 160px;">
+        <div class="box_txt box_perfil-36">Datos</div>
+        <div class="box_rss">
+          <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+        </div>
+      </div>
+      <div class="windowbg" style="width: 152px; padding: 4px;">
+        <p class="datosp">Nick:</p>
+        <a href="' . $boardurl . '/perfil/' . $memberName . '" title="' . $memberName . '">' . $memberName . '</a>
+        <br /><br />
+        <p class="datosp">Es usuario desde:</p>
+        ' . $context['member']['registered'] . '
+        <br /><br />
+        <p class="datosp">Edad:</p>
+        ' . $context['member']['age'] . '
+        <br /><br />
+        <p class="datosp">Ciudad:</p>
+        ' . $context['member']['location'] . '
+        <br /><br />
+        <p class="datosp">Sexo:</p>
+        ' . $context['member']['gender']['name'] . '
+        &nbsp;-&nbsp;
+        ' . $context['member']['gender']['image'] . '
+        <br /><br />
+        <p class="datosp">Pa&iacute;s:</p>
+        ' . ssi_pais($context['member']['title']) . '
+        &nbsp;-&nbsp;
+        <img alt="" title="' . ssi_pais($context['member']['title']) . '" src="' . $settings['images_url'] . '/icons/banderas/' . $context['member']['title'] . '.gif" />';
+
+  if (!empty($context['member']['msn']['name'])) {
+    echo '
+      <br /><br />
+      <p class="datosp">Mensajero:</p>' . $context['member']['msn']['name'];
+  }
+
+  if (!empty($context['member']['website']['title'])) {
+    echo '
+      <br /><br />
+      <p class="datosp">Sitio web:</p>
+      <a style="text-transform:lowercase;" href="' . $context['member']['website']['title'] . '" target="_blank">' . $context['member']['website']['title'] . '</a>';
+  }
+
+  if (!empty($context['member']['blurb'])) {
+    echo '
+      <br /><br />
+      <p class="datosp">Mensaje personal:</p>' . $context['member']['blurb'];
+  }
+
+  echo '
+    <br /><br />
+    <p class="datosp">Rango:</p>
+    ' . (!empty($context['member']['group']) ? $context['member']['group'] : $context['member']['post_group']) . '
+    &nbsp;-&nbsp;
+    ' . $context['member']['group_stars'];
+
+  if (!empty($context['member']['estado_icon'])) {
+    echo '
+      <br /><br />
+      <p class="datosp">Estado:</p>
+      ' . ssi_estado_icon($context['member']['estado_icon']) . '
+      &nbsp;-&nbsp;
+      <img title="' . ssi_estado_icon($context['member']['estado_icon']) . '" src="' . $settings['images_url'] . '/icons/estado/'. $context['member']['estado_icon'], '.gif" alt="" />';
+  }
+
+  echo '
+      </div>
+    </div>';
 }
 
-echo '
-<li><a class="profile_actions" href="' . $boardurl . '/denunciar-usuario/', $context['member']['name'], '" title="Denunciar usuario">Denunciar usuario</a></li>
-';
+function sidebar() {
+  global $context, $settings, $db_prefix, $boardurl;
 
-$request = db_query("SELECT * FROM {$db_prefix}ignored WHERE ID_MEMBER = " . $context['user']['id'] . " AND ID_IGNORED = " . $context['member']['id'], __FILE__, __LINE__);
-$ignore = mysqli_num_rows($request);
-if($ignore <= 0) {
-echo '<li id="ac_no"><a href="#" onclick="ignorar2(\'', $context['member']['name'], '\'); return false;" title="Ignorar usuario">Ignorar usuario</a></li>
+  if ($context['member']['sidebar'] == 'si') {
+    if ($context['member']['name'] != $context['user']['name']) {
+      // Amigos en común
+      // TO-DO: Revisar esta consulta
+      $request = db_query("
+        SELECT *
+        FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2)
+        WHERE b.ID_MEMBER = " . $context['member']['id'] . "
+        AND b.BUDDY_ID = b2.BUDDY_ID
+        AND mem.ID_MEMBER = b2.BUDDY_ID
+        AND b2.ID_MEMBER = mem2.ID_MEMBER
+        AND mem2.ID_MEMBER = " . $context['user']['id'] . "
+        ORDER BY RAND()
+        LIMIT 6", __FILE__, __LINE__);
 
-<li id="ac_no3" style="display:none;"><a href="#" onclick="ignorar(\'', $context['member']['name'], '\'); return false;" title="No ignorar usuario">No ignorar usuario</a></li>
+      $count1 = mysqli_num_rows($request);
 
-<li id="ac_no2" style="display:none;"><a href="#" onclick="ignorar2(\'', $context['member']['name'], '\'); return false;" title="Ignorar usuario">Ignorar usuario</a></li>';
-} else {
-echo '<li id="ac_no"><a href="#" onclick="ignorar(\'', $context['member']['name'], '\'); return false;" title="No ignorar usuario">No ignorar usuario</a></li>
+      if (isset($context['member']['buddies_data2'])) {
+        $iq = 1;
 
-<li id="ac_no2" style="display:none;"><a href="#" onclick="ignorar2(\'', $context['member']['name'], '\'); return false;" title="Ignorar usuario">Ignorar usuario</a></li>
-
-<li id="ac_no3" style="display:none;"><a href="#" onclick="ignorar(\'', $context['member']['name'], '\'); return false;" title="No ignorar usuario">No ignorar usuario</a></li>';
-}
-}
-echo '</ul><div style="clear: both;"></div>';
-}
-if($context['user']['is_logged']) {
-echo '</div><div id="gif_cargando_ign" style="display:none;"><p align="right" style="padding:0px;margin:0px;"><img alt="" src="' . $settings['images_url'] . '/icons/cargando.gif" style="width:16px;height:16px;" border="0"  /></p><div style="clear: both;"></div></div>';
-}
-
-echo '<div style="margin-bottom:10px;margin-top:8px;">
-<div class="box_title" style="width:160px;"><div class="box_txt box_perfil-36">Datos</div>
-<div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div>
-<div class="windowbg" style="width:152px;padding:4px;">
-
-<p class="datosp">Nick:</p><a href="' . $boardurl . '/perfil/', $context['member']['name'], '" title="', $context['member']['name'], '">', $context['member']['name'], '</a><br /><br /><p class="datosp">Es usuario desde:</p>', $context['member']['registered'], '<br /><br /><p class="datosp">Edad:</p>', $context['member']['age'], '<br /><br /><p class="datosp">Ciudad:</p>', $context['member']['location'], '<br /><br /><p class="datosp">Sexo:</p>', $context['member']['gender']['name'], ' - ', $context['member']['gender']['image'], '<br /><br /><p class="datosp">Pa&iacute;s:</p>', ssi_pais($context['member']['title']), ' - <img alt="" title="', ssi_pais($context['member']['title']), '" src="' . $settings['images_url'] . '/icons/banderas/', $context['member']['title'], '.gif" />';
-if(!empty($context['member']['msn']['name'])) {
-echo '<br /><br /><p class="datosp">Mensajero:</p>', $context['member']['msn']['name'];
-}
-if(!empty($context['member']['website']['title'])) {
-echo '<br /><br /><p class="datosp">Sitio web:</p><a style="text-transform:lowercase;" href="', $context['member']['website']['title'], '" target="_blank">', $context['member']['website']['title'], '</a>';
-}
-if(!empty($context['member']['blurb'])) {
-echo '<br /><br /><p class="datosp">Mensaje personal:</p>', $context['member']['blurb'];
-}
-echo '<br /><br /><p class="datosp">Rango:</p>', (!empty($context['member']['group']) ? $context['member']['group'] : $context['member']['post_group']), ' - ' . $context['member']['group_stars'] . '';
-if(!empty($context['member']['estado_icon'])) {
-echo '<br /><br /><p class="datosp">Estado:</p>'. ssi_estado_icon($context['member']['estado_icon']), ' - <img title="'. ssi_estado_icon($context['member']['estado_icon']), '" src="' . $settings['images_url'] . '/icons/estado/'. $context['member']['estado_icon'], '.gif" alt="" />';
-}
-echo '</div></div>';
-}
-
-function sidebar()
-{
-  global $context, $txt, $settings, $db_prefix, $boardurl;
-
-if($context['member']['sidebar'] == 'si') {
-if($context['member']['name'] != $context['user']['name']) {
-/* Amigos en com&#250;n */
-$request = db_query("
-SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2)
-WHERE b.ID_MEMBER = " . $context['member']['id'] . "
-AND b.BUDDY_ID = b2.BUDDY_ID
-AND mem.ID_MEMBER = b2.BUDDY_ID
-AND b2.ID_MEMBER = " . $context['user']['id'] . "
-AND b2.ID_MEMBER = mem2.ID_MEMBER
-AND mem2.ID_MEMBER = " . $context['user']['id'] . "
-ORDER BY RAND()
-LIMIT 6", __FILE__, __LINE__);
-$count1 = mysqli_num_rows($request);
-if (isset($context['member']['buddies_data2'])) {
-$iq = 1;
-if ($iq == 1) {
-echo '<div style="margin-top:8px;">
-
-<div class="box_title" style="width:160px;"><div class="box_txt box_perfil-36">Amigos en com&uacute;n</div>
-<div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div>
-<div class="windowbg" style="width:152px;padding:4px;"><div style="float:left;font-size:10px;"><p style="margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/amigos-en-comun/" title="' . $count1 . ' amigos en com&uacute;n">' . $count1 . ' amigos en com&uacute;n</a></p></div><div style="font-size:10px;"><p align="right" style="margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/" title="Ver todos">Ver todos</a></p></div><hr /><center><table><tr>';
-}
-foreach ($context['member']['buddies_data2'] as $buddy_id => $data) {
-echo '
-<td align="center" style="font-size:11px;font-family:arial;margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $data['memberName'], '" title="', $data['realName'], '" style="text-decoration:none;"><img style="width:40px;height:40px;" alt="" src="';
-if(!empty($data['avatar'])) {
-echo $data['avatar'];
-} else {
-echo $boardurl . '/avatar.gif';
-}
-echo '" onerror="error_avatar(this)" /><br />', reducir_amigos($data['realName']), '</td>';
-$count2++;
-if($count2 == 3) {
-echo '</tr><tr>';
-}
-$iq++;
-}
-echo '</tr></table></center></div></div>';
-}
-/* Amigos en com&#250;n */
-}
-
-/* Amigos */
-$request = db_query("SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b) WHERE b.ID_MEMBER = " . $context['member']['id'] . " AND b.BUDDY_ID = mem.ID_MEMBER ORDER BY RAND() LIMIT 6", __FILE__, __LINE__);
-$count3 = mysqli_num_rows($request);
-if (isset($context['member']['buddies_data'])) {
-$i = 1;
-if ($i == 1) {
-echo '<div style="margin-top:8px;">
-
-<div class="box_title" style="width:160px;"><div class="box_txt box_perfil-36">Amigos</div>
-<div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div>
-<div class="windowbg" style="width:152px;padding:4px;"><div style="float:left;font-size:10px;"><p style="margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/" title="' . $count3 . ' amigos">' . $count3 . ' amigos</a></p></div><div style="font-size:10px;"><p align="right" style="margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/" title="Ver todos">Ver todos</a></p></div><hr /><center><table><tr>';
-}
-foreach ($context['member']['buddies_data'] as $buddy_id => $data) {
-echo '
-<td align="center" style="font-size:11px;font-family:arial;margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $data['memberName'], '" title="', $data['realName'], '" style="text-decoration:none;"><img style="width:40px;height:40px;" alt="" src="';
-if(!empty($data['avatar'])) {
-echo $data['avatar'];
-} else {
-echo $boardurl . '/avatar.gif';
-}
-echo '" onerror="error_avatar(this)" /><br />', reducir_amigos($data['realName']), '</td>';
-$count4++;
-if($count4 == 3) {
-echo '</tr><tr>';
-}
-$i++;
-}
-echo '</tr></table></center></div></div>';
-}
-/* Amigos */
-}
-}
-
-function menu3()
-{
-  global $context, $txt, $settings, $db_prefix, $boardurl;
+        if ($iq == 1) {
+          echo '
+            <div style="margin-top: 8px;">
+              <div class="box_title" style="width: 160px;">
+                <div class="box_txt box_perfil-36">Amigos en com&uacute;n</div>
+                <div class="box_rss">
+                  <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+                </div>
+              </div>
+              <div class="windowbg" style="width: 152px; padding: 4px;">
+                <div style="float: left; font-size: 10px;">
+                  <p style="margin: 0px; padding: 0px;">
+                    <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/amigos-en-comun/" title="' . $count1 . ' amigos en com&uacute;n">' . $count1 . ' amigos en com&uacute;n</a>
+                  </p>
+                </div>
+                <div style="font-size: 10px;">
+                  <p align="right" style="margin: 0px; padding: 0px;">
+                    <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/" title="Ver todos">Ver todos</a>
+                  </p>
+                </div>
+                <hr />
+                <center>
+                  <table>
+                    <tr>';
+        }
 
 
-/* Conteo de comentarios */
-$iduser = $context['member']['id'];
-$request = db_query("
-SELECT *
-FROM ({$db_prefix}comments AS c, {$db_prefix}topics AS t)
-WHERE c.ID_MEMBER = {$iduser}
-AND c.ID_TOPIC = t.ID_TOPIC
-", __FILE__, __LINE__);
-$request2 = db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, m.ID_MEMBER, m.memberName FROM {$db_prefix}gallery_comment AS c, {$db_prefix}members AS m WHERE c.ID_MEMBER = m.ID_MEMBER AND m.memberName = '{$context['member']['name']}' ", __FILE__, __LINE__);
-$context['comentuser'] = mysqli_num_rows($request);
-$context['comentimguser'] = mysqli_num_rows($request2);
-/* Conteo de comentarios */
+        $count2 = 1;
+        foreach ($context['member']['buddies_data2'] as $buddy_id => $data) {
+          echo '
+            <td align="center" style="font-size: 11px; font-family: arial; margin: 0px; padding: 0px;">
+              <a href="' . $boardurl . '/perfil/', $data['memberName'], '" title="', $data['realName'], '" style="text-decoration: none;">
+                <img style="width: 40px; height: 40px;" alt="" src="' . (!empty($data['avatar']) ? $data['avatar'] : $boardurl . '/avatar.gif') . '" onerror="error_avatar(this)" />
+                <br />
+                ' . reducir_amigos($data['realName']) . '
+              </a>
+            </td>';
 
-/* Conteo de Im&#225;genes */
-$request3 = db_query("SELECT * FROM {$db_prefix}gallery_pic AS c, {$db_prefix}members AS mem WHERE c.ID_MEMBER = mem.ID_MEMBER AND mem.ID_MEMBER = {$iduser} ", __FILE__, __LINE__);
-$context['imguser'] = mysqli_num_rows($request3);
+          $count2++;
 
-/* Conteo de Im&#225;genes */
+          if ($count2 == 3) {
+            echo '
+              </tr>
+              <tr>';
+          }
 
-/* Conteo de Mensajes del Muro */
-$request4 = db_query("SELECT * FROM ({$db_prefix}members AS m, {$db_prefix}profile_comments AS p) WHERE p.ID_MEMBER = m.ID_MEMBER AND p.COMMENT_MEMBER_ID = " . $context['member']['id'] . " ", __FILE__, __LINE__);
-$context['muromsg'] = mysqli_num_rows($request4);
-/* Conteo de Mensajes del Muro */
-  
-echo '<div style="margin-top:8px;">
-<div class="box_title" style="width:160px;"><div class="box_txt box_perfil-36">Estad&iacute;sticas</div>
-<div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div>
-<div class="windowbg" style="width:152px;padding:4px;"><p class="datosp">Post:</p><a href="' . $boardurl . '/user-post/', $context['member']['name'], '">', $context['member']['posts'], '</a><br /><br /><p class="datosp">Mensajes en su muro:</p><span id="cantmuro">', $context['muromsg'], '</span><br /><br /><p class="datosp">Comentarios:</p><a href="' . $boardurl . '/user-comment/', $context['member']['name'], '">', $context['comentuser'] + $context['comentimguser'], '</a><br /><br /><p class="datosp">Im&aacute;genes:</p><a href="' . $boardurl . '/imagenes/', $context['member']['name'], '">', $context['imguser'], '</a><br /><br /><p class="datosp">Puntos:</p>', $context['member']['moneyBank'], '</div></div></div>';
+          $iq++;
+        }
+
+        echo '
+                  </tr>
+                </table>
+              </center>
+            </div>
+          </div>';
+      }
+    }
+
+    // Amigos 
+    $request = db_query("
+      SELECT *
+      FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b)
+      WHERE b.ID_MEMBER = " . $context['member']['id'] . "
+      AND b.BUDDY_ID = mem.ID_MEMBER
+      ORDER BY RAND()
+      LIMIT 6", __FILE__, __LINE__);
+
+    $count3 = mysqli_num_rows($request);
+
+    if (isset($context['member']['buddies_data'])) {
+      $i = 1;
+
+      if ($i == 1) {
+        echo '
+          <div style="margin-top: 8px;">
+            <div class="box_title" style="width: 160px;">
+              <div class="box_txt box_perfil-36">Amigos</div>
+              <div class="box_rss">
+                <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+              </div>
+            </div>
+            <div class="windowbg" style="width: 152px; padding: 4px;">
+              <div style="float: left; font-size: 10px;">
+                <p style="margin: 0px; padding: 0px;">
+                  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/" title="' . $count3 . ' amigos">' . $count3 . ' amigos</a>
+                </p>
+              </div>
+              <div style="font-size: 10px;">
+                <p align="right" style="margin: 0px; padding: 0px;">
+                  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/" title="Ver todos">Ver todos</a>
+                </p>
+              </div>
+              <hr />
+              <center>
+                <table>
+                  <tr>';
+      }
+
+      $count4 = 1;
+
+      foreach ($context['member']['buddies_data'] as $buddy_id => $data) {
+        echo '
+          <td align="center" style="font-size: 11px; font-family: arial; margin: 0px; padding: 0px;">
+            <a href="' . $boardurl . '/perfil/', $data['memberName'], '" title="', $data['realName'], '" style="text-decoration: none;">
+              <img style="width: 40px; height: 40px;" alt="" src="' . (!empty($data['avatar']) ? $data['avatar'] : $boardurl . '/avatar.gif') . '" onerror="error_avatar(this)" />
+              <br />
+              ' . reducir_amigos($data['realName']) . '
+            </a>
+          </td>';
+
+          $count4++;
+
+          if ($count4 == 3) {
+            echo '
+              </tr>
+              <tr>';
+          }
+
+          $i++;
+      }
+
+      echo '
+                </tr>
+              </table>
+            </center>
+          </div>
+        </div>';
+    }
+  }
 }
 
-function menu4()
-{
-  global $context, $txt, $settings, $db_prefix, $boardurl, $modSettings;
+function menu3() {
+  global $context, $settings, $db_prefix, $boardurl;
 
-echo '<div style="float:left;margin-bottom:8px;margin-left:8px;"><div style="margin-bottom:10px;">
+  // Conteo de comentarios
+  $iduser = $context['member']['id'];
 
-<div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimos post</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div>
+  $request = db_query("
+    SELECT *
+    FROM ({$db_prefix}comments AS c, {$db_prefix}topics AS t)
+    WHERE c.ID_MEMBER = {$iduser}
+    AND c.ID_TOPIC = t.ID_TOPIC", __FILE__, __LINE__);
 
-<div class="windowbg" style="width:193px;padding:4px;">';
-$request = db_query("SELECT * FROM ({$db_prefix}messages AS m, {$db_prefix}topics AS t, {$db_prefix}boards AS b, {$db_prefix}members AS mem) WHERE m.ID_TOPIC = t.ID_TOPIC AND m.ID_BOARD = t.ID_BOARD AND m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = mem.ID_MEMBER AND mem.ID_MEMBER = {$context['member']['id']} ORDER BY m.ID_TOPIC DESC LIMIT " . $modSettings['profile_posts_limit'], __FILE__, __LINE__);
-$count = mysqli_num_rows($request);
-if($count <= 0) {
-echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;n post hecho.-</div>';
-} else {
-$context['posts'] = array();
-  while ($row = mysqli_fetch_assoc($request))
-    $context['posts'][] = array(
-      'name' => $row['name'],
-      'ID_BOARD' => $row['ID_BOARD'],
-      'ID_TOPIC' => $row['ID_TOPIC'],
-      'description' => $row['description'],
-      'subject' => $row['subject'],
-    );
-foreach ($context['posts'] as $post) {
-echo '<table width="100%"><tr><td width="100%">
-<div class="box_icono4"><img alt="" title="', $post['name'], '" src="', $settings['images_url'], '/post/icono_', $post['ID_BOARD'], '.gif" /></div><a href="' . $boardurl . '/post/', $post['ID_TOPIC'], '/', $post['description'], '/', ssi_amigable($post['subject']), '.html">', ssi_reducir2(htmlentities($post['subject'], ENT_QUOTES, "UTF-8")), '</a></td></tr></table>';
-}
-echo '<br /><span style="font-size:9px;"><center><a href="' . $boardurl . '/user-post/', $context['member']['name'], '">ver m&aacute;s</a></center></span>';
-}
-echo '</div></div>';
-}
+  $request2 = db_query("
+    SELECT c.ID_COMMENT, c.ID_MEMBER, m.ID_MEMBER, m.memberName
+    FROM {$db_prefix}gallery_comment AS c, {$db_prefix}members AS m
+    WHERE c.ID_MEMBER = m.ID_MEMBER
+    AND m.memberName = '{$context['member']['name']}'", __FILE__, __LINE__);
 
-function menu5()
-{
-  global $context, $txt, $settings, $db_prefix, $boardurl, $modSettings, $scripturl;
+  $context['comentuser'] = mysqli_num_rows($request);
+  $context['comentimguser'] = mysqli_num_rows($request2);
 
-echo '<div style="margin-bottom:10px;">
-<div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">&Uacute;ltimas im&aacute;genes</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div>
-<div class="windowbg" style="width:193px;padding:4px;">';
-$request = db_query("SELECT * FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS m) WHERE g.ID_MEMBER = m.ID_MEMBER AND m.ID_MEMBER = {$context['member']['id']} ORDER BY g.ID_PICTURE DESC LIMIT " . $modSettings['profile_images_limit'], __FILE__, __LINE__);
-$count = mysqli_num_rows($request);
-if($count <= 0) {
-echo '<div class="noesta">', $context['member']['name'], ' no tiene ninguna imagen.-</div>';
-} else {
-$context['imagenes'] = array();
-  while ($row = mysqli_fetch_assoc($request))
-    $context['imagenes'][] = array(
-      'ID_PICTURE' => $row['ID_PICTURE'],
-      'filename' => $row['filename'],
-      'commenttotal' => $row['commenttotal'],
-    );
-foreach ($context['imagenes'] as $img) {
-$total = db_query("SELECT COUNT(ID_COMMENT) AS total FROM {$db_prefix}gallery_comment WHERE ID_PICTURE = " . $img['ID_PICTURE'], __FILE__, __LINE__);
-$total2 = mysqli_fetch_assoc($total);
-echo '<div class="photo_small1"><center><a href="' . $boardurl . '/imagenes/ver/', $img['ID_PICTURE'], '"><img alt="" style="width:150px;" src="', $img['filename'], '" border="6" /></a></center></div><div class="smalltext"><center>Comentarios: (<a href="' . $boardurl . '/imagenes/ver/', $img['ID_PICTURE'], '#comentarios">', $total2['total'], '</a>)</center></div>';
-}
-echo '<br /><span style="font-size:9px;"><center><a href="' . $boardurl . '/imagenes/', $context['member']['name'], '">Ir a sus im&aacute;genes</a></center></span>';
-}
-echo '</div></div>';
+  // Conteo de imágenes
+  $request3 = db_query("
+    SELECT *
+    FROM {$db_prefix}gallery_pic AS c, {$db_prefix}members AS mem
+    WHERE c.ID_MEMBER = mem.ID_MEMBER
+    AND mem.ID_MEMBER = " . $iduser, __FILE__, __LINE__);
 
-if($context['allow_admin']) {
-echo '<div style="margin-bottom:10px;">
-<div class="box_title" style="width:201px;"><div class="box_txt box_perfil2-36">Panel de moderaci&oacute;n</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div>
-<div class="windowbg" style="width:193px;padding:4px;">';
-echo '<center><a href="' . $boardurl . '/ban-user/', $context['member']['id'], '">Banear a ', $context['member']['name'], '</a></center>';
-echo '<center><a href="' . $boardurl . '/ver-ip/', $context['member']['ip'], '">Rastrear IP de ', $context['member']['name'], '</a></center>';
-echo '<center><a href="' . $boardurl . '/editar-usuario/', $context['member']['name'], '">Editar perfil de ', $context['member']['name'], '</a></center>';
-echo '<center><a href="' . $boardurl . '/mensajes/a/', $context['member']['name'], '">Enviar MP a ', $context['member']['name'], '</a></center>';
-echo '<center><a href="' . $boardurl . '/rastrear-user/', $context['member']['name'], '">Rastrear a ', $context['member']['name'], '</a></center>';
-echo '</div></div>';
-}
-echo '
-</div></div><div style="clear:both"></div>';
+  $context['imguser'] = mysqli_num_rows($request3);
 
+
+  // Conteo de mensajes del Muro 
+  $request4 = db_query("
+    SELECT *
+    FROM ({$db_prefix}members AS m, {$db_prefix}profile_comments AS p)
+    WHERE p.ID_MEMBER = m.ID_MEMBER
+    AND p.COMMENT_MEMBER_ID = " . $context['member']['id'], __FILE__, __LINE__);
+
+  $context['muromsg'] = mysqli_num_rows($request4);
+    
+  echo '
+      <div style="margin-top: 8px;">
+        <div class="box_title" style="width: 160px;">
+          <div class="box_txt box_perfil-36">Estad&iacute;sticas</div>
+          <div class="box_rss">
+            <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+          </div>
+        </div>
+        <div class="windowbg" style="width: 152px; padding: 4px;">
+          <p class="datosp">Post:</p>
+          <a href="' . $boardurl . '/user-post/' . $context['member']['name'] . '">' . $context['member']['posts'] . '</a>
+          <br /><br />
+          <p class="datosp">Mensajes en su muro:</p>
+          <span id="cantmuro">' . $context['muromsg'] . '</span>
+          <br /><br />
+          <p class="datosp">Comentarios:</p>
+          <a href="' . $boardurl . '/user-comment/' . $context['member']['name'] . '">' . ($context['comentuser'] + $context['comentimguser']) . '</a>
+          <br /><br />
+          <p class="datosp">Im&aacute;genes:</p>
+          <a href="' . $boardurl . '/imagenes/' . $context['member']['name'] . '">' . $context['imguser'] . '</a>
+          <br /><br />
+          <p class="datosp">Puntos:</p>
+          ' . $context['member']['moneyBank'] . '
+        </div>
+      </div>
+    </div>';
 }
 
-function template_perfil()
-{
-  global $db_prefix, $txt, $context, $boardurl, $settings;
+function menu4() {
+  global $context, $settings, $db_prefix, $boardurl, $modSettings;
 
-menu();
-echo '<form action="/perfil-editando/" method="post" accept-charset="', $context['character_set'], '" name="creator" id="creator" enctype="multipart/form-data"><div class="box_780" style="float:left;"><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Editar mi perfil</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div>
-<div class="windowbg" style="width: 764px; padding: 4px;">
-<table width="100%" style="padding:4px;border:none;">
-<tr>
-<td width="20%"><b class="size11">Nombre y Apellido </b></td>
-<td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="name" size="30" value="' . $context['member']['nombre'] . '" />
-</td></tr>';
-if ($context['allow_edit_membergroups']) {
-echo '<tr><td width="40%"><b class="size11">', $txt['primary_membergroup'], '</b></td><td><select name="ID_GROUP">';
+  echo '
+    <div style="float: left; margin-bottom: 8px; margin-left: 8px;">
+      <div style="margin-bottom: 10px;">
+        <div class="box_title" style="width: 201px;">
+          <div class="box_txt box_perfil2-36">&Uacute;ltimos post</div>
+          <div class="box_rss">
+            <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+          </div>
+        </div>
+        <div class="windowbg" style="width: 193px; padding: 4px;">';
+
+  $request = db_query("
+    SELECT *
+    FROM ({$db_prefix}messages AS m, {$db_prefix}topics AS t, {$db_prefix}boards AS b, {$db_prefix}members AS mem)
+    WHERE m.ID_TOPIC = t.ID_TOPIC
+    AND m.ID_BOARD = t.ID_BOARD
+    AND m.ID_BOARD = b.ID_BOARD
+    AND m.ID_MEMBER = mem.ID_MEMBER
+    AND mem.ID_MEMBER = {$context['member']['id']}
+    ORDER BY m.ID_TOPIC DESC
+    LIMIT " . $modSettings['profile_posts_limit'], __FILE__, __LINE__);
+
+  $count = mysqli_num_rows($request);
+
+  if ($count == 0) {
+    echo '<div class="noesta">' . $context['member']['name'] . ' no tiene ning&uacute;n post hecho.-</div>';
+  } else {
+    $context['posts'] = array();
+
+    while ($row = mysqli_fetch_assoc($request)) {
+      $context['posts'][] = array(
+        'name' => $row['name'],
+        'ID_BOARD' => $row['ID_BOARD'],
+        'ID_TOPIC' => $row['ID_TOPIC'],
+        'description' => $row['description'],
+        'subject' => $row['subject'],
+      );
+    }
+
+    foreach ($context['posts'] as $post) {
+      echo '
+        <table width="100%">
+          <tr>
+            <td width="100%">
+              <div class="box_icono4">
+                <img alt="" title="' . $post['name'] . '" src="' . $settings['images_url'] . '/post/icono_', $post['ID_BOARD'], '.gif" />
+              </div>
+              <a href="' . $boardurl . '/post/' . $post['ID_TOPIC'] . '/' . $post['description'] . '/' . ssi_amigable($post['subject']) . '.html">' . ssi_reducir2(htmlentities($post['subject'], ENT_QUOTES, 'UTF-8')) . '</a>
+            </td>
+          </tr>
+        </table>';
+    }
+
+    echo '
+      <br />
+      <span style="font-size: 9px;">
+        <center>
+          <a href="' . $boardurl . '/user-post/' . $context['member']['name'] . '">ver m&aacute;s</a>
+        </center>
+      </span>';
+  }
+
+  echo '
+      </div>
+    </div>';
+}
+
+function menu5() {
+  global $context, $settings, $db_prefix, $boardurl, $modSettings;
+
+  $memberName = censorText($context['member']['name']);
+
+  echo '
+    <div style="margin-bottom: 10px;">
+      <div class="box_title" style="width: 201px;">
+        <div class="box_txt box_perfil2-36">&Uacute;ltimas im&aacute;genes</div>
+        <div class="box_rss">
+          <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+        </div>
+      </div>
+      <div class="windowbg" style="width: 193px; padding: 4px;">';
+
+  $request = db_query("
+    SELECT *
+    FROM ({$db_prefix}gallery_pic AS g, {$db_prefix}members AS m)
+    WHERE g.ID_MEMBER = m.ID_MEMBER
+    AND m.ID_MEMBER = {$context['member']['id']}
+    ORDER BY g.ID_PICTURE DESC
+    LIMIT " . $modSettings['profile_images_limit'], __FILE__, __LINE__);
+
+  $count = mysqli_num_rows($request);
+
+  if ($count <= 0) {
+    echo '<div class="noesta">' . $memberName . ' no tiene ninguna imagen.-</div>';
+  } else {
+    $context['imagenes'] = array();
+
+    while ($row = mysqli_fetch_assoc($request)) {
+      $context['imagenes'][] = array(
+        'ID_PICTURE' => $row['ID_PICTURE'],
+        'filename' => $row['filename'],
+        'commenttotal' => $row['commenttotal'],
+      );
+    }
+
+    foreach ($context['imagenes'] as $img) {
+      $total = db_query("
+        SELECT COUNT(ID_COMMENT) AS total
+        FROM {$db_prefix}gallery_comment
+        WHERE ID_PICTURE = " . $img['ID_PICTURE'], __FILE__, __LINE__);
+
+      $total2 = mysqli_fetch_assoc($total);
+
+      echo '
+        <div class="photo_small1">
+          <center>
+            <a href="' . $boardurl . '/imagenes/ver/' . $img['ID_PICTURE'] . '">
+              <img alt="" style="width: 150px;" src="' . $img['filename'] . '" border="6" />
+            </a>
+          </center>
+        </div>
+        <div class="smalltext">
+          <center>
+            Comentarios:
+            &nbsp;
+            (<a href="' . $boardurl . '/imagenes/ver/' . $img['ID_PICTURE'] . '#comentarios">' . $total2['total'] . '</a>)
+          </center>
+        </div>';
+    }
+
+    echo '
+      <br />
+      <span style="font-size: 9px;">
+        <center>
+          <a href="' . $boardurl . '/imagenes/' . $memberName . '">Ir a sus im&aacute;genes</a>
+        </center>
+      </span>';
+  }
+
+  echo '
+      </div>
+    </div>';
+
+  if ($context['allow_admin']) {
+    echo '
+        <div style="margin-bottom: 10px;">
+        <div class="box_title" style="width: 201px;">
+          <div class="box_txt box_perfil2-36">Panel de moderaci&oacute;n</div>
+          <div class="box_rss">
+            <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" />
+          </div>
+        </div>
+        <div class="windowbg" style="width: 193px; padding: 4px;">
+          <center>
+            <a href="' . $boardurl . '/ban-user/' . $context['member']['id'] . '">Banear a ' . $memberName . '</a>
+          </center>
+          <center>
+            <a href="' . $boardurl . '/ver-ip/' . $context['member']['ip'] . '">Rastrear IP de ' . $memberName . '</a>
+          </center>
+          <center>
+            <a href="' . $boardurl . '/editar-usuario/' . $memberName . '">Editar perfil de ' . $memberName . '</a>
+          </center>
+          <center>
+            <a href="' . $boardurl . '/mensajes/a/' . $memberName . '">Enviar MP a ' . $memberName . '</a>
+          </center>
+          <center>
+            <a href="' . $boardurl . '/rastrear-user/' . $memberName . '">Rastrear a ' . $memberName . '</a>
+          </center>
+        </div>
+      </div>';
+  }
+
+  echo '
+      </div>
+    </div>
+    <div style="clear:both"></div>';
+}
+
+function template_perfil() {
+  global $txt, $context, $settings, $boardurl;
+
+  menu();
+
+  echo '
+    <form action="' . $boardurl . '/perfil-editando/" method="post" accept-charset="' . $context['character_set'] . '" name="creator" id="creator" enctype="multipart/form-data">
+      <div class="box_780" style="float: left;">
+        <div class="box_title" style="width: 772px;">
+          <div class="box_txt box_780-34">
+            <center>Editar mi perfil</center>
+          </div>
+          <div class="box_rss">
+            <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+          </div>
+        </div>
+        <div class="windowbg" style="width: 764px; padding: 4px;">
+          <table width="100%" style="padding: 4px; border: none;">
+            <tr>
+              <td width="20%">
+                <b class="size11">Nombre y Apellido </b>
+              </td>
+              <td>
+                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="name" size="30" value="' . $context['member']['nombre'] . '" />
+              </td>
+            </tr>';
+
+  if ($context['allow_edit_membergroups']) {
+    echo '
+      <tr>
+        <td width="40%">
+          <b class="size11">' . $txt['primary_membergroup'] . '</b>
+        </td>
+        <td>
+          <select name="ID_GROUP">';
+
     // Fill the select box with all primary member groups that can be assigned to a member.
-foreach ($context['member_groups'] as $member_group) {
-echo '<option value="', $member_group['id'], '"', $member_group['is_primary'] ? ' selected="selected"' : '', '>', $member_group['name'], '</option>';
+    foreach ($context['member_groups'] as $member_group) {
+      echo '<option value="' . $member_group['id'] . '"' . ($member_group['is_primary'] ? ' selected="selected"' : '') . '>' . $member_group['name'] . '</option>';
+    }
+
+    echo '
+        </td>
+      </tr>';
+  }
+
+  echo '
+    <tr>
+      <td width="40%">
+        <b class="size11">Nick:</b>
+      </td>
+      <td>' . $context['member']['name'] . '</td>
+    </tr>
+    <tr>
+      <td width="40%">
+        <b class="size11">Fecha de nacimiento:</b>
+        <div class="smalltext">&#40;d&iacute;a&#47;mes&#47;a&ntilde;o&#41;</div>
+      </td>
+      <td>
+        <select tabindex="1" name="bday2" id="bday2" autocomplete="off">
+          <option value="' . $context['member']['birth_date']['day'] . '">D&iacute;a:</option>';
+  for ($i = 1; $i < 32; $i++) {
+    echo '<option value="' . $i . '"' . ($context['member']['birth_date']['day'] == $i ? ' selected="selected"' : '') . '>' . $i . '</option>';
+  }
+
+  // Obtener primera key del arreglo de meses
+  $key = key($txt['months']);
+
+  // Generar el arreglo de meses con posición corrida - 1 valores;
+  $months = $txt['months'][$key];
+
+  echo '
+    </select>
+    <select tabindex="2" name="bday1" id="bday1" autocomplete="off">
+      <option value="' . $context['member']['birth_date']['month'] . '">Mes:</option>';
+      
+  for ($i = 1; $i < 13; $i++) {
+    echo '<option value="' . $i . '"' . ($context['member']['birth_date']['month'] == $i ? ' selected="selected"' : '') . '>' . strtolower($months[$i - 1]) . '</option>';
+  }
+
+  echo '
+    </select>
+    <select tabindex="3" name="bday3" id="bday3" autocomplete="off">
+      <option value="' . $context['member']['birth_date']['year'] . '">A&ntilde;o:</option>';
+
+  for ($i = date("Y", time()) - 18; $i > 1899; $i--) {
+    echo '<option value="' . $i . '"' . ($context['member']['birth_date']['year'] == $i ? ' selected="selected"' : '') . '>' . $i . '</option>';
+  }
+
+  // TO-DO: Guardar en alguna variable de languages
+  // Paises
+  $countries = [
+    'ar' => 'Argentina',
+    'bo' => 'Bolivia',
+    'br' => 'Brasil',
+    'cl' => 'Chile',
+    'co' => 'Colombia',
+    'cr' => 'Costa Rica',
+    'cu' => 'Cuba',
+    'ec' => 'Ecuador',
+    'es' => 'Espa&ntilde;a',
+    'gt' => 'Guatemala',
+    'it' => 'Italia',
+    'mx' => 'M&eacute;xico',
+    'py' => 'Paraguay',
+    'pe' => 'Per&uacute;',
+    'pt' => 'Portugal',
+    'pr' => 'Puerto Rico',
+    'uy' => 'Uruguay',
+    've' => 'Venezuela',
+    'ot' => 'Otro'
+  ];
+
+  // Privacidad
+  $privacy = [
+    0 => 'A todos',
+    1 => 'Nadie',
+    2 => 'Amigos',
+    3 => 'Registrados'
+  ];
+ 
+  echo '
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td width="40%">
+        <b class="size11">Pa&iacute;s:&nbsp;</b>
+      </td>
+      <td>
+        <select name="usertitle" id="usertitle">
+          <option value="' . $context['member']['title'] . '">Pa&iacute;s</option>';
+
+  $countries_keys = array_keys($countries);
+  for ($i = 0; $i < count($countries_keys); $i++) {
+    $value = $countries_keys[$i];
+    echo '<option value="' . $value . '"' . ($context['member']['title'] == $value ? ' selected="selected"' : '') . '>' . $countries[ $value ] . '</option>';
+  }
+
+  echo '
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td width="40%">
+                <b class="size11">Ciudad:&nbsp;</b>
+              </td>
+              <td>
+                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="location" size="30" value="' . $context['member']['location'] . '" />
+              </td>
+            </tr>
+            <tr>
+              <td width="40%">
+                <b class="size11">Sexo:&nbsp;</b>
+              </td>
+              <td>
+                <select name="gender" size="1">
+                  <option value="1"' . ($context['member']['gender']['name'] == 'm' ? ' selected="selected"' : '') . '>Masculino</option>
+                  <option value="2"' . ($context['member']['gender']['name'] == 'f' ? ' selected="selected"' : '') . '>Femenino</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td width="40%">
+                <b class="size11">Mostrar apariencia a:</b>
+              </td>
+              <td>
+                <select name="quienve" id="quienve" size="1">';
+
+  $privacy_keys = array_keys($privacy);
+  for ($i = 0; $i < count($privacy_keys); $i++) {
+    $value = $privacy_keys[$i];
+    echo '<option value="' . $value . '"' . ($context['member']['quienve'] == $value ? ' selected="selected"' : '') . '>' . $privacy[ $value ] . '</option>';
+  }
+
+  echo '
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td width="40%">
+                <b class="size11">Sidebar:</b>
+              </td>
+              <td>
+                <select name="sidebar" id="sidebar" size="1">
+                  <option value="no"' . ($context['member']['sidebar'] == 'no' ? ' selected="selected"' : '') . '>No</option>
+                  <option value="si"' . ($context['member']['sidebar'] == 'si' ? ' selected="selected"' : '') . '>Si</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td width="40%">
+                <b class="size11">Avisar si me borran posts e im&aacute;genes:</b>
+              </td>
+              <td>
+                <select name="recibir" id="recibir" size="1">
+                  <option value="no"' . ($context['member']['recibir'] == 'no' ? ' selected="selected"' : '') . '>No</option>
+                  <option value="si"' . ($context['member']['recibir'] == 'si' ? ' selected="selected"' : '') . '>Si</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td width="20%">
+                <b class="size11">Texto personal:</b>
+                <div class="smalltext">(aparecer&aacute; debajo del avatar)</div>
+              </td>
+              <td>
+                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="personalText" size="30" maxlength="21" value="' . $context['member']['blurb'] . '" />
+              </td>
+            </tr>
+            <tr>
+              <td width="20%">
+                <b class="size11">Firma:</b>
+                <div class="smalltext">(aparecer&aacute; debajo tu post)</div>
+              </td>
+              <td>
+                <textarea class="editor" onkeyup="calcCharLeft();" name="signature" rows="5" cols="50">' . $context['member']['signature'] . '</textarea>
+                <br />
+                <span class="smalltext">
+                  M&aacute;x 400; caracteres restantes:&nbsp;&nbsp;
+                  <span id="signatureLeft">400</span>
+                </span>
+                <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
+                  function tick() {
+                    if (typeof(document.forms.creator) != "undefined") {
+                      calcCharLeft();
+                      setTimeout("tick()", 1000);
+                    }
+                    else
+                      setTimeout("tick()", 800);
+                  }
+
+                  function calcCharLeft() {
+                    var maxLength = 400;
+                    var oldSignature = "", currentSignature = document.forms.creator.signature.value;
+
+                    if (!document.getElementById("signatureLeft"))
+                      return;
+
+                    if (oldSignature != currentSignature) {
+                      oldSignature = currentSignature;
+
+                      if (currentSignature.replace(/\r/, "").length > maxLength)
+                        document.forms.creator.signature.value = currentSignature.replace(/\r/, "").substring(0, maxLength);
+                      currentSignature = document.forms.creator.signature.value.replace(/\r/, "");
+                    }
+
+                    setInnerHTML(document.getElementById("signatureLeft"), maxLength - currentSignature.length);
+                  }
+
+                  setTimeout("tick()", 800);
+                // ]]></script>
+              </td>
+            </tr>
+            <tr>
+              <td width="20%">
+                <b class="size11">Mensajero:&nbsp;</b>
+                <div class="smalltext">(msn, gtalk, yahoo)</div>
+              </td>
+              <td>
+                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="MSN" value="', $context['member']['MSN'], '" size="30" />
+              </td>
+            </tr>
+            <tr>
+              <td width="20%">
+                <b class="size11">Sitio Web&nbsp;/&nbsp;Blog:&nbsp;</b>
+                <div class="smalltext">(debe ser una URL completa)</div>
+              </td>
+              <td>
+                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="websiteTitle" size="30" value="', $context['member']['websiteTitle'], '" />
+              </td>
+            </tr>
+            <tr>
+              <td width="40%">
+                <b class="size11">Email:&nbsp;</b>
+                <div class="smalltext">Debe ser una direcci&oacute;n v&aacute;lida de email.</div>
+              </td>
+              <td>
+                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="emailAddress" size="30" value="', $context['member']['emailAddress'], '" />
+              </td>
+            </tr>
+            <tr>
+              <td width="40%">
+                <b class="size11"', (isset($context['modify_error']['bad_new_password']) ? ' style="color: red;"' : ''), '>Escoge contrase&ntilde;a:&nbsp;</b>
+                <div class="smalltext">Te sugerimos que utilices 6 o m&aacute;s caracteres combinando n&uacute;meros y letras.</div>
+              </td>
+              <td>
+                <input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd1" size="20" autocomplete="off" />
+              </td>
+            </tr>
+            <tr>
+              <td width="40%">
+                <b class="size11">Verifica contrase&ntilde;a:&nbsp;</b>
+              </td>
+              <td>
+                <input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd2" size="20" autocomplete="off" />
+              </td>
+            </tr>
+            <tr>
+              <td align="center" colspan="2">
+                <br /><br />
+                <input class="login" type="submit" value="Modificar mi perfil" />
+                <input type="hidden" name="sc" value="', $context['session_id'], '" />
+                <input type="hidden" name="userID" value="', $context['member']['id'], '" />
+                <input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </form>
+    <div style="clear:both"></div>';
 }
-echo '</td></tr>';
+
+function template_avatar() {
+  global $context, $boardurl, $settings;
+
+  echo '
+    <script type="text/javascript">
+      function load_new_avatar() {
+        var f = document.forms.per;
+
+        if (f.avatar.value.substring(0, 7)!=\'http://\') {
+          f.avatar.focus();
+          alert(\'La direccion debe comenzar con http://\');
+          return;
+        }
+
+        window.newAvatar = new Image();
+        window.newAvatar.src = f.avatar.value;
+        newAvatar.loadBeginTime = (new Date()).getTime();
+        newAvatar.onerror = show_error;
+        newAvatar.onload = show_new_avatar;
+        avatar_check_timeout();
+      }
+
+      function avatar_check_timeout() {
+        if (((new Date()).getTime() - newAvatar.loadBeginTime) > 15) {
+          alert(\'Avatar no recomendable. Razon: Muy lento\');
+          document.forms.per.avatar.focus();
+        }
+      }
+
+      function show_error() {
+        alert(\'Hubo un error al leer la imagen. Por favor, verifica que la direccion sea correcta.\');
+        document.forms.per.avatar.focus();
+      }
+
+      function show_new_avatar() {
+        document.getElementById(\'miAvatar\').src = newAvatar.src;
+      }
+
+      function errorrojos(avatar) {
+        if (avatar == \'\') {
+          document.getElementById(\'errorss\').innerHTML = \'<font class="size10" style="color: red;">Falta agregar el avatar.</font><br />\';
+          return false;
+        }
+      }
+    </script>';
+
+  menu();
+
+  echo '
+      <form name="per" method="post" onsubmit="return load_new_avatar();" action="' . $boardurl . '/enviar-avatar/">
+        <div class="box_780" style="float: left;">
+          <div class="box_title" style="width: 772px;">
+            <div class="box_txt box_780-34">
+              <center>Modificar mi avatar</center>
+            </div>
+            <div class="box_rss">
+              <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+            </div>
+          </div>
+          <div class="windowbg" border="0" style="width: 764px; padding: 4px; margin-bottom: 8px;">
+            <table width="100%" cellpadding="4">
+              <tr valign="top">
+                <td width="130px" valign="top">
+                  <div class="fondoavatar" style="overflow: auto; width: 130px;" align="right">
+                    <img alt="" src="', $context['member']['avatar']['name'], '" width="120" weight="120" align="left" vspace="4" hspace="4" id="miAvatar" onerror="error_avatar(this)" />
+                  </div>
+                </td>
+                <td width="640px" valign="top">
+                  <br /><br />
+                  <center>
+                    Escribe la direcci&oacute;n de tu <i>avatar</i>.
+                    <br />
+                    Ejemplo:&nbsp;
+                    <b>' . $boardurl . '/avatar.gif</b>
+                    <br /><br />
+                    <input type="text" onfocus="foco(this);" onblur="no_foco(this);" size="64" maxlength="255" name="avatar" id="avatar" value="', $context['member']['avatar']['name'], '" />
+                    <input type="button" class="login" value="Previsualizar" onclick="load_new_avatar()" />
+                    <br />
+                    <label id="errorss"></label>
+                    <label id="sinavatar">
+                      <input name="sinavatar" id="sinavatar" value="1" type="checkbox" ' . ($context['member']['avatar']['external'] == $boardurl . '/avatar.gif' ? 'checked="checked"' : '') . '>
+                      &nbsp;
+                      Sin avatar
+                      &nbsp;
+                      <span style="font-size:10px;">(avatar default)</span>.
+                    </label>
+                  </center>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" align="center">
+                  <hr />
+                  <b class="size11" style="color: red;">* Si el avatar contiene pornograf&iacute;a, es morboso. Se borrar&aacute;.</b>
+                  <br />
+                  <input onclick="return errorrojos(this.form.avatar.value); this.form.submit()" type="submit" class="button" style="font-size: 15px" value="Modificar mi perfil" title="Modificar mi perfil" />
+                  <input type="hidden" name="sc" value="', $context['session_id'], '" />
+                  <input type="hidden" name="userID" value="', $context['member']['id'], '" />
+                  <input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div style="clear:both"></div>';
+      
+  if ($_POST['sinavatar'] == '1') {
+    $context['member']['avatar']['name'] = $boardurl . '/avatar.gif';
+  }
 }
-echo '<tr><td width="40%"><b class="size11">Nick:</b></td><td>' . $context['member']['name'] . '</td></tr>
-  <tr>
 
-                <td width="40%">
-                  <b class="size11">Fecha de nacimiento:</b>
-                  <div class="smalltext">&#40;d&iacute;a&#47;mes&#47;a&ntilde;o&#41;</div>
-                </td>
-                <td>
-                <select tabindex="1" name="bday2" id="bday2" autocomplete="off">
-                
-<option value="', $context['member']['birth_date']['day'], '">D&iacute;a:</option>
-<option '; if($context['member']['birth_date']['day'] == '1') { echo 'selected="selected" '; } echo 'value="1">1</option>
-<option '; if($context['member']['birth_date']['day'] == '2') { echo 'selected="selected" '; } echo 'value="2">2</option>
-<option '; if($context['member']['birth_date']['day'] == '3') { echo 'selected="selected" '; } echo 'value="3">3</option>
-<option '; if($context['member']['birth_date']['day'] == '4') { echo 'selected="selected" '; } echo 'value="4">4</option>
-<option '; if($context['member']['birth_date']['day'] == '5') { echo 'selected="selected" '; } echo 'value="5">5</option>
-<option '; if($context['member']['birth_date']['day'] == '6') { echo 'selected="selected" '; } echo 'value="6">6</option>
-<option '; if($context['member']['birth_date']['day'] == '7') { echo 'selected="selected" '; } echo 'value="7">7</option>
+function template_paso1() {
+  global $context, $boardurl, $settings;
 
-<option '; if($context['member']['birth_date']['day'] == '8') { echo 'selected="selected" '; } echo 'value="8">8</option>
-<option '; if($context['member']['birth_date']['day'] == '9') { echo 'selected="selected" '; } echo 'value="9">9</option>
-<option '; if($context['member']['birth_date']['day'] == '10') { echo 'selected="selected" '; } echo 'value="10">10</option>
-<option '; if($context['member']['birth_date']['day'] == '11') { echo 'selected="selected" '; } echo 'value="11">11</option>
-<option '; if($context['member']['birth_date']['day'] == '12') { echo 'selected="selected" '; } echo 'value="12">12</option>
-<option '; if($context['member']['birth_date']['day'] == '13') { echo 'selected="selected" '; } echo 'value="13">13</option>
-<option '; if($context['member']['birth_date']['day'] == '14') { echo 'selected="selected" '; } echo 'value="14">14</option>
-<option '; if($context['member']['birth_date']['day'] == '15') { echo 'selected="selected" '; } echo 'value="15">15</option>
-<option '; if($context['member']['birth_date']['day'] == '16') { echo 'selected="selected" '; } echo 'value="16">16</option>
+  menu();
 
-<option '; if($context['member']['birth_date']['day'] == '17') { echo 'selected="selected" '; } echo 'value="17">17</option>
-<option '; if($context['member']['birth_date']['day'] == '18') { echo 'selected="selected" '; } echo 'value="18">18</option>
-<option '; if($context['member']['birth_date']['day'] == '19') { echo 'selected="selected" '; } echo 'value="19">19</option>
-<option '; if($context['member']['birth_date']['day'] == '20') { echo 'selected="selected" '; } echo 'value="20">20</option>
-<option '; if($context['member']['birth_date']['day'] == '21') { echo 'selected="selected" '; } echo 'value="21">21</option>
-<option '; if($context['member']['birth_date']['day'] == '22') { echo 'selected="selected" '; } echo 'value="22">22</option>
-<option '; if($context['member']['birth_date']['day'] == '23') { echo 'selected="selected" '; } echo 'value="23">23</option>
-<option '; if($context['member']['birth_date']['day'] == '24') { echo 'selected="selected" '; } echo 'value="24">24</option>
-<option '; if($context['member']['birth_date']['day'] == '25') { echo 'selected="selected" '; } echo 'value="25">25</option>
+  $schooling = [
+    '' => 'Sin respuesta',
+    'sin' => 'Sin estudios',
+    'pri' => 'Primario completo',
+    'sec_curso' => 'Secundario en curso',
+    'sec_completo' => 'Secundario completo',
+    'ter_curso' => 'Terciario en curso',
+    'ter_completo' => 'Terciario completo',
+    'univ_curso' => 'Universitario en curso',
+    'univ_completo' => 'Universitario completo',
+    'post_curso' => 'Postgrado en curso',
+    'post_completo' => 'Postgrado completo'
+  ];
 
-<option '; if($context['member']['birth_date']['day'] == '26') { echo 'selected="selected" '; } echo 'value="26">26</option>
-<option '; if($context['member']['birth_date']['day'] == '27') { echo 'selected="selected" '; } echo 'value="27">27</option>
-<option '; if($context['member']['birth_date']['day'] == '28') { echo 'selected="selected" '; } echo 'value="28">28</option>
-<option '; if($context['member']['birth_date']['day'] == '29') { echo 'selected="selected" '; } echo 'value="29">29</option>
-<option '; if($context['member']['birth_date']['day'] == '30') { echo 'selected="selected" '; } echo 'value="30">30</option>
-<option '; if($context['member']['birth_date']['day'] == '31') { echo 'selected="selected" '; } echo 'value="31">31</option></select>
-<select tabindex="2" name="bday1" id="bday1" autocomplete="off">
-<option value="', $context['member']['birth_date']['month'], '">Mes:</option>
-<option '; if($context['member']['birth_date']['month'] == '1') { echo 'selected="selected" '; } echo 'value="1">enero</option>
+  $incomes = [
+    '' => 'Sin respuesta',
+    'sin' => 'Sin ingresos',
+    'bajos' => 'Bajos',
+    'intermedios' => 'Intermedios',
+    'altos' => 'Altos '
+  ];
 
-<option '; if($context['member']['birth_date']['month'] == '2') { echo 'selected="selected" '; } echo 'value="2">febrero</option>
-<option '; if($context['member']['birth_date']['month'] == '3') { echo 'selected="selected" '; } echo 'value="3">marzo</option>
-<option '; if($context['member']['birth_date']['month'] == '4') { echo 'selected="selected" '; } echo 'value="4">abril</option>
-<option '; if($context['member']['birth_date']['month'] == '5') { echo 'selected="selected" '; } echo 'value="5">mayo</option>
-<option '; if($context['member']['birth_date']['month'] == '6') { echo 'selected="selected" '; } echo 'value="6">junio</option>
-<option '; if($context['member']['birth_date']['month'] == '7') { echo 'selected="selected" '; } echo 'value="7">julio</option>
-<option '; if($context['member']['birth_date']['month'] == '8') { echo 'selected="selected" '; } echo 'value="8">agosto</option>
-<option '; if($context['member']['birth_date']['month'] == '9') { echo 'selected="selected" '; } echo 'value="9">septiembre</option>
-<option '; if($context['member']['birth_date']['month'] == '10') { echo 'selected="selected" '; } echo 'value="10">octubre</option>
+  echo '
+      <div class="box_780" style="float: left; margin-bottom: 8px;">
+        <div class="box_title" style="width: 778px;">
+          <div class="box_txt box_780-34">
+            <center>Formaci&oacute;n y trabajo</center>
+          </div>
+          <div class="box_rss">
+            <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
+          </div>
+        </div>
+        <div class="windowbg" border="0" style="width: 770px; padding: 4px;">
+          <form action="' . $boardurl . '/accion-apariencia/paso1/" method="post" accept-charset="' . $context['character_set'] . '" enctype="multipart/form-data" style="margin: 0px; padding: 0px;">
+            <table cellpadding="4" width="100%">
+              <tbody>
+                <tr>
+                  <td align="right" valign="top" width="23%">
+                    <b>Estudios:</b>
+                  </td>
+                  <td width="40%">
+                    <select id="estudios" name="estudios">';
 
-<option '; if($context['member']['birth_date']['month'] == '11') { echo 'selected="selected" '; } echo 'value="11">noviembre</option>
-<option '; if($context['member']['birth_date']['month'] == '12') { echo 'selected="selected" '; } echo 'value="12">diciembre</option>
-</select>
-<select tabindex="3" name="bday3" id="bday3" autocomplete="off">
-<option value="', $context['member']['birth_date']['year'], '">A&ntilde;o:</option>
-<option '; if($context['member']['birth_date']['year'] == '2003') { echo 'selected="selected" '; } echo 'value="2003">2003</option>
-<option '; if($context['member']['birth_date']['year'] == '2002') { echo 'selected="selected" '; } echo 'value="2002">2002</option>
-<option '; if($context['member']['birth_date']['year'] == '2001') { echo 'selected="selected" '; } echo 'value="2001">2001</option>
-<option '; if($context['member']['birth_date']['year'] == '2000') { echo 'selected="selected" '; } echo 'value="2000">2000</option>
+  $schooling_keys = array_keys($schooling);
 
-<option '; if($context['member']['birth_date']['year'] == '1999') { echo 'selected="selected" '; } echo 'value="1999">1999</option>
-<option '; if($context['member']['birth_date']['year'] == '1998') { echo 'selected="selected" '; } echo 'value="1998">1998</option>
-<option '; if($context['member']['birth_date']['year'] == '1997') { echo 'selected="selected" '; } echo 'value="1997">1997</option>
-<option '; if($context['member']['birth_date']['year'] == '1996') { echo 'selected="selected" '; } echo 'value="1996">1996</option>
-<option '; if($context['member']['birth_date']['year'] == '1995') { echo 'selected="selected" '; } echo 'value="1995">1995</option>
-<option '; if($context['member']['birth_date']['year'] == '1994') { echo 'selected="selected" '; } echo 'value="1994">1994</option>
+  for ($i = 0; $i < count($schooling_keys); $i++) {
+    $value = $schooling_keys[$i];
+    echo '<option value="' . $value . '"' . ($context['member']['estudios'] == $value ? ' selected="selected"' : '') . '>' . $schooling[$value] . '</option>';
+  }
 
-<option '; if($context['member']['birth_date']['year'] == '1993') { echo 'selected="selected" '; } echo 'value="1993">1993</option>
-<option '; if($context['member']['birth_date']['year'] == '1992') { echo 'selected="selected" '; } echo 'value="1992">1992</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1991') { echo 'selected="selected" '; } echo 'value="1991">1991</option>
-<option '; if($context['member']['birth_date']['year'] == '1990') { echo 'selected="selected" '; } echo 'value="1990">1990</option>
-<option '; if($context['member']['birth_date']['year'] == '1989') { echo 'selected="selected" '; } echo 'value="1989">1989</option>
-<option '; if($context['member']['birth_date']['year'] == '1988') { echo 'selected="selected" '; } echo 'value="1988">1988</option>
-<option '; if($context['member']['birth_date']['year'] == '1987') { echo 'selected="selected" '; } echo 'value="1987">1987</option>
-<option '; if($context['member']['birth_date']['year'] == '1986') { echo 'selected="selected" '; } echo 'value="1986">1986</option>
-<option '; if($context['member']['birth_date']['year'] == '1985') { echo 'selected="selected" '; } echo 'value="1985">1985</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1984') { echo 'selected="selected" '; } echo 'value="1984">1984</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1983') { echo 'selected="selected" '; } echo 'value="1983">1983</option>
-<option '; if($context['member']['birth_date']['year'] == '1982') { echo 'selected="selected" '; } echo 'value="1982">1982</option>
-<option '; if($context['member']['birth_date']['year'] == '1981') { echo 'selected="selected" '; } echo 'value="1981">1981</option>
-<option '; if($context['member']['birth_date']['year'] == '1980') { echo 'selected="selected" '; } echo 'value="1980">1980</option>
-<option '; if($context['member']['birth_date']['year'] == '1979') { echo 'selected="selected" '; } echo 'value="1979">1979</option>
-<option '; if($context['member']['birth_date']['year'] == '1978') { echo 'selected="selected" '; } echo 'value="1978">1978</option>
-<option '; if($context['member']['birth_date']['year'] == '1977') { echo 'selected="selected" '; } echo 'value="1977">1977</option>
-<option '; if($context['member']['birth_date']['year'] == '1976') { echo 'selected="selected" '; } echo 'value="1976">1976</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1975') { echo 'selected="selected" '; } echo 'value="1975">1975</option>
-<option '; if($context['member']['birth_date']['year'] == '1974') { echo 'selected="selected" '; } echo 'value="1974">1974</option>
-<option '; if($context['member']['birth_date']['year'] == '1973') { echo 'selected="selected" '; } echo 'value="1973">1973</option>
-<option '; if($context['member']['birth_date']['year'] == '1972') { echo 'selected="selected" '; } echo 'value="1972">1972</option>
-<option '; if($context['member']['birth_date']['year'] == '1971') { echo 'selected="selected" '; } echo 'value="1971">1971</option>
-<option '; if($context['member']['birth_date']['year'] == '1970') { echo 'selected="selected" '; } echo 'value="1970">1970</option>
-<option '; if($context['member']['birth_date']['year'] == '1969') { echo 'selected="selected" '; } echo 'value="1969">1969</option>
-<option '; if($context['member']['birth_date']['year'] == '1968') { echo 'selected="selected" '; } echo 'value="1968">1968</option>
-<option '; if($context['member']['birth_date']['year'] == '1967') { echo 'selected="selected" '; } echo 'value="1967">1967</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1966') { echo 'selected="selected" '; } echo 'value="1966">1966</option>
-<option '; if($context['member']['birth_date']['year'] == '1965') { echo 'selected="selected" '; } echo 'value="1965">1965</option>
-<option '; if($context['member']['birth_date']['year'] == '1964') { echo 'selected="selected" '; } echo 'value="1964">1964</option>
-<option '; if($context['member']['birth_date']['year'] == '1963') { echo 'selected="selected" '; } echo 'value="1963">1963</option>
-<option '; if($context['member']['birth_date']['year'] == '1962') { echo 'selected="selected" '; } echo 'value="1962">1962</option>
-<option '; if($context['member']['birth_date']['year'] == '1961') { echo 'selected="selected" '; } echo 'value="1961">1961</option>
-<option '; if($context['member']['birth_date']['year'] == '1960') { echo 'selected="selected" '; } echo 'value="1960">1960</option>
-<option '; if($context['member']['birth_date']['year'] == '1959') { echo 'selected="selected" '; } echo 'value="1959">1959</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1958') { echo 'selected="selected" '; } echo 'value="1958">1958</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1957') { echo 'selected="selected" '; } echo 'value="1957">1957</option>
-<option '; if($context['member']['birth_date']['year'] == '1956') { echo 'selected="selected" '; } echo 'value="1956">1956</option>
-<option '; if($context['member']['birth_date']['year'] == '1955') { echo 'selected="selected" '; } echo 'value="1955">1955</option>
-<option '; if($context['member']['birth_date']['year'] == '1954') { echo 'selected="selected" '; } echo 'value="1954">1954</option>
-<option '; if($context['member']['birth_date']['year'] == '1953') { echo 'selected="selected" '; } echo 'value="1953">1953</option>
-<option '; if($context['member']['birth_date']['year'] == '1952') { echo 'selected="selected" '; } echo 'value="1952">1952</option>
-<option '; if($context['member']['birth_date']['year'] == '1951') { echo 'selected="selected" '; } echo 'value="1951">1951</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1950') { echo 'selected="selected" '; } echo 'value="1950">1950</option>
-<option '; if($context['member']['birth_date']['year'] == '1949') { echo 'selected="selected" '; } echo 'value="1949">1949</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1948') { echo 'selected="selected" '; } echo 'value="1948">1948</option>
-<option '; if($context['member']['birth_date']['year'] == '1947') { echo 'selected="selected" '; } echo 'value="1947">1947</option>
-<option '; if($context['member']['birth_date']['year'] == '1946') { echo 'selected="selected" '; } echo 'value="1946">1946</option>
-<option '; if($context['member']['birth_date']['year'] == '1945') { echo 'selected="selected" '; } echo 'value="1945">1945</option>
-<option '; if($context['member']['birth_date']['year'] == '1944') { echo 'selected="selected" '; } echo 'value="1944">1944</option>
-<option '; if($context['member']['birth_date']['year'] == '1943') { echo 'selected="selected" '; } echo 'value="1943">1943</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1942') { echo 'selected="selected" '; } echo 'value="1942">1942</option>
-<option '; if($context['member']['birth_date']['year'] == '1941') { echo 'selected="selected" '; } echo 'value="1941">1941</option>
-<option '; if($context['member']['birth_date']['year'] == '1940') { echo 'selected="selected" '; } echo 'value="1940">1940</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1939') { echo 'selected="selected" '; } echo 'value="1939">1939</option>
-<option '; if($context['member']['birth_date']['year'] == '1938') { echo 'selected="selected" '; } echo 'value="1938">1938</option>
-<option '; if($context['member']['birth_date']['year'] == '1937') { echo 'selected="selected" '; } echo 'value="1937">1937</option>
-<option '; if($context['member']['birth_date']['year'] == '1936') { echo 'selected="selected" '; } echo 'value="1936">1936</option>
-<option '; if($context['member']['birth_date']['year'] == '1935') { echo 'selected="selected" '; } echo 'value="1935">1935</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1934') { echo 'selected="selected" '; } echo 'value="1934">1934</option>
-<option '; if($context['member']['birth_date']['year'] == '1933') { echo 'selected="selected" '; } echo 'value="1933">1933</option>
-<option '; if($context['member']['birth_date']['year'] == '1932') { echo 'selected="selected" '; } echo 'value="1932">1932</option>
-<option '; if($context['member']['birth_date']['year'] == '1931') { echo 'selected="selected" '; } echo 'value="1931">1931</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1930') { echo 'selected="selected" '; } echo 'value="1930">1930</option>
-<option '; if($context['member']['birth_date']['year'] == '1929') { echo 'selected="selected" '; } echo 'value="1929">1929</option>
-<option '; if($context['member']['birth_date']['year'] == '1928') { echo 'selected="selected" '; } echo 'value="1928">1928</option>
-<option '; if($context['member']['birth_date']['year'] == '1927') { echo 'selected="selected" '; } echo 'value="1927">1927</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1926') { echo 'selected="selected" '; } echo 'value="1926">1926</option>
-<option '; if($context['member']['birth_date']['year'] == '1925') { echo 'selected="selected" '; } echo 'value="1925">1925</option>
-<option '; if($context['member']['birth_date']['year'] == '1924') { echo 'selected="selected" '; } echo 'value="1924">1924</option>
-<option '; if($context['member']['birth_date']['year'] == '1923') { echo 'selected="selected" '; } echo 'value="1923">1923</option>
-<option '; if($context['member']['birth_date']['year'] == '1922') { echo 'selected="selected" '; } echo 'value="1922">1922</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1921') { echo 'selected="selected" '; } echo 'value="1921">1921</option>
-<option '; if($context['member']['birth_date']['year'] == '1920') { echo 'selected="selected" '; } echo 'value="1920">1920</option>
-<option '; if($context['member']['birth_date']['year'] == '1919') { echo 'selected="selected" '; } echo 'value="1919">1919</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1918') { echo 'selected="selected" '; } echo 'value="1918">1918</option>
-<option '; if($context['member']['birth_date']['year'] == '1917') { echo 'selected="selected" '; } echo 'value="1917">1917</option>
-<option '; if($context['member']['birth_date']['year'] == '1916') { echo 'selected="selected" '; } echo 'value="1916">1916</option>
-<option '; if($context['member']['birth_date']['year'] == '1915') { echo 'selected="selected" '; } echo 'value="1915">1915</option>
-<option '; if($context['member']['birth_date']['year'] == '1914') { echo 'selected="selected" '; } echo 'value="1914">1914</option>
-<option '; if($context['member']['birth_date']['year'] == '1913') { echo 'selected="selected" '; } echo 'value="1913">1913</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1912') { echo 'selected="selected" '; } echo 'value="1912">1912</option>
-<option '; if($context['member']['birth_date']['year'] == '1911') { echo 'selected="selected" '; } echo 'value="1911">1911</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1910') { echo 'selected="selected" '; } echo 'value="1910">1910</option>
-<option '; if($context['member']['birth_date']['year'] == '1909') { echo 'selected="selected" '; } echo 'value="1909">1909</option>
-<option '; if($context['member']['birth_date']['year'] == '1908') { echo 'selected="selected" '; } echo 'value="1908">1908</option>
-<option '; if($context['member']['birth_date']['year'] == '1907') { echo 'selected="selected" '; } echo 'value="1907">1907</option>
-<option '; if($context['member']['birth_date']['year'] == '1906') { echo 'selected="selected" '; } echo 'value="1906">1906</option>
-<option '; if($context['member']['birth_date']['year'] == '1905') { echo 'selected="selected" '; } echo 'value="1905">1905</option>
-<option '; if($context['member']['birth_date']['year'] == '1904') { echo 'selected="selected" '; } echo 'value="1904">1904</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1903') { echo 'selected="selected" '; } echo 'value="1903">1903</option>
-
-<option '; if($context['member']['birth_date']['year'] == '1902') { echo 'selected="selected" '; } echo 'value="1902">1902</option>
-<option '; if($context['member']['birth_date']['year'] == '1901') { echo 'selected="selected" '; } echo 'value="1901">1901</option>
-<option '; if($context['member']['birth_date']['year'] == '1900') { echo 'selected="selected" '; } echo 'value="1900">1900</option>
-</select>
-              
-                
-                </td>
-              </tr>
-              <tr>
-                <td width="40%"><b class="size11">Pa&iacute;s: </b></td>
-
-                <td><select name="usertitle" id="usertitle">
-            <option value="', $context['member']['title'], '">Pa&iacute;s</option>
-            <option '; if($context['member']['title'] == 'ar') { echo 'selected="selected" '; } echo 'value="ar">Argentina</option>
-            <option '; if($context['member']['title'] == 'bo') { echo 'selected="selected" '; } echo 'value="bo">Bolivia</option>
-            <option '; if($context['member']['title'] == 'br') { echo 'selected="selected" '; } echo 'value="br">Brasil</option>
-            <option '; if($context['member']['title'] == 'cl') { echo 'selected="selected" '; } echo 'value="cl">Chile</option>
-
-            <option '; if($context['member']['title'] == 'co') { echo 'selected="selected" '; } echo 'alue="co">Colombia</option>
-            <option '; if($context['member']['title'] == 'cr') { echo 'selected="selected" '; } echo 'value="cr">Costa Rica</option>
-            <option '; if($context['member']['title'] == 'cu') { echo 'selected="selected" '; } echo 'value="cu">Cuba</option>
-            <option '; if($context['member']['title'] == 'ec') { echo 'selected="selected" '; } echo 'value="ec">Ecuador</option>
-            <option '; if($context['member']['title'] == 'es') { echo 'selected="selected" '; } echo 'value="es">Espa&ntilde;a</option>
-            <option '; if($context['member']['title'] == 'gt') { echo 'selected="selected" '; } echo 'value="gt">Guatemala</option>
-
-            <option '; if($context['member']['title'] == 'it') { echo 'selected="selected" '; } echo 'value="it">Italia</option>
-            <option '; if($context['member']['title'] == 'mx') { echo 'selected="selected" '; } echo 'value="mx">Mexico</option>
-            <option '; if($context['member']['title'] == 'py') { echo 'selected="selected" '; } echo 'value="py">Paraguay</option>
-            <option '; if($context['member']['title'] == 'pe') { echo 'selected="selected" '; } echo 'value="pe">Peru</option>
-            <option '; if($context['member']['title'] == 'pt') { echo 'selected="selected" '; } echo 'value="pt">Portugal</option>
-            <option '; if($context['member']['title'] == 'pr') { echo 'selected="selected" '; } echo 'value="pr">Puerto Rico</option>
-
-            <option '; if($context['member']['title'] == 'uy') { echo 'selected="selected" '; } echo 'value="uy">Uruguay</option>
-            <option '; if($context['member']['title'] == 've') { echo 'selected="selected" '; } echo 'value="ve">Venezuela</option>
-            <option '; if($context['member']['title'] == 'ot') { echo 'selected="selected" '; } echo 'value="ot">Otro</option>
-            </select></td>
-              </tr>
-              <tr>
-                <td width="40%"><b class="size11">Ciudad: </b></td>
-
-                <td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="location" size="30" value="', $context['member']['location'], '" /></td>
-              </tr>
-              <tr>
-                <td width="40%"><b class="size11">Sexo: </b></td>
-                <td>
-                  <select name="gender" size="1">
-                    <option value="1"'; if($context['member']['gender']['name'] == 'm') { echo ' selected="selected"'; } echo '>Masculino</option>
-                    <option value="2"'; if($context['member']['gender']['name'] == 'f') { echo ' selected="selected" '; } echo '>Femenino</option>
-
+  echo '
                   </select>
                 </td>
               </tr>
               <tr>
-                <td width="40%"><b class="size11">Mostrar apariencia a:</b></td>
-                <td><select name="quienve" size="1">
-                <option value="0"'; if($context['member']['quienve'] == '0') { echo ' selected="selected" '; } echo '>A todos</option>
-                <option value="1"'; if($context['member']['quienve'] == '1') { echo ' selected="selected" '; } echo '>Nadie</option>
-                <option value="2"'; if($context['member']['quienve'] == '2') { echo ' selected="selected" '; } echo '>Amigos</option>
-
-                <option value="3"'; if($context['member']['quienve'] == '3') { echo ' selected="selected" '; } echo '>Registrados</option>
-                </select>
+                <td align="right" valign="top" width="23%">
+                  <b>Profesi&oacute;n:</b>
+                </td>
+                <td width="40%">
+                  <input size="30" maxlength="32" name="profesion" id="profesion" value="' . $context['member']['profesion'] . '" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
                 </td>
               </tr>
-              
-              
-                <tr>
-                <td width="40%"><b class="size11">Sidebar:</b></td>
-                <td><select name="sidebar" size="1">
-                <option value="no"'; if($context['member']['sidebar'] == 'no') { echo ' selected="selected"'; } echo '>No</option>
-
-                <option value="si"'; if($context['member']['sidebar'] == 'si') { echo ' selected="selected"'; } echo '>Si</option>
-                </select>
-                </td>
-              </tr>
-              
               <tr>
-                <td width="40%"><b class="size11">Avisar si me borran posts e im&aacute;genes:</b></td>
-                <td><select name="recibir" size="1">
-
-                <option value="no"'; if($context['member']['recibir'] == 'no') { echo ' selected="selected"'; } echo '>No</option>
-                <option value="si"'; if($context['member']['recibir'] == 'si') { echo ' selected="selected"'; } echo '>Si</option>
-                </select>
+                <td align="right" valign="top">
+                  <b>Empresa:</b>
+                </td>
+                <td>
+                  <input size="30" maxlength="32" name="empresa" id="empresa" value="' . $context['member']['empresa'] . '" type="text" onfocus="foco(this);" onblur="no_foco(this);" />
                 </td>
               </tr>
-
               <tr>
-                <td width="20%"><b class="size11">Texto personal:</b><div class="smalltext">(aparecera debajo del avatar)</div></td>
+                <td align="right" valign="top">
+                  <b>Nivel de ingresos:</b>
+                </td>
+                <td>
+                  <select id="ingresos" name="ingresos">';
 
-                <td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="personalText" size="30" maxlength="21" value="', $context['member']['blurb'], '" /></td>
-              </tr><tr><td width="20%"><b class="size11">Firma:</b><div class="smalltext">(aparecera debajo tu post)</div></td><td><textarea class="editor" onkeyup="calcCharLeft();" name="signature" rows="5" cols="50">', $context['member']['signature'], '</textarea><br /><span class="smalltext">Max 400; caracteres restantes:  <span id="signatureLeft">400</span></span><script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
-                    function tick()
-                    {
-                      if (typeof(document.forms.creator) != "undefined")
-                      {
-                        calcCharLeft();
-                        setTimeout("tick()", 1000);
-                      }
-                      else
-                        setTimeout("tick()", 800);
-                    }
+  $incomes_keys = array_keys($incomes);
 
-                    function calcCharLeft()
-                    {
-                      var maxLength = 400;
-                      var oldSignature = "", currentSignature = document.forms.creator.signature.value;
-
-                      if (!document.getElementById("signatureLeft"))
-                        return;
-
-                      if (oldSignature != currentSignature)
-                      {
-                        oldSignature = currentSignature;
-
-                        if (currentSignature.replace(/\r/, "").length > maxLength)
-                          document.forms.creator.signature.value = currentSignature.replace(/\r/, "").substring(0, maxLength);
-                        currentSignature = document.forms.creator.signature.value.replace(/\r/, "");
-                      }
-
-                      setInnerHTML(document.getElementById("signatureLeft"), maxLength - currentSignature.length);
-                    }
-
-                    setTimeout("tick()", 800);
-                  // ]]></script></td></tr><tr><td width="20%"><b class="size11">Mensajero: </b><div class="smalltext">(msn, gtalk, yahoo)</div></td><td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="MSN" value="', $context['member']['MSN'], '" size="30"/></td></tr>
-
-<tr><td width="20%"><b class="size11">Sitio Web / Blog: </b><div class="smalltext">(debe ser un url completo)</div></td>
-<td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="websiteTitle" size="30" value="', $context['member']['websiteTitle'], '" /></td></tr><tr><td width="40%"><b class="size11" >Email: </b><div class="smalltext">Debe ser una direcci&oacute;n v&aacute;lida de email.</div></td>
-
-                <td><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="emailAddress" size="30" value="', $context['member']['emailAddress'], '" /></td>
-              </tr>
-            <td width="40%"><b class="size11"', (isset($context['modify_error']['bad_new_password']) ? ' style="color: red;"' : ''), '>Escoge contrase&ntilde;a: </b><div class="smalltext">Te sugerimos que utilices 6 o m&aacute;s caracteres combinando n&uacute;meros y letras.</div></td>
-                <td><input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd1" size="20" autocomplete="off" /></td>
-              </tr><tr>
-                <td width="40%"><b class="size11">Verifica contrase&ntilde;a: </b></td>
-
-                <td><input type="password" onfocus="foco(this);" onblur="no_foco(this);" name="passwrd2" size="20" autocomplete="off" /></td>
-              </tr><tr><td align="center" colspan="2"><br /><br />
-<input class="login" type="submit" value="Modificar mi perfil" />
-<input type="hidden" name="sc" value="', $context['session_id'], '" />
-<input type="hidden" name="userID" value="', $context['member']['id'], '" />
-<input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></table></div></div></form><div style="clear:both"></div>';
-}
-
-function template_avatar()
-{
-  global $db_prefix, $txt, $context, $boardurl, $settings, $boardurl;
-
-echo '<script type="text/javascript">
-function load_new_avatar()
-{
-  var f=document.forms.per;
-
-  if(f.avatar.value.substring(0, 7)!=\'http://\')
-  {
-    f.avatar.focus();
-    alert(\'La direccion debe comenzar con http://\');
-    return;
+  for ($i = 0; $i < count($incomes_keys); $i++) {
+    $value = $incomes_keys[$i];
+    echo '<option value="' . $value . '"' . ($context['member']['ingresos'] == $value ? ' selected="selected"' : '') . '>' . $incomes[$value] . '</option>';
   }
 
-  window.newAvatar = new Image();
-  window.newAvatar.src = f.avatar.value;
-  newAvatar.loadBeginTime = (new Date()).getTime();
-  newAvatar.onerror = show_error;
-  newAvatar.onload = show_new_avatar;
-  avatar_check_timeout();
+  echo '
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">
+                  <b>Intereses Profesionales:</b>
+                </td>
+                <td>
+                  <textarea name="intereses_profesionales" cols="30" rows="5" id="intereses_profesionales">' . $context['member']['intereses_profesionales'] . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">
+                  <b>Habilidades Profesionales:</b>
+                </td>
+                <td>
+                  <textarea name="habilidades_profesionales" cols="30" rows="5" id="habilidades_profesionales">' . $context['member']['habilidades_profesionales'] . '</textarea>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" align="center">
+                  <hr />
+                  Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" align="center">
+                  <input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" />
+                  <input type="hidden" name="sc" value="' . $context['session_id'] . '" />
+                  <input type="hidden" name="userID" value="' . $context['member']['id'] . '" />
+                  <input type="hidden" name="sa" value="' . $context['menu_item_selected'] . '" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>
+    <div style="clear:both"></div>';
 }
 
-function avatar_check_timeout()
-{
-  if(((new Date()).getTime()-newAvatar.loadBeginTime)>15)
-  {
-    alert(\'Avatar no recomendable. Razon: Muy lento\');
-    document.forms.per.avatar.focus();
-
-}}
-function show_error(){
-  alert(\'Hubo un error al leer la imagen. Por favor, verifica que la direccion sea correcta.\');
-
-document.forms.per.avatar.focus();}
-
-
-function show_new_avatar(){document.getElementById(\'miAvatar\').src = newAvatar.src;}
-function errorrojos(avatar){
-if(avatar == \'\'){document.getElementById(\'errorss\').innerHTML=\'<font class="size10" style="color: red;">Falta agregar el avatar.</font><br />\'; return false;}}
-</script>';
-menu();
-
-echo '<form name="per" method="post" onsubmit="return load_new_avatar();" action="/enviar-avatar/"><div class="box_780" style="float:left;">
-<div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Modificar mi avatar</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 764px; padding: 4px;margin-bottom:8px;"><table width="100%" cellpadding="4">
-            <tr valign="top">
-              <td width="130px" valign="top">
-              <div class="fondoavatar" style="overflow: auto; width: 130px;" align="right"><img alt="" src="', $context['member']['avatar']['name'], '" width="120" weight="120" align="left" vspace="4" hspace="4" id="miAvatar" onerror="error_avatar(this)" /></div></td>
-
-              <td width="640px" valign="top"><br /><br /><center>Escribe la direcci&oacute;n de tu <i>avatar</i>.<br />Ejemplo: <b>' , $boardurl, '/avatar.gif</b><br /><br />
-              <input type="text" onfocus="foco(this);" onblur="no_foco(this);" size="64" maxlength="255" name="avatar" id="avatar" value="', $context['member']['avatar']['name'], '" /><input type="button" class="login" value="Previsualizar" onclick="load_new_avatar()" /><br /><label id="errorss"></label><label id="sinavatar"><input name="sinavatar" id="sinavatar" value="1" type="checkbox" '; if($context['member']['avatar']['external'] == $boardurl . '/avatar.gif'){ echo 'checked="checked"'; } echo '> Sin avatar <span style="font-size:10px;">(avatar default)</span>.</label></center>
-              </td>
-            </tr>
-
-      <tr>
-       <td colspan="3" align="center"><hr /><b class="size11" style="color: red;">* Si el avatar contiene pornograf&iacute;a, es morboso. Se borrar&aacute;.</b><br /><input onclick="return errorrojos(this.form.avatar.value); this.form.submit()" type="submit" class="button" style="font-size:15px" value="Modificar mi perfil" title="Modificar mi perfil" /><input type="hidden" name="sc" value="', $context['session_id'], '" /><input type="hidden" name="userID" value="', $context['member']['id'], '" /><input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></table></div></div></div></form><div style="clear:both"></div>';
-      
-if($_POST['sinavatar'] == '1') {
-$context['member']['avatar']['name'] = $boardurl . '/avatar.gif';
-}
-
-}
-
-function template_paso1()
-{
-  global $db_prefix, $txt, $context, $boardurl, $settings;
-
-menu();
-
-echo '<div class="box_780" style="float:left;margin-bottom:8px;"><div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>Formaci&oacute;n y trabajo</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;"><form action="/accion-apariencia/paso1/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table cellpadding="4" width="100%"><tbody><tr><td align="right" valign="top" width="23%"><b>Estudios:</b></td><td width="40%"><select id="estudios" name="estudios"><option '; if(empty($context['member']['estudios'])) { echo 'selected="selected"'; } echo 'value="">Sin Respuesta</option><option '; if($context['member']['estudios'] == 'sin') { echo 'selected="selected"'; } echo 'value="sin">Sin Estudios</option><option '; if($context['member']['estudios'] == 'pri') { echo 'selected="selected"'; } echo 'value="pri">Primario completo</option><option '; if($context['member']['estudios'] == 'sec_curso') { echo 'selected="selected"'; } echo 'value="sec_curso">Secundario en curso</option><option '; if($context['member']['estudios'] == 'sec_completo') { echo 'selected="selected"'; } echo 'value="sec_completo">Secundario completo</option><option '; if($context['member']['estudios'] == 'ter_curso') { echo 'selected="selected"'; } echo 'value="ter_curso">Terciario en curso</option><option '; if($context['member']['estudios'] == 'ter_completo') { echo 'selected="selected"'; } echo 'value="ter_completo">Terciario completo</option><option '; if($context['member']['estudios'] == 'univ_curso') { echo 'selected="selected"'; } echo 'value="univ_curso">Universitario en curso</option><option '; if($context['member']['estudios'] == 'univ_completo') { echo 'selected="selected"'; } echo 'value="univ_completo">Universitario completo</option><option '; if($context['member']['estudios'] == 'post_curso') { echo 'selected="selected"'; } echo 'value="post_curso">Post-grado en curso</option><option '; if($context['member']['estudios'] == 'post_completo') { echo 'selected="selected"'; } echo 'value="post_completo">Post-grado completo</option></select></td></tr><tr><td align="right" valign="top" width="23%"><b>Profesi&oacute;n:</b></td><td width="40%"><input size="30" maxlength="32" name="profesion" id="profesion" value="', $context['member']['profesion'], '" type="text" onfocus="foco(this);" onblur="no_foco(this);" /></td></tr><tr><td align="right" valign="top"><b>Empresa:</b></td><td><input size="30" maxlength="32" name="empresa" id="empresa" value="', $context['member']['empresa'], '" type="text" onfocus="foco(this);" onblur="no_foco(this);" /></td></tr><tr><td align="right" valign="top"><b>Nivel de ingresos:</b></td><td><select id="ingresos" name="ingresos"><option '; if(empty($context['member']['ingresos'])) { echo 'selected="selected"'; } echo ' value="">Sin Respuesta</option><option '; if($context['member']['ingresos'] == 'sin') { echo 'selected="selected"'; } echo 'value="sin">Sin ingresos</option><option '; if($context['member']['ingresos'] == 'bajos') { echo 'selected="selected"'; } echo 'value="bajos">Bajos</option><option '; if($context['member']['ingresos'] == 'intermedios') { echo 'selected="selected"'; } echo 'value="intermedios">Intermedios</option><option '; if($context['member']['ingresos'] == 'altos') { echo 'selected="selected"'; } echo 'value="altos">Altos</option></select></td></tr><tr><td align="right" valign="top"><b>Intereses Profesionales:</b></td><td><textarea name="intereses_profesionales" cols="30" rows="5" id="intereses_profesionales">', $context['member']['intereses_profesionales'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Habilidades Profesionales:</b></td><td><textarea name="habilidades_profesionales" cols="30" rows="5" id="habilidades_profesionales">', $context['member']['habilidades_profesionales'], '</textarea></td></tr><tr><td colspan="3" align="center"><hr>Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</td></tr><tr><td colspan="3" align="center"><input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" /><input type="hidden" name="sc" value="', $context['session_id'], '" /><input type="hidden" name="userID" value="', $context['member']['id'], '" /><input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></tbody></table></form></div></div><div style="clear:both"></div>';
-}
-
-function template_paso2()
-{
-  global $db_prefix, $txt, $context, $boardurl, $settings;
-
-menu();
-
-echo '<div class="box_780" style="float:left;margin-bottom:8px;">
-<div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>M&aacute;s sobre mi</center></div>
-<div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;"><form action="/accion-apariencia/paso2/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table width="100%" cellpadding="4"><tbody><tr><td valign="top" width="23%" align="right"><b>Me gustar&iacute;a:</b></td><td width="40%"><table width="100%" border="0"><tbody><tr><td><input '; if(empty($context['member']['me_gustaria'])) { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="" type="radio" />Sin Respuesta</td></tr><tr><td><input '; if($context['member']['me_gustaria'] == 'me_gustaria') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="hacer_amigos" type="radio" />Hacer Amigos</td></tr><tr><td><input '; if($context['member']['me_gustaria'] == 'conocer_gente_con_mis_intereses') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="conocer_gente_con_mis_intereses" type="radio" />Conocer gente con mis intereses</td></tr><tr><td><input '; if($context['member']['me_gustaria'] == 'conocer_gente_para_hacer_negocios') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="conocer_gente_para_hacer_negocios" type="radio" />Conocer gente para hacer negocios</td></tr><tr><td><input '; if($context['member']['me_gustaria'] == 'encontrar_pareja') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="encontrar_pareja" type="radio" />Encontrar pareja</td></tr><tr><td><input '; if($context['member']['me_gustaria'] == 'de_todo') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="de_todo" type="radio" />De todo</td></tr></tbody></table></tr><tr><td valign="top" align="right"><b>En el amor estoy:</b></td><td><table width="100%" border="0"><tbody><tr><td><input '; if(empty($context['member']['estado'])) { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="" type="radio" />Sin Respuesta</td></tr><tr><td><input '; if($context['member']['estado'] == 'soltero') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="soltero" type="radio" />Soltero/a</td></tr><tr><td><input '; if($context['member']['estado'] == 'novio') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="novio" type="radio" />De novio/a</td></tr><tr><td><input '; if($context['member']['estado'] == 'casado') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="casado" type="radio" />Casado/a</td></tr><tr><td><input '; if($context['member']['estado'] == 'divorciado') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="divorciado" type="radio" />Divorciado/a</td></tr><tr><td><input '; if($context['member']['estado'] == 'viudo') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="viudo" type="radio" />Viudo/a</td></tr><tr><td><input '; if($context['member']['estado'] == 'algo') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="algo" type="radio" />En algo...</td></tr></tbody></table></tr><tr><td valign="top" width="23%" align="right"><b>Hijos:</b></td><td width="40%"><table width="100%" border="0"><tbody><tr><td><input '; if(empty($context['member']['hijos'])) { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="" type="radio" />Sin Respuesta</td></tr><tr><td><input '; if($context['member']['hijos'] == 'no') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no" type="radio" />No tengo</td></tr><tr><td><input '; if($context['member']['hijos'] == 'algun_dia') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="algun_dia" type="radio" />Alg&uacute;n d&iacute;a</td></tr><tr><td><input '; if($context['member']['hijos'] == 'no_quiero') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no_quiero" type="radio" />No son lo m&iacute;o</td></tr><tr><td><input '; if($context['member']['hijos'] == 'viven_conmigo') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="viven_conmigo" type="radio" />Tengo, vivo con ellos</td></tr><tr><td><input '; if($context['member']['hijos'] == 'no_viven_conmigo') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no_viven_conmigo" type="radio" />Tengo, no vivo con ellos</td></tr></tbody></table></td></tr><tr><td colspan="3" align="center"><hr>Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</td></tr><tr><td colspan="3" align="center"><input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" /><input type="hidden" name="sc" value="', $context['session_id'], '" /><input type="hidden" name="userID" value="', $context['member']['id'], '" /><input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></tbody></table></form></div></div><div style="clear:both"></div>';
-}
-
-function template_paso3()
-{
-  global $db_prefix, $txt, $context, $boardurl, $settings;
-
-menu();
-
-echo '<div class="box_780" style="float:left;margin-bottom:8px;"><div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>Como soy</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;"><form action="/accion-apariencia/paso3/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table width="100%" cellpadding="4"><tbody><tr><td align="right" width="23%"><b>Mi altura:</b></td><td width="40%"><input name="altura" id="altura" size="3" maxlength="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="', $context['member']['altura'], '" /> centimetros</td></tr><tr><td align="right"><b>Mi peso:</b></td><td><input name="peso" id="peso" size="3" maxlength="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="', $context['member']['peso'], '" /> kilos</td></tr><tr><td align="right" width="23%"><b>Color de pelo:</b></td><td width="40%"><select id="pelo_color" name="pelo_color"><option '; if(empty($context['member']['pelo_color'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option><option '; if($context['member']['pelo_color'] == 'negro') { echo 'selected="selected" '; } echo 'value="negro">Negro</option><option '; if($context['member']['pelo_color'] == 'castano_oscuro') { echo 'selected="selected" '; } echo 'value="castano_oscuro">Casta&ntilde;o oscuro</option><option '; if($context['member']['pelo_color'] == 'castano_claro') { echo 'selected="selected" '; } echo 'value="castano_claro">Casta&ntilde;o claro</option><option '; if($context['member']['pelo_color'] == 'rubio') { echo 'selected="selected" '; } echo 'value="rubio">Rubio</option><option '; if($context['member']['pelo_color'] == 'pelirrojo') { echo 'selected="selected" '; } echo 'value="pelirrojo">Pelirrojo</option><option '; if($context['member']['pelo_color'] == 'gris') { echo 'selected="selected" '; } echo 'value="gris">Gris</option><option '; if($context['member']['pelo_color'] == 'canoso') { echo 'selected="selected" '; } echo 'value="canoso">Canoso</option><option '; if($context['member']['pelo_color'] == 'tenido') { echo 'selected="selected" '; } echo 'value="tenido">Te&ntilde;ido</option><option '; if($context['member']['pelo_color'] == 'rapado') { echo 'selected="selected" '; } echo 'value="rapado">Rapado</option><option '; if($context['member']['pelo_color'] == 'calvo') { echo 'selected="selected" '; } echo 'value="calvo">Calvo</option></select></td></tr><tr><td align="right"><b>Color de ojos:</b></td><td><select id="ojos_color" name="ojos_color"><option '; if(empty($context['user']['ojos_color'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option><option '; if($context['member']['ojos_color'] == 'negros') { echo 'selected="selected" '; } echo 'value="negros">Negros</option><option '; if($context['member']['ojos_color'] == 'marrones') { echo 'selected="selected" '; } echo 'value="marrones">Marrones</option><option '; if($context['member']['ojos_color'] == 'celestes') { echo 'selected="selected" '; } echo 'value="celestes">Celestes</option><option '; if($context['member']['ojos_color'] == 'verdes') { echo 'selected="selected" '; } echo 'value="verdes">Verdes</option><option '; if($context['member']['ojos_color'] == 'grises') { echo 'selected="selected" '; } echo 'value="grises">Grises</option></select></td></tr><tr><td align="right"><b>Complexi&oacute;n:</b></td><td><select id="fisico" name="fisico"><option '; if(empty($context['member']['fisico'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option><option '; if($context['member']['fisico'] == 'delgado') { echo 'selected="selected" '; } echo 'value="delgado">Delgado/a</option><option '; if($context['member']['fisico'] == 'atletico') { echo 'selected="selected" '; } echo 'value="atletico">Atl&eacute;tico</option><option '; if($context['member']['fisico'] == 'normal') { echo 'selected="selected" '; } echo 'value="normal">Normal</option><option '; if($context['member']['fisico'] == 'kilos_de_mas') { echo 'selected="selected" '; } echo 'value="kilos_de_mas">Algunos kilos de m&aacute;s</option><option '; if($context['member']['fisico'] == 'corpulento') { echo 'selected="selected" '; } echo 'value="corpulento">Corpulento/a</option></select></td></tr><td align="right" valign="top"><b>Mi dieta es:</b></td><td><select id="dieta" name="dieta"><option '; if(empty($context['member']['dieta'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option><option '; if($context['member']['dieta'] == 'vegetariana') { echo 'selected="selected" '; } echo 'value="vegetariana">Vegetariana</option><option '; if($context['member']['dieta'] == 'lacto_vegetariana') { echo 'selected="selected" '; } echo 'value="lacto_vegetariana">Lacto Vegetariana</option><option '; if($context['member']['dieta'] == 'organica') { echo 'selected="selected" '; } echo 'value="organica">Org&aacute;nica</option><option '; if($context['member']['dieta'] == 'de_todo') { echo 'selected="selected" '; } echo 'value="de_todo">De todo</option><option '; if($context['member']['dieta'] == 'comida_basura') { echo 'selected="selected" '; } echo 'value="comida_basura">Comida basura</option></select></td></tr><tr><td align="right" valign="top"><b>Fumo:</b></td><td><table border="0" width="100%"><tbody><tr><td><input '; if(empty($context['member']['fumo'])) { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="" type="radio" />Sin Respuesta</td></tr><tr><td><input '; if($context['member']['fumo'] == 'no') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="no" type="radio" />No</td></tr><tr><td><input '; if($context['member']['fumo'] == 'casualmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="casualmente" type="radio" />Casualmente</td></tr><tr><td><input '; if($context['member']['fumo'] == 'socialmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="socialmente" type="radio" />Socialmente</td></tr><tr><td><input '; if($context['member']['fumo'] == 'regularmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="regularmente" type="radio" />Regularmente</td></tr><tr><td><input '; if($context['member']['fumo'] == 'mucho') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="mucho" type="radio">Mucho</td></tr></tbody></table></td><tr><td align="right" valign="top"><b>Tomo alcohol:</b></td><td><table border="0" width="100%"><tbody><tr><td><input '; if(empty($context['member']['tomo_alcohol'])) { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="" type="radio" />Sin Respuesta</td></tr><tr><td><input '; if($context['member']['tomo_alcohol'] == 'no') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="no" type="radio" />No</td></tr><tr><td><input '; if($context['member']['tomo_alcohol'] == 'casualmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="casualmente" type="radio" />Casualmente</td></tr><tr><td><input '; if($context['member']['tomo_alcohol'] == 'socialmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="socialmente" type="radio" />Socialmente</td></tr><tr><td><input '; if($context['member']['tomo_alcohol'] == 'regularmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="regularmente" type="radio" />Regularmente</td></tr><tr><td><input '; if($context['member']['tomo_alcohol'] == 'mucho') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="mucho" type="radio" />Mucho</td></tr></tbody></table></td></tr><tr><td colspan="3" align="center"><hr>Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</td></tr><tr><td colspan="3" align="center"><input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" /><input type="hidden" name="sc" value="', $context['session_id'], '" /><input type="hidden" name="userID" value="', $context['member']['id'], '" /><input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></tbody></table></form></div></div><div style="clear:both"></div>';
-}
-
-function template_paso4()
-{
-  global $db_prefix, $txt, $context, $boardurl, $settings;
-  
-menu();
-
-echo '<div class="box_780" style="float:left;margin-bottom:8px;">
-<div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>Intereses y preferencias</center></div>
-<div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;">
-<form action="/accion-apariencia/paso4/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table width="100%" cellpadding="4"><tbody><tr><td align="right" valign="top" width="23%"><b>Mis intereses:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="mis_intereses" cols="30" rows="5" id="mis_intereses">', $context['member']['mis_intereses'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Hobbies:</b></td><td><textarea style="width:235px;height:102px;" name="hobbies" cols="30" rows="5" id="hobbies">', $context['member']['hobbies'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Series de Tv favoritas:</b></td><td><textarea style="width:235px;height:102px;" name="series_tv_favoritas" cols="30" rows="5" id="series_tv_favoritas">', $context['member']['series_tv_favoritas'], '</textarea></td></tr><tr><td align="right" valign="top" width="23%"><b>M&uacute;sica favorita:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="musica_favorita" cols="30" rows="5" id="musica_favorita">', $context['member']['musica_favorita'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Deportes y equipos favoritos:</b></td><td><textarea style="width:235px;height:102px;" name="deportes_y_equipos_favoritos" cols="30" rows="5" id="deportes_y_equipos_favoritos">', $context['member']['deportes_y_equipos_favoritos'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Libros Favoritos:</b></td><td><textarea style="width:235px;height:102px;" name="libros_favoritos" cols="30" rows="5" id="libros_favoritos">', $context['member']['libros_favoritos'], '</textarea></td></tr><tr><td align="right" valign="top" width="23%"><b>Pel&iacute;culas favoritas:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="peliculas_favoritas" cols="30" rows="5" id="peliculas_favoritas">', $context['member']['peliculas_favoritas'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Comida favor&iacute;ta:</b></td><td><textarea style="width:235px;height:102px;" name="comida_favorita" cols="30" rows="5" id="comida_favorita">', $context['member']['comida_favorita'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Mis h&eacute;roes son:</b></td><td><textarea style="width:235px;height:102px;" name="mis_heroes_son" cols="30" rows="5" id="mis_heroes_son">', $context['member']['mis_heroes_son'], '</textarea></td></tr><tr><td colspan="3" align="center"><hr>Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</td></tr><tr><td colspan="3" align="center"><input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" /><input type="hidden" name="sc" value="', $context['session_id'], '" /><input type="hidden" name="userID" value="', $context['member']['id'], '" /><input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></tbody></table></form></div></div><div style="clear:both"></div>';
-
-}
-
-function template_agregarimagen()
-{
-  global $settings;
-
-echo '<script language="JavaScript" type="text/javascript">
-function requerido(title, filename){
-if(title == \'\'){alert(\'No has escrito el titulo de la imagen.\');return false;}
-if(filename == \'\'){alert(\'No has agregado ning\xfan enlace de imagen.\');return false;}}</script>';
-menu();
-echo '<form method="POST" enctype="multipart/form-data" name="forma" id="forma" action="/imagenes/agregar/enviar/">
-<div class="box_780" style="float:left;">
-<div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>Agregar im&aacute;gen</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;"><center>
-<b class="size11">Titulo:</b><br /><input  tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="title" id="title" value=""/><br /><br />
-<b class="size11">URL de la im&aacute;gen:</b>&nbsp;<br /><input type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="" /><hr /><b class="size11" style="color: red;">* Si la im&aacute;gen contiene pornografia, es morboso. Se borrar&aacute;.</b><br /><input type="submit" class="button" style="font-size: 15px;" onclick="return requerido(this.form.title.value, this.form.filename.value);" tabindex="3" value="Agregar im&aacute;gen" name="submit" /></center></div></div></form><div style="clear:both"></div>';
-}
-
-function template_editarimagen()
-{
-  global $context, $txt, $settings, $db_prefix, $slogan;
-
-$id = htmlentities(addslashes($_REQUEST['id']));
-$request = db_query("SELECT ID_PICTURE, title, filename FROM {$db_prefix}gallery_pic WHERE ID_PICTURE = $id", __FILE__, __LINE__);
-$row = mysqli_fetch_assoc($request);
-$causa = htmlentities(addslashes($_POST['causa']));
-
-echo '<script language="JavaScript" type="text/javascript">
-function requerido(title, filename){
-      if(title == \'\')
-      {
-        alert(\'No has escrito el titulo de la imagen.\');
-        return false;
-      }
-      if(filename == \'\')
-      {
-        alert(\'No has agregado ning\xfan enlace de imagen.\');
-        return false;
-      }
-
-      }</script>';
-menu();
-echo '<form method="POST" enctype="multipart/form-data" name="forma2" id="forma2" action="/imagenes/editar/enviar/">
-<div class="box_780" style="float:left;margin-bottom:8px;">
-<div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>Editar im&aacute;gen</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height: 16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;"><center>';
-if($context['allow_admin']) {
-echo '<b class="size11">Causa de la edici&oacute;n:</b><br /><input  tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="causa" /><br /><br />';
-}
-echo '
-<b class="size11">Titulo:</b><br /><input  tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="title" id="title" value="', $row['title'], '"/><br /><br />
-<b class="size11">URL de la im&aacute;gen:</b>&nbsp;<br /><input type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="', $row['filename'], '" /><hr /><b class="size11" style="color: red;">* Si la im&aacute;gen contiene pornograf&iacute;a, es morboso. Se borrar&aacute;.</b><br /><input type="submit" tabindex="3" class="button" style="font-size: 15px;" onclick="return requerido(this.form.title.value, this.form.filename.value);" value="Editar im&aacute;gen" name="submit" /></center></div></div><input type="hidden" name="id" value="', $row['ID_PICTURE'], '" /></form><div style="clear:both"></div>';
-}
-
-function template_misnotas()
-{
-  global $context, $settings, $options, $txt, $notes, $scripturl, $ID_MEMBER, $modSettings, $boardurl, $db_prefix;
+function template_paso2() {
+  global $context, $boardurl, $settings;
 
   menu();
 
+  echo '<div class="box_780" style="float:left;margin-bottom:8px;">
+  <div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>M&aacute;s sobre mi</center></div>
+  <div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;"><form action="/accion-apariencia/paso2/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table width="100%" cellpadding="4"><tbody><tr><td valign="top" width="23%" align="right"><b>Me gustar&iacute;a:</b></td><td width="40%"><table width="100%" border="0"><tbody><tr><td><input '; if(empty($context['member']['me_gustaria'])) { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="" type="radio" />Sin Respuesta</td></tr><tr><td><input '; if($context['member']['me_gustaria'] == 'me_gustaria') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="hacer_amigos" type="radio" />Hacer Amigos</td></tr><tr><td><input '; if($context['member']['me_gustaria'] == 'conocer_gente_con_mis_intereses') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="conocer_gente_con_mis_intereses" type="radio" />Conocer gente con mis intereses</td></tr><tr><td><input '; if($context['member']['me_gustaria'] == 'conocer_gente_para_hacer_negocios') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="conocer_gente_para_hacer_negocios" type="radio" />Conocer gente para hacer negocios</td></tr><tr><td><input '; if($context['member']['me_gustaria'] == 'encontrar_pareja') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="encontrar_pareja" type="radio" />Encontrar pareja</td></tr><tr><td><input '; if($context['member']['me_gustaria'] == 'de_todo') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="de_todo" type="radio" />De todo</td></tr></tbody></table></tr><tr><td valign="top" align="right"><b>En el amor estoy:</b></td><td><table width="100%" border="0"><tbody><tr><td><input '; if(empty($context['member']['estado'])) { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="" type="radio" />Sin Respuesta</td></tr><tr><td><input '; if($context['member']['estado'] == 'soltero') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="soltero" type="radio" />Soltero/a</td></tr><tr><td><input '; if($context['member']['estado'] == 'novio') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="novio" type="radio" />De novio/a</td></tr><tr><td><input '; if($context['member']['estado'] == 'casado') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="casado" type="radio" />Casado/a</td></tr><tr><td><input '; if($context['member']['estado'] == 'divorciado') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="divorciado" type="radio" />Divorciado/a</td></tr><tr><td><input '; if($context['member']['estado'] == 'viudo') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="viudo" type="radio" />Viudo/a</td></tr><tr><td><input '; if($context['member']['estado'] == 'algo') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="algo" type="radio" />En algo...</td></tr></tbody></table></tr><tr><td valign="top" width="23%" align="right"><b>Hijos:</b></td><td width="40%"><table width="100%" border="0"><tbody><tr><td><input '; if(empty($context['member']['hijos'])) { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="" type="radio" />Sin Respuesta</td></tr><tr><td><input '; if($context['member']['hijos'] == 'no') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no" type="radio" />No tengo</td></tr><tr><td><input '; if($context['member']['hijos'] == 'algun_dia') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="algun_dia" type="radio" />Alg&uacute;n d&iacute;a</td></tr><tr><td><input '; if($context['member']['hijos'] == 'no_quiero') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no_quiero" type="radio" />No son lo m&iacute;o</td></tr><tr><td><input '; if($context['member']['hijos'] == 'viven_conmigo') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="viven_conmigo" type="radio" />Tengo, vivo con ellos</td></tr><tr><td><input '; if($context['member']['hijos'] == 'no_viven_conmigo') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no_viven_conmigo" type="radio" />Tengo, no vivo con ellos</td></tr></tbody></table></td></tr><tr><td colspan="3" align="center"><hr>Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</td></tr><tr><td colspan="3" align="center"><input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" /><input type="hidden" name="sc" value="', $context['session_id'], '" /><input type="hidden" name="userID" value="', $context['member']['id'], '" /><input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></tbody></table></form></div></div><div style="clear:both"></div>';
+}
+
+function template_paso3() {
+  global $context, $boardurl, $settings;
+
+  menu();
+
+  echo '<div class="box_780" style="float:left;margin-bottom:8px;"><div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>Como soy</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;"><form action="/accion-apariencia/paso3/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table width="100%" cellpadding="4"><tbody><tr><td align="right" width="23%"><b>Mi altura:</b></td><td width="40%"><input name="altura" id="altura" size="3" maxlength="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="', $context['member']['altura'], '" /> centimetros</td></tr><tr><td align="right"><b>Mi peso:</b></td><td><input name="peso" id="peso" size="3" maxlength="3" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="', $context['member']['peso'], '" /> kilos</td></tr><tr><td align="right" width="23%"><b>Color de pelo:</b></td><td width="40%"><select id="pelo_color" name="pelo_color"><option '; if(empty($context['member']['pelo_color'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option><option '; if($context['member']['pelo_color'] == 'negro') { echo 'selected="selected" '; } echo 'value="negro">Negro</option><option '; if($context['member']['pelo_color'] == 'castano_oscuro') { echo 'selected="selected" '; } echo 'value="castano_oscuro">Casta&ntilde;o oscuro</option><option '; if($context['member']['pelo_color'] == 'castano_claro') { echo 'selected="selected" '; } echo 'value="castano_claro">Casta&ntilde;o claro</option><option '; if($context['member']['pelo_color'] == 'rubio') { echo 'selected="selected" '; } echo 'value="rubio">Rubio</option><option '; if($context['member']['pelo_color'] == 'pelirrojo') { echo 'selected="selected" '; } echo 'value="pelirrojo">Pelirrojo</option><option '; if($context['member']['pelo_color'] == 'gris') { echo 'selected="selected" '; } echo 'value="gris">Gris</option><option '; if($context['member']['pelo_color'] == 'canoso') { echo 'selected="selected" '; } echo 'value="canoso">Canoso</option><option '; if($context['member']['pelo_color'] == 'tenido') { echo 'selected="selected" '; } echo 'value="tenido">Te&ntilde;ido</option><option '; if($context['member']['pelo_color'] == 'rapado') { echo 'selected="selected" '; } echo 'value="rapado">Rapado</option><option '; if($context['member']['pelo_color'] == 'calvo') { echo 'selected="selected" '; } echo 'value="calvo">Calvo</option></select></td></tr><tr><td align="right"><b>Color de ojos:</b></td><td><select id="ojos_color" name="ojos_color"><option '; if(empty($context['user']['ojos_color'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option><option '; if($context['member']['ojos_color'] == 'negros') { echo 'selected="selected" '; } echo 'value="negros">Negros</option><option '; if($context['member']['ojos_color'] == 'marrones') { echo 'selected="selected" '; } echo 'value="marrones">Marrones</option><option '; if($context['member']['ojos_color'] == 'celestes') { echo 'selected="selected" '; } echo 'value="celestes">Celestes</option><option '; if($context['member']['ojos_color'] == 'verdes') { echo 'selected="selected" '; } echo 'value="verdes">Verdes</option><option '; if($context['member']['ojos_color'] == 'grises') { echo 'selected="selected" '; } echo 'value="grises">Grises</option></select></td></tr><tr><td align="right"><b>Complexi&oacute;n:</b></td><td><select id="fisico" name="fisico"><option '; if(empty($context['member']['fisico'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option><option '; if($context['member']['fisico'] == 'delgado') { echo 'selected="selected" '; } echo 'value="delgado">Delgado/a</option><option '; if($context['member']['fisico'] == 'atletico') { echo 'selected="selected" '; } echo 'value="atletico">Atl&eacute;tico</option><option '; if($context['member']['fisico'] == 'normal') { echo 'selected="selected" '; } echo 'value="normal">Normal</option><option '; if($context['member']['fisico'] == 'kilos_de_mas') { echo 'selected="selected" '; } echo 'value="kilos_de_mas">Algunos kilos de m&aacute;s</option><option '; if($context['member']['fisico'] == 'corpulento') { echo 'selected="selected" '; } echo 'value="corpulento">Corpulento/a</option></select></td></tr><td align="right" valign="top"><b>Mi dieta es:</b></td><td><select id="dieta" name="dieta"><option '; if(empty($context['member']['dieta'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option><option '; if($context['member']['dieta'] == 'vegetariana') { echo 'selected="selected" '; } echo 'value="vegetariana">Vegetariana</option><option '; if($context['member']['dieta'] == 'lacto_vegetariana') { echo 'selected="selected" '; } echo 'value="lacto_vegetariana">Lacto Vegetariana</option><option '; if($context['member']['dieta'] == 'organica') { echo 'selected="selected" '; } echo 'value="organica">Org&aacute;nica</option><option '; if($context['member']['dieta'] == 'de_todo') { echo 'selected="selected" '; } echo 'value="de_todo">De todo</option><option '; if($context['member']['dieta'] == 'comida_basura') { echo 'selected="selected" '; } echo 'value="comida_basura">Comida basura</option></select></td></tr><tr><td align="right" valign="top"><b>Fumo:</b></td><td><table border="0" width="100%"><tbody><tr><td><input '; if(empty($context['member']['fumo'])) { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="" type="radio" />Sin Respuesta</td></tr><tr><td><input '; if($context['member']['fumo'] == 'no') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="no" type="radio" />No</td></tr><tr><td><input '; if($context['member']['fumo'] == 'casualmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="casualmente" type="radio" />Casualmente</td></tr><tr><td><input '; if($context['member']['fumo'] == 'socialmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="socialmente" type="radio" />Socialmente</td></tr><tr><td><input '; if($context['member']['fumo'] == 'regularmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="regularmente" type="radio" />Regularmente</td></tr><tr><td><input '; if($context['member']['fumo'] == 'mucho') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="mucho" type="radio">Mucho</td></tr></tbody></table></td><tr><td align="right" valign="top"><b>Tomo alcohol:</b></td><td><table border="0" width="100%"><tbody><tr><td><input '; if(empty($context['member']['tomo_alcohol'])) { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="" type="radio" />Sin Respuesta</td></tr><tr><td><input '; if($context['member']['tomo_alcohol'] == 'no') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="no" type="radio" />No</td></tr><tr><td><input '; if($context['member']['tomo_alcohol'] == 'casualmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="casualmente" type="radio" />Casualmente</td></tr><tr><td><input '; if($context['member']['tomo_alcohol'] == 'socialmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="socialmente" type="radio" />Socialmente</td></tr><tr><td><input '; if($context['member']['tomo_alcohol'] == 'regularmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="regularmente" type="radio" />Regularmente</td></tr><tr><td><input '; if($context['member']['tomo_alcohol'] == 'mucho') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="mucho" type="radio" />Mucho</td></tr></tbody></table></td></tr><tr><td colspan="3" align="center"><hr>Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</td></tr><tr><td colspan="3" align="center"><input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" /><input type="hidden" name="sc" value="', $context['session_id'], '" /><input type="hidden" name="userID" value="', $context['member']['id'], '" /><input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></tbody></table></form></div></div><div style="clear:both"></div>';
+}
+
+function template_paso4() {
+  global $context, $boardurl, $settings;
   
-if(!empty($context['nojs']['id'])) {
-echo '<div style="float:left;"><div class="box_780"><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Mi nota</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width:764px;padding:4px;">
+  menu();
 
-<form action="/mis-notas/editando/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data">
-<input type="text" title="', $txt['notes_add_new_title'], '" onfocus="if(this.value==\'', $txt['notes_add_new_title'], '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'', $txt['notes_add_new_title'], '\'; no_foco(this);" value="', strip_tags($context['nojs']['subject']), '" style="width:758px;font-family:arial;font-size:12px;" name="titulo" id="titulo" maxlength="60" /><br/><textarea name="contenido" id="contenido" style="width:758px;height:185px;font-family:arial;font-size:12px;" title="', $txt['notes_add_new_text'], '" onfocus="if(this.value==\'', $txt['notes_add_new_text'], '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'', $txt['notes_add_new_text'], '\'; no_foco(this);">', $context['nojs']['body'], '</textarea><br/><p align="right" style="margin:0px;padding:0px;"><input type="button" value="Salir sin guardar" onclick="location.href=\'/mis-notas/\'" class="login" />
-<input type="submit" value="Salir y guardar" name="editar" class="login" />
-
-<input type="button" value="Eliminar nota" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta nota?\')) return false;location.href=\'/mis-notas/eliminar-', $context['nojs']['id'], '\'" class="login" /><input type="hidden" name="id" value="', $context['nojs']['id'], '" /><input type="hidden" name="sa" value="edit" /></p></form></div></div></div><div style="clear:both"></div>';
-} else {
-$RegistrosAMostrar = $modSettings['notes'];
-if(isset($_GET['pag'])) {
-$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct = (int) $_GET['pag'];
-} else {
-$RegistrosAEmpezar = 0;
-$PagAct = 1;
-}
-$request2 = db_query("
-SELECT id_note, subject, body, posterTime
-FROM {$db_prefix}member_notes
-WHERE ID_MEMBER = $ID_MEMBER
-ORDER BY id_note DESC
-LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count = mysqli_num_rows($request2);
-if($count <= 0) {
-echo '<div style="float:left;"><div class="noesta" style="width:774px;">No tienes notas agregadas.</div>';
-} else {
-echo '<div style="float:left;"><table class="linksList" style="width:774px;"><thead align="center"><tr><th style="text-align:left;">Nota</th><th>Fecha</th><th>Eliminar</th></tr></thead><tbody>';
-while($row = mysqli_fetch_assoc($request2)) {
-echo '<tr><td style="text-align:left;"><a title="', parse_bbc(strip_tags($row['subject'])), '" href="' . $boardurl . '/mis-notas/ver-', $row['id_note'], '/">', parse_bbc(strip_tags($row['subject'])), '</a></td>
-<td title="', timeformat($row['posterTime']), '">', timeformat($row['posterTime']), '</td> <td><a title="Eliminar nota" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta nota?\')) return false;" href="' . $boardurl . '/mis-notas/eliminar-', $row['id_note'], '"><img alt="Eliminar nota" title="Eliminar nota" style="width:16px;height:16px;" src="', $settings['images_url'], '/icons/eliminar-notas.gif" /></a></td></tr>';
-}
-$NroRegistros = mysqli_num_rows(db_query("SELECT id_note, subject, body, posterTime FROM {$db_prefix}member_notes WHERE ID_MEMBER = $ID_MEMBER ORDER BY id_note DESC ", __FILE__, __LINE__));
-echo '</tbody></table>';
- $PagAnt=$PagAct-1;
- $PagSig=$PagAct+1;
- $PagUlt=$NroRegistros/$RegistrosAMostrar;
- $Res=$NroRegistros%$RegistrosAMostrar;
- if($Res>0) $PagUlt=floor($PagUlt)+1;
-echo '<div class="windowbgpag" style="width:774px;">';
-if($PagAct>1) echo '<a href=\'/mis-notas/pag-' . $PagAnt . '\'>&#171; anterior</a>';
-if($PagAct<$PagUlt)  echo '<a href=\'/mis-notas/pag-' . $PagSig . '\'>siguiente &#187;</a></div>';
-}
-echo '<div style="width:774px;margin-top:4px;"><p align="right" style="margin:0px;padding:0px;"><input type="button" value="Agregar nota" onclick="location.href=\'/mis-notas/agregar/\'" class="login" /></p></div>';
-}
-echo '<div class="clearBoth"></div></div><div style="clear:both"></div>';
+  echo '<div class="box_780" style="float:left;margin-bottom:8px;">
+  <div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>Intereses y preferencias</center></div>
+  <div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;">
+  <form action="/accion-apariencia/paso4/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data" style="margin:0px;padding:0px;"><table width="100%" cellpadding="4"><tbody><tr><td align="right" valign="top" width="23%"><b>Mis intereses:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="mis_intereses" cols="30" rows="5" id="mis_intereses">', $context['member']['mis_intereses'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Hobbies:</b></td><td><textarea style="width:235px;height:102px;" name="hobbies" cols="30" rows="5" id="hobbies">', $context['member']['hobbies'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Series de Tv favoritas:</b></td><td><textarea style="width:235px;height:102px;" name="series_tv_favoritas" cols="30" rows="5" id="series_tv_favoritas">', $context['member']['series_tv_favoritas'], '</textarea></td></tr><tr><td align="right" valign="top" width="23%"><b>M&uacute;sica favorita:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="musica_favorita" cols="30" rows="5" id="musica_favorita">', $context['member']['musica_favorita'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Deportes y equipos favoritos:</b></td><td><textarea style="width:235px;height:102px;" name="deportes_y_equipos_favoritos" cols="30" rows="5" id="deportes_y_equipos_favoritos">', $context['member']['deportes_y_equipos_favoritos'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Libros Favoritos:</b></td><td><textarea style="width:235px;height:102px;" name="libros_favoritos" cols="30" rows="5" id="libros_favoritos">', $context['member']['libros_favoritos'], '</textarea></td></tr><tr><td align="right" valign="top" width="23%"><b>Pel&iacute;culas favoritas:</b></td><td width="40%"><textarea style="width:235px;height:102px;" name="peliculas_favoritas" cols="30" rows="5" id="peliculas_favoritas">', $context['member']['peliculas_favoritas'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Comida favor&iacute;ta:</b></td><td><textarea style="width:235px;height:102px;" name="comida_favorita" cols="30" rows="5" id="comida_favorita">', $context['member']['comida_favorita'], '</textarea></td></tr><tr><td align="right" valign="top"><b>Mis h&eacute;roes son:</b></td><td><textarea style="width:235px;height:102px;" name="mis_heroes_son" cols="30" rows="5" id="mis_heroes_son">', $context['member']['mis_heroes_son'], '</textarea></td></tr><tr><td colspan="3" align="center"><hr>Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.</td></tr><tr><td colspan="3" align="center"><input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" /><input type="hidden" name="sc" value="', $context['session_id'], '" /><input type="hidden" name="userID" value="', $context['member']['id'], '" /><input type="hidden" name="sa" value="', $context['menu_item_selected'], '" /></td></tr></tbody></table></form></div></div><div style="clear:both"></div>';
 
 }
 
-function template_agregarnota()
-{
-  global $context, $settings, $options, $txt, $notes, $scripturl;
+function template_agregarimagen() {
+  global $settings;
+
+  echo '<script language="JavaScript" type="text/javascript">
+  function requerido(title, filename){
+  if(title == \'\'){alert(\'No has escrito el titulo de la imagen.\');return false;}
+  if(filename == \'\'){alert(\'No has agregado ning\xfan enlace de imagen.\');return false;}}</script>';
+  menu();
+  echo '<form method="POST" enctype="multipart/form-data" name="forma" id="forma" action="/imagenes/agregar/enviar/">
+  <div class="box_780" style="float:left;">
+  <div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>Agregar im&aacute;gen</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;"><center>
+  <b class="size11">Titulo:</b><br /><input  tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="title" id="title" value=""/><br /><br />
+  <b class="size11">URL de la im&aacute;gen:</b>&nbsp;<br /><input type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="" /><hr /><b class="size11" style="color: red;">* Si la im&aacute;gen contiene pornografia, es morboso. Se borrar&aacute;.</b><br /><input type="submit" class="button" style="font-size: 15px;" onclick="return requerido(this.form.title.value, this.form.filename.value);" tabindex="3" value="Agregar im&aacute;gen" name="submit" /></center></div></div></form><div style="clear:both"></div>';
+}
+
+function template_editarimagen() {
+  global $context, $settings, $db_prefix;
+
+  $id = (int) $_REQUEST['id'];
+  $request = db_query("SELECT ID_PICTURE, title, filename FROM {$db_prefix}gallery_pic WHERE ID_PICTURE = $id", __FILE__, __LINE__);
+  $row = mysqli_fetch_assoc($request);
+  $causa = htmlentities(addslashes($_POST['causa']), ENT_QUOTES, 'UTF-8');
+
+  echo '<script language="JavaScript" type="text/javascript">
+  function requerido(title, filename){
+        if(title == \'\')
+        {
+          alert(\'No has escrito el titulo de la imagen.\');
+          return false;
+        }
+        if(filename == \'\')
+        {
+          alert(\'No has agregado ning\xfan enlace de imagen.\');
+          return false;
+        }
+
+        }</script>';
+  menu();
+  echo '<form method="POST" enctype="multipart/form-data" name="forma2" id="forma2" action="/imagenes/editar/enviar/">
+  <div class="box_780" style="float:left;margin-bottom:8px;">
+  <div class="box_title" style="width: 778px;"><div class="box_txt box_780-34"><center>Editar im&aacute;gen</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height: 16px;" border="0" /></div></div><div class="windowbg" border="0" style="width: 770px; padding: 4px;"><center>';
+  if($context['allow_admin']) {
+  echo '<b class="size11">Causa de la edici&oacute;n:</b><br /><input  tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="causa" /><br /><br />';
+  }
+  echo '
+  <b class="size11">Titulo:</b><br /><input  tabindex="1" size="60" maxlength="54" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="title" id="title" value="', $row['title'], '"/><br /><br />
+  <b class="size11">URL de la im&aacute;gen:</b>&nbsp;<br /><input type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="', $row['filename'], '" /><hr /><b class="size11" style="color: red;">* Si la im&aacute;gen contiene pornograf&iacute;a, es morboso. Se borrar&aacute;.</b><br /><input type="submit" tabindex="3" class="button" style="font-size: 15px;" onclick="return requerido(this.form.title.value, this.form.filename.value);" value="Editar im&aacute;gen" name="submit" /></center></div></div><input type="hidden" name="id" value="', $row['ID_PICTURE'], '" /></form><div style="clear:both"></div>';
+}
+
+function template_misnotas() {
+  global $context, $settings, $txt, $ID_MEMBER, $modSettings, $boardurl, $db_prefix;
+
+  menu();
+
+  if(!empty($context['nojs']['id'])) {
+  echo '<div style="float:left;"><div class="box_780"><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Mi nota</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width:764px;padding:4px;">
+
+  <form action="/mis-notas/editando/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data">
+  <input type="text" title="', $txt['notes_add_new_title'], '" onfocus="if(this.value==\'', $txt['notes_add_new_title'], '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'', $txt['notes_add_new_title'], '\'; no_foco(this);" value="', strip_tags($context['nojs']['subject']), '" style="width:758px;font-family:arial;font-size:12px;" name="titulo" id="titulo" maxlength="60" /><br/><textarea name="contenido" id="contenido" style="width:758px;height:185px;font-family:arial;font-size:12px;" title="', $txt['notes_add_new_text'], '" onfocus="if(this.value==\'', $txt['notes_add_new_text'], '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'', $txt['notes_add_new_text'], '\'; no_foco(this);">', $context['nojs']['body'], '</textarea><br/><p align="right" style="margin:0px;padding:0px;"><input type="button" value="Salir sin guardar" onclick="location.href=\'/mis-notas/\'" class="login" />
+  <input type="submit" value="Salir y guardar" name="editar" class="login" />
+
+  <input type="button" value="Eliminar nota" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta nota?\')) return false;location.href=\'/mis-notas/eliminar-', $context['nojs']['id'], '\'" class="login" /><input type="hidden" name="id" value="', $context['nojs']['id'], '" /><input type="hidden" name="sa" value="edit" /></p></form></div></div></div><div style="clear:both"></div>';
+  } else {
+  $RegistrosAMostrar = $modSettings['notes'];
+  if(isset($_GET['pag'])) {
+  $RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+  $PagAct = (int) $_GET['pag'];
+  } else {
+  $RegistrosAEmpezar = 0;
+  $PagAct = 1;
+  }
+  $request2 = db_query("
+  SELECT id_note, subject, body, posterTime
+  FROM {$db_prefix}member_notes
+  WHERE ID_MEMBER = $ID_MEMBER
+  ORDER BY id_note DESC
+  LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
+  $count = mysqli_num_rows($request2);
+  if($count <= 0) {
+  echo '<div style="float:left;"><div class="noesta" style="width:774px;">No tienes notas agregadas.</div>';
+  } else {
+  echo '<div style="float:left;"><table class="linksList" style="width:774px;"><thead align="center"><tr><th style="text-align:left;">Nota</th><th>Fecha</th><th>Eliminar</th></tr></thead><tbody>';
+  while($row = mysqli_fetch_assoc($request2)) {
+  echo '<tr><td style="text-align:left;"><a title="', parse_bbc(strip_tags($row['subject'])), '" href="' . $boardurl . '/mis-notas/ver-', $row['id_note'], '/">', parse_bbc(strip_tags($row['subject'])), '</a></td>
+  <td title="', timeformat($row['posterTime']), '">', timeformat($row['posterTime']), '</td> <td><a title="Eliminar nota" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta nota?\')) return false;" href="' . $boardurl . '/mis-notas/eliminar-', $row['id_note'], '"><img alt="Eliminar nota" title="Eliminar nota" style="width:16px;height:16px;" src="', $settings['images_url'], '/icons/eliminar-notas.gif" /></a></td></tr>';
+  }
+  $NroRegistros = mysqli_num_rows(db_query("SELECT id_note, subject, body, posterTime FROM {$db_prefix}member_notes WHERE ID_MEMBER = $ID_MEMBER ORDER BY id_note DESC ", __FILE__, __LINE__));
+  echo '</tbody></table>';
+  $PagAnt=$PagAct-1;
+  $PagSig=$PagAct+1;
+  $PagUlt=$NroRegistros/$RegistrosAMostrar;
+  $Res=$NroRegistros%$RegistrosAMostrar;
+  if($Res>0) $PagUlt=floor($PagUlt)+1;
+  echo '<div class="windowbgpag" style="width:774px;">';
+  if($PagAct>1) echo '<a href=\'/mis-notas/pag-' . $PagAnt . '\'>&#171; anterior</a>';
+  if($PagAct<$PagUlt)  echo '<a href=\'/mis-notas/pag-' . $PagSig . '\'>siguiente &#187;</a></div>';
+  }
+  echo '<div style="width:774px;margin-top:4px;"><p align="right" style="margin:0px;padding:0px;"><input type="button" value="Agregar nota" onclick="location.href=\'/mis-notas/agregar/\'" class="login" /></p></div>';
+  }
+  echo '<div class="clearBoth"></div></div><div style="clear:both"></div>';
+
+}
+
+function template_agregarnota() {
+  global $context, $settings, $txt;
   
-menu();
+  menu();
 
-echo '<div class="box_780" style="float:left;"><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Agregar nota</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width:764px;padding:4px;"><form action="/mis-notas/enviar/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data"><input type="text" title="', $txt['notes_add_new_title'], '" onfocus="if(this.value==\'', $txt['notes_add_new_title'], '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'', $txt['notes_add_new_title'], '\'; no_foco(this);" value="', $txt['notes_add_new_title'], '" style="width:758px;font-family:arial;font-size:12px;" name="titulo" maxlength="60" id="titulo" /><br/><textarea name="contenido" id="contenido" style="width:758px;height:185px;font-family:arial;font-size:12px;" title="', $txt['notes_add_new_text'], '" onfocus="if(this.value==\'', $txt['notes_add_new_text'], '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'', $txt['notes_add_new_text'], '\'; no_foco(this);">', $txt['notes_add_new_text'], '</textarea><br/><p align="right" style="margin:0px;padding:0px;"><input type="submit" value="Crear nota" name="agregar" class="login" /></p><input type="hidden" name="sa" value="add" /><input type="hidden" name="nojs" value="" /><input type="hidden" name="sc" value="', $context['session_id'], '" /></form></div></div><div style="clear:both"></div>';
-
+  echo '<div class="box_780" style="float:left;"><div class="box_title" style="width: 772px;"><div class="box_txt box_780-34"><center>Agregar nota</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" border="0" style="width:764px;padding:4px;"><form action="/mis-notas/enviar/" method="post" accept-charset="', $context['character_set'], '" enctype="multipart/form-data"><input type="text" title="', $txt['notes_add_new_title'], '" onfocus="if(this.value==\'', $txt['notes_add_new_title'], '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'', $txt['notes_add_new_title'], '\'; no_foco(this);" value="', $txt['notes_add_new_title'], '" style="width:758px;font-family:arial;font-size:12px;" name="titulo" maxlength="60" id="titulo" /><br/><textarea name="contenido" id="contenido" style="width:758px;height:185px;font-family:arial;font-size:12px;" title="', $txt['notes_add_new_text'], '" onfocus="if(this.value==\'', $txt['notes_add_new_text'], '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'', $txt['notes_add_new_text'], '\'; no_foco(this);">', $txt['notes_add_new_text'], '</textarea><br/><p align="right" style="margin:0px;padding:0px;"><input type="submit" value="Crear nota" name="agregar" class="login" /></p><input type="hidden" name="sa" value="add" /><input type="hidden" name="nojs" value="" /><input type="hidden" name="sc" value="', $context['session_id'], '" /></form></div></div><div style="clear:both"></div>';
 }
 
-function template_summary()
-{
-  global $context, $settings, $options, $scripturl, $modSettings, $txt, $boardurl, $db_prefix, $sourcedir;
+function template_summary() {
+  global $context, $settings, $boardurl, $sourcedir;
 
-menu2();
-sidebar();
-menu3();
-echo '<div style="float:left;margin-bottom:8px;"><div class="mennes"><div class="botnes"><ul>
+  menu2();
+  sidebar();
+  menu3();
+  echo '<div style="float:left;margin-bottom:8px;"><div class="mennes"><div class="botnes"><ul>
 
-<li>
+  <li>
 
-<a href="' . $boardurl . '/perfil/', $context['member']['name'], '/muro/" title="Muro" alt="Muro"><img src="' . $settings['images_url'] . '/icons/muro.gif" alt="Muro" title="Muro" /> Muro</a></li>
-<li>
+  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/muro/" title="Muro" alt="Muro"><img src="' . $settings['images_url'] . '/icons/muro.gif" alt="Muro" title="Muro" /> Muro</a></li>
+  <li>
 
-<a href="' . $boardurl . '/perfil/', $context['member']['name'], '/apariencia/" title="Apariencia" alt="Apariencia"><img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia"/> Apariencia</a>
-</li>
-<li>
+  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/apariencia/" title="Apariencia" alt="Apariencia"><img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia"/> Apariencia</a>
+  </li>
+  <li>
 
-<a href="' . $boardurl . '/perfil/', $context['member']['name'], '/comunidades/" title="Comunidades" alt="Comunidades"><img src="' . $settings['images_url'] . '/comunidades/comunidad.png" alt="Comunidades" title="Comunidades" /> Comunidades</a>
-</li>
+  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/comunidades/" title="Comunidades" alt="Comunidades"><img src="' . $settings['images_url'] . '/comunidades/comunidad.png" alt="Comunidades" title="Comunidades" /> Comunidades</a>
+  </li>
 
-</ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>';
+  </ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>';
 
-if($context['member']['name'] == $context['user']['name']) {
-echo '<div style="margin-bottom:8px;">
+  if($context['member']['name'] == $context['user']['name']) {
+  echo '<div style="margin-bottom:8px;">
 
 
-<div class="box_title" style="width:539px;"><div class="box_txt">En este momento estoy</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div>
-<div class="windowbg" style="font-size:11px;width:523px;padding:8px;"><center>'; if($context['member']['estado_icon'] == 'mcontento') { echo '<u><b>'; } echo'<a href="' . $boardurl . '/estado/mcontento/" title="Muy contento/a">Muy contento/a</a>'; if($context['member']['estado_icon'] == 'mcontento') { echo '</u></b>'; } echo' - '; if($context['member']['estado_icon'] == 'contento') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/contento/" title="Contento/a">Contento/a</a>'; if($context['member']['estado_icon'] == 'contento') { echo '</u></b>'; } echo ' - '; if($context['member']['estado_icon'] == 'sueno') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/cons/" title="Con sue&ntilde;o">Con sue&ntilde;o</a>'; if($context['member']['estado_icon'] == 'sueno') { echo '</u></b>'; } echo ' - '; if($context['member']['estado_icon'] == 'descansar') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/desc/" title="Descansando">Descansando</a>'; if($context['member']['estado_icon'] == 'descansar') { echo '</u></b>'; } echo ' - '; if($context['member']['estado_icon'] == 'triste') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/triste/" title="Triste">Triste</a>'; if($context['member']['estado_icon'] == 'triste') { echo '</u></b>'; } echo ' - '; if($context['member']['estado_icon'] == 'enferm') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/enferm/" title="Enfermo/a">Enfermo/a</a>'; if($context['member']['estado_icon'] == 'enferm') { echo '</u></b>'; } echo ' - '; if($context['member']['estado_icon'] == 'emusic') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/emusic/" title="Escuchando m&uacute;sica">Escuchando m&uacute;sica</a>'; if($context['member']['estado_icon'] == 'emusic') { echo '</u></b>'; } echo '<br />'; if($context['member']['estado_icon'] == '') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/qestado/" title="Sin estado">Sin estado</a>'; if($context['member']['estado_icon'] == '') { echo '</u></b>'; } echo '</center></div></div>';
+  <div class="box_title" style="width:539px;"><div class="box_txt">En este momento estoy</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div>
+  <div class="windowbg" style="font-size:11px;width:523px;padding:8px;"><center>'; if($context['member']['estado_icon'] == 'mcontento') { echo '<u><b>'; } echo'<a href="' . $boardurl . '/estado/mcontento/" title="Muy contento/a">Muy contento/a</a>'; if($context['member']['estado_icon'] == 'mcontento') { echo '</u></b>'; } echo' - '; if($context['member']['estado_icon'] == 'contento') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/contento/" title="Contento/a">Contento/a</a>'; if($context['member']['estado_icon'] == 'contento') { echo '</u></b>'; } echo ' - '; if($context['member']['estado_icon'] == 'sueno') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/cons/" title="Con sue&ntilde;o">Con sue&ntilde;o</a>'; if($context['member']['estado_icon'] == 'sueno') { echo '</u></b>'; } echo ' - '; if($context['member']['estado_icon'] == 'descansar') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/desc/" title="Descansando">Descansando</a>'; if($context['member']['estado_icon'] == 'descansar') { echo '</u></b>'; } echo ' - '; if($context['member']['estado_icon'] == 'triste') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/triste/" title="Triste">Triste</a>'; if($context['member']['estado_icon'] == 'triste') { echo '</u></b>'; } echo ' - '; if($context['member']['estado_icon'] == 'enferm') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/enferm/" title="Enfermo/a">Enfermo/a</a>'; if($context['member']['estado_icon'] == 'enferm') { echo '</u></b>'; } echo ' - '; if($context['member']['estado_icon'] == 'emusic') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/emusic/" title="Escuchando m&uacute;sica">Escuchando m&uacute;sica</a>'; if($context['member']['estado_icon'] == 'emusic') { echo '</u></b>'; } echo '<br />'; if($context['member']['estado_icon'] == '') { echo '<u><b>'; } echo '<a href="' . $boardurl . '/estado/qestado/" title="Sin estado">Sin estado</a>'; if($context['member']['estado_icon'] == '') { echo '</u></b>'; } echo '</center></div></div>';
 
-echo '
-<div style="background:url(\'' . $settings['images_url'] . '/quehago.png\') no-repeat;width:525px;height:39px;padding:8px 8px 0px 8px;">
-<div style="float:left;margin-right:3px;"><input title="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" onfocus="if(this.value==\'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\') this.value=\'\';foco(this);" onblur="if(this.value==\'\') this.value=\'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\';no_foco(this);" style="width:463px;font-size:11px;font-family:Arial,FreeSans;" name="quehago" id="quehago" value="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" type="text" /></div><div style="padding-top:1px;"><input class="login" style="padding:0px;margin:0px;font-size:11px;width:53px;" value="Publicar" onclick="add_quehago(); return false;" type="button" id="button_add_quehago" /></div></div>';
-}
-if($context['user']['is_logged']) {
-echo '<div style="background:url(\'' . $settings['images_url'] . '/muro.png\') no-repeat;width:525px;height:55px;padding:8px 8px 0px 8px;">
-<div style="float:left;margin-right:3px;"><textarea title="Escribe algo..." onfocus="if(this.value==\'Escribe algo...\') this.value=\'\';foco(this);" onblur="if(this.value==\'\') this.value=\'Escribe algo...\';no_foco(this);" style="height:30px;overflow:visible;width:463px;font-size:11px;font-family:Arial,FreeSans;" name="muro" id="muro">Escribe algo...</textarea></div><div style="padding-top:1px;"><input class="login" style="padding:0px;margin:0px;font-size:11px;width:53px;" value="Publicar" onclick="add_muro(\'', $context['member']['id'], '\'); return false;" type="button" id="button_add_muro" />
-<img alt="" src="' . $settings['images_url'] . '/icons/cargando.gif" style="width: 16px; height: 16px;display: none;" id="gif_cargando_add_muro" border="0"></div></div><div style="width:541px;margin-bottom:4px;"><div class="msg_add_muro"></div></div>';
-} else {
-echo '<div style="clear: left;"><div class="noesta-am" style="width:541px;margin-bottom:8px;">Para poder comentar en este muro es necesario estar <a href="' . $boardurl . '/registrarse/" style="color:#FFB600;" title="Reg&iacute;strarse">Registrado</a>.<br/>Si ya tienes usuario <a href="' . $boardurl . '/ingresar/" style="color:#FFB600;" title="Conectarse">&iexcl;Con&eacute;ctate!</a></div></div>';
-}
-echo '<div class="windowbg" style="border-top:#D7CFC6 solid 1px;width:523px;padding:8px;font-size:11px;"><div id="return_agregar_muro"></div>';
-require_once($sourcedir . '/ProfileComments.php');
-ShowUserBox($memCommID);
+  echo '
+  <div style="background:url(\'' . $settings['images_url'] . '/quehago.png\') no-repeat;width:525px;height:39px;padding:8px 8px 0px 8px;">
+  <div style="float:left;margin-right:3px;"><input title="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" onfocus="if(this.value==\'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\') this.value=\'\';foco(this);" onblur="if(this.value==\'\') this.value=\'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\';no_foco(this);" style="width:463px;font-size:11px;font-family:Arial,FreeSans;" name="quehago" id="quehago" value="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" type="text" /></div><div style="padding-top:1px;"><input class="login" style="padding:0px;margin:0px;font-size:11px;width:53px;" value="Publicar" onclick="add_quehago(); return false;" type="button" id="button_add_quehago" /></div></div>';
+  }
+  if($context['user']['is_logged']) {
+  echo '<div style="background:url(\'' . $settings['images_url'] . '/muro.png\') no-repeat;width:525px;height:55px;padding:8px 8px 0px 8px;">
+  <div style="float:left;margin-right:3px;"><textarea title="Escribe algo..." onfocus="if(this.value==\'Escribe algo...\') this.value=\'\';foco(this);" onblur="if(this.value==\'\') this.value=\'Escribe algo...\';no_foco(this);" style="height:30px;overflow:visible;width:463px;font-size:11px;font-family:Arial,FreeSans;" name="muro" id="muro">Escribe algo...</textarea></div><div style="padding-top:1px;"><input class="login" style="padding:0px;margin:0px;font-size:11px;width:53px;" value="Publicar" onclick="add_muro(\'', $context['member']['id'], '\'); return false;" type="button" id="button_add_muro" />
+  <img alt="" src="' . $settings['images_url'] . '/icons/cargando.gif" style="width: 16px; height: 16px;display: none;" id="gif_cargando_add_muro" border="0"></div></div><div style="width:541px;margin-bottom:4px;"><div class="msg_add_muro"></div></div>';
+  } else {
+  echo '<div style="clear: left;"><div class="noesta-am" style="width:541px;margin-bottom:8px;">Para poder comentar en este muro es necesario estar <a href="' . $boardurl . '/registrarse/" style="color:#FFB600;" title="Reg&iacute;strarse">Registrado</a>.<br/>Si ya tienes usuario <a href="' . $boardurl . '/ingresar/" style="color:#FFB600;" title="Conectarse">&iexcl;Con&eacute;ctate!</a></div></div>';
+  }
+  echo '<div class="windowbg" style="border-top:#D7CFC6 solid 1px;width:523px;padding:8px;font-size:11px;"><div id="return_agregar_muro"></div>';
+  require_once($sourcedir . '/ProfileComments.php');
+  ShowUserBox($memCommID);
 
-menu4();
-menu5();
-}
-
-function ver_apariencia()
-{
-  global $context, $txt, $settings;
-
-echo '<p class="datosp">Mide:</p> '; if(empty($context['member']['altura'])) { echo 'Sin datos'; } else { echo $context['member']['altura'] . ' cent&iacute;metros'; } echo '<br /><br />';
-echo '<p class="datosp">Pesa:</p> '; if(empty($context['member']['peso'])) { echo 'Sin datos'; } else { echo $context['member']['peso'] . ' kilos'; } echo '<br /><br />';
-echo '<p class="datosp">Su color de pelo:</p> '; if(empty($context['member']['pelo_color'])) { echo 'Sin datos'; } else { echo pelo_color($context['member']['pelo_color']); } echo '<br /><br />';
-echo '<p class="datosp">Su color de ojos:</p> '; if(empty($context['member']['ojos_color'])) { echo 'Sin datos'; } else { echo ojos_color($context['member']['ojos_color']); } echo '<br /><br />';
-echo '<p class="datosp">Su fisico:</p> '; if(empty($context['member']['fisico'])) { echo 'Sin datos'; } else { echo fisico($context['member']['fisico']); } echo '<br /><br />';
-echo '<p class="datosp">Su dieta es:</p> '; if(empty($context['member']['dieta'])) { echo 'Sin datos'; } else { echo dieta($context['member']['dieta']); } echo '<br /><br />';
-echo '<p class="datosp">Fuma:</p> '; if(empty($context['member']['fumo'])) { echo 'Sin datos'; } else { echo fumo($context['member']['fumo']); } echo '<br /><br />';
-echo '<p class="datosp">Toma Alcohol:</p> '; if(empty($context['member']['tomo_alcohol'])) { echo 'Sin datos'; } else { echo fumo($context['member']['tomo_alcohol']); } echo '<br /><br />';
-echo '<p class="datosp">Le gustaria:</p> '; if(empty($context['member']['me_gustaria'])) { echo 'Sin datos'; } else { echo me_gustaria($context['member']['me_gustaria']); } echo '<br /><br />';
-echo '<p class="datosp">En el amor esta:</p> '; if(empty($context['member']['estado'])) { echo 'Sin datos'; } else { echo estado($context['member']['estado']); } echo '<br /><br />';
-echo '<p class="datosp">Hijos:</p> '; if(empty($context['member']['hijos'])) { echo 'Sin datos'; } else { echo hijos($context['member']['hijos']); } echo '<br /><br />';
-echo '<p class="datosp">Sus estudios:</p> '; if(empty($context['member']['estudios'])) { echo 'Sin datos'; } else { echo estudios($context['member']['estudios']); } echo '<br /><br />';
-echo '<p class="datosp">Profesi&oacute;n:</p> '; if(empty($context['member']['profesion'])) { echo 'Sin datos'; } else { echo $context['member']['profesion']; } echo '<br /><br />';
-echo '<p class="datosp">Empresa:</p> '; if(empty($context['member']['empresa'])) { echo 'Sin datos'; } else { echo $context['member']['empresa']; } echo '<br /><br />';
-echo '<p class="datosp">Su nivel de ingresos:</p> '; if(empty($context['member']['ingresos'])) { echo 'Sin datos'; } else { echo ingresos($context['member']['ingresos']); } echo '<br /><br />';
-echo '<p class="datosp">Intereses profesionales:</p> '; if(empty($context['member']['intereses_profesionales'])) { echo 'Sin datos'; } else { echo $context['member']['intereses_profesionales']; } echo '<br /><br />';
-echo '<p class="datosp">Habilidades Profesionales:</p> '; if(empty($context['member']['habilidades_profesionales'])) { echo 'Sin datos'; } else { echo $context['member']['habilidades_profesionales']; } echo '<br /><br />';
-echo '<p class="datosp">Intereses:</p> '; if(empty($context['member']['mis_intereses'])) { echo 'Sin datos'; } else { echo $context['member']['mis_intereses']; } echo '<br /><br />';
-echo '<p class="datosp">Hobbies:</p> '; if(empty($context['member']['hobbies'])) { echo 'Sin datos'; } else { echo $context['member']['hobbies']; } echo '<br /><br />';
-echo '<p class="datosp">Series de Tv favoritas:</p> '; if(empty($context['member']['series_tv_favoritas'])) { echo 'Sin datos'; } else { echo $context['member']['series_tv_favoritas']; } echo '<br /><br />';
-echo '<p class="datosp">M&uacute;sica favorita:</p> '; if(empty($context['member']['musica_favorita'])) { echo 'Sin datos'; } else { echo $context['member']['musica_favorita']; } echo '<br /><br />';
-echo '<p class="datosp">Deportes y Equipos:</p> '; if(empty($context['member']['deportes_y_equipos_favoritos'])) { echo 'Sin datos'; } else { echo $context['member']['deportes_y_equipos_favoritos']; } echo '<br /><br />';
-echo '<p class="datosp">Libros Favoritos:</p> '; if(empty($context['member']['libros_favoritos'])) { echo 'Sin datos'; } else { echo $context['member']['libros_favoritos']; } echo '<br /><br />';
-echo '<p class="datosp">Pel&iacute;culas favoritas:</p> '; if(empty($context['member']['peliculas_favoritas'])) { echo 'Sin datos'; } else { echo $context['member']['peliculas_favoritas']; } echo '<br /><br />';
-echo '<p class="datosp">Comida favor&iacute;ta:</p> '; if(empty($context['member']['comida_favorita'])) { echo 'Sin datos'; } else { echo $context['member']['comida_favorita']; } echo '<br /><br />';
-echo '<p class="datosp">Sus heroes son:</p> '; if(empty($context['member']['mis_heroes_son'])) { echo 'Sin datos'; } else { echo $context['member']['mis_heroes_son']; } echo '<br /><br />';
+  menu4();
+  menu5();
 }
 
-function template_apariencia()
-{
-  global $context, $settings, $options, $scripturl, $modSettings, $txt, $boardurl, $db_prefix;
+function ver_apariencia() {
+  global $context;
 
-menu2();
-sidebar();
-menu3();
-echo '<div style="float:left;margin-bottom:8px;"><div class="mennes"><div class="botnes"><ul>
-
-<li>
-
-<a href="' . $boardurl . '/perfil/', $context['member']['name'], '/muro/" title="Muro" alt="Muro"><img src="' . $settings['images_url'] . '/icons/muro.gif" alt="Muro" title="Muro" /> Muro</a></li>
-<li>
-
-<a href="' . $boardurl . '/perfil/', $context['member']['name'], '/apariencia/" title="Apariencia" alt="Apariencia"><img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia"/> Apariencia</a>
-</li>
-<li>
-
-<a href="' . $boardurl . '/perfil/', $context['member']['name'], '/comunidades/" title="Comunidades" alt="Comunidades"><img src="' . $settings['images_url'] . '/comunidades/comunidad.png" alt="Comunidades" title="Comunidades" /> Comunidades</a>
-</li>
-
-</ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>';
-echo '<div class="windowbg" style="border-top:1px solid #D7CFC6;width:523px;padding:8px;font-size:12px;">';
-if($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
-ver_apariencia();
-} elseif($context['member']['quienve'] == '0') {
-ver_apariencia();
-} elseif($context['member']['quienve'] == '1') {
-echo '<div class="noesta">No puedes ver la apariencia de ', $context['member']['name'], '.</div>';
-} elseif($context['member']['quienve'] == '2') {
-$request = db_query("SELECT * FROM {$db_prefix}buddies AS b WHERE b.BUDDY_ID = " . $context['user']['id'] . "", __FILE__, __LINE__);
-$row = mysqli_num_rows($request);
-if($row > 0) {
-ver_apariencia();
-} elseif($row <= 0) {
-echo '<div class="noesta">Solo amigos de ', $context['member']['name'], ' pueden ver la apariencia.</div>';
-}
-} elseif($context['member']['quienve'] == '3') {
-if($context['user']['is_logged']) {
-ver_apariencia();
-} else {
-echo '<div class="noesta">Solo usuarios registrados pueden ver la apariencia de ', $context['member']['name'], '.</div>';
-}
-}
-echo '</div></div></div>';
-menu4();
-menu5();
+  echo '<p class="datosp">Mide:</p> '; if(empty($context['member']['altura'])) { echo 'Sin datos'; } else { echo $context['member']['altura'] . ' cent&iacute;metros'; } echo '<br /><br />';
+  echo '<p class="datosp">Pesa:</p> '; if(empty($context['member']['peso'])) { echo 'Sin datos'; } else { echo $context['member']['peso'] . ' kilos'; } echo '<br /><br />';
+  echo '<p class="datosp">Su color de pelo:</p> '; if(empty($context['member']['pelo_color'])) { echo 'Sin datos'; } else { echo pelo_color($context['member']['pelo_color']); } echo '<br /><br />';
+  echo '<p class="datosp">Su color de ojos:</p> '; if(empty($context['member']['ojos_color'])) { echo 'Sin datos'; } else { echo ojos_color($context['member']['ojos_color']); } echo '<br /><br />';
+  echo '<p class="datosp">Su fisico:</p> '; if(empty($context['member']['fisico'])) { echo 'Sin datos'; } else { echo fisico($context['member']['fisico']); } echo '<br /><br />';
+  echo '<p class="datosp">Su dieta es:</p> '; if(empty($context['member']['dieta'])) { echo 'Sin datos'; } else { echo dieta($context['member']['dieta']); } echo '<br /><br />';
+  echo '<p class="datosp">Fuma:</p> '; if(empty($context['member']['fumo'])) { echo 'Sin datos'; } else { echo fumo($context['member']['fumo']); } echo '<br /><br />';
+  echo '<p class="datosp">Toma Alcohol:</p> '; if(empty($context['member']['tomo_alcohol'])) { echo 'Sin datos'; } else { echo fumo($context['member']['tomo_alcohol']); } echo '<br /><br />';
+  echo '<p class="datosp">Le gustaria:</p> '; if(empty($context['member']['me_gustaria'])) { echo 'Sin datos'; } else { echo me_gustaria($context['member']['me_gustaria']); } echo '<br /><br />';
+  echo '<p class="datosp">En el amor esta:</p> '; if(empty($context['member']['estado'])) { echo 'Sin datos'; } else { echo estado($context['member']['estado']); } echo '<br /><br />';
+  echo '<p class="datosp">Hijos:</p> '; if(empty($context['member']['hijos'])) { echo 'Sin datos'; } else { echo hijos($context['member']['hijos']); } echo '<br /><br />';
+  echo '<p class="datosp">Sus estudios:</p> '; if(empty($context['member']['estudios'])) { echo 'Sin datos'; } else { echo estudios($context['member']['estudios']); } echo '<br /><br />';
+  echo '<p class="datosp">Profesi&oacute;n:</p> '; if(empty($context['member']['profesion'])) { echo 'Sin datos'; } else { echo $context['member']['profesion']; } echo '<br /><br />';
+  echo '<p class="datosp">Empresa:</p> '; if(empty($context['member']['empresa'])) { echo 'Sin datos'; } else { echo $context['member']['empresa']; } echo '<br /><br />';
+  echo '<p class="datosp">Su nivel de ingresos:</p> '; if(empty($context['member']['ingresos'])) { echo 'Sin datos'; } else { echo ingresos($context['member']['ingresos']); } echo '<br /><br />';
+  echo '<p class="datosp">Intereses profesionales:</p> '; if(empty($context['member']['intereses_profesionales'])) { echo 'Sin datos'; } else { echo $context['member']['intereses_profesionales']; } echo '<br /><br />';
+  echo '<p class="datosp">Habilidades Profesionales:</p> '; if(empty($context['member']['habilidades_profesionales'])) { echo 'Sin datos'; } else { echo $context['member']['habilidades_profesionales']; } echo '<br /><br />';
+  echo '<p class="datosp">Intereses:</p> '; if(empty($context['member']['mis_intereses'])) { echo 'Sin datos'; } else { echo $context['member']['mis_intereses']; } echo '<br /><br />';
+  echo '<p class="datosp">Hobbies:</p> '; if(empty($context['member']['hobbies'])) { echo 'Sin datos'; } else { echo $context['member']['hobbies']; } echo '<br /><br />';
+  echo '<p class="datosp">Series de Tv favoritas:</p> '; if(empty($context['member']['series_tv_favoritas'])) { echo 'Sin datos'; } else { echo $context['member']['series_tv_favoritas']; } echo '<br /><br />';
+  echo '<p class="datosp">M&uacute;sica favorita:</p> '; if(empty($context['member']['musica_favorita'])) { echo 'Sin datos'; } else { echo $context['member']['musica_favorita']; } echo '<br /><br />';
+  echo '<p class="datosp">Deportes y Equipos:</p> '; if(empty($context['member']['deportes_y_equipos_favoritos'])) { echo 'Sin datos'; } else { echo $context['member']['deportes_y_equipos_favoritos']; } echo '<br /><br />';
+  echo '<p class="datosp">Libros Favoritos:</p> '; if(empty($context['member']['libros_favoritos'])) { echo 'Sin datos'; } else { echo $context['member']['libros_favoritos']; } echo '<br /><br />';
+  echo '<p class="datosp">Pel&iacute;culas favoritas:</p> '; if(empty($context['member']['peliculas_favoritas'])) { echo 'Sin datos'; } else { echo $context['member']['peliculas_favoritas']; } echo '<br /><br />';
+  echo '<p class="datosp">Comida favor&iacute;ta:</p> '; if(empty($context['member']['comida_favorita'])) { echo 'Sin datos'; } else { echo $context['member']['comida_favorita']; } echo '<br /><br />';
+  echo '<p class="datosp">Sus heroes son:</p> '; if(empty($context['member']['mis_heroes_son'])) { echo 'Sin datos'; } else { echo $context['member']['mis_heroes_son']; } echo '<br /><br />';
 }
 
-function template_comunidades()
-{
-  global $context, $settings, $options, $scripturl, $modSettings, $txt, $boardurl, $db_prefix;
+function template_apariencia() {
+  global $context, $settings, $boardurl, $db_prefix;
 
-menu2();
-sidebar();
-menu3();
-echo '<div style="float:left;margin-bottom:8px;"><div class="mennes"><div class="botnes"><ul>
+  menu2();
+  sidebar();
+  menu3();
+  echo '<div style="float:left;margin-bottom:8px;"><div class="mennes"><div class="botnes"><ul>
 
-<li>
+  <li>
 
-<a href="' . $boardurl . '/perfil/', $context['member']['name'], '/muro/" title="Muro" alt="Muro"><img src="' . $settings['images_url'] . '/icons/muro.gif" alt="Muro" title="Muro" /> Muro</a></li>
-<li>
+  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/muro/" title="Muro" alt="Muro"><img src="' . $settings['images_url'] . '/icons/muro.gif" alt="Muro" title="Muro" /> Muro</a></li>
+  <li>
 
-<a href="' . $boardurl . '/perfil/', $context['member']['name'], '/apariencia/" title="Apariencia" alt="Apariencia"><img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia"/> Apariencia</a>
-</li>
-<li>
+  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/apariencia/" title="Apariencia" alt="Apariencia"><img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia"/> Apariencia</a>
+  </li>
+  <li>
 
-<a href="' . $boardurl . '/perfil/', $context['member']['name'], '/comunidades/" title="Comunidades" alt="Comunidades"><img src="' . $settings['images_url'] . '/comunidades/comunidad.png" alt="Comunidades" title="Comunidades" /> Comunidades</a>
-</li>
+  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/comunidades/" title="Comunidades" alt="Comunidades"><img src="' . $settings['images_url'] . '/comunidades/comunidad.png" alt="Comunidades" title="Comunidades" /> Comunidades</a>
+  </li>
 
-</ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>';
+  </ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>';
+  echo '<div class="windowbg" style="border-top:1px solid #D7CFC6;width:523px;padding:8px;font-size:12px;">';
+  if($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
+  ver_apariencia();
+  } elseif($context['member']['quienve'] == '0') {
+  ver_apariencia();
+  } elseif($context['member']['quienve'] == '1') {
+  echo '<div class="noesta">No puedes ver la apariencia de ', $context['member']['name'], '.</div>';
+  } elseif($context['member']['quienve'] == '2') {
+  $request = db_query("SELECT * FROM {$db_prefix}buddies AS b WHERE b.BUDDY_ID = " . $context['user']['id'] . "", __FILE__, __LINE__);
+  $row = mysqli_num_rows($request);
+  if($row > 0) {
+  ver_apariencia();
+  } elseif($row <= 0) {
+  echo '<div class="noesta">Solo amigos de ', $context['member']['name'], ' pueden ver la apariencia.</div>';
+  }
+  } elseif($context['member']['quienve'] == '3') {
+  if($context['user']['is_logged']) {
+  ver_apariencia();
+  } else {
+  echo '<div class="noesta">Solo usuarios registrados pueden ver la apariencia de ', $context['member']['name'], '.</div>';
+  }
+  }
+  echo '</div></div></div>';
+  menu4();
+  menu5();
+}
 
-/* �ltimos temas creados */
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuTemPerfil.php');
-echo '<div style="border: 1px solid #517BA1;background:#517BA1;height:2px;margin-top:10px;margin-bottom:10px;" class="hrs"></div>';
-/* �ltimos temas creados */
+function template_comunidades() {
+  global $context, $settings, $boardurl;
 
-/* Comunidades creadas */
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuCrePerfil.php');
-echo '<div style="border: 1px solid #517BA1;background:#517BA1;height:2px;margin-top:10px;margin-bottom:10px;" class="hrs"></div>';
-/* Comunidades creadas */
+  menu2();
+  sidebar();
+  menu3();
+  echo '<div style="float:left;margin-bottom:8px;"><div class="mennes"><div class="botnes"><ul>
 
-/* Es miembro de las comunidades */
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuMemPerfil.php');
-/* Es miembro de las comunidades */
+  <li>
 
-echo '<div class="clearBoth"></div></div>';
-menu4();
-menu5();
+  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/muro/" title="Muro" alt="Muro"><img src="' . $settings['images_url'] . '/icons/muro.gif" alt="Muro" title="Muro" /> Muro</a></li>
+  <li>
+
+  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/apariencia/" title="Apariencia" alt="Apariencia"><img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia"/> Apariencia</a>
+  </li>
+  <li>
+
+  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/comunidades/" title="Comunidades" alt="Comunidades"><img src="' . $settings['images_url'] . '/comunidades/comunidad.png" alt="Comunidades" title="Comunidades" /> Comunidades</a>
+  </li>
+
+  </ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>';
+
+  /* �ltimos temas creados */
+  @require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuTemPerfil.php');
+  echo '<div style="border: 1px solid #517BA1;background:#517BA1;height:2px;margin-top:10px;margin-bottom:10px;" class="hrs"></div>';
+  /* �ltimos temas creados */
+
+  /* Comunidades creadas */
+  @require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuCrePerfil.php');
+  echo '<div style="border: 1px solid #517BA1;background:#517BA1;height:2px;margin-top:10px;margin-bottom:10px;" class="hrs"></div>';
+  /* Comunidades creadas */
+
+  /* Es miembro de las comunidades */
+  @require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuMemPerfil.php');
+  /* Es miembro de las comunidades */
+
+  echo '<div class="clearBoth"></div></div>';
+  menu4();
+  menu5();
 }
 
 // Template for showing all the buddies of the current user.
-function template_editBuddies()
-{
-  global $context, $settings, $options, $scripturl, $modSettings, $txt;
+function template_editBuddies() {
+  global $context, $settings, $scripturl, $txt;
 
   echo '
     <table border="0" width="85%" cellspacing="1" cellpadding="4" class="bordercolor" align="center">
@@ -2255,421 +2740,418 @@ function template_error_message()
 function template_post() {
   global $settings, $db_prefix, $context, $modSettings, $boardurl;
 
-$RegistrosAMostrar = $modSettings['user_posts'];
-if(isset($_GET['pag'])) {
-$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct = (int) $_GET['pag'];
-} else {
-$RegistrosAEmpezar = 0;
-$PagAct = 1;
-}
-$request2 = db_query("
-SELECT m.ID_TOPIC, m.ID_BOARD, m.hiddenOption, m.subject, m.ID_MEMBER, b.name, b.description, b.ID_BOARD, t.isSticky, t.ID_TOPIC, t.ID_BOARD, m.posterTime, t.points, m2.ID_MEMBER, m.posterName
-FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t, {$db_prefix}members AS m2)
-WHERE m.ID_TOPIC = t.ID_TOPIC
-AND b.ID_BOARD = m.ID_BOARD
-AND t.ID_BOARD = m.ID_BOARD
-AND m.ID_MEMBER = m2.ID_MEMBER
-AND m.posterName = '" . $context['member']['name'] . "'
-GROUP BY t.ID_TOPIC
-ORDER BY m.posterTime DESC
-LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count = mysqli_num_rows($request2);
-if($count <= 0) {
-echo '<div class="noesta" style="width:922px;">', $context['member']['name'], ' no tiene posts hechos.</div>';
-} else {
-echo '<div style="float:left;width:757px;">
-<table class="linksList" style="width:757px;">
-<thead align="center"><th>&nbsp;</th></th><th style="text-align:left;">Posts de <i>', $context['member']['name'], '</th>
-<th>Fecha</th>
-<th>Puntos</th>
-<th>Enviar</th></tr></thead><tbody>
-';
-while($row = mysqli_fetch_assoc($request2)) {
-echo '<tr>
-<td><img alt="" title="' . $row['name'] . '" src="' . $settings['images_url'] . '/post/icono_' . $row['ID_BOARD'] . '.gif" /></td>
+  $RegistrosAMostrar = $modSettings['user_posts'];
+  if(isset($_GET['pag'])) {
+  $RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+  $PagAct = (int) $_GET['pag'];
+  } else {
+  $RegistrosAEmpezar = 0;
+  $PagAct = 1;
+  }
+  $request2 = db_query("
+  SELECT m.ID_TOPIC, m.ID_BOARD, m.hiddenOption, m.subject, m.ID_MEMBER, b.name, b.description, b.ID_BOARD, t.isSticky, t.ID_TOPIC, t.ID_BOARD, m.posterTime, t.points, m2.ID_MEMBER, m.posterName
+  FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t, {$db_prefix}members AS m2)
+  WHERE m.ID_TOPIC = t.ID_TOPIC
+  AND b.ID_BOARD = m.ID_BOARD
+  AND t.ID_BOARD = m.ID_BOARD
+  AND m.ID_MEMBER = m2.ID_MEMBER
+  AND m.posterName = '" . $context['member']['name'] . "'
+  GROUP BY t.ID_TOPIC
+  ORDER BY m.posterTime DESC
+  LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
+  $count = mysqli_num_rows($request2);
+  if($count <= 0) {
+  echo '<div class="noesta" style="width:922px;">', $context['member']['name'], ' no tiene posts hechos.</div>';
+  } else {
+  echo '<div style="float:left;width:757px;">
+  <table class="linksList" style="width:757px;">
+  <thead align="center"><th>&nbsp;</th></th><th style="text-align:left;">Posts de <i>', $context['member']['name'], '</th>
+  <th>Fecha</th>
+  <th>Puntos</th>
+  <th>Enviar</th></tr></thead><tbody>
+  ';
+  while($row = mysqli_fetch_assoc($request2)) {
+  echo '<tr>
+  <td><img alt="" title="' . $row['name'] . '" src="' . $settings['images_url'] . '/post/icono_' . $row['ID_BOARD'] . '.gif" /></td>
 
-<td style="text-align:left;"><a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" title="" title="' . $row['subject'] . '">' . $row['subject'] . '</a></td>
+  <td style="text-align:left;"><a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" title="" title="' . $row['subject'] . '">' . $row['subject'] . '</a></td>
 
-<td title="' . timeformat($row['posterTime']) . '">' . timeformat($row['posterTime']) . '</td>
+  <td title="' . timeformat($row['posterTime']) . '">' . timeformat($row['posterTime']) . '</td>
 
-<td style="color:green;" title="' . $row['points'] . '">' . $row['points'] . '</td>
+  <td style="color:green;" title="' . $row['points'] . '">' . $row['points'] . '</td>
 
-<td><a title="Enviar a amigo" href="' . $boardurl . '/enviar-a-amigo/' . $row['ID_TOPIC'] . '"><img alt="" src="' . $settings['images_url'] . '/icons/icono-enviar-mensaje.gif" /></a></td></tr>';
-}
-$NroRegistros = mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}members as m2) WHERE m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = m2.ID_MEMBER AND m2.memberName = '" . $context['member']['name'] . "' ", __FILE__, __LINE__));
+  <td><a title="Enviar a amigo" href="' . $boardurl . '/enviar-a-amigo/' . $row['ID_TOPIC'] . '"><img alt="" src="' . $settings['images_url'] . '/icons/icono-enviar-mensaje.gif" /></a></td></tr>';
+  }
+  $NroRegistros = mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}members as m2) WHERE m.ID_BOARD = b.ID_BOARD AND m.ID_MEMBER = m2.ID_MEMBER AND m2.memberName = '" . $context['member']['name'] . "' ", __FILE__, __LINE__));
 
 
- $PagAnt=$PagAct-1;
- $PagSig=$PagAct+1;
- $PagUlt=$NroRegistros/$RegistrosAMostrar;
- $Res=$NroRegistros%$RegistrosAMostrar;
- if($Res>0) $PagUlt=floor($PagUlt)+1;
-echo '</tbdoy></table><div class="windowbgpag" style="width:757px;">';
-if($PagAct>1) echo '<a href=\'/user-post/', $context['member']['name'], '/pag-' . $PagAnt . '\'>&#171; anterior</a>';
-if($PagAct<$PagUlt)  echo '<a href=\'/user-post/', $context['member']['name'], '/pag-' . $PagSig . '\'>siguiente &#187;</a>';
+  $PagAnt=$PagAct-1;
+  $PagSig=$PagAct+1;
+  $PagUlt=$NroRegistros/$RegistrosAMostrar;
+  $Res=$NroRegistros%$RegistrosAMostrar;
+  if($Res>0) $PagUlt=floor($PagUlt)+1;
+  echo '</tbdoy></table><div class="windowbgpag" style="width:757px;">';
+  if($PagAct>1) echo '<a href=\'/user-post/', $context['member']['name'], '/pag-' . $PagAnt . '\'>&#171; anterior</a>';
+  if($PagAct<$PagUlt)  echo '<a href=\'/user-post/', $context['member']['name'], '/pag-' . $PagSig . '\'>siguiente &#187;</a>';
 
-echo '</div><div class="clearBoth"></div></div>
+  echo '</div><div class="clearBoth"></div></div>
 
-<div style="float:left;width:160px;margin-left:8px;">
-<div class="img_aletat"><div class="box_title" style="width:155px;"><div class="box_txt img_aletat">Publicidad</div>
-<div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:147px; padding: 4px;"><center>', $modSettings['vertical'] ,'</center></div></div></div><div style="clear:both"></div>
-</div>
+  <div style="float:left;width:160px;margin-left:8px;">
+  <div class="img_aletat"><div class="box_title" style="width:155px;"><div class="box_txt img_aletat">Publicidad</div>
+  <div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:147px; padding: 4px;"><center>', $modSettings['vertical'] ,'</center></div></div></div><div style="clear:both"></div>
+  </div>
 
-</div>
-';}
+  </div>
+  ';}
 }
 
 function template_comentarios() {
   global $settings, $db_prefix, $context, $modSettings, $boardurl;
 
-$RegistrosAMostrar = $modSettings['user_comments_posts'];
-if(isset($_GET['pag'])) {
-$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct = (int) $_GET['pag'];
-} else {
-$RegistrosAEmpezar = 0;
-$PagAct = 1;
+  $RegistrosAMostrar = $modSettings['user_comments_posts'];
+  if(isset($_GET['pag'])) {
+  $RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+  $PagAct = (int) $_GET['pag'];
+  } else {
+  $RegistrosAEmpezar = 0;
+  $PagAct = 1;
+  }
+  $request = db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, c.ID_TOPIC, mem.ID_MEMBER, m.ID_TOPIC, m.posterName, mem.memberName, t.ID_TOPIC, t.ID_MEMBER_STARTED, mem.realName
+  FROM ({$db_prefix}comments AS c, {$db_prefix}members AS mem, {$db_prefix}topics AS t, {$db_prefix}messages AS m)
+  WHERE m.ID_TOPIC = t.ID_TOPIC
+  AND c.ID_TOPIC = t.ID_TOPIC
+  AND c.ID_TOPIC = m.ID_TOPIC
+  AND c.ID_MEMBER = mem.ID_MEMBER
+  AND mem.memberName = '" . $context['member']['name'] . "' ", __FILE__, __LINE__);
+  $request2 = db_query("SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
+  FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
+  WHERE c.ID_PICTURE = g.ID_PICTURE
+  AND c.ID_MEMBER = " . $context['member']['id'] . "
+  AND g.ID_PICTURE = c.ID_PICTURE
+  ", __FILE__, __LINE__);
+  $count_c = mysqli_num_rows($request);
+  $count_c_img = mysqli_num_rows($request2);
+
+  echo '<div style="float:left;width:757px;">
+  <div class="mennes"><div class="botnes"><ul>
+
+  <li>
+  <a href="' . $boardurl . '/user-comment/', $context['member']['name'], '" title="Comentarios en posts">Comentarios en posts (' . $count_c . ')</a></li>
+  <li>
+
+  <a href="' . $boardurl . '/user-comment-img/', $context['member']['name'], '" title="Comentarios en im&aacute;genes">Comentarios en im&aacute;genes (' . $count_c_img . ')</a>
+  </li>
+
+  </ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>
+  <div class="box_757" style="margin-bottom:8px;"><div class="box_title" style="width:755px;"><div class="box_txt box_757-34"><center>Comentarios de <i>', $context['member']['name'], '</i> en posts</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:747px;padding:4px;">
+  ';
+  if($count_c <= 0) {
+  echo '<div class="noesta">', $context['member']['name'], ' no tiene comentarios en posts hechos.</div>';
+  } else {
+  $request3 = db_query("
+  SELECT m.ID_TOPIC, m.ID_BOARD, m.hiddenOption, m.subject, m.ID_MEMBER, b.name, b.description, b.ID_BOARD, t.isSticky, t.ID_TOPIC, t.ID_BOARD, c.posterTime, t.points, c.ID_MEMBER, c.ID_TOPIC, c.comment, c.ID_COMMENT, m2.ID_MEMBER, m2.memberName
+  FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t, {$db_prefix}comments AS c, {$db_prefix}members AS m2)
+  WHERE m.ID_TOPIC = t.ID_TOPIC
+  AND b.ID_BOARD = m.ID_BOARD
+  AND t.ID_BOARD = m.ID_BOARD
+  AND c.ID_TOPIC = t.ID_TOPIC
+  AND m.ID_TOPIC = c.ID_TOPIC
+  AND c.ID_MEMBER = m2.ID_MEMBER 
+  AND m2.memberName = '" . $context['member']['name'] . "'
+  ORDER BY c.ID_COMMENT DESC
+  LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
+
+  while($row = mysqli_fetch_assoc($request3)) {
+  echo '<table width="100%"><tr><td valign="top" style="width:16px;"><img alt="" src="' . $settings['images_url'] . '/post/icono_' . $row['ID_BOARD'] . '.gif" title="' . $row['name'] . '" /></td><td><b class="size11"><a title="' . $row['subject'] . '" href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" >' . $row['subject'] . '</a></b><div class="size11">' . timeformat($row['posterTime']) . ': <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html#cmt_' . $row['ID_COMMENT'] . '" >' . $row['comment'] . '</a></div></td></tr></table>
+  ';
+  }
+  $NroRegistros=mysqli_num_rows(db_query("SELECT *
+  FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t, {$db_prefix}comments AS c, {$db_prefix}members AS m2)
+  WHERE m.ID_TOPIC = t.ID_TOPIC
+  AND b.ID_BOARD = m.ID_BOARD
+  AND t.ID_BOARD = m.ID_BOARD
+  AND c.ID_TOPIC = t.ID_TOPIC
+  AND m.ID_TOPIC = c.ID_TOPIC
+  AND c.ID_MEMBER = m2.ID_MEMBER 
+  AND m2.memberName = '" . $context['member']['name'] . "'
+  ORDER BY c.ID_COMMENT DESC", __FILE__, __LINE__));
+  }
+  $PagAnt=$PagAct-1;
+  $PagSig=$PagAct+1;
+  $PagUlt=$NroRegistros/$RegistrosAMostrar;
+  $Res=$NroRegistros%$RegistrosAMostrar;
+  if($Res>0) $PagUlt=floor($PagUlt)+1;
+  echo '</div><div class="windowbgpag" style="width:757px;">';
+  if($PagSig<$PagUlt){ echo '';}
+  if($PagAct>1) echo '<a href=\'/user-comment/', $context['member']['name'], '/pag-' . $PagAnt . '\'>&#171; anterior</a>';
+  if($PagAct<$PagUlt)  echo '<a href=\'/user-comment/', $context['member']['name'], '/pag-' . $PagSig . '\'>siguiente &#187;</a>';
+
+  echo '</div><div class="clearBoth"></div><div style="clear: both;"></div></div></div>
+
+  <div style="float:left;width:155px;margin-left:8px;">
+  <div class="img_aletat"><div class="box_title" style="width:155px;"><div class="box_txt img_aletat">Publicidad</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:147px;padding:4px;"><center>', $modSettings['vertical'] ,'</center></div></div></div><div style="clear:both"></div>';
+
 }
-$request = db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, c.ID_TOPIC, mem.ID_MEMBER, m.ID_TOPIC, m.posterName, mem.memberName, t.ID_TOPIC, t.ID_MEMBER_STARTED, mem.realName
-FROM ({$db_prefix}comments AS c, {$db_prefix}members AS mem, {$db_prefix}topics AS t, {$db_prefix}messages AS m)
-WHERE m.ID_TOPIC = t.ID_TOPIC
-AND c.ID_TOPIC = t.ID_TOPIC
-AND c.ID_TOPIC = m.ID_TOPIC
-AND c.ID_MEMBER = mem.ID_MEMBER
-AND mem.memberName = '" . $context['member']['name'] . "' ", __FILE__, __LINE__);
-$request2 = db_query("SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
-FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
-WHERE c.ID_PICTURE = g.ID_PICTURE
-AND c.ID_MEMBER = " . $context['member']['id'] . "
-AND g.ID_PICTURE = c.ID_PICTURE
-", __FILE__, __LINE__);
-$count_c = mysqli_num_rows($request);
-$count_c_img = mysqli_num_rows($request2);
 
-echo '<div style="float:left;width:757px;">
-<div class="mennes"><div class="botnes"><ul>
-
-<li>
-<a href="' . $boardurl . '/user-comment/', $context['member']['name'], '" title="Comentarios en posts">Comentarios en posts (' . $count_c . ')</a></li>
-<li>
-
-<a href="' . $boardurl . '/user-comment-img/', $context['member']['name'], '" title="Comentarios en im&aacute;genes">Comentarios en im&aacute;genes (' . $count_c_img . ')</a>
-</li>
-
-</ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>
-<div class="box_757" style="margin-bottom:8px;"><div class="box_title" style="width:755px;"><div class="box_txt box_757-34"><center>Comentarios de <i>', $context['member']['name'], '</i> en posts</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:747px;padding:4px;">
-';
-if($count_c <= 0) {
-echo '<div class="noesta">', $context['member']['name'], ' no tiene comentarios en posts hechos.</div>';
-} else {
-$request3 = db_query("
-SELECT m.ID_TOPIC, m.ID_BOARD, m.hiddenOption, m.subject, m.ID_MEMBER, b.name, b.description, b.ID_BOARD, t.isSticky, t.ID_TOPIC, t.ID_BOARD, c.posterTime, t.points, c.ID_MEMBER, c.ID_TOPIC, c.comment, c.ID_COMMENT, m2.ID_MEMBER, m2.memberName
-FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t, {$db_prefix}comments AS c, {$db_prefix}members AS m2)
-WHERE m.ID_TOPIC = t.ID_TOPIC
-AND b.ID_BOARD = m.ID_BOARD
-AND t.ID_BOARD = m.ID_BOARD
-AND c.ID_TOPIC = t.ID_TOPIC
-AND m.ID_TOPIC = c.ID_TOPIC
-AND c.ID_MEMBER = m2.ID_MEMBER 
-AND m2.memberName = '" . $context['member']['name'] . "'
-ORDER BY c.ID_COMMENT DESC
-LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-
-while($row = mysqli_fetch_assoc($request3)) {
-echo '<table width="100%"><tr><td valign="top" style="width:16px;"><img alt="" src="' . $settings['images_url'] . '/post/icono_' . $row['ID_BOARD'] . '.gif" title="' . $row['name'] . '" /></td><td><b class="size11"><a title="' . $row['subject'] . '" href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" >' . $row['subject'] . '</a></b><div class="size11">' . timeformat($row['posterTime']) . ': <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html#cmt_' . $row['ID_COMMENT'] . '" >' . $row['comment'] . '</a></div></td></tr></table>
-';
-}
-$NroRegistros=mysqli_num_rows(db_query("SELECT *
-FROM ({$db_prefix}messages AS m, {$db_prefix}boards AS b, {$db_prefix}topics AS t, {$db_prefix}comments AS c, {$db_prefix}members AS m2)
-WHERE m.ID_TOPIC = t.ID_TOPIC
-AND b.ID_BOARD = m.ID_BOARD
-AND t.ID_BOARD = m.ID_BOARD
-AND c.ID_TOPIC = t.ID_TOPIC
-AND m.ID_TOPIC = c.ID_TOPIC
-AND c.ID_MEMBER = m2.ID_MEMBER 
-AND m2.memberName = '" . $context['member']['name'] . "'
-ORDER BY c.ID_COMMENT DESC", __FILE__, __LINE__));
-}
- $PagAnt=$PagAct-1;
- $PagSig=$PagAct+1;
- $PagUlt=$NroRegistros/$RegistrosAMostrar;
- $Res=$NroRegistros%$RegistrosAMostrar;
- if($Res>0) $PagUlt=floor($PagUlt)+1;
-echo '</div><div class="windowbgpag" style="width:757px;">';
-if($PagSig<$PagUlt){ echo '';}
-if($PagAct>1) echo '<a href=\'/user-comment/', $context['member']['name'], '/pag-' . $PagAnt . '\'>&#171; anterior</a>';
-if($PagAct<$PagUlt)  echo '<a href=\'/user-comment/', $context['member']['name'], '/pag-' . $PagSig . '\'>siguiente &#187;</a>';
-
-echo '</div><div class="clearBoth"></div><div style="clear: both;"></div></div></div>
-
-<div style="float:left;width:155px;margin-left:8px;">
-<div class="img_aletat"><div class="box_title" style="width:155px;"><div class="box_txt img_aletat">Publicidad</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:147px;padding:4px;"><center>', $modSettings['vertical'] ,'</center></div></div></div><div style="clear:both"></div>';
-
-}
-
-function template_comentariosimg()
-{
+function template_comentariosimg() {
   global $settings, $db_prefix, $context, $modSettings, $boardurl;
 
-$RegistrosAMostrar = $modSettings['user_comments_images'];
-if(isset($_GET['pag'])){
-$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct = (int) $_GET['pag'];
-} else {
-$RegistrosAEmpezar = 0;
-$PagAct = 1;
-}
-$request = db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, c.ID_TOPIC, mem.ID_MEMBER, m.ID_TOPIC, m.posterName, mem.memberName, t.ID_TOPIC, t.ID_MEMBER_STARTED
-FROM ({$db_prefix}comments AS c, {$db_prefix}members AS mem, {$db_prefix}topics AS t, {$db_prefix}messages AS m)
-WHERE m.ID_TOPIC = t.ID_TOPIC
-AND c.ID_TOPIC = t.ID_TOPIC
-AND c.ID_TOPIC = m.ID_TOPIC
-AND c.ID_MEMBER = mem.ID_MEMBER
-AND mem.memberName = '" . $context['member']['name'] . "'", __FILE__, __LINE__);
-$count_c = mysqli_num_rows($request);
+  $RegistrosAMostrar = $modSettings['user_comments_images'];
+  if(isset($_GET['pag'])){
+  $RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+  $PagAct = (int) $_GET['pag'];
+  } else {
+  $RegistrosAEmpezar = 0;
+  $PagAct = 1;
+  }
+  $request = db_query("SELECT c.ID_COMMENT, c.ID_MEMBER, c.ID_TOPIC, mem.ID_MEMBER, m.ID_TOPIC, m.posterName, mem.memberName, t.ID_TOPIC, t.ID_MEMBER_STARTED
+  FROM ({$db_prefix}comments AS c, {$db_prefix}members AS mem, {$db_prefix}topics AS t, {$db_prefix}messages AS m)
+  WHERE m.ID_TOPIC = t.ID_TOPIC
+  AND c.ID_TOPIC = t.ID_TOPIC
+  AND c.ID_TOPIC = m.ID_TOPIC
+  AND c.ID_MEMBER = mem.ID_MEMBER
+  AND mem.memberName = '" . $context['member']['name'] . "'", __FILE__, __LINE__);
+  $count_c = mysqli_num_rows($request);
 
-$request2 = db_query("SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
-FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
-WHERE c.ID_PICTURE = g.ID_PICTURE
-AND c.ID_MEMBER = " . $context['member']['id'] . "
-AND g.ID_PICTURE = c.ID_PICTURE", __FILE__, __LINE__);
-$count_c_img = mysqli_num_rows($request2);
+  $request2 = db_query("SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
+  FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
+  WHERE c.ID_PICTURE = g.ID_PICTURE
+  AND c.ID_MEMBER = " . $context['member']['id'] . "
+  AND g.ID_PICTURE = c.ID_PICTURE", __FILE__, __LINE__);
+  $count_c_img = mysqli_num_rows($request2);
 
-echo '<div style="float:left;width:757px;">
-<div class="mennes"><div class="botnes"><ul>
+  echo '<div style="float:left;width:757px;">
+  <div class="mennes"><div class="botnes"><ul>
 
-<li>
-<a href="' . $boardurl . '/user-comment/', $context['member']['name'], '" title="Comentarios en posts">Comentarios en posts (' . $count_c . ')</a></li>
-<li>
+  <li>
+  <a href="' . $boardurl . '/user-comment/', $context['member']['name'], '" title="Comentarios en posts">Comentarios en posts (' . $count_c . ')</a></li>
+  <li>
 
-<a href="' . $boardurl . '/user-comment-img/', $context['member']['name'], '" title="Comentarios en im&aacute;genes">Comentarios en im&aacute;genes (' . $count_c_img . ')</a>
-</li>
+  <a href="' . $boardurl . '/user-comment-img/', $context['member']['name'], '" title="Comentarios en im&aacute;genes">Comentarios en im&aacute;genes (' . $count_c_img . ')</a>
+  </li>
 
-</ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>
-<div class="box_757" style="margin-bottom:8px;"><div class="box_title" style="width:755px;"><div class="box_txt box_757-34"><center>Comentarios de <i>', $context['member']['name'], '</i> en im&aacute;genes</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:747px;padding:4px;">
-';
-if($count_c_img <= 0) {
-echo '<div class="noesta">', $context['member']['name'], ' no tiene comentarios en im&aacute;genes hechas.</div>';
-} else {
-$request3 = db_query("
-SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
-FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
-WHERE c.ID_PICTURE = g.ID_PICTURE
-AND c.ID_MEMBER = " . $context['member']['id'] . "
-AND g.ID_PICTURE = c.ID_PICTURE
-ORDER BY c.ID_COMMENT DESC
-LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-while($row = mysqli_fetch_assoc($request3)) {
-echo '<table width="100%"><tr><td valign="top" style="width:16px;"><span class="icons fot2"> </span></td><td><b class="size11"><a title="' . $row['title'] . '" href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" >' . $row['title'] . '</a></b><div class="size11">' . timeformat($row['date']) . ': <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '#cmt_' . $row['ID_COMMENT'] . '" >' . $row['comment'] . '</a></div></td></tr></table>
-';
-}
-$NroRegistros=mysqli_num_rows(db_query("
-SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
-FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
-WHERE c.ID_PICTURE = g.ID_PICTURE
-AND c.ID_MEMBER = " . $context['member']['id'] . "
-AND g.ID_PICTURE = c.ID_PICTURE
-", __FILE__, __LINE__));
+  </ul><div style="clear: both;"></div></div></div><div class="clearBoth"></div>
+  <div class="box_757" style="margin-bottom:8px;"><div class="box_title" style="width:755px;"><div class="box_txt box_757-34"><center>Comentarios de <i>', $context['member']['name'], '</i> en im&aacute;genes</center></div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:747px;padding:4px;">
+  ';
+  if($count_c_img <= 0) {
+  echo '<div class="noesta">', $context['member']['name'], ' no tiene comentarios en im&aacute;genes hechas.</div>';
+  } else {
+  $request3 = db_query("
+  SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
+  FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
+  WHERE c.ID_PICTURE = g.ID_PICTURE
+  AND c.ID_MEMBER = " . $context['member']['id'] . "
+  AND g.ID_PICTURE = c.ID_PICTURE
+  ORDER BY c.ID_COMMENT DESC
+  LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
+  while($row = mysqli_fetch_assoc($request3)) {
+  echo '<table width="100%"><tr><td valign="top" style="width:16px;"><span class="icons fot2"> </span></td><td><b class="size11"><a title="' . $row['title'] . '" href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" >' . $row['title'] . '</a></b><div class="size11">' . timeformat($row['date']) . ': <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '#cmt_' . $row['ID_COMMENT'] . '" >' . $row['comment'] . '</a></div></td></tr></table>
+  ';
+  }
+  $NroRegistros=mysqli_num_rows(db_query("
+  SELECT c.ID_COMMENT, c.ID_PICTURE, c.ID_MEMBER, c.comment, c.date, g.title, g.ID_PICTURE, g.ID_MEMBER
+  FROM ({$db_prefix}gallery_comment AS c, {$db_prefix}gallery_pic AS g)
+  WHERE c.ID_PICTURE = g.ID_PICTURE
+  AND c.ID_MEMBER = " . $context['member']['id'] . "
+  AND g.ID_PICTURE = c.ID_PICTURE
+  ", __FILE__, __LINE__));
 
 
- $PagAnt=$PagAct-1;
- $PagSig=$PagAct+1;
- $PagUlt=$NroRegistros/$RegistrosAMostrar;
- $Res=$NroRegistros%$RegistrosAMostrar;
- if($Res>0) $PagUlt=floor($PagUlt)+1;
-echo '</div><div class="windowbgpag" style="width:757px;">';
-if($PagSig<$PagUlt){ echo '';}
-if($PagAct>1) echo '<a href=\'/user-comment-img/', $context['member']['name'], '/pag-' . $PagAnt . '\'>&#171; anterior</a>';
-if($PagAct<$PagUlt)  echo '<a href=\'/user-comment-img/', $context['member']['name'], '/pag-' . $PagSig . '\'>siguiente &#187;</a>';
-}
-echo '</div><div class="clearBoth"></div><div style="clear: both;"></div></div></div>
+  $PagAnt=$PagAct-1;
+  $PagSig=$PagAct+1;
+  $PagUlt=$NroRegistros/$RegistrosAMostrar;
+  $Res=$NroRegistros%$RegistrosAMostrar;
+  if($Res>0) $PagUlt=floor($PagUlt)+1;
+  echo '</div><div class="windowbgpag" style="width:757px;">';
+  if($PagSig<$PagUlt){ echo '';}
+  if($PagAct>1) echo '<a href=\'/user-comment-img/', $context['member']['name'], '/pag-' . $PagAnt . '\'>&#171; anterior</a>';
+  if($PagAct<$PagUlt)  echo '<a href=\'/user-comment-img/', $context['member']['name'], '/pag-' . $PagSig . '\'>siguiente &#187;</a>';
+  }
+  echo '</div><div class="clearBoth"></div><div style="clear: both;"></div></div></div>
 
-<div style="float:left;width:155px;margin-left:8px;">
-<div class="img_aletat"><div class="box_title" style="width:155px;"><div class="box_txt img_aletat">Publicidad</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:147px;padding:4px;"><center>', $modSettings['vertical'] ,'</center></div></div></div><div style="clear:both"></div>';
-}
-
-function template_buddies()
-{
-  global $db_prefix, $ID_MEMBER, $context, $user_profile, $memberContext, $txt, $settings, $scripturl, $modSettings, $boardurl;
-
-menu2();
-sidebar();
-menu3();
-echo '<div style="float:left;margin-bottom:8px;"><div class="windowbg" style="border:1px solid #D7CFC6;width:523px;padding:8px;font-size:11px;">';
-$RegistrosAMostrar = $modSettings['user_friends'];
-if(isset($_GET['pag'])) {
-$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct = (int) $_GET['pag'];
-} else {
-$RegistrosAEmpezar = 0;
-$PagAct = 1;
-}
-$request2 = db_query("
-SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, lo.ID_MEMBER AS MONLINE, lo.logTime 
-FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}log_online AS lo)
-WHERE b.ID_MEMBER = " . $context['member']['id'] . "
-AND b.BUDDY_ID = mem.ID_MEMBER
-GROUP BY b.BUDDY_ID DESC
-ORDER BY b.time_updated DESC
-LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$count = db_query("
-SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE
-FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}log_online AS o)
-WHERE IFNULL(mem.showOnline, 1) = 1
-AND b.ID_MEMBER = " . $context['member']['id'] . "
-AND b.BUDDY_ID = mem.ID_MEMBER
-GROUP BY b.BUDDY_ID DESC
-ORDER BY b.time_updated DESC", __FILE__, __LINE__);
-if($count <= 0) {
-echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;n amigo a&ntilde;adido.</div>';
-} else {
-echo '<p align="right" style="margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/">' . mysqli_num_rows($count) . ' amigos</a></p><hr />
-';
-
-while($row = mysqli_fetch_assoc($request2)) {
-echo '<table><tbody><tr><td valign="top"><img style="width: 50px; height: 50px;" alt="" src="';
-if(!empty($row['avatar'])) {
-echo $row['avatar'];
-} else {
-echo $boardurl . '/avatar.gif';
-}
-echo '" onerror="error_avatar(this)"></td><td style="margin: 0px; padding: 4px;" valign="top">';
-if($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
-echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas eliminar a este usuario de tus amigos?\')) return false;" href="' . $boardurl . '/amigos-eliminar/', $row['memberName'], '/" title="Eliminar usuario de mi lista de amigos"><img alt="Eliminar usuario de mi lista de amigos" src="', $settings['images_url'], '/eliminar.gif" width="8px" height="8px"></a>&#32;-&#32;';
-}
-echo '<b><span style="font-size: 12px;"><a href="' . $boardurl . '/perfil/', $row['memberName'], '" title="', $row['realName'], '">', $row['realName'], '</a></span></b>';
-if(!empty($row['personalText'])) {
-echo '&#32;-&#32;' . $row['personalText'];
-}
-if($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
-if($row['MONLINE'] == $row['BUDDY_ID'] && $row['MONLINE'] == $row['ID_MIEMBRO']) {
-echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="Conectado/a" title="Conectado/a">';
-} elseif($row['MONLINE'] != $row['BUDDY_ID'] && $row['MONLINE'] != $row['ID_MIEMBRO']) {
-echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="Desconectado/a" title="Desconectado/a">';
-}
-}
-echo '</span><br /><span style="color: green; font-size: 10px;"><b>Es amigo desde:</b> ', timeformat($row['time_updated']), ' </span></td></tr></tbody></table><hr>';
+  <div style="float:left;width:155px;margin-left:8px;">
+  <div class="img_aletat"><div class="box_title" style="width:155px;"><div class="box_txt img_aletat">Publicidad</div><div class="box_rss"><img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width:16px;height:16px;" border="0" /></div></div><div class="windowbg" style="width:147px;padding:4px;"><center>', $modSettings['vertical'] ,'</center></div></div></div><div style="clear:both"></div>';
 }
 
-$NroRegistros = mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b) WHERE b.BUDDY_ID = mem.ID_MEMBER AND b.ID_MEMBER = " . $context['member']['id'] . " ", __FILE__, __LINE__));
-}
- $PagAnt=$PagAct-1;
- $PagSig=$PagAct+1;
- $PagUlt=$NroRegistros/$RegistrosAMostrar;
- $Res=$NroRegistros%$RegistrosAMostrar;
- if($Res>0) $PagUlt=floor($PagUlt)+1;
-
-echo '</div><div class="windowbgpag" style="width:539px;">';
-if($PagSig<$PagUlt){ echo '';}
-if($PagAct>1) echo '<a href=\'/perfil/', $context['member']['name'], '/lista-de-amigos-pag-' . $PagAnt . '\'>&#171; anterior</a>';
-if($PagAct<$PagUlt)  echo '<a href=\'/perfil/', $context['member']['name'], '/lista-de-amigos-pag-' . $PagSig . '\'>siguiente &#187;</a>';
-echo '<div class="clearBoth"></div></div></div>';
-;
-menu4();
-menu5();
-
-}
-
-function template_buddies2()
-{
+function template_buddies() {
   global $db_prefix, $context, $settings, $modSettings, $boardurl;
 
-menu2();
-sidebar();
-menu3();
-echo '<div style="float:left;margin-bottom:8px;"><div class="windowbg" style="border:1px solid #D7CFC6;width:523px;padding:8px;font-size:11px;">';
-$RegistrosAMostrar = $modSettings['user_friends2'];
-if(isset($_GET['pag'])){
-$RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
-$PagAct = (int) $_GET['pag'];
-} else {
-$RegistrosAEmpezar = 0;
-$PagAct = 1;
-}
-$request2 = db_query("
-SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE, b2.BUDDY_ID, b2.ID_MEMBER, mem2.ID_MEMBER
-FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2, {$db_prefix}log_online AS o)
-WHERE b.ID_MEMBER = " . $context['member']['id'] . "
-AND b.BUDDY_ID = b2.BUDDY_ID
-AND mem.ID_MEMBER = b2.BUDDY_ID
-AND b2.ID_MEMBER = " . $context['user']['id'] . "
-AND b2.ID_MEMBER = mem2.ID_MEMBER
-AND mem2.ID_MEMBER = " . $context['user']['id'] . "
-GROUP BY b.BUDDY_ID DESC
-ORDER BY b.time_updated DESC
-LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
-$total = db_query("
-  SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b)
+  menu2();
+  sidebar();
+  menu3();
+  echo '<div style="float:left;margin-bottom:8px;"><div class="windowbg" style="border:1px solid #D7CFC6;width:523px;padding:8px;font-size:11px;">';
+  $RegistrosAMostrar = $modSettings['user_friends'];
+  if(isset($_GET['pag'])) {
+  $RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+  $PagAct = (int) $_GET['pag'];
+  } else {
+  $RegistrosAEmpezar = 0;
+  $PagAct = 1;
+  }
+  $request2 = db_query("
+  SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, lo.ID_MEMBER AS MONLINE, lo.logTime 
+  FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}log_online AS lo)
   WHERE b.ID_MEMBER = " . $context['member']['id'] . "
   AND b.BUDDY_ID = mem.ID_MEMBER
   GROUP BY b.BUDDY_ID DESC
+  ORDER BY b.time_updated DESC
+  LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
+  $count = db_query("
+  SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE
+  FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}log_online AS o)
+  WHERE IFNULL(mem.showOnline, 1) = 1
+  AND b.ID_MEMBER = " . $context['member']['id'] . "
+  AND b.BUDDY_ID = mem.ID_MEMBER
+  GROUP BY b.BUDDY_ID DESC
   ORDER BY b.time_updated DESC", __FILE__, __LINE__);
-$count = mysqli_num_rows($request2);
-$contartotal = mysqli_num_rows($total);
-if($count <= 0) {
-echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;n amigo a&ntilde;adido.</div>';
-} elseif($context['member']['name'] == $context['user']['name']) {
-echo '<b class="size11">Acci&oacute;n no reconocida.-</b><hr/>';
-} else {
-echo '<p style="margin:0px;padding:0px;float:left;width:250px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/amigos-en-comun/">' . $count . ' amigos en com&uacute;n</a></p><p align="right" style="margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/">' . $contartotal . ' amigos</a></p><hr />
-';
+  if($count <= 0) {
+  echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;n amigo a&ntilde;adido.</div>';
+  } else {
+  echo '<p align="right" style="margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/">' . mysqli_num_rows($count) . ' amigos</a></p><hr />
+  ';
 
-while($row = mysqli_fetch_assoc($request2)) {
-echo '<table><tbody><tr><td valign="top"><img style="width: 50px; height: 50px;" alt="" src="';
-if(!empty($row['avatar'])) {
-echo $row['avatar'];
-} else {
-echo $boardurl . '/avatar.gif';
-}
-echo '" onerror="error_avatar(this)"></td><td style="margin: 0px; padding: 4px;" valign="top">';
-if($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
-echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas eliminar a este usuario de tus amigos?\')) return false;" href="' . $boardurl . '/amigos-eliminar/', $row['memberName'], '/" title="Eliminar usuario de mi lista de amigos"><img alt="Eliminar usuario de mi lista de amigos" src="', $settings['images_url'], '/eliminar.gif" width="8px" height="8px"></a>&#32;-&#32;';
-}
-echo '<b><span style="font-size: 12px;"><a href="' . $boardurl . '/perfil/', $row['memberName'], '" title="', $row['realName'], '">', $row['realName'], '</a></span></b>';
-if(!empty($row['personalText'])) {
-echo '&#32;-&#32;' . $row['personalText'];
-}
-if($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
-if($row['MONLINE'] == $row['ID_MIEMBRO']) {
-echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="Conectado/a" title="Conectado/a">';
-} else {
-echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="Desconectado/a" title="Desconectado/a">';
-}
-}
-echo '</span><br /><span style="color: green; font-size: 10px;"><b>Es amigo desde:</b> ', timeformat($row['time_updated']), ' </span></td></tr></tbody></table><hr>';
-}
+  while($row = mysqli_fetch_assoc($request2)) {
+  echo '<table><tbody><tr><td valign="top"><img style="width: 50px; height: 50px;" alt="" src="';
+  if(!empty($row['avatar'])) {
+  echo $row['avatar'];
+  } else {
+  echo $boardurl . '/avatar.gif';
+  }
+  echo '" onerror="error_avatar(this)"></td><td style="margin: 0px; padding: 4px;" valign="top">';
+  if($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
+  echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas eliminar a este usuario de tus amigos?\')) return false;" href="' . $boardurl . '/amigos-eliminar/', $row['memberName'], '/" title="Eliminar usuario de mi lista de amigos"><img alt="Eliminar usuario de mi lista de amigos" src="', $settings['images_url'], '/eliminar.gif" width="8px" height="8px"></a>&#32;-&#32;';
+  }
+  echo '<b><span style="font-size: 12px;"><a href="' . $boardurl . '/perfil/', $row['memberName'], '" title="', $row['realName'], '">', $row['realName'], '</a></span></b>';
+  if(!empty($row['personalText'])) {
+  echo '&#32;-&#32;' . $row['personalText'];
+  }
+  if($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
+  if($row['MONLINE'] == $row['BUDDY_ID'] && $row['MONLINE'] == $row['ID_MIEMBRO']) {
+  echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="Conectado/a" title="Conectado/a">';
+  } elseif($row['MONLINE'] != $row['BUDDY_ID'] && $row['MONLINE'] != $row['ID_MIEMBRO']) {
+  echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="Desconectado/a" title="Desconectado/a">';
+  }
+  }
+  echo '</span><br /><span style="color: green; font-size: 10px;"><b>Es amigo desde:</b> ', timeformat($row['time_updated']), ' </span></td></tr></tbody></table><hr>';
+  }
 
-$NroRegistros = mysqli_num_rows(db_query("SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE, b2.BUDDY_ID, b2.ID_MEMBER, mem2.ID_MEMBER FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2, {$db_prefix}log_online AS o) WHERE b.ID_MEMBER = " . $context['member']['id'] . " AND b.BUDDY_ID = b2.BUDDY_ID AND mem.ID_MEMBER = b2.BUDDY_ID AND b2.ID_MEMBER = " . $context['user']['id'] . " AND b2.ID_MEMBER = mem2.ID_MEMBER AND mem2.ID_MEMBER = " . $context['user']['id'] . " GROUP BY b.BUDDY_ID DESC ", __FILE__, __LINE__));
-}
- $PagAnt=$PagAct-1;
- $PagSig=$PagAct+1;
- $PagUlt=$NroRegistros/$RegistrosAMostrar;
- $Res=$NroRegistros%$RegistrosAMostrar;
- if($Res>0) $PagUlt=floor($PagUlt)+1;
+  $NroRegistros = mysqli_num_rows(db_query("SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b) WHERE b.BUDDY_ID = mem.ID_MEMBER AND b.ID_MEMBER = " . $context['member']['id'] . " ", __FILE__, __LINE__));
+  }
+  $PagAnt=$PagAct-1;
+  $PagSig=$PagAct+1;
+  $PagUlt=$NroRegistros/$RegistrosAMostrar;
+  $Res=$NroRegistros%$RegistrosAMostrar;
+  if($Res>0) $PagUlt=floor($PagUlt)+1;
 
-echo '</div><div class="windowbgpag" style="width:539px;">';
-if($PagSig<$PagUlt){ echo '';}
-if($PagAct>1) echo '<a href=\'/perfil/', $context['member']['name'], '/lista-de-amigos-pag-' . $PagAnt . '\'>&#171; anterior</a>';
-if($PagAct<$PagUlt)  echo '<a href=\'/perfil/', $context['member']['name'], '/lista-de-amigos-pag-' . $PagSig . '\'>siguiente &#187;</a>';
-echo '<div class="clearBoth"></div></div></div>';
-;
-menu4();
-menu5();
+  echo '</div><div class="windowbgpag" style="width:539px;">';
+  if($PagSig<$PagUlt){ echo '';}
+  if($PagAct>1) echo '<a href=\'/perfil/', $context['member']['name'], '/lista-de-amigos-pag-' . $PagAnt . '\'>&#171; anterior</a>';
+  if($PagAct<$PagUlt)  echo '<a href=\'/perfil/', $context['member']['name'], '/lista-de-amigos-pag-' . $PagSig . '\'>siguiente &#187;</a>';
+  echo '<div class="clearBoth"></div></div></div>';
+  ;
+  menu4();
+  menu5();
 
 }
 
-function template_profile_above(){}
+function template_buddies2() {
+  global $db_prefix, $context, $settings, $modSettings, $boardurl;
 
-function template_profile_below(){}
+  menu2();
+  sidebar();
+  menu3();
+  echo '<div style="float:left;margin-bottom:8px;"><div class="windowbg" style="border:1px solid #D7CFC6;width:523px;padding:8px;font-size:11px;">';
+  $RegistrosAMostrar = $modSettings['user_friends2'];
+  if(isset($_GET['pag'])){
+  $RegistrosAEmpezar = ($_GET['pag']-1)*$RegistrosAMostrar;
+  $PagAct = (int) $_GET['pag'];
+  } else {
+  $RegistrosAEmpezar = 0;
+  $PagAct = 1;
+  }
+  $request2 = db_query("
+  SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE, b2.BUDDY_ID, b2.ID_MEMBER, mem2.ID_MEMBER
+  FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2, {$db_prefix}log_online AS o)
+  WHERE b.ID_MEMBER = " . $context['member']['id'] . "
+  AND b.BUDDY_ID = b2.BUDDY_ID
+  AND mem.ID_MEMBER = b2.BUDDY_ID
+  AND b2.ID_MEMBER = " . $context['user']['id'] . "
+  AND b2.ID_MEMBER = mem2.ID_MEMBER
+  AND mem2.ID_MEMBER = " . $context['user']['id'] . "
+  GROUP BY b.BUDDY_ID DESC
+  ORDER BY b.time_updated DESC
+  LIMIT {$RegistrosAEmpezar}, {$RegistrosAMostrar}", __FILE__, __LINE__);
+  $total = db_query("
+    SELECT * FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b)
+    WHERE b.ID_MEMBER = " . $context['member']['id'] . "
+    AND b.BUDDY_ID = mem.ID_MEMBER
+    GROUP BY b.BUDDY_ID DESC
+    ORDER BY b.time_updated DESC", __FILE__, __LINE__);
+  $count = mysqli_num_rows($request2);
+  $contartotal = mysqli_num_rows($total);
+  if($count <= 0) {
+  echo '<div class="noesta">', $context['member']['name'], ' no tiene ning&uacute;n amigo a&ntilde;adido.</div>';
+  } elseif($context['member']['name'] == $context['user']['name']) {
+  echo '<b class="size11">Acci&oacute;n no reconocida.-</b><hr/>';
+  } else {
+  echo '<p style="margin:0px;padding:0px;float:left;width:250px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/amigos-en-comun/">' . $count . ' amigos en com&uacute;n</a></p><p align="right" style="margin:0px;padding:0px;"><a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/">' . $contartotal . ' amigos</a></p><hr />
+  ';
 
-function template_theme(){}
+  while($row = mysqli_fetch_assoc($request2)) {
+  echo '<table><tbody><tr><td valign="top"><img style="width: 50px; height: 50px;" alt="" src="';
+  if(!empty($row['avatar'])) {
+  echo $row['avatar'];
+  } else {
+  echo $boardurl . '/avatar.gif';
+  }
+  echo '" onerror="error_avatar(this)"></td><td style="margin: 0px; padding: 4px;" valign="top">';
+  if($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
+  echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas eliminar a este usuario de tus amigos?\')) return false;" href="' . $boardurl . '/amigos-eliminar/', $row['memberName'], '/" title="Eliminar usuario de mi lista de amigos"><img alt="Eliminar usuario de mi lista de amigos" src="', $settings['images_url'], '/eliminar.gif" width="8px" height="8px"></a>&#32;-&#32;';
+  }
+  echo '<b><span style="font-size: 12px;"><a href="' . $boardurl . '/perfil/', $row['memberName'], '" title="', $row['realName'], '">', $row['realName'], '</a></span></b>';
+  if(!empty($row['personalText'])) {
+  echo '&#32;-&#32;' . $row['personalText'];
+  }
+  if($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
+  if($row['MONLINE'] == $row['ID_MIEMBRO']) {
+  echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="Conectado/a" title="Conectado/a">';
+  } else {
+  echo '&#32;-&#32;<img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="Desconectado/a" title="Desconectado/a">';
+  }
+  }
+  echo '</span><br /><span style="color: green; font-size: 10px;"><b>Es amigo desde:</b> ', timeformat($row['time_updated']), ' </span></td></tr></tbody></table><hr>';
+  }
 
-function template_notification(){}
+  $NroRegistros = mysqli_num_rows(db_query("SELECT mem.ID_MEMBER AS ID_MIEMBRO, mem.realName, mem.memberName, mem.showOnline, mem.avatar, mem.personalText, b.ID_MEMBER, b.time_updated, b.BUDDY_ID, o.ID_MEMBER AS MONLINE, b2.BUDDY_ID, b2.ID_MEMBER, mem2.ID_MEMBER FROM ({$db_prefix}members AS mem, {$db_prefix}buddies AS b, {$db_prefix}members AS mem2, {$db_prefix}buddies AS b2, {$db_prefix}log_online AS o) WHERE b.ID_MEMBER = " . $context['member']['id'] . " AND b.BUDDY_ID = b2.BUDDY_ID AND mem.ID_MEMBER = b2.BUDDY_ID AND b2.ID_MEMBER = " . $context['user']['id'] . " AND b2.ID_MEMBER = mem2.ID_MEMBER AND mem2.ID_MEMBER = " . $context['user']['id'] . " GROUP BY b.BUDDY_ID DESC ", __FILE__, __LINE__));
+  }
+  $PagAnt=$PagAct-1;
+  $PagSig=$PagAct+1;
+  $PagUlt=$NroRegistros/$RegistrosAMostrar;
+  $Res=$NroRegistros%$RegistrosAMostrar;
+  if($Res>0) $PagUlt=floor($PagUlt)+1;
 
-function template_pmprefs(){}
+  echo '</div><div class="windowbgpag" style="width:539px;">';
+  if($PagSig<$PagUlt){ echo '';}
+  if($PagAct>1) echo '<a href=\'/perfil/', $context['member']['name'], '/lista-de-amigos-pag-' . $PagAnt . '\'>&#171; anterior</a>';
+  if($PagAct<$PagUlt)  echo '<a href=\'/perfil/', $context['member']['name'], '/lista-de-amigos-pag-' . $PagSig . '\'>siguiente &#187;</a>';
+  echo '<div class="clearBoth"></div></div></div>';
+  ;
+  menu4();
+  menu5();
 
+}
 
-function template_showPermissions(){}
-function template_statPanel(){}
+function template_profile_above() {}
+
+function template_profile_below() {}
+
+function template_theme() {}
+
+function template_notification() {}
+
+function template_pmprefs() {}
+
+function template_showPermissions() {}
+
+function template_statPanel() {}
 ?>

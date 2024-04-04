@@ -1,7 +1,7 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
-$user = htmlentities(addslashes($_REQUEST['user']));
+$user = htmlentities(addslashes($_REQUEST['user']), ENT_QUOTES, 'UTF-8');
 
 $end = 10;
 $page = (int) $_GET['pag'];

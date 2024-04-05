@@ -3878,7 +3878,7 @@ function template_comentarios() {
     }
 
     $request = db_query($query, __FILE__, __LINE__);
-    $records = mysqli_num_rows($request, __FILE__, __LINE__));
+    $records = mysqli_num_rows($request);
   }
 
   $previousPage = $actualPage - 1;
@@ -4326,7 +4326,7 @@ function template_buddies2() {
     }
 
     $request = db_query($query, __FILE__, __LINE__);
-    $records = mysqli_num_rows($query);
+    $records = mysqli_num_rows($request);
   }
 
   $previousPage = $actualPage - 1;

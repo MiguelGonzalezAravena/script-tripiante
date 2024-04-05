@@ -369,8 +369,10 @@ function menu2() {
 function sidebar() {
   global $context, $settings, $db_prefix, $boardurl;
 
+  $memberName = censorText($context['member']['name']);
+
   if ($context['member']['sidebar'] == 'si') {
-    if ($context['member']['name'] != $context['user']['name']) {
+    if ($memberName != $context['user']['name']) {
       // Amigos en común
       // TO-DO: Revisar esta consulta
       $request = db_query("
@@ -401,12 +403,12 @@ function sidebar() {
               <div class="windowbg" style="width: 152px; padding: 4px;">
                 <div style="float: left; font-size: 10px;">
                   <p style="margin: 0px; padding: 0px;">
-                    <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/amigos-en-comun/" title="' . $count1 . ' amigos en com&uacute;n">' . $count1 . ' amigos en com&uacute;n</a>
+                    <a href="' . $boardurl . '/perfil/' . $memberName . '/amigos-en-comun/" title="' . $count1 . ' amigos en com&uacute;n">' . $count1 . ' amigos en com&uacute;n</a>
                   </p>
                 </div>
                 <div style="font-size: 10px;">
                   <p align="right" style="margin: 0px; padding: 0px;">
-                    <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/" title="Ver todos">Ver todos</a>
+                    <a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos/" title="Ver todos">Ver todos</a>
                   </p>
                 </div>
                 <hr />
@@ -420,7 +422,7 @@ function sidebar() {
         foreach ($context['member']['buddies_data2'] as $buddy_id => $data) {
           echo '
             <td align="center" style="font-size: 11px; font-family: arial; margin: 0px; padding: 0px;">
-              <a href="' . $boardurl . '/perfil/', $data['memberName'], '" title="', $data['realName'], '" style="text-decoration: none;">
+              <a href="' . $boardurl . '/perfil/' . $data['memberName'] . '" title="' . $data['realName'] . '" style="text-decoration: none;">
                 <img style="width: 40px; height: 40px;" alt="" src="' . (!empty($data['avatar']) ? $data['avatar'] : $boardurl . '/avatar.gif') . '" onerror="error_avatar(this)" />
                 <br />
                 ' . reducir_amigos($data['realName']) . '
@@ -473,12 +475,12 @@ function sidebar() {
             <div class="windowbg" style="width: 152px; padding: 4px;">
               <div style="float: left; font-size: 10px;">
                 <p style="margin: 0px; padding: 0px;">
-                  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/" title="' . $count3 . ' amigos">' . $count3 . ' amigos</a>
+                  <a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos/" title="' . $count3 . ' amigos">' . $count3 . ' amigos</a>
                 </p>
               </div>
               <div style="font-size: 10px;">
                 <p align="right" style="margin: 0px; padding: 0px;">
-                  <a href="' . $boardurl . '/perfil/', $context['member']['name'], '/lista-de-amigos/" title="Ver todos">Ver todos</a>
+                  <a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos/" title="Ver todos">Ver todos</a>
                 </p>
               </div>
               <hr />
@@ -492,7 +494,7 @@ function sidebar() {
       foreach ($context['member']['buddies_data'] as $buddy_id => $data) {
         echo '
           <td align="center" style="font-size: 11px; font-family: arial; margin: 0px; padding: 0px;">
-            <a href="' . $boardurl . '/perfil/', $data['memberName'], '" title="', $data['realName'], '" style="text-decoration: none;">
+            <a href="' . $boardurl . '/perfil/' . $data['memberName'] . '" title="' . $data['realName'] . '" style="text-decoration: none;">
               <img style="width: 40px; height: 40px;" alt="" src="' . (!empty($data['avatar']) ? $data['avatar'] : $boardurl . '/avatar.gif') . '" onerror="error_avatar(this)" />
               <br />
               ' . reducir_amigos($data['realName']) . '
@@ -525,6 +527,7 @@ function menu3() {
 
   // Conteo de comentarios
   $iduser = $context['member']['id'];
+  $memberName = censorText($context['member']['name']);
 
   $request = db_query("
     SELECT *
@@ -536,7 +539,7 @@ function menu3() {
     SELECT c.ID_COMMENT, c.ID_MEMBER, m.ID_MEMBER, m.memberName
     FROM {$db_prefix}gallery_comment AS c, {$db_prefix}members AS m
     WHERE c.ID_MEMBER = m.ID_MEMBER
-    AND m.memberName = '{$context['member']['name']}'", __FILE__, __LINE__);
+    AND m.memberName = '{$memberName}'", __FILE__, __LINE__);
 
   $context['comentuser'] = mysqli_num_rows($request);
   $context['comentimguser'] = mysqli_num_rows($request2);
@@ -570,16 +573,16 @@ function menu3() {
         </div>
         <div class="windowbg" style="width: 152px; padding: 4px;">
           <p class="datosp">Post:</p>
-          <a href="' . $boardurl . '/user-post/' . $context['member']['name'] . '">' . $context['member']['posts'] . '</a>
+          <a href="' . $boardurl . '/user-post/' . $memberName . '">' . $context['member']['posts'] . '</a>
           <br /><br />
           <p class="datosp">Mensajes en su muro:</p>
           <span id="cantmuro">' . $context['muromsg'] . '</span>
           <br /><br />
           <p class="datosp">Comentarios:</p>
-          <a href="' . $boardurl . '/user-comment/' . $context['member']['name'] . '">' . ($context['comentuser'] + $context['comentimguser']) . '</a>
+          <a href="' . $boardurl . '/user-comment/' . $memberName . '">' . ($context['comentuser'] + $context['comentimguser']) . '</a>
           <br /><br />
           <p class="datosp">Im&aacute;genes:</p>
-          <a href="' . $boardurl . '/imagenes/' . $context['member']['name'] . '">' . $context['imguser'] . '</a>
+          <a href="' . $boardurl . '/imagenes/' . $memberName . '">' . $context['imguser'] . '</a>
           <br /><br />
           <p class="datosp">Puntos:</p>
           ' . $context['member']['moneyBank'] . '
@@ -590,6 +593,8 @@ function menu3() {
 
 function menu4() {
   global $context, $settings, $db_prefix, $boardurl, $modSettings;
+
+  $memberName = censorText($context['member']['name']);
 
   echo '
     <div style="float: left; margin-bottom: 8px; margin-left: 8px;">
@@ -616,7 +621,7 @@ function menu4() {
   $count = mysqli_num_rows($request);
 
   if ($count == 0) {
-    echo '<div class="noesta">' . $context['member']['name'] . ' no tiene ning&uacute;n post hecho.-</div>';
+    echo '<div class="noesta">' . $memberName . ' no tiene ning&uacute;n post hecho.-</div>';
   } else {
     $context['posts'] = array();
 
@@ -636,7 +641,7 @@ function menu4() {
           <tr>
             <td width="100%">
               <div class="box_icono4">
-                <img alt="" title="' . $post['name'] . '" src="' . $settings['images_url'] . '/post/icono_', $post['ID_BOARD'], '.gif" />
+                <img alt="" title="' . $post['name'] . '" src="' . $settings['images_url'] . '/post/icono_' . $post['ID_BOARD'] . '.gif" />
               </div>
               <a href="' . $boardurl . '/post/' . $post['ID_TOPIC'] . '/' . $post['description'] . '/' . ssi_amigable($post['subject']) . '.html">' . ssi_reducir2(htmlentities($post['subject'], ENT_QUOTES, 'UTF-8')) . '</a>
             </td>
@@ -648,7 +653,7 @@ function menu4() {
       <br />
       <span style="font-size: 9px;">
         <center>
-          <a href="' . $boardurl . '/user-post/' . $context['member']['name'] . '">ver m&aacute;s</a>
+          <a href="' . $boardurl . '/user-post/' . $memberName . '">ver m&aacute;s</a>
         </center>
       </span>';
   }
@@ -830,6 +835,7 @@ function template_perfil() {
       <td>
         <select tabindex="1" name="bday2" id="bday2" autocomplete="off">
           <option value="' . $context['member']['birth_date']['day'] . '">D&iacute;a:</option>';
+
   for ($i = 1; $i < 32; $i++) {
     echo '<option value="' . $i . '"' . ($context['member']['birth_date']['day'] == $i ? ' selected="selected"' : '') . '>' . $i . '</option>';
   }
@@ -889,7 +895,7 @@ function template_perfil() {
     2 => 'Amigos',
     3 => 'Registrados'
   ];
- 
+
   echo '
         </select>
       </td>
@@ -903,6 +909,7 @@ function template_perfil() {
           <option value="' . $context['member']['title'] . '">Pa&iacute;s</option>';
 
   $countries_keys = array_keys($countries);
+
   for ($i = 0; $i < count($countries_keys); $i++) {
     $value = $countries_keys[$i];
     echo '<option value="' . $value . '"' . ($context['member']['title'] == $value ? ' selected="selected"' : '') . '>' . $countries[ $value ] . '</option>';
@@ -939,6 +946,7 @@ function template_perfil() {
                 <select name="quienve" id="quienve" size="1">';
 
   $privacy_keys = array_keys($privacy);
+
   for ($i = 0; $i < count($privacy_keys); $i++) {
     $value = $privacy_keys[$i];
     echo '<option value="' . $value . '"' . ($context['member']['quienve'] == $value ? ' selected="selected"' : '') . '>' . $privacy[ $value ] . '</option>';
@@ -1029,7 +1037,7 @@ function template_perfil() {
                 <div class="smalltext">(msn, gtalk, yahoo)</div>
               </td>
               <td>
-                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="MSN" value="', $context['member']['MSN'], '" size="30" />
+                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="MSN" value="' . $context['member']['MSN'] . '" size="30" />
               </td>
             </tr>
             <tr>
@@ -1038,7 +1046,7 @@ function template_perfil() {
                 <div class="smalltext">(debe ser una URL completa)</div>
               </td>
               <td>
-                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="websiteTitle" size="30" value="', $context['member']['websiteTitle'], '" />
+                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="websiteTitle" size="30" value="' . $context['member']['websiteTitle'] . '" />
               </td>
             </tr>
             <tr>
@@ -1047,12 +1055,12 @@ function template_perfil() {
                 <div class="smalltext">Debe ser una direcci&oacute;n v&aacute;lida de email.</div>
               </td>
               <td>
-                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="emailAddress" size="30" value="', $context['member']['emailAddress'], '" />
+                <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="emailAddress" size="30" value="' . $context['member']['emailAddress'] . '" />
               </td>
             </tr>
             <tr>
               <td width="40%">
-                <b class="size11"', (isset($context['modify_error']['bad_new_password']) ? ' style="color: red;"' : ''), '>Escoge contrase&ntilde;a:&nbsp;</b>
+                <b class="size11"' . (isset($context['modify_error']['bad_new_password']) ? ' style="color: red;"' : '') . '>Escoge contrase&ntilde;a:&nbsp;</b>
                 <div class="smalltext">Te sugerimos que utilices 6 o m&aacute;s caracteres combinando n&uacute;meros y letras.</div>
               </td>
               <td>
@@ -1071,9 +1079,9 @@ function template_perfil() {
               <td align="center" colspan="2">
                 <br /><br />
                 <input class="login" type="submit" value="Modificar mi perfil" />
-                <input type="hidden" name="sc" value="', $context['session_id'], '" />
-                <input type="hidden" name="userID" value="', $context['member']['id'], '" />
-                <input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
+                <input type="hidden" name="sc" value="' . $context['session_id'] . '" />
+                <input type="hidden" name="userID" value="' . $context['member']['id'] . '" />
+                <input type="hidden" name="sa" value="' . $context['menu_item_selected'] . '" />
               </td>
             </tr>
           </table>
@@ -1147,7 +1155,7 @@ function template_avatar() {
               <tr valign="top">
                 <td width="130px" valign="top">
                   <div class="fondoavatar" style="overflow: auto; width: 130px;" align="right">
-                    <img alt="" src="', $context['member']['avatar']['name'], '" width="120" weight="120" align="left" vspace="4" hspace="4" id="miAvatar" onerror="error_avatar(this)" />
+                    <img alt="" src="' . $context['member']['avatar']['name'] . '" width="120" weight="120" align="left" vspace="4" hspace="4" id="miAvatar" onerror="error_avatar(this)" />
                   </div>
                 </td>
                 <td width="640px" valign="top">
@@ -1158,7 +1166,7 @@ function template_avatar() {
                     Ejemplo:&nbsp;
                     <b>' . $boardurl . '/avatar.gif</b>
                     <br /><br />
-                    <input type="text" onfocus="foco(this);" onblur="no_foco(this);" size="64" maxlength="255" name="avatar" id="avatar" value="', $context['member']['avatar']['name'], '" />
+                    <input type="text" onfocus="foco(this);" onblur="no_foco(this);" size="64" maxlength="255" name="avatar" id="avatar" value="' . $context['member']['avatar']['name'] . '" />
                     <input type="button" class="login" value="Previsualizar" onclick="load_new_avatar()" />
                     <br />
                     <label id="errorss"></label>
@@ -1178,9 +1186,9 @@ function template_avatar() {
                   <b class="size11" style="color: red;">* Si el avatar contiene pornograf&iacute;a, es morboso. Se borrar&aacute;.</b>
                   <br />
                   <input onclick="return errorrojos(this.form.avatar.value); this.form.submit()" type="submit" class="button" style="font-size: 15px" value="Modificar mi perfil" title="Modificar mi perfil" />
-                  <input type="hidden" name="sc" value="', $context['session_id'], '" />
-                  <input type="hidden" name="userID" value="', $context['member']['id'], '" />
-                  <input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
+                  <input type="hidden" name="sc" value="' . $context['session_id'] . '" />
+                  <input type="hidden" name="userID" value="' . $context['member']['id'] . '" />
+                  <input type="hidden" name="sa" value="' . $context['menu_item_selected'] . '" />
                 </td>
               </tr>
             </table>
@@ -1502,9 +1510,9 @@ function template_paso2() {
               <tr>
                 <td colspan="3" align="center">
                   <input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" />
-                  <input type="hidden" name="sc" value="', $context['session_id'], '" />
-                  <input type="hidden" name="userID" value="', $context['member']['id'], '" />
-                  <input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
+                  <input type="hidden" name="sc" value="' . $context['session_id'] . '" />
+                  <input type="hidden" name="userID" value="' . $context['member']['id'] . '" />
+                  <input type="hidden" name="sa" value="' . $context['menu_item_selected'] . '" />
                 </td>
               </tr>
             </tbody>
@@ -1722,9 +1730,9 @@ function template_paso3() {
               <tr>
                 <td colspan="3" align="center">
                   <input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" />
-                  <input type="hidden" name="sc" value="', $context['session_id'], '" />
-                  <input type="hidden" name="userID" value="', $context['member']['id'], '" />
-                  <input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
+                  <input type="hidden" name="sc" value="' . $context['session_id'] . '" />
+                  <input type="hidden" name="userID" value="' . $context['member']['id'] . '" />
+                  <input type="hidden" name="sa" value="' . $context['menu_item_selected'] . '" />
                 </td>
               </tr>
             </tbody>
@@ -1759,7 +1767,7 @@ function template_paso4() {
                   <b>Mis intereses:</b>
                 </td>
                 <td width="40%">
-                  <textarea style="width:235px;height:102px;" name="mis_intereses" cols="30" rows="5" id="mis_intereses">', $context['member']['mis_intereses'], '</textarea>
+                  <textarea style="width:235px;height:102px;" name="mis_intereses" cols="30" rows="5" id="mis_intereses">' . $context['member']['mis_intereses'] . '</textarea>
                 </td>
               </tr>
               <tr>
@@ -1767,7 +1775,7 @@ function template_paso4() {
                   <b>Hobbies:</b>
                 </td>
                 <td>
-                  <textarea style="width: 235px; height: 102px;" name="hobbies" cols="30" rows="5" id="hobbies">', $context['member']['hobbies'], '</textarea>
+                  <textarea style="width: 235px; height: 102px;" name="hobbies" cols="30" rows="5" id="hobbies">' . $context['member']['hobbies'] . '</textarea>
                 </td>
               </tr>
               <tr>
@@ -1775,7 +1783,7 @@ function template_paso4() {
                   <b>Series de Tv favoritas:</b>
                 </td>
                 <td>
-                  <textarea style="width: 235px; height: 102px;" name="series_tv_favoritas" cols="30" rows="5" id="series_tv_favoritas">', $context['member']['series_tv_favoritas'], '</textarea>
+                  <textarea style="width: 235px; height: 102px;" name="series_tv_favoritas" cols="30" rows="5" id="series_tv_favoritas">' . $context['member']['series_tv_favoritas'] . '</textarea>
                 </td>
               </tr>
               <tr>
@@ -1783,7 +1791,7 @@ function template_paso4() {
                   <b>M&uacute;sica favorita:</b>
                 </td>
                 <td width="40%">
-                  <textarea style="width: 235px; height: 102px;" name="musica_favorita" cols="30" rows="5" id="musica_favorita">', $context['member']['musica_favorita'], '</textarea>
+                  <textarea style="width: 235px; height: 102px;" name="musica_favorita" cols="30" rows="5" id="musica_favorita">' . $context['member']['musica_favorita'] . '</textarea>
                 </td>
               </tr>
               <tr>
@@ -1791,7 +1799,7 @@ function template_paso4() {
                   <b>Deportes y equipos favoritos:</b>
                 </td>
                 <td>
-                  <textarea style="width: 235px; height: 102px;" name="deportes_y_equipos_favoritos" cols="30" rows="5" id="deportes_y_equipos_favoritos">', $context['member']['deportes_y_equipos_favoritos'], '</textarea>
+                  <textarea style="width: 235px; height: 102px;" name="deportes_y_equipos_favoritos" cols="30" rows="5" id="deportes_y_equipos_favoritos">' . $context['member']['deportes_y_equipos_favoritos'] . '</textarea>
                 </td>
               </tr>
               <tr>
@@ -1799,7 +1807,7 @@ function template_paso4() {
                   <b>Libros Favoritos:</b>
                 </td>
                 <td>
-                  <textarea style="width: 235px; height: 102px;" name="libros_favoritos" cols="30" rows="5" id="libros_favoritos">', $context['member']['libros_favoritos'], '</textarea>
+                  <textarea style="width: 235px; height: 102px;" name="libros_favoritos" cols="30" rows="5" id="libros_favoritos">' . $context['member']['libros_favoritos'] . '</textarea>
                 </td>
               </tr>
               <tr>
@@ -1807,7 +1815,7 @@ function template_paso4() {
                   <b>Pel&iacute;culas favoritas:</b>
                 </td>
                 <td width="40%">
-                  <textarea style="width: 235px; height: 102px;" name="peliculas_favoritas" cols="30" rows="5" id="peliculas_favoritas">', $context['member']['peliculas_favoritas'], '</textarea>
+                  <textarea style="width: 235px; height: 102px;" name="peliculas_favoritas" cols="30" rows="5" id="peliculas_favoritas">' . $context['member']['peliculas_favoritas'] . '</textarea>
                 </td>
               </tr>
               <tr>
@@ -1815,7 +1823,7 @@ function template_paso4() {
                   <b>Comida favor&iacute;ta:</b>
                 </td>
                 <td>
-                  <textarea style="width: 235px; height: 102px;" name="comida_favorita" cols="30" rows="5" id="comida_favorita">', $context['member']['comida_favorita'], '</textarea>
+                  <textarea style="width: 235px; height: 102px;" name="comida_favorita" cols="30" rows="5" id="comida_favorita">' . $context['member']['comida_favorita'] . '</textarea>
                 </td>
               </tr>
               <tr>
@@ -1823,7 +1831,7 @@ function template_paso4() {
                   <b>Mis h&eacute;roes son:</b>
                 </td>
                 <td>
-                  <textarea style="width: 235px; height: 102px;" name="mis_heroes_son" cols="30" rows="5" id="mis_heroes_son">', $context['member']['mis_heroes_son'], '</textarea>
+                  <textarea style="width: 235px; height: 102px;" name="mis_heroes_son" cols="30" rows="5" id="mis_heroes_son">' . $context['member']['mis_heroes_son'] . '</textarea>
                 </td>
               </tr>
               <tr>
@@ -1835,9 +1843,9 @@ function template_paso4() {
               <tr>
                 <td colspan="3" align="center">
                   <input class="button" style="font-size: 15px;" value="Modificar mi apariencia" title="Modificar mi apariencia" type="submit" />
-                  <input type="hidden" name="sc" value="', $context['session_id'], '" />
-                  <input type="hidden" name="userID" value="', $context['member']['id'], '" />
-                  <input type="hidden" name="sa" value="', $context['menu_item_selected'], '" />
+                  <input type="hidden" name="sc" value="' . $context['session_id'] . '" />
+                  <input type="hidden" name="userID" value="' . $context['member']['id'] . '" />
+                  <input type="hidden" name="sa" value="' . $context['menu_item_selected'] . '" />
                 </td>
               </tr>
             </tbody>
@@ -2057,12 +2065,12 @@ function template_misnotas() {
         echo '
           <tr>
             <td style="text-align: left;">
-              <a title="', parse_bbc(strip_tags($row['subject'])), '" href="' . $boardurl . '/mis-notas/ver-', $row['id_note'], '/">', parse_bbc(strip_tags($row['subject'])), '</a>
+              <a title="', parse_bbc(strip_tags($row['subject'])), '" href="' . $boardurl . '/mis-notas/ver-' . $row['id_note'] . '/">', parse_bbc(strip_tags($row['subject'])), '</a>
             </td>
             <td title="', timeformat($row['posterTime']), '">', timeformat($row['posterTime']), '</td>
             <td>
-              <a title="Eliminar nota" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta nota?\')) return false;" href="' . $boardurl . '/mis-notas/eliminar-', $row['id_note'], '">
-                <img alt="Eliminar nota" title="Eliminar nota" style="width:16px;height:16px;" src="', $settings['images_url'], '/icons/eliminar-notas.gif" />
+              <a title="Eliminar nota" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta nota?\')) return false;" href="' . $boardurl . '/mis-notas/eliminar-' . $row['id_note'] . '">
+                <img alt="Eliminar nota" title="Eliminar nota" style="width:16px;height:16px;" src="' . $settings['images_url'] . '/icons/eliminar-notas.gif" />
               </a>
             </td>
           </tr>';
@@ -2158,21 +2166,21 @@ function template_summary() {
         <div class="botnes">
           <ul>
             <li>
-              <a href="' . $boardurl . '/perfil/', $memberName, '/muro/" title="Muro" alt="Muro">
+              <a href="' . $boardurl . '/perfil/' . $memberName . '/muro/" title="Muro" alt="Muro">
                 <img src="' . $settings['images_url'] . '/icons/muro.gif" alt="Muro" title="Muro" />
                 &nbsp;
                 Muro
               </a>
             </li>
             <li>
-              <a href="' . $boardurl . '/perfil/', $memberName, '/apariencia/" title="Apariencia" alt="Apariencia">
+              <a href="' . $boardurl . '/perfil/' . $memberName . '/apariencia/" title="Apariencia" alt="Apariencia">
                 <img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia"/>
                 &nbsp;
                 Apariencia
               </a>
             </li>
             <li>
-              <a href="' . $boardurl . '/perfil/', $memberName, '/comunidades/" title="Comunidades" alt="Comunidades">
+              <a href="' . $boardurl . '/perfil/' . $memberName . '/comunidades/" title="Comunidades" alt="Comunidades">
                 <img src="' . $settings['images_url'] . '/comunidades/comunidad.png" alt="Comunidades" title="Comunidades" />
                 &nbsp;
                 Comunidades
@@ -2265,7 +2273,7 @@ function template_summary() {
           <textarea title="Escribe algo..." onfocus="if(this.value==\'Escribe algo...\') this.value=\'\';foco(this);" onblur="if(this.value==\'\') this.value=\'Escribe algo...\';no_foco(this);" style="height: 30px; overflow: visible; width: 463px; font-size: 11px; font-family: Arial, FreeSans;" name="muro" id="muro">Escribe algo...</textarea>
         </div>
         <div style="padding-top: 1px;">
-          <input class="login" style="padding: 0px; margin: 0px; font-size: 11px; width: 53px;" value="Publicar" onclick="add_muro(\'', $context['member']['id'], '\'); return false;" type="button" id="button_add_muro" />
+          <input class="login" style="padding: 0px; margin: 0px; font-size: 11px; width: 53px;" value="Publicar" onclick="add_muro(\'' . $context['member']['id'] . '\'); return false;" type="button" id="button_add_muro" />
           <img alt="" src="' . $settings['images_url'] . '/icons/cargando.gif" style="width: 16px; height: 16px; display: none;" id="gif_cargando_add_muro" border="0">
         </div>
       </div>
@@ -2554,7 +2562,10 @@ function template_editBuddies() {
     <table border="0" width="85%" cellspacing="1" cellpadding="4" class="bordercolor" align="center">
       <tr class="titlebg">
         <td colspan="8" height="26">
-          &nbsp;<img src="', $settings['images_url'], '/icons/profile_sm.gif" alt="" align="top" />&nbsp;', $txt['editBuddies'], '
+          &nbsp;
+          <img src="' . $settings['images_url'] . '/icons/profile_sm.gif" alt="" align="top" />
+          &nbsp;
+          ', $txt['editBuddies'], '
         </td>
       </tr>
       <tr class="catbg3">
@@ -3677,14 +3688,14 @@ function template_post() {
   $count = mysqli_num_rows($request2);
 
   if ($count <= 0) {
-    echo '<div class="noesta" style="width: 922px;">', $memberName, ' no tiene posts hechos.</div>';
+    echo '<div class="noesta" style="width: 922px;">' . $memberName . ' no tiene posts hechos.</div>';
   } else {
     echo '
       <div style="float: left; width: 757px;">
         <table class="linksList" style="width: 757px;">
           <thead align="center">
             <th>&nbsp;</th>
-            <th style="text-align:left;">Posts de <i>', $memberName, '</th>
+            <th style="text-align:left;">Posts de <i>' . $memberName . '</th>
             <th>Fecha</th>
             <th>Puntos</th>
             <th>Enviar</th>
@@ -3730,11 +3741,11 @@ function template_post() {
       <div class="windowbgpag" style="width: 757px;">';
 
     if ($actualPage > 1) {
-      echo '<a href="' . $boardurl . '/user-post/', $memberName, '/pag-' . $previousPage . '">&#171; anterior</a>';
+      echo '<a href="' . $boardurl . '/user-post/' . $memberName . '/pag-' . $previousPage . '">&#171; anterior</a>';
     }
 
     if ($actualPage < $lastPage) {
-      echo '<a href="' . $boardurl . '/user-post/', $memberName, '/pag-' . $nextPage . '">siguiente &#187;</a>';
+      echo '<a href="' . $boardurl . '/user-post/' . $memberName . '/pag-' . $nextPage . '">siguiente &#187;</a>';
     }
 
     echo '
@@ -3763,7 +3774,7 @@ function template_post() {
 function template_comentarios() {
   global $settings, $db_prefix, $context, $modSettings, $boardurl;
 
-  $memberName = $context['member']['name'];
+  $memberName = censorText($context['member']['name']);
 
   $request = db_query("
     SELECT c.ID_COMMENT, c.ID_MEMBER, c.ID_TOPIC, mem.ID_MEMBER, m.ID_TOPIC, m.posterName, mem.memberName, t.ID_TOPIC, t.ID_MEMBER_STARTED, mem.realName
@@ -3884,11 +3895,11 @@ function template_comentarios() {
     <div class="windowbgpag" style="width: 757px;">';
 
   if ($actualPage > 1) {
-    echo '<a href="' . $boardurl . '/user-comment/', $context['member']['name'], '/pag-' . $previousPage . '">&#171; anterior</a>';
+    echo '<a href="' . $boardurl . '/user-comment/' . $memberName . '/pag-' . $previousPage . '">&#171; anterior</a>';
   }
 
   if ($actualPage < $lastPage) {
-    echo '<a href="' . $boardurl . '/user-comment/', $context['member']['name'], '/pag-' . $nextPage . '">siguiente &#187;</a>';
+    echo '<a href="' . $boardurl . '/user-comment/' . $memberName . '/pag-' . $nextPage . '">siguiente &#187;</a>';
   }
 
   echo '
@@ -3916,7 +3927,7 @@ function template_comentarios() {
 function template_comentariosimg() {
   global $settings, $db_prefix, $context, $modSettings, $boardurl;
 
-  $memberName = $context['member']['name'];
+  $memberName = censorText($context['member']['name']);
 
   $request = db_query("
     SELECT c.ID_COMMENT, c.ID_MEMBER, c.ID_TOPIC, mem.ID_MEMBER, m.ID_TOPIC, m.posterName, mem.memberName, t.ID_TOPIC, t.ID_MEMBER_STARTED
@@ -4070,7 +4081,7 @@ function template_buddies() {
     <div style="float: left; margin-bottom: 8px;">
       <div class="windowbg" style="border: 1px solid #D7CFC6; width: 523px; padding: 8px; font-size: 11px;">';
 
-  $memberName = $context['member']['name'];
+  $memberName = censorText($context['member']['name']);
   $end = $modSettings['user_friends'];
   $page = (int) $_GET['pag'];
 
@@ -4182,11 +4193,11 @@ function template_buddies() {
     <div class="windowbgpag" style="width: 539px;">';
 
   if ($actualPage > 1) {
-    echo '<a href="' . $boardurl . '/perfil/', $memberName, '/lista-de-amigos-pag-' . $previousPage . '">&#171; anterior</a>';
+    echo '<a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos-pag-' . $previousPage . '">&#171; anterior</a>';
   }
 
   if ($actualPage < $lastPage) {
-    echo '<a href="' . $boardurl . '/perfil/', $memberName, '/lista-de-amigos-pag-' . $nextPage . '">siguiente &#187;</a>';
+    echo '<a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos-pag-' . $nextPage . '">siguiente &#187;</a>';
   }
 
     echo '
@@ -4198,7 +4209,6 @@ function template_buddies() {
   menu5();
 }
 
-// Pendiente
 function template_buddies2() {
   global $db_prefix, $context, $settings, $modSettings, $boardurl;
 
@@ -4333,11 +4343,11 @@ function template_buddies2() {
     <div class="windowbgpag" style="width: 539px;">';
 
   if ($actualPage > 1) {
-    echo '<a href="' . $boardurl . '/perfil/', $memberName, '/lista-de-amigos-pag-' . $previousPage . '">&#171; anterior</a>';
+    echo '<a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos-pag-' . $previousPage . '">&#171; anterior</a>';
   }
 
   if ($actualPage < $lastPage) {
-    echo '<a href="' . $boardurl . '/perfil/', $memberName, '/lista-de-amigos-pag-' . $nextPage . '">siguiente &#187;</a>';
+    echo '<a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos-pag-' . $nextPage . '">siguiente &#187;</a>';
   }
 
   echo '

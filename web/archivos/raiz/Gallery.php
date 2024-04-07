@@ -2,7 +2,6 @@
 if (!defined('SMF'))
   die('Hacking attempt...');
 
-// Pendiente
 function GalleryMain() {
   loadtemplate('Gallery');
 
@@ -47,8 +46,9 @@ function ViewPicture() {
 
   $id = (int) $_REQUEST['id'];
 
-  if($id == '')
+  if ($id == '') {
     fatal_error($txt['gallery_error_no_pic_selected']);
+  }
 
   $context['gallery_pic_id'] = $id;
 
@@ -156,8 +156,9 @@ function ViewPicture() {
   // Get the picture ID
   $id = (int) $_REQUEST['id'];
 
-  if($id == '')
+  if ($id == '') {
     fatal_error($txt['gallery_error_no_pic_selected']);
+  }
 
   $dbresult = db_query("
     SELECT p.ID_PICTURE, p.width, p.height, p.allowcomments, p.ID_CAT, p.keywords, p.commenttotal, p.filesize, p.filename, p.views, p.points, p.title, p.ID_MEMBER, m.memberName, m.realName, m.estado_icon, p.date, p.description
@@ -196,7 +197,7 @@ function ViewPicture() {
   if (!empty($modSettings['gallery_who_viewing'])) {
     $context['can_moderate_forum'] = allowedTo('moderate_forum');
 
-    if(function_exists('parse_bbc')) {
+    if (function_exists('parse_bbc')) {
       // SMF 1.1
       // Taken from Display.php
       // Start out with no one at all viewing it.
@@ -219,10 +220,11 @@ function ViewPicture() {
         if (empty($row['ID_MEMBER']))
           continue;
 
-        if (!empty($row['onlineColor']))
+        if (!empty($row['onlineColor'])) {
           $link = '<a href="' . $scripturl . '?action=profile;u=' . $row['ID_MEMBER'] . '" style="color: ' . $row['onlineColor'] . ';">' . $row['realName'] . '</a>';
-        else
+        } else {
           $link = '<a href="' . $scripturl . '?action=profile;u=' . $row['ID_MEMBER'] . '">' . $row['realName'] . '</a>';
+        }
 
         $is_buddy = in_array($row['ID_MEMBER'], $user_info['buddies']);
 
@@ -297,8 +299,9 @@ function AddPicture() {
 
   ssi_grupos();
 
-  if($context['Turista'])
+  if ($context['Turista']) {
     fatal_error('Los usuarios de rango Turistas no pueden agregar im&aacute;genes.-', true);
+  }
 }
 
 function AddPicture2() {
@@ -342,15 +345,15 @@ function AddPicture2() {
   }
 }
 
-function EditPicture()
-{
-  global $context, $mbname, $txt, $ID_MEMBER, $db_prefix, $modSettings;
+function EditPicture() {
+  global $context, $mbname, $txt, $ID_MEMBER, $db_prefix;
 
   is_not_guest();
   ssi_grupos();
 
-  if($context['Turista'])
+  if ($context['Turista']) {
     fatal_error('Los usuarios de rango Turistas no pueden agregar im&aacute;genes.-', true);
+  }
 
   $id = (int) $_REQUEST['id'];
 
@@ -381,7 +384,7 @@ function EditPicture()
 
   mysqli_free_result($dbresult);
 
-  if(AllowedTo('smfgallery_manage') || (AllowedTo('smfgallery_edit') && $ID_MEMBER == $context['gallery_pic']['ID_MEMBER'])) {
+  if (AllowedTo('smfgallery_manage') || (AllowedTo('smfgallery_edit') && $ID_MEMBER == $context['gallery_pic']['ID_MEMBER'])) {
     $context['page_title'] = $mbname . ' - ' . $txt['gallery_text_title'] . ' - ' . $txt['gallery_form_editpicture'];
     $context['sub_template'] = 'edit_picture';
   } else {
@@ -520,7 +523,7 @@ function DeletePicture2() {
   $row = mysqli_fetch_assoc($dbresult);
   $memID = $row['ID_MEMBER'];
 
-  if(AllowedTo('smfgallery_manage') || (AllowedTo('smfgallery_delete') && $ID_MEMBER == $memID)) {
+  if (AllowedTo('smfgallery_manage') || (AllowedTo('smfgallery_delete') && $ID_MEMBER == $memID)) {
     // Delete Large image
     @unlink($modSettings['gallery_path'] . $row['filename']);
 
@@ -616,17 +619,21 @@ function dpuntos() {
   $user = $_GET['user'];
   $userincr = $context['user']['id'];
 
-  if($id == '')
+  if ($id == '') {
     fatal_error($txt['gallery_error_no_pic_selected'], false);
+  }
 
-  if($cantidad == '')
-    fatal_error('Debes especificar una candidad.', false);
+  if ($cantidad == '') {
+    fatal_error('Debes especificar una cantidad.', false);
+  }
 
-  if($user == '')
+  if ($user == '') {
     fatal_error('Debes especificar un usuario.', false);
+  }
 
-  if($user == $context['user']['id'])
-    fatal_error('No puedes dar puntos a tus imagenes.');
+  if ($user == $context['user']['id']) {
+    fatal_error('No puedes dar puntos a tus im&aacute;genes.');
+  }
 
   $errorr = db_query("
     SELECT *
@@ -639,11 +646,13 @@ function dpuntos() {
 
   mysqli_free_result($errorr);
 
-  if ($yadio)
+  if ($yadio) {
     fatal_error('Ya has dado puntos a esta imagen.', false);
+  }
 
-  if($cantidad > 10)
+  if ($cantidad > 10) {
     fatal_error('No puedes dar m&aacute;s de 10 puntos.', false);
+  }
 
   db_query("
     UPDATE {$db_prefix}members
@@ -726,12 +735,13 @@ function DeleteComment() {
   is_not_guest();
   isAllowedTo('smfgallery_manage');
 
-  if($_POST['campos'] == '')
+  if ($_POST['campos'] == '') {
     fatal_error($txt['gallery_error_no_com_selected']);
+  }
 
   $idimg = (int) $_POST['idimg'];
 
-  if(!empty($_POST['campos'])) {
+  if (!empty($_POST['campos'])) {
     $aLista = array_keys($_POST['campos']);
     $total = count($aLista);
 
@@ -780,15 +790,17 @@ function AdminSettings2() {
   $gallery_set_showcode_directlink = isset($_REQUEST['gallery_set_showcode_directlink']) ? 1 : 0;
   $gallery_set_showcode_htmllink = isset($_REQUEST['gallery_set_showcode_htmllink']) ? 1 : 0;
 
-  if($gallery_commentchoice)
+  if ($gallery_commentchoice) {
     $gallery_commentchoice = 1;
-  else
+  } else {
     $gallery_commentchoice = 0;
+  }
 
-  if($gallery_who_viewing)
+  if ($gallery_who_viewing) {
     $gallery_who_viewing = 1;
-  else
+  } else {
     $gallery_who_viewing = 0;
+  }
 
   updateSettings(
     array(

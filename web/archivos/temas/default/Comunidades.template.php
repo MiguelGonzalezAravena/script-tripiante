@@ -1570,7 +1570,6 @@ function template_vermiembros() {
   }
 }
 
-// Pendiente
 function template_adminmiembro() {
   global $context, $db_prefix, $settings, $boardurl, $scripturl;
 

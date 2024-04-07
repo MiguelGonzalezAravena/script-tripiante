@@ -2593,7 +2593,7 @@ function template_editBuddies() {
     echo '
       <tr class="', $alternate ? 'windowbg' : 'windowbg2', '">
         <td>', $buddy['link'], '</td>
-        <td align="center"><a href="', $buddy['online']['href'], '"><img src="', $buddy['online']['image_href'], '" alt="', $buddybuddy['online']['label'], '" title="', $buddy['online']['label'], '" /></a></td>
+        <td align="center"><a href="', $buddy['online']['href'], '"><img src="', $buddy['online']['image_href'], '" alt="', $buddy['online']['label'], '" title="', $buddy['online']['label'], '" /></a></td>
         <td align="center">', ($buddy['hide_email'] ? '' : '<a href="mailto:' . $buddy['email'] . '"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt[69] . '" title="' . $txt[69] . ' ' . $buddy['name'] . '" /></a>'), '</td>
         <td align="center">', $buddy['icq']['link'], '</td>
         <td align="center">', $buddy['aim']['link'], '</td>

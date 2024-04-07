@@ -2,7 +2,6 @@
 if (!defined('SMF'))
   die('Hacking attempt...');
 
-// Pendiente
 function Display() {
   global $db_prefix, $modSettings, $context;
   global $options, $sourcedir, $user_info, $ID_MEMBER, $topic;

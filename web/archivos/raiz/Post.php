@@ -2,7 +2,6 @@
 if (!defined('SMF'))
   die('Hacking attempt...');
 
-// Pendiente
 function Post() {
   global $txt, $topic, $db_prefix, $modSettings, $board, $ID_MEMBER;
   global $user_info, $sc, $context, $sourcedir;

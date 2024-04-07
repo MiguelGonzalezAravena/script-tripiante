@@ -552,7 +552,6 @@ function borrar2() {
   }
 }
 
-// Pendiente
 function comunidad() {
   global $txt, $context, $db_prefix, $ID_MEMBER, $boardurl;
 

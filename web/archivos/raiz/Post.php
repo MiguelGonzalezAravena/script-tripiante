@@ -17,7 +17,7 @@ function Post() {
 
   $context['topic_tags'] = array();
 
-  while($row = mysqli_fetch_assoc($dbresult)) {
+  while ($row = mysqli_fetch_assoc($dbresult)) {
     $context['topic_tags'][] = array(
       'ID' => $row['ID'],
       'ID_TAG' => $row['ID_TAG'],
@@ -186,7 +186,7 @@ function Post() {
         // Validate the name and email.
         if (!isset($_REQUEST['guestname']) || trim(strtr($_REQUEST['guestname'], '_', ' ')) == '')
           $context['post_error']['no_name'] = true;
-        elseif ($func['strlen']($_REQUEST['guestname']) > 25)
+        else if ($func['strlen']($_REQUEST['guestname']) > 25)
           $context['post_error']['long_name'] = true;
         else
         {
@@ -202,7 +202,7 @@ function Post() {
         {
           if (!isset($_REQUEST['email']) || $_REQUEST['email'] == '')
             $context['post_error']['no_email'] = true;
-          elseif (preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', stripslashes($_REQUEST['email'])) == 0)
+          else if (preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', stripslashes($_REQUEST['email'])) == 0)
             $context['post_error']['bad_email'] = true;
         }
       }
@@ -498,16 +498,16 @@ fatal_lang_error(90, false);
 
 if ($ID_MEMBER_POSTER != $ID_MEMBER) {
 isAllowedTo('post_reply_any');
-} elseif (!allowedTo('post_reply_any')) {
+} else if (!allowedTo('post_reply_any')) {
 isAllowedTo('post_reply_own');
 }
 
 if (isset($_POST['lock'])) {
 if ((empty($tmplocked) && empty($_POST['lock'])) || (!empty($_POST['lock']) && !empty($tmplocked))) {
 unset($_POST['lock']);
-} elseif (!allowedTo(array('lock_any', 'lock_own')) || (!allowedTo('lock_any') && $ID_MEMBER != $ID_MEMBER_POSTER)) {
+} else if (!allowedTo(array('lock_any', 'lock_own')) || (!allowedTo('lock_any') && $ID_MEMBER != $ID_MEMBER_POSTER)) {
         unset($_POST['lock']);
-} elseif (!allowedTo('lock_any')) {
+} else if (!allowedTo('lock_any')) {
 if ($tmplocked == 1) {
 unset($_POST['lock']);
 } else {
@@ -532,11 +532,11 @@ $_REQUEST['preview'] = true;
 return Post();
 }
 $posterIsGuest = $user_info['is_guest'];
-} elseif (empty($topic)) {
+} else if (empty($topic)) {
 if (isset($_POST['lock']))   {
 if (empty($_POST['lock'])) {
 unset($_POST['lock']);
-} elseif (!allowedTo(array('lock_any', 'lock_own'))) {
+} else if (!allowedTo(array('lock_any', 'lock_own'))) {
 unset($_POST['lock']);
 } else {
 $_POST['lock'] = allowedTo('lock_any') ? 1 : 2;
@@ -548,7 +548,7 @@ unset($_POST['sticky']);
 }
 
 $posterIsGuest = $user_info['is_guest'];
-} elseif (isset($_REQUEST['msg']) && !empty($topic)) {
+} else if (isset($_REQUEST['msg']) && !empty($topic)) {
 $_REQUEST['msg'] = (int) $_REQUEST['msg'];
 
 $request = db_query("
@@ -570,10 +570,10 @@ fatal_lang_error(90, false);
 if (isset($_POST['lock'])) {
 if ((empty($_POST['lock']) && empty($row['locked'])) || (!empty($_POST['lock']) && !empty($row['locked']))) {
 unset($_POST['lock']);
-} elseif (!allowedTo(array('lock_any', 'lock_own')) || (!allowedTo('lock_any') && $ID_MEMBER != $row['ID_MEMBER_POSTER'])) {
+} else if (!allowedTo(array('lock_any', 'lock_own')) || (!allowedTo('lock_any') && $ID_MEMBER != $row['ID_MEMBER_POSTER'])) {
 unset($_POST['lock']);
 }
-elseif (!allowedTo('lock_any')) {
+else if (!allowedTo('lock_any')) {
 if ($row['locked'] == 1) {
 unset($_POST['lock']);
 } else {
@@ -591,12 +591,12 @@ unset($_POST['sticky']);
 if ($row['ID_MEMBER'] == $ID_MEMBER && !allowedTo('modify_any')) {
 if (!empty($modSettings['edit_disable_time']) && $row['posterTime'] + ($modSettings['edit_disable_time'] + 5) * 60 < time()) {
 fatal_lang_error('modify_post_time_passed', false);
-} elseif ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_own')) {
+} else if ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_own')) {
 isAllowedTo('modify_replies');
 } else {
 isAllowedTo('modify_own');
 }
-} elseif ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_any')) {
+} else if ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_any')) {
 isAllowedTo('modify_replies');
 $moderationAction = true;
 } else {
@@ -634,7 +634,7 @@ $post_errors[] = 'no_subject';
 }
 if (!isset($_POST['message']) || $func['htmltrim']($_POST['message']) === '') {
 $post_errors[] = 'no_message';
-} elseif (!empty($modSettings['max_messageLength']) && $func['strlen']($_POST['message']) > $modSettings['max_messageLength']) {
+} else if (!empty($modSettings['max_messageLength']) && $func['strlen']($_POST['message']) > $modSettings['max_messageLength']) {
 $post_errors[] = 'long_message';
 } else {
 $_POST['message'] = $func['htmlspecialchars']($_POST['message'], ENT_QUOTES);
@@ -657,7 +657,7 @@ if ($posterIsGuest) {
 require_once($sourcedir . '/Subs-Members.php');
 if (isReservedName($_POST['guestname'], 0, true, false) && (!isset($row['posterName']) || $_POST['guestname'] != $row['posterName']))
 $post_errors[] = 'bad_name';
-} elseif (!isset($_REQUEST['msg'])) {
+} else if (!isset($_REQUEST['msg'])) {
 $_POST['guestname'] = addslashes($user_info['username']);
 $_POST['email'] = addslashes($user_info['email']);
 }
@@ -728,29 +728,29 @@ if (!empty($_REQUEST['msg'])) {
   }
 }
 
-if(isset($_REQUEST['tags']) && !isset($_REQUEST['num_replies'])) {
+if (isset($_REQUEST['tags']) && !isset($_REQUEST['num_replies'])) {
 $dbresult = db_query("SELECT COUNT(*) as total FROM {$db_prefix}tags_log WHERE ID_TOPIC = " . $topic, __FILE__, __LINE__);
 $row = mysqli_fetch_assoc($dbresult);
 $totaltags = $row['total'];
 mysqli_free_result($dbresult);
 $tags = explode(',',htmlspecialchars($_REQUEST['tags'],ENT_QUOTES));
-if($totaltags < $modSettings['smftags_set_maxtags']) {
+if ($totaltags < $modSettings['smftags_set_maxtags']) {
 $tagcount = 0;
 foreach($tags as $tag) {
-if($tagcount >= $modSettings['smftags_set_maxtags']) {
+if ($tagcount >= $modSettings['smftags_set_maxtags']) {
 continue;
 }
-if(empty($tag)) {
+if (empty($tag)) {
 continue;
 }
-if(strlen($tag) < $modSettings['smftags_set_mintaglength']){
+if (strlen($tag) < $modSettings['smftags_set_mintaglength']) {
 continue;
 }
-if(strlen($tag) > $modSettings['smftags_set_maxtaglength']) {
+if (strlen($tag) > $modSettings['smftags_set_maxtaglength']) {
 continue;
 }
 $dbresult = db_query("SELECT ID_TAG FROM {$db_prefix}tags WHERE tag = '$tag'", __FILE__, __LINE__);
-if(db_affected_rows() == 0) {
+if (db_affected_rows() == 0) {
 db_query("INSERT INTO {$db_prefix}tags (tag, approved) VALUES ('$tag',1)", __FILE__, __LINE__);
 $ID_TAG = db_insert_id();
 db_query("INSERT INTO {$db_prefix}tags_log (ID_TAG,ID_TOPIC, ID_MEMBER) VALUES ($ID_TAG,$topic,$ID_MEMBER)", __FILE__, __LINE__);
@@ -759,7 +759,7 @@ $tagcount++;
 $row = mysqli_fetch_assoc($dbresult);
 $ID_TAG = $row['ID_TAG'];
 $dbresult2= db_query("SELECT ID FROM {$db_prefix}tags_log WHERE ID_TAG  =  $ID_TAG  AND ID_TOPIC = $topic", __FILE__, __LINE__);
-if(db_affected_rows() != 0) {
+if (db_affected_rows() != 0) {
 continue;
 }
 mysqli_free_result($dbresult2);
@@ -771,7 +771,7 @@ mysqli_free_result($dbresult);
 }
 }
 
-if(!empty($_REQUEST['topic'])) {
+if (!empty($_REQUEST['topic'])) {
 $history = db_query("SELECT t.ID_TOPIC, m.subject, t.ID_MEMBER_STARTED, m.ID_TOPIC FROM ({$db_prefix}topics AS t, {$db_prefix}messages AS m) WHERE t.ID_TOPIC = $topic AND m.ID_TOPIC = t.ID_TOPIC AND m.ID_TOPIC = $topic", __FILE__, __LINE__);
 $sacarid = mysqli_fetch_assoc($history);
 
@@ -792,7 +792,7 @@ require_once($sourcedir . '/Display.php');
 $_REQUEST['msg'] = $msgOptions['id'];
 call_user_func('Display');
 } else {
-if(isset($_REQUEST['msg']))
+if (isset($_REQUEST['msg']))
 redirectexit($boardurl . '/post-agregado/' . $topic);
 
 if (!empty($_POST['move']) && allowedTo('move_any')) {
@@ -800,7 +800,7 @@ redirectexit($scripturl);
 }
 if (isset($_REQUEST['msg']) && !empty($_REQUEST['goback'])) {
 redirectexit($scripturl);
-} elseif (!empty($_REQUEST['goback'])) {
+} else if (!empty($_REQUEST['goback'])) {
 redirectexit($boardurl . '/post-agregado/' . $topic);
 } else {
 redirectexit($boardurl . '/post-agregado/' . $topic);

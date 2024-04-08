@@ -19,11 +19,11 @@ if (!empty($maintenance) && $maintenance == 2)
   db_fatal_error();
 
 if (empty($db_persist))
-  $db_connection = @mysql_connect($db_server, $db_user, $db_passwd);
+  $db_connection = @mysqli_connect($db_server, $db_user, $db_passwd);
 else
   $db_connection = @mysql_pconnect($db_server, $db_user, $db_passwd);
 
-if (!$db_connection || !@mysql_select_db($db_name, $db_connection))
+if (!$db_connection || !@mysqli_select_db($db_connection, $db_name))
   db_fatal_error();
 
 reloadSettings();
@@ -35,7 +35,7 @@ if (empty($modSettings['rand_seed']) || mt_rand(1, 250) == 69)
 
 if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/vnd.wap.xhtml+xml') !== false)
   $_REQUEST['wap2'] = 1;
-elseif (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'text/vnd.wap.wml') !== false) {
+else if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'text/vnd.wap.wml') !== false) {
   if (strpos($_SERVER['HTTP_USER_AGENT'], 'DoCoMo/') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'portalmmm/') !== false)
     $_REQUEST['imode'] = 1;
   else
@@ -82,7 +82,7 @@ function smf_main() {
 
   $hostaddr = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
-  if(
+  if (
     !empty($modSettings['proxyblock_index'])
     && empty($kill_proxyblocker)
     && (!$hostaddr
@@ -119,11 +119,11 @@ function smf_main() {
       return 'InMaintenance';
     }
   }
-  elseif (empty($modSettings['allow_guestAccess']) && $user_info['is_guest'] && (!isset($_REQUEST['action']) || !in_array($_REQUEST['action'], array('coppa', 'login', 'login2', 'register', 'register2', 'reminder', 'activate', 'smstats', 'help', 'verificationcode'))))
+  else if (empty($modSettings['allow_guestAccess']) && $user_info['is_guest'] && (!isset($_REQUEST['action']) || !in_array($_REQUEST['action'], array('coppa', 'login', 'login2', 'register', 'register2', 'reminder', 'activate', 'smstats', 'help', 'verificationcode'))))
   {
     require_once($sourcedir . '/Subs-Auth.php');
     return 'KickGuest';
-  } elseif (empty($_REQUEST['action'])) {
+  } else if (empty($_REQUEST['action'])) {
     if (empty($topic)) {
       require_once($sourcedir . '/Recent.php');
       return 'RecentPosts';

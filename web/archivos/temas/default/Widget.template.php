@@ -70,7 +70,7 @@ function template_manual_intro()
     }
 
     function focus_code(noselect) {
-      if(!noselect)
+      if (!noselect)
         document.getElementById("codigo").focus();
 
       document.getElementById("codigo").select();

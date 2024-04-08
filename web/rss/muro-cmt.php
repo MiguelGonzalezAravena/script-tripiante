@@ -1,7 +1,7 @@
 <?php
 @require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
 
-$request = mysql_query("
+$request = db_query("
 SELECT COUNT(c.COMMENT_MEMBER_ID) AS cuenta, c.COMMENT_MEMBER_ID, mem.ID_MEMBER, mem.memberName, mem.realName
 FROM ({$db_prefix}members AS mem, {$db_prefix}profile_comments AS c)
 WHERE c.COMMENT_MEMBER_ID = mem.ID_MEMBER

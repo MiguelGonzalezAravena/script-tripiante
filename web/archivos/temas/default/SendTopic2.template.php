@@ -7,7 +7,7 @@ function template_main() {
   echo '
     <script language="javascript" type="text/javascript">
       function showr_email(comment) {
-        if(comment == \'\') {
+        if (comment == \'\') {
           alert(\'No has escrito ningun mensaje.\');
           return false;
         }

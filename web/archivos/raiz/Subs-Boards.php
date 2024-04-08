@@ -108,7 +108,7 @@ function MarkRead()
 
     redirectexit();
   }
-  elseif (isset($_REQUEST['sa']) && $_REQUEST['sa'] == 'unreadreplies')
+  else if (isset($_REQUEST['sa']) && $_REQUEST['sa'] == 'unreadreplies')
   {
     // Make sure all the boards are integers!
     $topics = explode('-', $_REQUEST['topics']);
@@ -129,7 +129,7 @@ function MarkRead()
     redirectexit('action=unreadreplies');
   }
   // Special case: mark a topic unread!
-  elseif (isset($_REQUEST['sa']) && $_REQUEST['sa'] == 'topic')
+  else if (isset($_REQUEST['sa']) && $_REQUEST['sa'] == 'topic')
   {
     if (!empty($_GET['t']))
     {
@@ -292,7 +292,7 @@ function CollapseCategory()
       VALUES ($_REQUEST[c], $ID_MEMBER)", __FILE__, __LINE__);
   }
   // Now just make sure it's not there.
-  elseif ($_REQUEST['sa'] == 'expand')
+  else if ($_REQUEST['sa'] == 'expand')
   {
     db_query("
       DELETE FROM {$db_prefix}collapsed_categories
@@ -425,11 +425,11 @@ function QuickModeration()
         // Goodness, this is fun.  We need to validate the action.
         if ($_REQUEST['actions'][$row['ID_TOPIC']] == 'sticky' && !in_array(0, $boards_can['make_sticky']) && !in_array($row['ID_BOARD'], $boards_can['make_sticky']))
           unset($_REQUEST['actions'][$row['ID_TOPIC']]);
-        elseif ($_REQUEST['actions'][$row['ID_TOPIC']] == 'move' && !in_array(0, $boards_can['move_any']) && !in_array($row['ID_BOARD'], $boards_can['move_any']) && ($row['ID_MEMBER_STARTED'] != $ID_MEMBER || (!in_array(0, $boards_can['move_own']) && !in_array($row['ID_BOARD'], $boards_can['move_own']))))
+        else if ($_REQUEST['actions'][$row['ID_TOPIC']] == 'move' && !in_array(0, $boards_can['move_any']) && !in_array($row['ID_BOARD'], $boards_can['move_any']) && ($row['ID_MEMBER_STARTED'] != $ID_MEMBER || (!in_array(0, $boards_can['move_own']) && !in_array($row['ID_BOARD'], $boards_can['move_own']))))
           unset($_REQUEST['actions'][$row['ID_TOPIC']]);
-        elseif ($_REQUEST['actions'][$row['ID_TOPIC']] == 'remove' && !in_array(0, $boards_can['remove_any']) && !in_array($row['ID_BOARD'], $boards_can['remove_any']) && ($row['ID_MEMBER_STARTED'] != $ID_MEMBER || (!in_array(0, $boards_can['remove_own']) && !in_array($row['ID_BOARD'], $boards_can['remove_own']))))
+        else if ($_REQUEST['actions'][$row['ID_TOPIC']] == 'remove' && !in_array(0, $boards_can['remove_any']) && !in_array($row['ID_BOARD'], $boards_can['remove_any']) && ($row['ID_MEMBER_STARTED'] != $ID_MEMBER || (!in_array(0, $boards_can['remove_own']) && !in_array($row['ID_BOARD'], $boards_can['remove_own']))))
           unset($_REQUEST['actions'][$row['ID_TOPIC']]);
-        elseif ($_REQUEST['actions'][$row['ID_TOPIC']] == 'lock' && !in_array(0, $boards_can['lock_any']) && !in_array($row['ID_BOARD'], $boards_can['lock_any']) && ($row['ID_MEMBER_STARTED'] != $ID_MEMBER || $locked == 1 || (!in_array(0, $boards_can['lock_own']) && !in_array($row['ID_BOARD'], $boards_can['lock_own']))))
+        else if ($_REQUEST['actions'][$row['ID_TOPIC']] == 'lock' && !in_array(0, $boards_can['lock_any']) && !in_array($row['ID_BOARD'], $boards_can['lock_any']) && ($row['ID_MEMBER_STARTED'] != $ID_MEMBER || $locked == 1 || (!in_array(0, $boards_can['lock_own']) && !in_array($row['ID_BOARD'], $boards_can['lock_own']))))
           unset($_REQUEST['actions'][$row['ID_TOPIC']]);
       }
     }
@@ -449,9 +449,9 @@ function QuickModeration()
 
     if ($action == 'markread')
       $markCache[] = $topic;
-    elseif ($action == 'sticky')
+    else if ($action == 'sticky')
       $stickyCache[] = $topic;
-    elseif ($action == 'move')
+    else if ($action == 'move')
     {
       // $moveCache[0] is the topic, $moveCache[1] is the board to move to.
       $moveCache[1][$topic] = (int) (isset($_REQUEST['move_tos'][$topic]) ? $_REQUEST['move_tos'][$topic] : $_REQUEST['move_to']);
@@ -461,9 +461,9 @@ function QuickModeration()
 
       $moveCache[0][] = $topic;
     }
-    elseif ($action == 'remove')
+    else if ($action == 'remove')
       $removeCache[] = $topic;
-    elseif ($action == 'lock')
+    else if ($action == 'lock')
       $lockCache[] = $topic;
   }
 
@@ -477,7 +477,7 @@ function QuickModeration()
   {
     db_query("
       UPDATE {$db_prefix}topics
-      SET isSticky = IF(isSticky = 1, 0, 1)
+      SET isSticky = if (isSticky = 1, 0, 1)
       WHERE ID_TOPIC IN (" . implode(', ', $stickyCache) . ")
       LIMIT " . count($stickyCache), __FILE__, __LINE__);
   }
@@ -620,7 +620,7 @@ function QuickModeration()
       // Alternate the locked value.
       db_query("
         UPDATE {$db_prefix}topics
-        SET locked = IF(locked = 0, " . (allowedTo('lock_any') ? '1' : '2') . ", 0)
+        SET locked = if (locked = 0, " . (allowedTo('lock_any') ? '1' : '2') . ", 0)
         WHERE ID_TOPIC IN (" . implode(', ', $lockCache) . ")
         LIMIT " . count($lockCache), __FILE__, __LINE__);
     }
@@ -690,7 +690,7 @@ function QuickModeration2()
   if (allowedTo('delete_any'))
     $allowed_all = true;
   // Allowed to delete replies to their messages?
-  elseif (allowedTo('delete_replies'))
+  else if (allowedTo('delete_replies'))
   {
     $request = db_query("
       SELECT ID_MEMBER_STARTED
@@ -782,7 +782,7 @@ function modifyBoard($board_id, &$boardOptions)
     }
     
     // Move the board to the bottom of a given category.
-    elseif ($boardOptions['move_to'] == 'bottom')
+    else if ($boardOptions['move_to'] == 'bottom')
     {
       $ID_CAT = $boardOptions['target_category'];
       $childLevel = 0;
@@ -793,7 +793,7 @@ function modifyBoard($board_id, &$boardOptions)
     }
 
     // Make the board a child of a given board.
-    elseif ($boardOptions['move_to'] == 'child')
+    else if ($boardOptions['move_to'] == 'child')
     {
       $ID_CAT = $boards[$boardOptions['target_board']]['category'];
       $childLevel = $boards[$boardOptions['target_board']]['level'] + 1;
@@ -812,7 +812,7 @@ function modifyBoard($board_id, &$boardOptions)
     }
 
     // Place a board before or after another board, on the same child level.
-    elseif (in_array($boardOptions['move_to'], array('before', 'after')))
+    else if (in_array($boardOptions['move_to'], array('before', 'after')))
     {
       $ID_CAT = $boards[$boardOptions['target_board']]['category'];
       $childLevel = $boards[$boardOptions['target_board']]['level'];
@@ -1013,7 +1013,7 @@ function createBoard($boardOptions)
         SET permission_mode = $boardOptions[permission_mode]
         WHERE ID_BOARD = $board_id", __FILE__, __LINE__);
     }
-    elseif (!empty($modSettings['permission_enable_by_board']) && !empty($boards[$board_id]['parent']) && !empty($boards[$boards[$board_id]['parent']]['use_local_permissions']))
+    else if (!empty($modSettings['permission_enable_by_board']) && !empty($boards[$board_id]['parent']) && !empty($boards[$boards[$board_id]['parent']]['use_local_permissions']))
     {
       // Select all the parents permissions.
       $request = db_query("
@@ -1250,7 +1250,7 @@ function deleteCategories($categories, $moveBoardsTo = null)
   }
 
   // Make sure the safe category is really safe.
-  elseif (in_array($moveBoardsTo, $categories))
+  else if (in_array($moveBoardsTo, $categories))
     trigger_error('deleteCategories(): You cannot move the boards to a category that\'s being deleted', E_USER_ERROR);
 
   // Move the boards inside the categories to a safe category.

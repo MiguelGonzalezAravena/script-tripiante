@@ -1,6 +1,6 @@
 <?php
-function template_shop_above(){}
-function template_shop_below(){}
+function template_shop_above() {}
+function template_shop_below() {}
 
 function template_main() {
   header("Location: /");

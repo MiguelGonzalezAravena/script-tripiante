@@ -144,7 +144,7 @@ function template_select_search_method()
   if (empty($context['fulltext_index']) && empty($context['cannot_create_fulltext']))
     echo '
             <b>', $txt['search_index_label'], ':</b> ',  $txt['search_method_no_index_exists'], ' [<a href="', $scripturl, '?action=managesearch;sa=createfulltext;sesc=', $context['session_id'], '">', $txt['search_method_fulltext_create'], '</a>]';
-  elseif (empty($context['fulltext_index']) && !empty($context['cannot_create_fulltext']))
+  else if (empty($context['fulltext_index']) && !empty($context['cannot_create_fulltext']))
     echo '
             <b>', $txt['search_index_label'], ':</b> ', $txt['search_method_fulltext_cannot_create'];
   else
@@ -164,7 +164,7 @@ function template_select_search_method()
     echo '
             <b>', $txt['search_index_label'], ':</b> ', $txt['search_method_index_already_exsits'], ' [<a href="', $scripturl, '?action=managesearch;sa=removecustom;sesc=', $context['session_id'], '">', $txt['search_index_custom_remove'], '</a>]<br />
             <b>', $txt['search_index_size'], ':</b> ', $context['table_info']['custom_index_length'], ' ', $txt['search_method_kilobytes'];
-  elseif ($context['partial_custom_index'])
+  else if ($context['partial_custom_index'])
     echo '
             <b>', $txt['search_index_label'], ':</b> ', $txt['search_method_index_partial'], ' [<a href="', $scripturl, '?action=managesearch;sa=removecustom;sesc=', $context['session_id'], '">', $txt['search_index_custom_remove'], '</a>] [<a href="', $scripturl, '?action=managesearch;sa=createmsgindex;resume;sesc=', $context['session_id'], '">', $txt['search_index_custom_resume'], '</a>]<br />
             <b>', $txt['search_index_size'], ':</b> ', $context['table_info']['custom_index_length'], ' ', $txt['search_method_kilobytes'];

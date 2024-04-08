@@ -275,7 +275,7 @@ function MLAll()
   }
 
   // Reverse sorting is a bit more complicated...
-  elseif ($use_cache && $_REQUEST['sort'] === 'realName')
+  else if ($use_cache && $_REQUEST['sort'] === 'realName')
   {
     $first_offset = floor(($memberlist_cache['num_members'] - $modSettings['defaultMaxMembers'] - $_REQUEST['start']) / $cache_step_size) * $cache_step_size;
     if ($first_offset < 0)
@@ -290,7 +290,7 @@ function MLAll()
     SELECT mem.ID_MEMBER
     FROM {$db_prefix}members AS mem" . ($_REQUEST['sort'] === 'isOnline' ? "
       LEFT JOIN {$db_prefix}log_online AS lo ON (lo.ID_MEMBER = mem.ID_MEMBER)" : '') . ($_REQUEST['sort'] === 'ID_GROUP' ? "
-      LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))" : '') . "
+      LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = if (mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))" : '') . "
     WHERE mem.is_activated = 1" . (empty($where) ? '' : "
       AND $where") . "
     ORDER BY " . $sort_methods[$_REQUEST['sort']][$context['sort_direction']] . "
@@ -363,7 +363,7 @@ function MLSearch()
     $request = db_query("
       SELECT COUNT(*)
       FROM {$db_prefix}members AS mem
-        LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
+        LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = if (mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
       WHERE " . implode(" $query OR ", $fields) . " $query$condition
         AND is_activated = 1", __FILE__, __LINE__);
     list ($numResults) = mysqli_fetch_row($request);
@@ -377,7 +377,7 @@ function MLSearch()
       SELECT mem.ID_MEMBER
       FROM {$db_prefix}members AS mem
         LEFT JOIN {$db_prefix}log_online AS lo ON (lo.ID_MEMBER = mem.ID_MEMBER)
-        LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
+        LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = if (mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
       WHERE " . implode(" $query OR ", $fields) . " $query$condition
         AND is_activated = 1
       LIMIT $_REQUEST[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);

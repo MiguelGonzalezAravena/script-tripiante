@@ -36,10 +36,10 @@ function SendTopic() {
     return;
   }
 
-  if(isset($_POST['send'])) {
-    if(!empty($modSettings['recaptcha_enabled']) && ($modSettings['recaptcha_enabled'] == 1 && !empty($modSettings['recaptcha_public_key']) && !empty($modSettings['recaptcha_private_key']))) {
+  if (isset($_POST['send'])) {
+    if (!empty($modSettings['recaptcha_enabled']) && ($modSettings['recaptcha_enabled'] == 1 && !empty($modSettings['recaptcha_public_key']) && !empty($modSettings['recaptcha_private_key']))) {
       // Check the input if this exists, if it doesn't, then the user didn't fill it out.
-      if(!empty($_POST["recaptcha_response_field"]) && !empty($_POST["recaptcha_challenge_field"])) {
+      if (!empty($_POST["recaptcha_response_field"]) && !empty($_POST["recaptcha_challenge_field"])) {
         @require($sourcedir . "/recaptchalib.php");
 
         $resp = recaptcha_check_answer($modSettings['recaptcha_private_key'], $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);

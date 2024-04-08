@@ -15,7 +15,7 @@ echo '<div class="box_title" style="width:740px;"><div class="box_txt">Lista</di
         <th', isset($column['width']) ? ' width="' . $column['width'] . '"' : '', '>
           <a href="', $column['href'], '">', $column['label'], '&nbsp;<img src="', $settings['images_url'], '/sort_', $context['sort_direction'], '.gif" alt="" /></a>
         </th>';
-    elseif ($column['sortable'])
+    else if ($column['sortable'])
       echo '
         <th', isset($column['width']) ? ' width="' . $column['width'] . '"' : '', '>
           ', $column['link'], '
@@ -214,11 +214,11 @@ function template_ban_edit()
               <td>';
         if ($ban_item['type'] == 'ip')
           echo '<b>', $txt[512], ':</b>&nbsp;', $ban_item['ip'];
-        elseif ($ban_item['type'] == 'hostname')
+        else if ($ban_item['type'] == 'hostname')
           echo '<b>', $txt['hostname'], ':</b>&nbsp;', $ban_item['hostname'];
-        elseif ($ban_item['type'] == 'email')
+        else if ($ban_item['type'] == 'email')
           echo '<b>', $txt[69], ':</b>&nbsp;', $ban_item['email'];
-        elseif ($ban_item['type'] == 'user')
+        else if ($ban_item['type'] == 'user')
           echo '<b>', $txt[35], ':</b>&nbsp;', $ban_item['user']['link'];
         echo '
             </td>

@@ -78,7 +78,7 @@ function MembergroupIndex()
   $query = db_query("
     SELECT ID_GROUP, groupName, minPosts, onlineColor, stars
     FROM {$db_prefix}membergroups
-    ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
+    ORDER BY minPosts, if (ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
   while ($row = mysqli_fetch_assoc($query))
   {
     $row['stars'] = explode('#', $row['stars']);
@@ -184,7 +184,7 @@ function AddMembergroup()
       setPermissionLevel($_POST['level'], $ID_GROUP, 'null');
     }
     // Copy the permissions!
-    elseif ($_POST['perm_type'] == 'copy')
+    else if ($_POST['perm_type'] == 'copy')
     {
       $_POST['copyperm'] = (int) $_POST['copyperm'];
 
@@ -260,7 +260,7 @@ function AddMembergroup()
     if (!empty($_POST['boardaccess']))
       db_query("
         UPDATE {$db_prefix}boards
-        SET memberGroups = IF(memberGroups = '', '$ID_GROUP', CONCAT(memberGroups, ',$ID_GROUP'))
+        SET memberGroups = if (memberGroups = '', '$ID_GROUP', CONCAT(memberGroups, ',$ID_GROUP'))
         WHERE ID_BOARD IN (" . implode(', ', $_POST['boardaccess']) . ")
         LIMIT " . count($_POST['boardaccess']), __FILE__, __LINE__);
 
@@ -337,7 +337,7 @@ function EditMembergroup()
     redirectexit('action=membergroups;');
   }
   // A form was submitted with the new membergroup settings.
-  elseif (isset($_POST['submit']))
+  else if (isset($_POST['submit']))
   {
     // Validate the session.
     checkSession();
@@ -382,7 +382,7 @@ function EditMembergroup()
       if (!empty($_POST['boardaccess']))
         db_query("
           UPDATE {$db_prefix}boards
-          SET memberGroups = IF(memberGroups = '', '" . (int) $_REQUEST['group'] . "', CONCAT(memberGroups, '," . (int) $_REQUEST['group'] . "'))
+          SET memberGroups = if (memberGroups = '', '" . (int) $_REQUEST['group'] . "', CONCAT(memberGroups, '," . (int) $_REQUEST['group'] . "'))
           WHERE ID_BOARD IN (" . implode(', ', $_POST['boardaccess']) . ")
             AND NOT FIND_IN_SET(" . (int) $_REQUEST['group'] . ", memberGroups)", __FILE__, __LINE__);
     }
@@ -497,7 +497,7 @@ function MembergroupMembers()
     removeMembersFromGroups($_REQUEST['rem'], $_REQUEST['group']);
   }
   // Must be adding new members to the group...
-  elseif (isset($_REQUEST['add']) && !empty($_REQUEST['toAdd']) && $context['group']['assignable'])
+  else if (isset($_REQUEST['add']) && !empty($_REQUEST['toAdd']) && $context['group']['assignable'])
   {
     checkSession();
 

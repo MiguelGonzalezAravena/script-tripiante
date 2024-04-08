@@ -287,7 +287,7 @@ function categorias($output_method = 'echo') {
 
   $action = $_REQUEST['action'];
 
-  if($action == 'comunidades') {
+  if ($action == 'comunidades') {
     $request = db_query("
       SELECT ID_CATEGORY, name, friendly_url
       FROM {$db_prefix}community_categories

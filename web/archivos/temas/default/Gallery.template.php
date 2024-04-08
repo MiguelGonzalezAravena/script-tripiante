@@ -28,7 +28,7 @@ function template_main() {
   // TO-DO: ¿Esto está bien?
   @require_once($_SERVER['DOCUMENT_ROOT'] . '/web/archivos/temas/default/Profile.template.php');
 
-  if($us == $context['user']['name']) {
+  if ($us == $context['user']['name']) {
     echo '
       <style type="text/css">
         .photo_small {
@@ -475,14 +475,14 @@ function template_view_picture() {
   echo '
     <script type="text/javascript">
       function errorrojo2(causa) {
-        if(causa == \'\') {
+        if (causa == \'\') {
           document.getElementById(\'errors\').innerHTML = \'<font class="size10" style="color: red;">Es necesaria la causa de la eliminaci&oacute;n.</font>\';
           return false;
         }
       }
 
       function errorrojo(cuerpo_comment) {
-        if(cuerpo_comment == \'\') {
+        if (cuerpo_comment == \'\') {
           document.getElementById(\'error\').innerHTML=\'<br /><font class="size10" style="color: red;">No has escrito ning&uacute;n comentario.</font>\';
           return false;
         }
@@ -554,7 +554,7 @@ function template_view_picture() {
 
   mysqli_free_result($request);
 
-  $firma = str_replace('if(this.width >720) {this.width=720}','if(this.width > 375) {this.width=375}', $context['firma']);
+  $firma = str_replace('if (this.width >720) {this.width=720}','if (this.width > 375) {this.width=375}', $context['firma']);
 
   echo '
       <div class="box_rss">
@@ -720,7 +720,7 @@ function template_view_picture() {
 
   echo '
     <center>
-      <img onload="if(this.width > 750) {this.width=750}" alt="" title="' . $context['gallery_pic']['title'] . '" src="' . $context['gallery_pic']['filename']  . '" />
+      <img onload="if (this.width > 750) {this.width=750}" alt="" title="' . $context['gallery_pic']['title'] . '" src="' . $context['gallery_pic']['filename']  . '" />
     </center>';
 
   if ($context['user']['is_guest']) {
@@ -1063,7 +1063,7 @@ function template_view_picture() {
     </div>';
 
   if ($context['sin_coment']) {
-    if($context['allow_admin'] || $iduser == $context['user']['id']) {
+    if ($context['allow_admin'] || $iduser == $context['user']['id']) {
       echo '
         <span class="size10">Comentarios Seleccionados:</span>
         &nbsp;

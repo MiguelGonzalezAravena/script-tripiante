@@ -125,7 +125,7 @@ function PermissionIndex()
     SELECT ID_GROUP, groupName, minPosts, onlineColor, stars
     FROM {$db_prefix}membergroups" . (empty($modSettings['permission_enable_postgroups']) ? "
     WHERE minPosts = -1" : '') . "
-    ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
+    ORDER BY minPosts, if (ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
   while ($row = mysqli_fetch_assoc($query))
   {
     $row['stars'] = explode('#', $row['stars']);
@@ -236,7 +236,7 @@ function PermissionIndex()
         if (isset($context['groups'][(int) $row['ID_GROUP']]) && (!empty($row['addDeny']) || $row['ID_GROUP'] != -1))
           $context['groups'][(int) $row['ID_GROUP']]['num_permissions'][empty($row['addDeny']) ? 'denied' : 'allowed'] += $row['numPermissions'];
       }
-      elseif (isset($context['boards'][$row['ID_BOARD']]) && isset($context['boards'][$row['ID_BOARD']]['groups'][(int) $row['ID_GROUP']]) && (!empty($row['addDeny']) || $row['ID_GROUP'] != -1))
+      else if (isset($context['boards'][$row['ID_BOARD']]) && isset($context['boards'][$row['ID_BOARD']]['groups'][(int) $row['ID_GROUP']]) && (!empty($row['addDeny']) || $row['ID_GROUP'] != -1))
         $context['boards'][$row['ID_BOARD']]['groups'][(int) $row['ID_GROUP']]['num_permissions'][empty($row['addDeny']) ? 'denied' : 'allowed'] = $row['numPermissions'];
     }
     mysqli_free_result($request);
@@ -401,7 +401,7 @@ function SetQuickGroups()
     }
   }
   // Set the permissions of the selected groups to that of their permissions in a different board.
-  elseif (isset($_POST['from_board']) && $_POST['from_board'] != 'empty')
+  else if (isset($_POST['from_board']) && $_POST['from_board'] != 'empty')
   {
     // Just checking the input.
     if (!is_numeric($_POST['from_board']))
@@ -435,7 +435,7 @@ function SetQuickGroups()
     }
   }
   // Set a permission profile based on the permissions of a selected group.
-  elseif ($_POST['copy_from'] != 'empty')
+  else if ($_POST['copy_from'] != 'empty')
   {
     // Just checking the input.
     if (!is_numeric($_POST['copy_from']))
@@ -524,7 +524,7 @@ function SetQuickGroups()
     }
   }
   // Set or unset a certain permission for the selected groups.
-  elseif (!empty($_POST['permissions']))
+  else if (!empty($_POST['permissions']))
   {
     // Unpack two variables that were transported.
     list ($permissionType, $permission) = explode('/', $_POST['permissions']);
@@ -560,7 +560,7 @@ function SetQuickGroups()
             ('$permission', " . implode(", $addDeny),
             ('$permission', ", $_POST['group']) . ", $addDeny)", __FILE__, __LINE__);
       // Board permissions go into the other table.
-      elseif ($permissionType != 'membergroup')
+      else if ($permissionType != 'membergroup')
         db_query("
           REPLACE INTO {$db_prefix}board_permissions
             (permission, ID_GROUP, ID_BOARD, addDeny)
@@ -678,7 +678,7 @@ function ModifyMembergroup()
     list ($context['group']['name']) = mysqli_fetch_row($result);
     mysqli_free_result($result);
   }
-  elseif ($context['group']['id'] == -1)
+  else if ($context['group']['id'] == -1)
     $context['group']['name'] = &$txt['membergroups_guests'];
   else
     $context['group']['name'] = &$txt['membergroups_members'];
@@ -846,7 +846,7 @@ function GeneralPermissionSettings()
         WHERE ID_BOARD != 0", __FILE__, __LINE__);
     }
     // If the by-board setting is enabled, convert to local permissions.
-    elseif (empty($modSettings['permission_enable_by_board']) && !empty($_POST['permission_enable_by_board']))
+    else if (empty($modSettings['permission_enable_by_board']) && !empty($_POST['permission_enable_by_board']))
     {
       // Fetch the existing global board permissions.
       $request = db_query("
@@ -1114,7 +1114,7 @@ function setPermissionLevel($level, $group, $board = 'null')
         (0, $group, '", $groupLevels['board'][$level]) . "')", __FILE__, __LINE__);
   }
   // Setting board permissions for a specific group.
-  elseif ($board !== 'null' && $group !== 'null')
+  else if ($board !== 'null' && $group !== 'null')
   {
     $group = (int) $group;
     $board = (int) $board;
@@ -1137,7 +1137,7 @@ function setPermissionLevel($level, $group, $board = 'null')
     }
   }
   // Setting board permissions for all groups.
-  elseif ($board !== 'null' && $group === 'null')
+  else if ($board !== 'null' && $group === 'null')
   {
     $board = (int) $board;
 
@@ -1153,7 +1153,7 @@ function setPermissionLevel($level, $group, $board = 'null')
       SELECT ID_GROUP
       FROM {$db_prefix}membergroups
       WHERE ID_GROUP > 3
-      ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
+      ORDER BY minPosts, if (ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
     while ($row = mysqli_fetch_row($query))
     {
       $group = $row[0];
@@ -1405,7 +1405,7 @@ function init_inline_permissions($permissions, $excluded_groups = array())
     );
 
   $request = db_query("
-    SELECT ID_GROUP, IF(addDeny = 0, 'deny', 'on') AS status, permission
+    SELECT ID_GROUP, if (addDeny = 0, 'deny', 'on') AS status, permission
     FROM {$db_prefix}permissions
     WHERE ID_GROUP IN (-1, 0)
       AND permission IN ('" . implode("', '", $permissions) . "')", __FILE__, __LINE__);
@@ -1419,7 +1419,7 @@ function init_inline_permissions($permissions, $excluded_groups = array())
       LEFT JOIN {$db_prefix}permissions AS p ON (p.ID_GROUP = mg.ID_GROUP AND p.permission  IN ('" . implode("', '", $permissions) . "'))
     WHERE mg.ID_GROUP NOT IN (1, 3)" . (empty($modSettings['permission_enable_postgroups']) ? "
       AND mg.minPosts = -1" : '') . "
-    ORDER BY mg.minPosts, IF(mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
+    ORDER BY mg.minPosts, if (mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
   while ($row = mysqli_fetch_assoc($request))
   {
     // Initialize each permission as being 'off' until proven otherwise.

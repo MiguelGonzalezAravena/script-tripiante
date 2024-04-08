@@ -49,8 +49,8 @@ function db_error($db_string, $file, $line) {
   global $db_server, $db_user, $db_passwd, $db_name, $db_show_debug;
 
   // This is the error message...
-  $query_error = mysql_error($db_connection);
-  $query_errno = mysql_errno($db_connection);
+  $query_error = mysqli_error($db_connection);
+  $query_errno = mysqli_errno($db_connection);
 
   // Error numbers:
   //    1016: Can't open file '....MYI'
@@ -93,12 +93,12 @@ function db_error($db_string, $file, $line) {
         $fix_tables = array_unique($fix_tables);
       }
       // Table crashed.  Let's try to fix it.
-      elseif ($query_errno == 1016) {
+      else if ($query_errno == 1016) {
         if (preg_match('~\'([^\.\']+)~', $query_error, $match) != 0)
           $fix_tables = array('`' . $match[1] . '`');
       }
       // Indexes crashed.  Should be easy to fix!
-      elseif ($query_errno == 1034 || $query_errno == 1035) {
+      else if ($query_errno == 1034 || $query_errno == 1035) {
         preg_match('~\'([^\']+?)\'~', $query_error, $match);
         $fix_tables = array('`' . $match[1] . '`');
       }
@@ -137,11 +137,11 @@ function db_error($db_string, $file, $line) {
     if (in_array($query_errno, array(1205, 1213, 2006, 2013))) {
       if (in_array($query_errno, array(2006, 2013))) {
         if (empty($db_persist))
-          $db_connection = @mysql_connect($db_server, $db_user, $db_passwd);
+          $db_connection = @mysqli_connect($db_server, $db_user, $db_passwd);
         else
           $db_connection = @mysql_pconnect($db_server, $db_user, $db_passwd);
 
-        if (!$db_connection || !@mysql_select_db($db_name, $db_connection))
+        if (!$db_connection || !@mysqli_select_db($db_connection, $db_name))
           $db_connection = false;
       }
 
@@ -150,7 +150,7 @@ function db_error($db_string, $file, $line) {
         for ($n = 0; $n < 4; $n++) {
           $ret = db_query($db_string, false, false);
 
-          $new_errno = mysql_errno($db_connection);
+          $new_errno = mysqli_errno($db_connection);
           if ($ret !== false || in_array($new_errno, array(1205, 1213)))
             break;
         }
@@ -161,7 +161,7 @@ function db_error($db_string, $file, $line) {
       }
     }
     // Are they out of space, perhaps?
-    elseif ($query_errno == 1030 && (strpos($query_error, ' -1 ') !== false || strpos($query_error, ' 28 ') !== false || strpos($query_error, ' 12 ') !== false)) {
+    else if ($query_errno == 1030 && (strpos($query_error, ' -1 ') !== false || strpos($query_error, ' 28 ') !== false || strpos($query_error, ' 12 ') !== false)) {
       if (!isset($txt))
         $query_error .= ' - check database storage space.';
       else {

@@ -126,7 +126,7 @@ function AdminRegister()
     WHERE ID_GROUP != 3
       AND minPosts = -1" . (allowedTo('admin_forum') ? '' : "
       AND ID_GROUP != 1") . "
-    ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
+    ORDER BY minPosts, if (ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
   $context['member_groups'] = array(0 => &$txt['admin_register_group_none']);
   while ($row = mysqli_fetch_assoc($request))
     $context['member_groups'][$row['ID_GROUP']] = $row['groupName'];

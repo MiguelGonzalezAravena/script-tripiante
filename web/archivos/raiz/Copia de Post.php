@@ -16,7 +16,7 @@ function Post() {
   FROM {$db_prefix}tags_log as l, {$db_prefix}tags as t 
   WHERE t.ID_TAG = l.ID_TAG && l.ID_TOPIC = $topic", __FILE__, __LINE__);
     $context['topic_tags'] = array();
-     while($row = mysqli_fetch_assoc($dbresult))
+     while ($row = mysqli_fetch_assoc($dbresult))
       {
         $context['topic_tags'][] = array(
         'ID' => $row['ID'],
@@ -70,7 +70,7 @@ function Post() {
 
       if ($ID_MEMBER_POSTER != $ID_MEMBER)
         isAllowedTo('post_reply_any');
-      elseif (!allowedTo('post_reply_any'))
+      else if (!allowedTo('post_reply_any'))
         isAllowedTo('post_reply_own');
     }
 
@@ -147,7 +147,7 @@ function Post() {
         // Validate the name and email.
         if (!isset($_REQUEST['guestname']) || trim(strtr($_REQUEST['guestname'], '_', ' ')) == '')
           $context['post_error']['no_name'] = true;
-        elseif ($func['strlen']($_REQUEST['guestname']) > 25)
+        else if ($func['strlen']($_REQUEST['guestname']) > 25)
           $context['post_error']['long_name'] = true;
         else
         {
@@ -163,7 +163,7 @@ function Post() {
         {
           if (!isset($_REQUEST['email']) || $_REQUEST['email'] == '')
             $context['post_error']['no_email'] = true;
-          elseif (preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', stripslashes($_REQUEST['email'])) == 0)
+          else if (preg_match('~^[0-9A-Za-z=_+\-/][0-9A-Za-z=_\'+\-/\.]*@[\w\-]+(\.[\w\-]+)*(\.[\w]{2,6})$~', stripslashes($_REQUEST['email'])) == 0)
             $context['post_error']['bad_email'] = true;
         }
       }
@@ -297,7 +297,7 @@ function Post() {
     checkSubmitOnce('free');
   }
   // Editing a message...
-  elseif (isset($_REQUEST['msg']) && !empty($topic))
+  else if (isset($_REQUEST['msg']) && !empty($topic))
   {
     // Get the existing message.
     $request = db_query("
@@ -324,12 +324,12 @@ function Post() {
       // Give an extra five minutes over the disable time threshold, so they can type.
       if (!empty($modSettings['edit_disable_time']) && $row['posterTime'] + ($modSettings['edit_disable_time'] + 5) * 60 < time())
         fatal_lang_error('modify_post_time_passed', false);
-      elseif ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_own'))
+      else if ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_own'))
         isAllowedTo('modify_replies');
       else
         isAllowedTo('modify_own');
     }
-    elseif ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_any'))
+    else if ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_any'))
       isAllowedTo('modify_replies');
     else
       isAllowedTo('modify_any');
@@ -400,9 +400,9 @@ function Post() {
 
   if (isset($_REQUEST['msg']))
     $context['page_title'] = $txt[66];
-  elseif (isset($_REQUEST['subject'], $context['preview_subject']))
+  else if (isset($_REQUEST['subject'], $context['preview_subject']))
     $context['page_title'] = $txt[507];
-  elseif (empty($topic))
+  else if (empty($topic))
     $context['page_title'] = $txt[33];
   else
     $context['page_title'] = $txt[25];
@@ -531,7 +531,7 @@ function Post() {
 
   if (WIRELESS)
     $context['sub_template'] = WIRELESS_PROTOCOL . '_post';
-  elseif (!isset($_REQUEST['xml']))
+  else if (!isset($_REQUEST['xml']))
     loadTemplate('Post');
     
 }
@@ -574,7 +574,7 @@ function Post2()
 
     if ($ID_MEMBER_POSTER != $ID_MEMBER)
       isAllowedTo('post_reply_any');
-    elseif (!allowedTo('post_reply_any'))
+    else if (!allowedTo('post_reply_any'))
       isAllowedTo('post_reply_own');
 
     if (isset($_POST['lock']))
@@ -583,10 +583,10 @@ function Post2()
       if ((empty($tmplocked) && empty($_POST['lock'])) || (!empty($_POST['lock']) && !empty($tmplocked)))
         unset($_POST['lock']);
       // You're have no permission to lock this topic.
-      elseif (!allowedTo(array('lock_any', 'lock_own')) || (!allowedTo('lock_any') && $ID_MEMBER != $ID_MEMBER_POSTER))
+      else if (!allowedTo(array('lock_any', 'lock_own')) || (!allowedTo('lock_any') && $ID_MEMBER != $ID_MEMBER_POSTER))
         unset($_POST['lock']);
       // You are allowed to (un)lock your own topic only.
-      elseif (!allowedTo('lock_any'))
+      else if (!allowedTo('lock_any'))
       {
         // You cannot override a moderator lock.
         if ($tmplocked == 1)
@@ -617,7 +617,7 @@ function Post2()
   }
 
   // Posting a new topic.
-  elseif (empty($topic))
+  else if (empty($topic))
   {
     if (isset($_POST['lock']))
     {
@@ -625,7 +625,7 @@ function Post2()
       if (empty($_POST['lock']))
         unset($_POST['lock']);
       // Besides, you need permission.
-      elseif (!allowedTo(array('lock_any', 'lock_own')))
+      else if (!allowedTo(array('lock_any', 'lock_own')))
         unset($_POST['lock']);
       // A moderator-lock (1) can override a user-lock (2).
       else
@@ -639,7 +639,7 @@ function Post2()
   }
 
   // Modifying an existing message?
-  elseif (isset($_REQUEST['msg']) && !empty($topic))
+  else if (isset($_REQUEST['msg']) && !empty($topic))
   {
     $_REQUEST['msg'] = (int) $_REQUEST['msg'];
 
@@ -665,10 +665,10 @@ function Post2()
       if ((empty($_POST['lock']) && empty($row['locked'])) || (!empty($_POST['lock']) && !empty($row['locked'])))
         unset($_POST['lock']);
       // You're simply not allowed to (un)lock this.
-      elseif (!allowedTo(array('lock_any', 'lock_own')) || (!allowedTo('lock_any') && $ID_MEMBER != $row['ID_MEMBER_POSTER']))
+      else if (!allowedTo(array('lock_any', 'lock_own')) || (!allowedTo('lock_any') && $ID_MEMBER != $row['ID_MEMBER_POSTER']))
         unset($_POST['lock']);
       // You're only allowed to lock your own topics.
-      elseif (!allowedTo('lock_any'))
+      else if (!allowedTo('lock_any'))
       {
         // You're not allowed to break a moderator's lock.
         if ($row['locked'] == 1)
@@ -690,12 +690,12 @@ function Post2()
     {
       if (!empty($modSettings['edit_disable_time']) && $row['posterTime'] + ($modSettings['edit_disable_time'] + 5) * 60 < time())
         fatal_lang_error('modify_post_time_passed', false);
-      elseif ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_own'))
+      else if ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_own'))
         isAllowedTo('modify_replies');
       else
         isAllowedTo('modify_own');
     }
-    elseif ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_any'))
+    else if ($row['ID_MEMBER_POSTER'] == $ID_MEMBER && !allowedTo('modify_any'))
     {
       isAllowedTo('modify_replies');
 
@@ -765,7 +765,7 @@ function Post2()
     $post_errors[] = 'no_subject';
   if (!isset($_POST['message']) || $func['htmltrim']($_POST['message']) === '')
     $post_errors[] = 'no_message';
-  elseif (!empty($modSettings['max_messageLength']) && $func['strlen']($_POST['message']) > $modSettings['max_messageLength'])
+  else if (!empty($modSettings['max_messageLength']) && $func['strlen']($_POST['message']) > $modSettings['max_messageLength'])
     $post_errors[] = 'long_message';
   else
   {
@@ -794,7 +794,7 @@ function Post2()
       $post_errors[] = 'bad_name';
   }
   // If the user isn't a guest, get his or her name and email.
-  elseif (!isset($_REQUEST['msg']))
+  else if (!isset($_REQUEST['msg']))
   {
     $_POST['guestname'] = addslashes($user_info['username']);
     $_POST['email'] = addslashes($user_info['email']);
@@ -883,7 +883,7 @@ function Post2()
       FROM {$db_prefix}boards
       WHERE ID_BOARD = $board
       LIMIT 1", __FILE__, __LINE__);
-    $row_shop = mysqli_fetch_array($result_shop, MYSQL_ASSOC);
+    $row_shop = mysqli_fetch_array($result_shop, MYSQLI_ASSOC);
     
     if (isset($row_shop['countMoney']) && $row_shop['countMoney'] == "1") {
       if ($newTopic)
@@ -911,7 +911,7 @@ function Post2()
       $topic = $topicOptions['id'];
   }
 
-  if(isset($_REQUEST['tags']))
+  if (isset($_REQUEST['tags']))
   {
     //Get how many tags there have been for the topic
     $dbresult = db_query("SELECT COUNT(*) as total FROM {$db_prefix}tags_log WHERE ID_TOPIC = " . $topic, __FILE__, __LINE__);
@@ -922,25 +922,25 @@ function Post2()
     //Check Tag restrictions
     $tags = explode(',',htmlspecialchars($_REQUEST['tags'],ENT_QUOTES));
 
-    if($totaltags < $modSettings['smftags_set_maxtags'])
+    if ($totaltags < $modSettings['smftags_set_maxtags'])
     {
       $tagcount = 0;
       foreach($tags as $tag)
       {
-        if($tagcount >= $modSettings['smftags_set_maxtags'])
+        if ($tagcount >= $modSettings['smftags_set_maxtags'])
           continue;
 
 
-        if(empty($tag))
+        if (empty($tag))
           continue;
 
-        if(strlen($tag) < $modSettings['smftags_set_mintaglength'])
+        if (strlen($tag) < $modSettings['smftags_set_mintaglength'])
           continue;
-        if(strlen($tag) > $modSettings['smftags_set_maxtaglength'])
+        if (strlen($tag) > $modSettings['smftags_set_maxtaglength'])
           continue;
 
         $dbresult = db_query("SELECT ID_TAG FROM {$db_prefix}tags WHERE tag = '$tag'", __FILE__, __LINE__);
-        if(db_affected_rows() == 0)
+        if (db_affected_rows() == 0)
         {
           db_query("INSERT INTO {$db_prefix}tags
             (tag, approved)
@@ -958,7 +958,7 @@ function Post2()
           $row = mysqli_fetch_assoc($dbresult);
           $ID_TAG = $row['ID_TAG'];
           $dbresult2= db_query("SELECT ID FROM {$db_prefix}tags_log WHERE ID_TAG  =  $ID_TAG  AND ID_TOPIC = $topic", __FILE__, __LINE__);
-          if(db_affected_rows() != 0)
+          if (db_affected_rows() != 0)
           {
             continue;
 
@@ -996,7 +996,7 @@ function Post2()
           (ID_MEMBER, ID_TOPIC, ID_BOARD)
         VALUES ($ID_MEMBER, $topic, 0)", __FILE__, __LINE__);
   }
-  elseif (!$newTopic)
+  else if (!$newTopic)
     db_query("
       DELETE FROM {$db_prefix}log_notify
       WHERE ID_MEMBER = $ID_MEMBER
@@ -1017,7 +1017,7 @@ function Post2()
   // Notify any members who have notification turned on for this topic.
   if ($newTopic)
     notifyMembersBoard();
-  elseif (empty($_REQUEST['msg']))
+  else if (empty($_REQUEST['msg']))
     sendNotifications($topic, 'reply');
 
   // Returning to the topic?
@@ -1037,7 +1037,7 @@ function Post2()
     call_user_func('Display');
   }
   else {
-  if(isset($_REQUEST['msg']))
+  if (isset($_REQUEST['msg']))
   redirectexit($boardurl . '/post-agregado/' . $topic);
   
   if (!empty($_POST['move']) && allowedTo('move_any'))
@@ -1045,7 +1045,7 @@ function Post2()
 
   if (isset($_REQUEST['msg']) && !empty($_REQUEST['goback']))
     redirectexit(''. $scripturl .'');
-  elseif (!empty($_REQUEST['goback']))
+  else if (!empty($_REQUEST['goback']))
     redirectexit($boardurl . '/post-agregado/' . $topic);
 
   else
@@ -1101,7 +1101,7 @@ function AnnouncementSelectMembergroup()
       LEFT JOIN {$db_prefix}members AS mem ON (mem.ID_GROUP = mg.ID_GROUP OR FIND_IN_SET(mg.ID_GROUP, mem.additionalGroups) OR mg.ID_GROUP = mem.ID_POST_GROUP)
     WHERE mg.ID_GROUP IN (" . implode(', ', $groups) . ")
     GROUP BY mg.ID_GROUP
-    ORDER BY mg.minPosts, IF(mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
+    ORDER BY mg.minPosts, if (mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
   while ($row = mysqli_fetch_assoc($request))
   {
     $context['groups'][$row['ID_GROUP']] = array(
@@ -1186,7 +1186,7 @@ function AnnouncementSend()
   {
     if (!empty($_REQUEST['move']) && allowedTo('move_any'))
       redirectexit('action=movetopic;topic=' . $topic . '.0' . (empty($_REQUEST['goback']) ? '' : ';goback'));
-    elseif (!empty($_REQUEST['goback']))
+    else if (!empty($_REQUEST['goback']))
       redirectexit('topic=' . $topic . '.new;boardseen#new', $context['browser']['is_ie']);
     else
       redirectexit('board=' . $board . '.0');
@@ -1293,7 +1293,7 @@ function notifyMembersBoard()
         (!empty($rowmember['notifySendBody']) ? $body_text : '') .
         $txt['notify_boardsUnsubscribe'] . ': ' . $scripturl . '?action=notifyboard;board=' . $board . ".0\n\n" .
         $txt[130], null, 't' . $topic);
-    elseif (empty($rowmember['notifyOnce']))
+    else if (empty($rowmember['notifyOnce']))
       sendmail($rowmember['emailAddress'], $send_subject,
         sprintf($txt['notify_boards'], $_POST['subject'], $scripturl . '?topic=' . $topic . '.new#new', un_htmlspecialchars($user_info['name'])) .
         (!empty($rowmember['notifySendBody']) ? $body_text : '') .
@@ -1438,7 +1438,7 @@ function QuoteFast()
   }
   // !!! Needs a nicer interface.
   // In case our message has been removed in the meantime.
-  elseif (isset($_REQUEST['modify']))
+  else if (isset($_REQUEST['modify']))
   {
     $context['sub_template'] = 'modifyfast';
     $context['message'] = array(
@@ -1492,13 +1492,13 @@ function JavaScriptModify()
     {
       if (!empty($modSettings['edit_disable_time']) && $row['posterTime'] + ($modSettings['edit_disable_time'] + 5) * 60 < time())
         fatal_lang_error('modify_post_time_passed', false);
-      elseif ($row['ID_MEMBER_STARTED'] == $ID_MEMBER && !allowedTo('modify_own'))
+      else if ($row['ID_MEMBER_STARTED'] == $ID_MEMBER && !allowedTo('modify_own'))
         isAllowedTo('modify_replies');
       else
         isAllowedTo('modify_own');
     }
     // Otherwise, they're locked out; someone who can modify the replies is needed.
-    elseif ($row['ID_MEMBER_STARTED'] == $ID_MEMBER && !allowedTo('modify_any'))
+    else if ($row['ID_MEMBER_STARTED'] == $ID_MEMBER && !allowedTo('modify_any'))
       isAllowedTo('modify_replies');
     else
       isAllowedTo('modify_any');
@@ -1529,7 +1529,7 @@ function JavaScriptModify()
       $post_errors[] = 'no_message';
       unset($_POST['message']);
     }
-    elseif (!empty($modSettings['max_messageLength']) && $func['strlen']($_POST['message']) > $modSettings['max_messageLength'])
+    else if (!empty($modSettings['max_messageLength']) && $func['strlen']($_POST['message']) > $modSettings['max_messageLength'])
     {
       $post_errors[] = 'long_message';
       unset($_POST['message']);
@@ -1552,14 +1552,14 @@ function JavaScriptModify()
   {
     if (!allowedTo(array('lock_any', 'lock_own')) || (!allowedTo('lock_any') && $ID_MEMBER != $row['ID_MEMBER']))
       unset($_POST['lock']);
-    elseif (!allowedTo('lock_any'))
+    else if (!allowedTo('lock_any'))
     {
       if ($row['locked'] == 1)
         unset($_POST['lock']);
       else
         $_POST['lock'] = empty($_POST['lock']) ? 0 : 2;
     }
-    elseif (!empty($row['locked']) && !empty($_POST['lock']) || $_POST['lock'] == $row['locked'])
+    else if (!empty($row['locked']) && !empty($_POST['lock']) || $_POST['lock'] == $row['locked'])
       unset($_POST['lock']);
     else
       $_POST['lock'] = empty($_POST['lock']) ? 0 : 1;
@@ -1658,7 +1658,7 @@ function JavaScriptModify()
       $context['message']['body'] = parse_bbc($context['message']['body'], $row['smileysEnabled'], $row['ID_MSG']);
     }
     // Topic?
-    elseif (empty($post_errors) && isset($msgOptions['subject']))
+    else if (empty($post_errors) && isset($msgOptions['subject']))
     {
       $context['sub_template'] = 'modifytopicdone';
       $context['message'] = array(

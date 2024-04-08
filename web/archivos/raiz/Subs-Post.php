@@ -25,7 +25,7 @@ function preparsecode(&$message, $previewing = false) {
   // Close/open all code tags...
   if ($codeopen > $codeclose)
     $message .= str_repeat('[/code]', $codeopen - $codeclose);
-  elseif ($codeclose > $codeopen)
+  else if ($codeclose > $codeopen)
     $message = str_repeat('[code]', $codeclose - $codeopen) . $message;
   $parts = preg_split('~(\[/code\]|\[code(?:=[^\]]+)?\])~i', $message, -1, PREG_SPLIT_DELIM_CAPTURE);
   $non_breaking_space = $context['utf8'] ? ($context['server']['complex_preg_chars'] ? '\x{A0}' : pack('C*', 0xC2, 0xA0)) : '\xA0';
@@ -251,10 +251,10 @@ function fixTags(&$message)
           $desired_height = $height;
         }
         // Scale it to the width...
-        elseif (empty($desired_width) && !empty($height))
+        else if (empty($desired_width) && !empty($height))
           $desired_width = (int) (($desired_height * $width) / $height);
         // Scale if to the height.
-        elseif (!empty($width))
+        else if (!empty($width))
           $desired_height = (int) (($desired_width * $height) / $width);
       }
 
@@ -321,9 +321,9 @@ function fixTag(&$message, $myTag, $protocols, $embeddedUrl = false, $hasEqualSi
     {
       if (substr($replace, 0, 1) == '/')
         $replace = $domain_url . $replace;
-      elseif (substr($replace, 0, 1) == '?')
+      else if (substr($replace, 0, 1) == '?')
         $replace = $scripturl . $replace;
-      elseif (substr($replace, 0, 1) == '#' && $embeddedUrl)
+      else if (substr($replace, 0, 1) == '#' && $embeddedUrl)
       {
         $replace = '#' . preg_replace('~[^A-Za-z0-9_\-#]~', '', substr($replace, 1));
         $this_tag = 'iurl';
@@ -332,14 +332,14 @@ function fixTag(&$message, $myTag, $protocols, $embeddedUrl = false, $hasEqualSi
       else
         $replace = $protocols[0] . '://' . $replace;
     }
-    elseif (!$found)
+    else if (!$found)
       $replace = $protocols[0] . '://' . $replace;
 
     if ($hasEqualSign && $embeddedUrl)
       $replaces[$matches[0][$k]] = '[' . $this_tag . '=' . $replace . ']' . (empty($matches[4][$k]) ? '' : $matches[3][$k] . '[/' . $this_close . ']');
-    elseif ($hasEqualSign)
+    else if ($hasEqualSign)
       $replaces['[' . $matches[1][$k] . '=' . $matches[2][$k] . ']'] = '[' . $this_tag . '=' . $replace . ']';
-    elseif ($embeddedUrl)
+    else if ($embeddedUrl)
       $replaces['[' . $matches[1][$k] . ']' . $matches[2][$k] . '[/' . $matches[3][$k] . ']'] = '[' . $this_tag . '=' . $replace . ']' . $matches[2][$k] . '[/' . $this_close . ']';
     else
       $replaces['[' . $matches[1][$k] . ']' . $matches[2][$k] . '[/' . $matches[3][$k] . ']'] = '[' . $this_tag . ']' . $replace . '[/' . $this_close . ']';
@@ -603,7 +603,7 @@ function sendpm($recipients, $subject, $message, $store_outbox = false, $from = 
       FIND_IN_SET($from[id], mem.buddy_list) AS is_buddy, mem.is_activated,
       (mem.ID_GROUP = 1 OR FIND_IN_SET(1, mem.additionalGroups)) AS is_admin
     FROM {$db_prefix}members AS mem
-      LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
+      LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = if (mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
     WHERE mem.ID_MEMBER IN (" . implode(", ", $all_to) . ")
     ORDER BY mem.lngfile
     LIMIT " . count($all_to), __FILE__, __LINE__);
@@ -722,9 +722,9 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
       $fixchar = create_function('$n', '
         if ($n < 128)
           return chr($n);
-        elseif ($n < 2048)
+        else if ($n < 2048)
           return chr(192 | $n >> 6) . chr(128 | $n & 63);
-        elseif ($n < 65536)
+        else if ($n < 65536)
           return chr(224 | $n >> 12) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
         else
           return chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);');
@@ -745,11 +745,11 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
     $entityConvert = create_function('$c', '
       if (strlen($c) === 1 && ord($c{0}) <= 0x7F)
         return $c;
-      elseif (strlen($c) === 2 && ord($c{0}) >= 0xC0 && ord($c{0}) <= 0xDF)
+      else if (strlen($c) === 2 && ord($c{0}) >= 0xC0 && ord($c{0}) <= 0xDF)
         return "&#" . (((ord($c{0}) ^ 0xC0) << 6) + (ord($c{1}) ^ 0x80)) . ";";
-      elseif (strlen($c) === 3 && ord($c{0}) >= 0xE0 && ord($c{0}) <= 0xEF)
+      else if (strlen($c) === 3 && ord($c{0}) >= 0xE0 && ord($c{0}) <= 0xEF)
         return "&#" . (((ord($c{0}) ^ 0xE0) << 12) + ((ord($c{1}) ^ 0x80) << 6) + (ord($c{2}) ^ 0x80)) . ";";
-      elseif (strlen($c) === 4 && ord($c{0}) >= 0xF0 && ord($c{0}) <= 0xF7)
+      else if (strlen($c) === 4 && ord($c{0}) >= 0xF0 && ord($c{0}) <= 0xF7)
         return "&#" . (((ord($c{0}) ^ 0xF0) << 18) + ((ord($c{1}) ^ 0x80) << 12) + ((ord($c{2}) ^ 0x80) << 6) + (ord($c{3}) ^ 0x80)) . ";";
       else
         return "";');
@@ -759,7 +759,7 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
   }
 
   // We don't need to mess with the subject line if no special characters were in it..
-  elseif (!$hotmail_fix && preg_match('~([^\x09\x0A\x0D\x20-\x7F])~', $string) === 1)
+  else if (!$hotmail_fix && preg_match('~([^\x09\x0A\x0D\x20-\x7F])~', $string) === 1)
   {
     // Base64 encode.
     $string = base64_encode($string);
@@ -845,7 +845,7 @@ function smtp_mail($mail_to_array, $subject, $message, $headers)
       if (!server_parse($modSettings['smtp_password'], $socket, '235'))
         return false;
     }
-    elseif (!server_parse('HELO ' . $modSettings['smtp_host'], $socket, '250'))
+    else if (!server_parse('HELO ' . $modSettings['smtp_host'], $socket, '250'))
       return false;
   }
   else
@@ -929,7 +929,7 @@ function server_parse($message, $socket, $response)
 }
 
 // Makes sure the calendar post is valid.
-function calendarValidatePost(){}
+function calendarValidatePost() {}
 
 // Prints a post box.  Used everywhere you post or send.
 function theme_postbox($msg)
@@ -983,7 +983,7 @@ function theme_postbox($msg)
       ),
       'last' => true,
     );
-  elseif ($user_info['smiley_set'] != 'none')
+  else if ($user_info['smiley_set'] != 'none')
   {
     if (($temp = cache_get_data('posting_smileys', 480)) == null)
     {
@@ -1150,7 +1150,7 @@ function sendNotifications($ID_TOPIC, $type)
   // Can't do it if there's no topic.
   if (empty($ID_TOPIC))
     return;
-  elseif (!is_numeric($ID_TOPIC))
+  else if (!is_numeric($ID_TOPIC))
     trigger_error('sendNotifications(): \'' . $ID_TOPIC . '\' is not a topic id', E_USER_NOTICE);
 
   // Get the subject and body...
@@ -1257,7 +1257,7 @@ function createPost(&$msgOptions, &$topicOptions, &$posterOptions)
       $posterOptions['name'] = $txt[28];
       $posterOptions['email'] = '';
     }
-    elseif ($posterOptions['id'] != $ID_MEMBER)
+    else if ($posterOptions['id'] != $ID_MEMBER)
     {
       $request = db_query("
         SELECT memberName, emailAddress
@@ -1616,7 +1616,7 @@ function updateLastMessages($setboards, $ID_MSG = 0)
         // If we're already doing this one as a board, is this a higher last modified?
         if (isset($lastMsg[$id]) && $lastMsg[$ID_BOARD] > $lastMsg[$id])
           $lastMsg[$id] = $lastMsg[$ID_BOARD];
-        elseif (!isset($lastMsg[$id]) && (!isset($parent_boards[$id]) || $parent_boards[$id] < $lastMsg[$ID_BOARD]))
+        else if (!isset($lastMsg[$id]) && (!isset($parent_boards[$id]) || $parent_boards[$id] < $lastMsg[$ID_BOARD]))
           $parent_boards[$id] = $lastMsg[$ID_BOARD];
       }
     }

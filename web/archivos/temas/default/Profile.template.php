@@ -1363,37 +1363,37 @@ function template_paso2() {
                     <tbody>
                       <tr>
                         <td>
-                          <input '; if(empty($context['member']['me_gustaria'])) { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="" type="radio" />
+                          <input '; if (empty($context['member']['me_gustaria'])) { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="" type="radio" />
                           Sin Respuesta
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['me_gustaria'] == 'me_gustaria') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="hacer_amigos" type="radio" />
+                          <input '; if ($context['member']['me_gustaria'] == 'me_gustaria') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="hacer_amigos" type="radio" />
                           Hacer Amigos
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['me_gustaria'] == 'conocer_gente_con_mis_intereses') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="conocer_gente_con_mis_intereses" type="radio" />
+                          <input '; if ($context['member']['me_gustaria'] == 'conocer_gente_con_mis_intereses') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="conocer_gente_con_mis_intereses" type="radio" />
                           Conocer gente con mis intereses
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['me_gustaria'] == 'conocer_gente_para_hacer_negocios') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="conocer_gente_para_hacer_negocios" type="radio" />
+                          <input '; if ($context['member']['me_gustaria'] == 'conocer_gente_para_hacer_negocios') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="conocer_gente_para_hacer_negocios" type="radio" />
                           Conocer gente para hacer negocios
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['me_gustaria'] == 'encontrar_pareja') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="encontrar_pareja" type="radio" />
+                          <input '; if ($context['member']['me_gustaria'] == 'encontrar_pareja') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="encontrar_pareja" type="radio" />
                           Encontrar pareja
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['me_gustaria'] == 'de_todo') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="de_todo" type="radio" />
+                          <input '; if ($context['member']['me_gustaria'] == 'de_todo') { echo 'checked="checked"'; } echo 'name="me_gustaria" id="me_gustaria" value="de_todo" type="radio" />
                           De todo
                         </td>
                       </tr>
@@ -1410,43 +1410,43 @@ function template_paso2() {
                     <tbody>
                       <tr>
                         <td>
-                          <input '; if(empty($context['member']['estado'])) { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="" type="radio" />
+                          <input '; if (empty($context['member']['estado'])) { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="" type="radio" />
                           Sin Respuesta
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['estado'] == 'soltero') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="soltero" type="radio" />
+                          <input '; if ($context['member']['estado'] == 'soltero') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="soltero" type="radio" />
                           Soltero/a
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['estado'] == 'novio') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="novio" type="radio" />
+                          <input '; if ($context['member']['estado'] == 'novio') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="novio" type="radio" />
                           De novio/a
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['estado'] == 'casado') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="casado" type="radio" />
+                          <input '; if ($context['member']['estado'] == 'casado') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="casado" type="radio" />
                           Casado/a
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['estado'] == 'divorciado') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="divorciado" type="radio" />
+                          <input '; if ($context['member']['estado'] == 'divorciado') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="divorciado" type="radio" />
                           Divorciado/a
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['estado'] == 'viudo') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="viudo" type="radio" />
+                          <input '; if ($context['member']['estado'] == 'viudo') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="viudo" type="radio" />
                           Viudo/a
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['estado'] == 'algo') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="algo" type="radio" />
+                          <input '; if ($context['member']['estado'] == 'algo') { echo 'checked="checked"'; } echo 'name="estado" id="estado" value="algo" type="radio" />
                           En algo...
                         </td>
                       </tr>
@@ -1463,37 +1463,37 @@ function template_paso2() {
                     <tbody>
                       <tr>
                         <td>
-                          <input '; if(empty($context['member']['hijos'])) { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="" type="radio" />
+                          <input '; if (empty($context['member']['hijos'])) { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="" type="radio" />
                           Sin Respuesta
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['hijos'] == 'no') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no" type="radio" />
+                          <input '; if ($context['member']['hijos'] == 'no') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no" type="radio" />
                           No tengo
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['hijos'] == 'algun_dia') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="algun_dia" type="radio" />
+                          <input '; if ($context['member']['hijos'] == 'algun_dia') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="algun_dia" type="radio" />
                           Alg&uacute;n d&iacute;a
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['hijos'] == 'no_quiero') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no_quiero" type="radio" />
+                          <input '; if ($context['member']['hijos'] == 'no_quiero') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no_quiero" type="radio" />
                           No son lo m&iacute;o
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['hijos'] == 'viven_conmigo') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="viven_conmigo" type="radio" />
+                          <input '; if ($context['member']['hijos'] == 'viven_conmigo') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="viven_conmigo" type="radio" />
                           Tengo, vivo con ellos
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['hijos'] == 'no_viven_conmigo') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no_viven_conmigo" type="radio" />
+                          <input '; if ($context['member']['hijos'] == 'no_viven_conmigo') { echo 'checked="checked"'; } echo 'name="hijos" id="hijos" value="no_viven_conmigo" type="radio" />
                           Tengo, no vivo con ellos
                         </td>
                       </tr>
@@ -1568,17 +1568,17 @@ function template_paso3() {
                 </td>
                 <td width="40%">
                   <select id="pelo_color" name="pelo_color">
-                    <option '; if(empty($context['member']['pelo_color'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option>
-                    <option '; if($context['member']['pelo_color'] == 'negro') { echo 'selected="selected" '; } echo 'value="negro">Negro</option>
-                    <option '; if($context['member']['pelo_color'] == 'castano_oscuro') { echo 'selected="selected" '; } echo 'value="castano_oscuro">Casta&ntilde;o oscuro</option>
-                    <option '; if($context['member']['pelo_color'] == 'castano_claro') { echo 'selected="selected" '; } echo 'value="castano_claro">Casta&ntilde;o claro</option>
-                    <option '; if($context['member']['pelo_color'] == 'rubio') { echo 'selected="selected" '; } echo 'value="rubio">Rubio</option>
-                    <option '; if($context['member']['pelo_color'] == 'pelirrojo') { echo 'selected="selected" '; } echo 'value="pelirrojo">Pelirrojo</option>
-                    <option '; if($context['member']['pelo_color'] == 'gris') { echo 'selected="selected" '; } echo 'value="gris">Gris</option>
-                    <option '; if($context['member']['pelo_color'] == 'canoso') { echo 'selected="selected" '; } echo 'value="canoso">Canoso</option>
-                    <option '; if($context['member']['pelo_color'] == 'tenido') { echo 'selected="selected" '; } echo 'value="tenido">Te&ntilde;ido</option>
-                    <option '; if($context['member']['pelo_color'] == 'rapado') { echo 'selected="selected" '; } echo 'value="rapado">Rapado</option>
-                    <option '; if($context['member']['pelo_color'] == 'calvo') { echo 'selected="selected" '; } echo 'value="calvo">Calvo</option>
+                    <option '; if (empty($context['member']['pelo_color'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option>
+                    <option '; if ($context['member']['pelo_color'] == 'negro') { echo 'selected="selected" '; } echo 'value="negro">Negro</option>
+                    <option '; if ($context['member']['pelo_color'] == 'castano_oscuro') { echo 'selected="selected" '; } echo 'value="castano_oscuro">Casta&ntilde;o oscuro</option>
+                    <option '; if ($context['member']['pelo_color'] == 'castano_claro') { echo 'selected="selected" '; } echo 'value="castano_claro">Casta&ntilde;o claro</option>
+                    <option '; if ($context['member']['pelo_color'] == 'rubio') { echo 'selected="selected" '; } echo 'value="rubio">Rubio</option>
+                    <option '; if ($context['member']['pelo_color'] == 'pelirrojo') { echo 'selected="selected" '; } echo 'value="pelirrojo">Pelirrojo</option>
+                    <option '; if ($context['member']['pelo_color'] == 'gris') { echo 'selected="selected" '; } echo 'value="gris">Gris</option>
+                    <option '; if ($context['member']['pelo_color'] == 'canoso') { echo 'selected="selected" '; } echo 'value="canoso">Canoso</option>
+                    <option '; if ($context['member']['pelo_color'] == 'tenido') { echo 'selected="selected" '; } echo 'value="tenido">Te&ntilde;ido</option>
+                    <option '; if ($context['member']['pelo_color'] == 'rapado') { echo 'selected="selected" '; } echo 'value="rapado">Rapado</option>
+                    <option '; if ($context['member']['pelo_color'] == 'calvo') { echo 'selected="selected" '; } echo 'value="calvo">Calvo</option>
                   </select>
                 </td>
               </tr>
@@ -1588,12 +1588,12 @@ function template_paso3() {
                 </td>
                 <td>
                   <select id="ojos_color" name="ojos_color">
-                    <option '; if(empty($context['user']['ojos_color'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option>
-                    <option '; if($context['member']['ojos_color'] == 'negros') { echo 'selected="selected" '; } echo 'value="negros">Negros</option>
-                    <option '; if($context['member']['ojos_color'] == 'marrones') { echo 'selected="selected" '; } echo 'value="marrones">Marrones</option>
-                    <option '; if($context['member']['ojos_color'] == 'celestes') { echo 'selected="selected" '; } echo 'value="celestes">Celestes</option>
-                    <option '; if($context['member']['ojos_color'] == 'verdes') { echo 'selected="selected" '; } echo 'value="verdes">Verdes</option>
-                    <option '; if($context['member']['ojos_color'] == 'grises') { echo 'selected="selected" '; } echo 'value="grises">Grises</option>
+                    <option '; if (empty($context['user']['ojos_color'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option>
+                    <option '; if ($context['member']['ojos_color'] == 'negros') { echo 'selected="selected" '; } echo 'value="negros">Negros</option>
+                    <option '; if ($context['member']['ojos_color'] == 'marrones') { echo 'selected="selected" '; } echo 'value="marrones">Marrones</option>
+                    <option '; if ($context['member']['ojos_color'] == 'celestes') { echo 'selected="selected" '; } echo 'value="celestes">Celestes</option>
+                    <option '; if ($context['member']['ojos_color'] == 'verdes') { echo 'selected="selected" '; } echo 'value="verdes">Verdes</option>
+                    <option '; if ($context['member']['ojos_color'] == 'grises') { echo 'selected="selected" '; } echo 'value="grises">Grises</option>
                   </select>
                 </td>
               </tr>
@@ -1603,12 +1603,12 @@ function template_paso3() {
                 </td>
                 <td>
                   <select id="fisico" name="fisico">
-                    <option '; if(empty($context['member']['fisico'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option>
-                    <option '; if($context['member']['fisico'] == 'delgado') { echo 'selected="selected" '; } echo 'value="delgado">Delgado/a</option>
-                    <option '; if($context['member']['fisico'] == 'atletico') { echo 'selected="selected" '; } echo 'value="atletico">Atl&eacute;tico</option>
-                    <option '; if($context['member']['fisico'] == 'normal') { echo 'selected="selected" '; } echo 'value="normal">Normal</option>
-                    <option '; if($context['member']['fisico'] == 'kilos_de_mas') { echo 'selected="selected" '; } echo 'value="kilos_de_mas">Algunos kilos de m&aacute;s</option>
-                    <option '; if($context['member']['fisico'] == 'corpulento') { echo 'selected="selected" '; } echo 'value="corpulento">Corpulento/a</option>
+                    <option '; if (empty($context['member']['fisico'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option>
+                    <option '; if ($context['member']['fisico'] == 'delgado') { echo 'selected="selected" '; } echo 'value="delgado">Delgado/a</option>
+                    <option '; if ($context['member']['fisico'] == 'atletico') { echo 'selected="selected" '; } echo 'value="atletico">Atl&eacute;tico</option>
+                    <option '; if ($context['member']['fisico'] == 'normal') { echo 'selected="selected" '; } echo 'value="normal">Normal</option>
+                    <option '; if ($context['member']['fisico'] == 'kilos_de_mas') { echo 'selected="selected" '; } echo 'value="kilos_de_mas">Algunos kilos de m&aacute;s</option>
+                    <option '; if ($context['member']['fisico'] == 'corpulento') { echo 'selected="selected" '; } echo 'value="corpulento">Corpulento/a</option>
                   </select>
                 </td>
               </tr>
@@ -1618,12 +1618,12 @@ function template_paso3() {
                 </td>
                 <td>
                   <select id="dieta" name="dieta">
-                    <option '; if(empty($context['member']['dieta'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option>
-                    <option '; if($context['member']['dieta'] == 'vegetariana') { echo 'selected="selected" '; } echo 'value="vegetariana">Vegetariana</option>
-                    <option '; if($context['member']['dieta'] == 'lacto_vegetariana') { echo 'selected="selected" '; } echo 'value="lacto_vegetariana">Lacto Vegetariana</option>
-                    <option '; if($context['member']['dieta'] == 'organica') { echo 'selected="selected" '; } echo 'value="organica">Org&aacute;nica</option>
-                    <option '; if($context['member']['dieta'] == 'de_todo') { echo 'selected="selected" '; } echo 'value="de_todo">De todo</option>
-                    <option '; if($context['member']['dieta'] == 'comida_basura') { echo 'selected="selected" '; } echo 'value="comida_basura">Comida basura</option>
+                    <option '; if (empty($context['member']['dieta'])) { echo 'selected="selected" '; } echo 'value="">Sin Respuesta</option>
+                    <option '; if ($context['member']['dieta'] == 'vegetariana') { echo 'selected="selected" '; } echo 'value="vegetariana">Vegetariana</option>
+                    <option '; if ($context['member']['dieta'] == 'lacto_vegetariana') { echo 'selected="selected" '; } echo 'value="lacto_vegetariana">Lacto Vegetariana</option>
+                    <option '; if ($context['member']['dieta'] == 'organica') { echo 'selected="selected" '; } echo 'value="organica">Org&aacute;nica</option>
+                    <option '; if ($context['member']['dieta'] == 'de_todo') { echo 'selected="selected" '; } echo 'value="de_todo">De todo</option>
+                    <option '; if ($context['member']['dieta'] == 'comida_basura') { echo 'selected="selected" '; } echo 'value="comida_basura">Comida basura</option>
                   </select>
                 </td> 
               </tr>
@@ -1636,37 +1636,37 @@ function template_paso3() {
                     <tbody>
                       <tr>
                         <td>
-                          <input '; if(empty($context['member']['fumo'])) { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="" type="radio" />
+                          <input '; if (empty($context['member']['fumo'])) { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="" type="radio" />
                           Sin Respuesta
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['fumo'] == 'no') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="no" type="radio" />
+                          <input '; if ($context['member']['fumo'] == 'no') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="no" type="radio" />
                           No
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['fumo'] == 'casualmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="casualmente" type="radio" />
+                          <input '; if ($context['member']['fumo'] == 'casualmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="casualmente" type="radio" />
                           Casualmente
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['fumo'] == 'socialmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="socialmente" type="radio" />
+                          <input '; if ($context['member']['fumo'] == 'socialmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="socialmente" type="radio" />
                           Socialmente
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['fumo'] == 'regularmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="regularmente" type="radio" />
+                          <input '; if ($context['member']['fumo'] == 'regularmente') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="regularmente" type="radio" />
                           Regularmente
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['fumo'] == 'mucho') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="mucho" type="radio">
+                          <input '; if ($context['member']['fumo'] == 'mucho') { echo 'checked="checked" '; } echo 'name="fumo" id="fumo" value="mucho" type="radio">
                           Mucho
                         </td>
                       </tr>
@@ -1683,37 +1683,37 @@ function template_paso3() {
                     <tbody>
                       <tr>
                         <td>
-                          <input '; if(empty($context['member']['tomo_alcohol'])) { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="" type="radio" />
+                          <input '; if (empty($context['member']['tomo_alcohol'])) { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="" type="radio" />
                           Sin Respuesta
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['tomo_alcohol'] == 'no') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="no" type="radio" />
+                          <input '; if ($context['member']['tomo_alcohol'] == 'no') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="no" type="radio" />
                           No
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['tomo_alcohol'] == 'casualmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="casualmente" type="radio" />
+                          <input '; if ($context['member']['tomo_alcohol'] == 'casualmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="casualmente" type="radio" />
                           Casualmente
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['tomo_alcohol'] == 'socialmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="socialmente" type="radio" />
+                          <input '; if ($context['member']['tomo_alcohol'] == 'socialmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="socialmente" type="radio" />
                           Socialmente
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['tomo_alcohol'] == 'regularmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="regularmente" type="radio" />
+                          <input '; if ($context['member']['tomo_alcohol'] == 'regularmente') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="regularmente" type="radio" />
                           Regularmente
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <input '; if($context['member']['tomo_alcohol'] == 'mucho') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="mucho" type="radio" />
+                          <input '; if ($context['member']['tomo_alcohol'] == 'mucho') { echo 'checked="checked" '; } echo 'name="tomo_alcohol" id="tomo_alcohol" value="mucho" type="radio" />
                           Mucho
                         </td>
                       </tr>
@@ -1867,7 +1867,7 @@ function template_agregarimagen() {
           return false;
         }
 
-        if(filename == \'\') {
+        if (filename == \'\') {
           alert(\'No has agregado ning\xfan enlace de imagen.\');
           return false;
         }
@@ -1924,12 +1924,12 @@ function template_editarimagen() {
   echo '
     <script language="JavaScript" type="text/javascript">
       function requerido(title, filename) {
-        if(title == \'\') {
+        if (title == \'\') {
           alert(\'No has escrito el titulo de la imagen.\');
           return false;
         }
 
-        if(filename == \'\') {
+        if (filename == \'\') {
           alert(\'No has agregado ning\xfan enlace de imagen.\');
           return false;
         }
@@ -2001,9 +2001,9 @@ function template_misnotas() {
           </div>
           <div class="windowbg" border="0" style="width: 764px; padding: 4px;">
             <form action="' . $boardurl . '/mis-notas/editando/" method="post" accept-charset="' . $context['character_set'] . '" enctype="multipart/form-data">
-              <input type="text" title="' . $txt['notes_add_new_title'] . '" onfocus="if(this.value==\'' . $txt['notes_add_new_title'] . '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'' . $txt['notes_add_new_title'] . '\'; no_foco(this);" value="' . strip_tags($context['nojs']['subject']) . '" style="width: 758px; font-family: arial; font-size: 12px;" name="titulo" id="titulo" maxlength="60" />
+              <input type="text" title="' . $txt['notes_add_new_title'] . '" onfocus="if (this.value==\'' . $txt['notes_add_new_title'] . '\') this.value=\'\'; foco(this);" onblur="if (this.value==\'\') this.value=\'' . $txt['notes_add_new_title'] . '\'; no_foco(this);" value="' . strip_tags($context['nojs']['subject']) . '" style="width: 758px; font-family: arial; font-size: 12px;" name="titulo" id="titulo" maxlength="60" />
               <br />
-              <textarea name="contenido" id="contenido" style="width: 758px; height: 185px; font-family: arial; font-size: 12px;" title="' . $txt['notes_add_new_text'] . '" onfocus="if(this.value==\'' . $txt['notes_add_new_text'] . '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'' . $txt['notes_add_new_text'] . '\'; no_foco(this);">' . $context['nojs']['body'] . '</textarea>
+              <textarea name="contenido" id="contenido" style="width: 758px; height: 185px; font-family: arial; font-size: 12px;" title="' . $txt['notes_add_new_text'] . '" onfocus="if (this.value==\'' . $txt['notes_add_new_text'] . '\') this.value=\'\'; foco(this);" onblur="if (this.value==\'\') this.value=\'' . $txt['notes_add_new_text'] . '\'; no_foco(this);">' . $context['nojs']['body'] . '</textarea>
               <br />
               <p align="right" style="margin: 0px; padding: 0px;">
                 <input type="button" value="Salir sin guardar" onclick="location.href=\'' . $boardurl . '/mis-notas/\'" class="login" />
@@ -2135,9 +2135,9 @@ function template_agregarnota() {
       </div>
       <div class="windowbg" border="0" style="width: 764px; padding: 4px;">
         <form action="' . $boardurl . '/mis-notas/enviar/" method="post" accept-charset="' . $context['character_set'] . '" enctype="multipart/form-data">
-          <input type="text" title="' . $txt['notes_add_new_title'] . '" onfocus="if(this.value==\'' . $txt['notes_add_new_title'] . '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'' . $txt['notes_add_new_title'] . '\'; no_foco(this);" value="' . $txt['notes_add_new_title'] . '" style="width: 758px; font-family: arial; font-size: 12px;" name="titulo" maxlength="60" id="titulo" />
+          <input type="text" title="' . $txt['notes_add_new_title'] . '" onfocus="if (this.value==\'' . $txt['notes_add_new_title'] . '\') this.value=\'\'; foco(this);" onblur="if (this.value==\'\') this.value=\'' . $txt['notes_add_new_title'] . '\'; no_foco(this);" value="' . $txt['notes_add_new_title'] . '" style="width: 758px; font-family: arial; font-size: 12px;" name="titulo" maxlength="60" id="titulo" />
           <br/>
-          <textarea name="contenido" id="contenido" style="width: 758px; height: 185px; font-family: arial; font-size: 12px;" title="' . $txt['notes_add_new_text'] . '" onfocus="if(this.value==\'' . $txt['notes_add_new_text'] . '\') this.value=\'\'; foco(this);" onblur="if(this.value==\'\') this.value=\'' . $txt['notes_add_new_text'] . '\'; no_foco(this);">' . $txt['notes_add_new_text'] . '</textarea>
+          <textarea name="contenido" id="contenido" style="width: 758px; height: 185px; font-family: arial; font-size: 12px;" title="' . $txt['notes_add_new_text'] . '" onfocus="if (this.value==\'' . $txt['notes_add_new_text'] . '\') this.value=\'\'; foco(this);" onblur="if (this.value==\'\') this.value=\'' . $txt['notes_add_new_text'] . '\'; no_foco(this);">' . $txt['notes_add_new_text'] . '</textarea>
           <br />
           <p align="right" style="margin: 0px; padding: 0px;">
             <input type="submit" value="Crear nota" name="agregar" class="login" />
@@ -2206,51 +2206,51 @@ function template_summary() {
           <center>';
 
     // TO-DO: Cambiar forma de pintar estados
-    if($context['member']['estado_icon'] == 'mcontento') { echo '<u><b>'; }
+    if ($context['member']['estado_icon'] == 'mcontento') { echo '<u><b>'; }
     echo '<a href="' . $boardurl . '/estado/mcontento/" title="Muy contento/a">Muy contento/a</a>';
-    if($context['member']['estado_icon'] == 'mcontento') { echo '</u></b>';}
+    if ($context['member']['estado_icon'] == 'mcontento') { echo '</u></b>';}
 
     echo ' - ';
 
-    if($context['member']['estado_icon'] == 'contento') { echo '<u><b>'; }
+    if ($context['member']['estado_icon'] == 'contento') { echo '<u><b>'; }
     echo '<a href="' . $boardurl . '/estado/contento/" title="Contento/a">Contento/a</a>';
-    if($context['member']['estado_icon'] == 'contento') { echo '</u></b>'; }
+    if ($context['member']['estado_icon'] == 'contento') { echo '</u></b>'; }
 
     echo ' - ';
 
-    if($context['member']['estado_icon'] == 'sueno') { echo '<u><b>'; }
+    if ($context['member']['estado_icon'] == 'sueno') { echo '<u><b>'; }
     echo '<a href="' . $boardurl . '/estado/cons/" title="Con sue&ntilde;o">Con sue&ntilde;o</a>';
-    if($context['member']['estado_icon'] == 'sueno') { echo '</u></b>'; }
+    if ($context['member']['estado_icon'] == 'sueno') { echo '</u></b>'; }
     
     echo ' - ';
     
-    if($context['member']['estado_icon'] == 'descansar') { echo '<u><b>'; }
+    if ($context['member']['estado_icon'] == 'descansar') { echo '<u><b>'; }
     echo '<a href="' . $boardurl . '/estado/desc/" title="Descansando">Descansando</a>';
-    if($context['member']['estado_icon'] == 'descansar') { echo '</u></b>'; }
+    if ($context['member']['estado_icon'] == 'descansar') { echo '</u></b>'; }
     
     echo ' - ';
     
-    if($context['member']['estado_icon'] == 'triste') { echo '<u><b>'; }
+    if ($context['member']['estado_icon'] == 'triste') { echo '<u><b>'; }
     echo '<a href="' . $boardurl . '/estado/triste/" title="Triste">Triste</a>';
-    if($context['member']['estado_icon'] == 'triste') { echo '</u></b>'; }
+    if ($context['member']['estado_icon'] == 'triste') { echo '</u></b>'; }
     
     echo ' - ';
     
-    if($context['member']['estado_icon'] == 'enferm') { echo '<u><b>'; }
+    if ($context['member']['estado_icon'] == 'enferm') { echo '<u><b>'; }
     echo '<a href="' . $boardurl . '/estado/enferm/" title="Enfermo/a">Enfermo/a</a>';
-    if($context['member']['estado_icon'] == 'enferm') { echo '</u></b>'; }
+    if ($context['member']['estado_icon'] == 'enferm') { echo '</u></b>'; }
     
     echo ' - ';
     
-    if($context['member']['estado_icon'] == 'emusic') { echo '<u><b>'; }
+    if ($context['member']['estado_icon'] == 'emusic') { echo '<u><b>'; }
     echo '<a href="' . $boardurl . '/estado/emusic/" title="Escuchando m&uacute;sica">Escuchando m&uacute;sica</a>';
-    if($context['member']['estado_icon'] == 'emusic') { echo '</u></b>'; }
+    if ($context['member']['estado_icon'] == 'emusic') { echo '</u></b>'; }
     
     echo '<br />';
     
-    if($context['member']['estado_icon'] == '') { echo '<u><b>'; }
+    if ($context['member']['estado_icon'] == '') { echo '<u><b>'; }
     echo '<a href="' . $boardurl . '/estado/qestado/" title="Sin estado">Sin estado</a>';
-    if($context['member']['estado_icon'] == '') { echo '</u></b>'; }
+    if ($context['member']['estado_icon'] == '') { echo '</u></b>'; }
     
     echo '
           </center>
@@ -2258,7 +2258,7 @@ function template_summary() {
       </div>
       <div style="background: url(\'' . $settings['images_url'] . '/quehago.png\') no-repeat; width: 525px; height: 39px; padding: 8px 8px 0px 8px;">
         <div style="float: left; margin-right: 3px;">
-          <input title="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" onfocus="if(this.value==\'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\') this.value=\'\';foco(this);" onblur="if(this.value==\'\') this.value=\'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\';no_foco(this);" style="width: 463px; font-size: 11px; font-family: Arial, FreeSans;" name="quehago" id="quehago" value="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" type="text" />
+          <input title="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" onfocus="if (this.value==\'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\') this.value=\'\';foco(this);" onblur="if (this.value==\'\') this.value=\'&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;\';no_foco(this);" style="width: 463px; font-size: 11px; font-family: Arial, FreeSans;" name="quehago" id="quehago" value="&#191;Qu&eacute; est&aacute;s haciendo ahora&#63;" type="text" />
         </div>
         <div style="padding-top: 1px;">
           <input class="login" style="padding: 0px; margin: 0px; font-size: 11px; width: 53px;" value="Publicar" onclick="add_quehago(); return false;" type="button" id="button_add_quehago" />
@@ -2270,7 +2270,7 @@ function template_summary() {
     echo '
       <div style="background:url(\'' . $settings['images_url'] . '/muro.png\') no-repeat; width: 525px; height: 55px; padding: 8px 8px 0px 8px;">
         <div style="float: left; margin-right: 3px;">
-          <textarea title="Escribe algo..." onfocus="if(this.value==\'Escribe algo...\') this.value=\'\';foco(this);" onblur="if(this.value==\'\') this.value=\'Escribe algo...\';no_foco(this);" style="height: 30px; overflow: visible; width: 463px; font-size: 11px; font-family: Arial, FreeSans;" name="muro" id="muro">Escribe algo...</textarea>
+          <textarea title="Escribe algo..." onfocus="if (this.value==\'Escribe algo...\') this.value=\'\';foco(this);" onblur="if (this.value==\'\') this.value=\'Escribe algo...\';no_foco(this);" style="height: 30px; overflow: visible; width: 463px; font-size: 11px; font-family: Arial, FreeSans;" name="muro" id="muro">Escribe algo...</textarea>
         </div>
         <div style="padding-top: 1px;">
           <input class="login" style="padding: 0px; margin: 0px; font-size: 11px; width: 53px;" value="Publicar" onclick="add_muro(\'' . $context['member']['id'] . '\'); return false;" type="button" id="button_add_muro" />
@@ -2479,7 +2479,7 @@ function template_apariencia() {
       echo '<div class="noesta">S&oacute;lo amigos de ' . $memberName . ' pueden ver la apariencia.</div>';
     }
   } else if ($context['member']['quienve'] == '3') {
-    if($context['user']['is_logged']) {
+    if ($context['user']['is_logged']) {
       ver_apariencia();
     } else {
       echo '<div class="noesta">S&oacute;lo usuarios registrados pueden ver la apariencia de ' . $memberName . '.</div>';
@@ -4274,7 +4274,7 @@ function template_buddies2() {
       </p>
       <hr />';
 
-    while($row = mysqli_fetch_assoc($request2)) {
+    while ($row = mysqli_fetch_assoc($request2)) {
       echo '
         <table>
           <tbody>

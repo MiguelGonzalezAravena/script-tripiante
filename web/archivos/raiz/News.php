@@ -56,7 +56,7 @@ function ShowXmlFeed() {
       $query_this_board .= '
       AND m.ID_MSG >= ' . max(0, $modSettings['maxMsgID'] - 400 - $_GET['limit'] * 5);
   }
-  elseif (!empty($_REQUEST['boards']))
+  else if (!empty($_REQUEST['boards']))
   {
     $_REQUEST['boards'] = explode(',', $_REQUEST['boards']);
     foreach ($_REQUEST['boards'] as $i => $b)
@@ -93,7 +93,7 @@ function ShowXmlFeed() {
       $query_this_board .= '
       AND m.ID_MSG >= ' . max(0, $modSettings['maxMsgID'] - 500 - $_GET['limit'] * 5);
   }
-  elseif (!empty($board))
+  else if (!empty($board))
   {
     $request = db_query("
       SELECT numPosts
@@ -156,11 +156,11 @@ function ShowXmlFeed() {
 
   if ($xml_format == 'smf' || isset($_REQUEST['debug']))
     header('Content-Type: text/xml; charset=' . (empty($context['character_set']) ? 'ISO-8859-1' : $context['character_set']));
-  elseif ($xml_format == 'rss' || $xml_format == 'rss2')
+  else if ($xml_format == 'rss' || $xml_format == 'rss2')
     header('Content-Type: application/rss+xml; charset=' . (empty($context['character_set']) ? 'ISO-8859-1' : $context['character_set']));
-  elseif ($xml_format == 'atom')
+  else if ($xml_format == 'atom')
     header('Content-Type: application/atom+xml; charset=' . (empty($context['character_set']) ? 'ISO-8859-1' : $context['character_set']));
-  elseif ($xml_format == 'rdf')
+  else if ($xml_format == 'rdf')
     header('Content-Type: application/rdf+xml; charset=' . (empty($context['character_set']) ? 'ISO-8859-1' : $context['character_set']));
 
   // First, output the xml header.
@@ -185,7 +185,7 @@ function ShowXmlFeed() {
   </channel>
 </rss>';
   }
-  elseif ($xml_format == 'atom')
+  else if ($xml_format == 'atom')
   {
     echo '
 <feed version="0.3" xmlns="http://purl.org/atom/ns#">
@@ -204,7 +204,7 @@ function ShowXmlFeed() {
     echo '
 </feed>';
   }
-  elseif ($xml_format == 'rdf')
+  else if ($xml_format == 'rdf')
   {
     echo '
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://purl.org/rss/1.0/">
@@ -302,12 +302,12 @@ function cdata_parse($data, $ns = '')
         $cdata .= ']]><' . $ns . ':' . $func['substr']($data, $pos + 1, $pos2 - $pos) . '<![CDATA[';
       $pos = $pos2 + 1;
     }
-    elseif ($func['substr']($data, $pos, 1) == ']')
+    else if ($func['substr']($data, $pos, 1) == ']')
     {
       $cdata .= ']]>&#093;<![CDATA[';
       $pos++;
     }
-    elseif ($func['substr']($data, $pos, 1) == '&')
+    else if ($func['substr']($data, $pos, 1) == '&')
     {
       $pos2 = $func['strpos']($data, ';', $pos);
       if ($pos2 === false)
@@ -316,7 +316,7 @@ function cdata_parse($data, $ns = '')
 
       if ($func['substr']($data, $pos + 1, 1) == '#')
         $cdata .= ']]>' . $func['substr']($data, $pos, $pos2 - $pos + 1) . '<![CDATA[';
-      elseif (in_array($ent, array('amp', 'lt', 'gt', 'quot')))
+      else if (in_array($ent, array('amp', 'lt', 'gt', 'quot')))
         $cdata .= ']]>' . $func['substr']($data, $pos, $pos2 - $pos + 1) . '<![CDATA[';
       // !!! ??
 
@@ -365,7 +365,7 @@ function dumpTags($data, $i, $tag = null, $xml_format = '')
         echo "\n", str_repeat("\t", $i + 1);
         echo '<dc:format>text/html</dc:format>';
       }
-      elseif ($xml_format == 'atom' && $key == 'summary')
+      else if ($xml_format == 'atom' && $key == 'summary')
         echo '<', $key, ' type="html">';
       else
         echo '<', $key, '>';
@@ -377,7 +377,7 @@ function dumpTags($data, $i, $tag = null, $xml_format = '')
         echo "\n", str_repeat("\t", $i), '</', $key, '>';
       }
       // A string with returns in it.... show this as a multiline element.
-      elseif (strpos($val, "\n") !== false || strpos($val, '<br />') !== false)
+      else if (strpos($val, "\n") !== false || strpos($val, '<br />') !== false)
         echo "\n", fix_possible_url($val), "\n", str_repeat("\t", $i), '</', $key, '>';
       // A simple string.
       else
@@ -408,12 +408,12 @@ function getXmlMembers($xml_format)
         'pubDate' => gmdate('D, d M Y H:i:s \G\M\T', $row['dateRegistered']),
         'guid' => $scripturl . '?action=profile;u=' . $row['ID_MEMBER'],
       );
-    elseif ($xml_format == 'rdf')
+    else if ($xml_format == 'rdf')
       $data[] = array(
         'title' => cdata_parse($row['realName']),
         'link' => $scripturl . '?action=profile;u=' . $row['ID_MEMBER'],
       );
-    elseif ($xml_format == 'atom')
+    else if ($xml_format == 'atom')
       $data[] = array(
         'title' => cdata_parse($row['realName']),
         'link' => $scripturl . '?action=profile;u=' . $row['ID_MEMBER'],
@@ -483,13 +483,13 @@ function getXmlNews($xml_format)
         'pubDate' => gmdate('D, d M Y H:i:s \G\M\T', $row['posterTime']),
         'guid' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.msg' . $row['ID_MSG'] . '#msg' . $row['ID_MSG']
       );
-    elseif ($xml_format == 'rdf')
+    else if ($xml_format == 'rdf')
       $data[] = array(
         'title' => cdata_parse($row['subject']),
         'link' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.0',
         'description' => cdata_parse($row['body']),
       );
-    elseif ($xml_format == 'atom')
+    else if ($xml_format == 'atom')
       $data[] = array(
         'title' => cdata_parse($row['subject']),
         'link' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.0',
@@ -589,13 +589,13 @@ function getXmlRecent($xml_format)
         'pubDate' => gmdate('D, d M Y H:i:s \G\M\T', $row['posterTime']),
         'guid' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.msg' . $row['ID_MSG'] . '#msg' . $row['ID_MSG']
       );
-    elseif ($xml_format == 'rdf')
+    else if ($xml_format == 'rdf')
       $data[] = array(
         'title' => cdata_parse($row['subject']),
         'link' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.msg' . $row['ID_MSG'] . '#msg' . $row['ID_MSG'],
         'description' => cdata_parse($row['body']),
       );
-    elseif ($xml_format == 'atom')
+    else if ($xml_format == 'atom')
       $data[] = array(
         'title' => cdata_parse($row['subject']),
         'link' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.msg' . $row['ID_MSG'] . '#msg' . $row['ID_MSG'],
@@ -668,13 +668,13 @@ function getXmlProfile($xml_format)
       'pubDate' => gmdate('D, d M Y H:i:s \G\M\T', $user_profile[$profile['id']]['dateRegistered']),
       'guid' => $scripturl  . '?action=profile;u=' . $profile['id'],
     ));
-  elseif ($xml_format == 'rdf')
+  else if ($xml_format == 'rdf')
     $data = array(array(
       'title' => cdata_parse($profile['name']),
       'link' => $scripturl  . '?action=profile;u=' . $profile['id'],
       'description' => cdata_parse(isset($profile['group']) ? $profile['group'] : $profile['post_group']),
     ));
-  elseif ($xml_format == 'atom')
+  else if ($xml_format == 'atom')
     $data[] = array(
       'title' => cdata_parse($profile['name']),
       'link' => $scripturl  . '?action=profile;u=' . $profile['id'],

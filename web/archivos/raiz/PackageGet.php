@@ -31,7 +31,7 @@ function PackageGet() {
   if (isset($_REQUEST['sa']) && isset($subActions[$_REQUEST['sa']]))
     $context['sub_action'] = $_REQUEST['sa'];
   // We need to support possible old javascript links...
-  elseif ($_REQUEST['action'] == 'pgdownload')
+  else if ($_REQUEST['action'] == 'pgdownload')
     $context['sub_action'] = 'download';
   else
     $context['sub_action'] = 'servers';
@@ -122,7 +122,7 @@ function PackageServers() {
     {
       if (!isset($ftp))
         $ftp = new ftp_connection(null);
-      elseif ($ftp->error !== false && !isset($ftp_error))
+      else if ($ftp->error !== false && !isset($ftp_error))
         $ftp_error = $ftp->last_message === null ? '' : $ftp->last_message;
 
       list ($username, $detect_path, $found_path) = $ftp->detect_path($boarddir);
@@ -185,7 +185,7 @@ function PackageGBrowse()
     // Clear any "absolute" URL.  Since "server" is present, "absolute" is garbage.
     unset($_GET['absolute']);
   }
-  elseif (isset($_GET['absolute']) && $_GET['absolute'] != '')
+  else if (isset($_GET['absolute']) && $_GET['absolute'] != '')
   {
     // Initialize the requried variables.
     $server = '';
@@ -287,7 +287,7 @@ function PackageGBrowse()
       if (in_array($package['type'], array('title', 'heading', 'text', 'rule')))
         $package['name'] = htmlspecialchars($thisPackage->fetch('.'));
       // It's a Remote link.
-      elseif ($package['type'] == 'remote')
+      else if ($package['type'] == 'remote')
       {
         $remote_type = $thisPackage->exists('@type') ? $thisPackage->fetch('@type') : 'relative';
 
@@ -295,7 +295,7 @@ function PackageGBrowse()
         {
           if (isset($_GET['absolute']))
             $current_url = $_GET['absolute'] . '/';
-          elseif (isset($_GET['relative']))
+          else if (isset($_GET['relative']))
             $current_url = $_GET['relative'] . '/';
           else
             $current_url = '';
@@ -320,7 +320,7 @@ function PackageGBrowse()
       {
         if (isset($_GET['absolute']))
           $current_url = $_GET['absolute'] . '/';
-        elseif (isset($_GET['relative']))
+        else if (isset($_GET['relative']))
           $current_url = $_GET['relative'] . '/';
         else
           $current_url = '';
@@ -365,7 +365,7 @@ function PackageGBrowse()
         {
           if ($thisPackage->exists('author/@email'))
             $package['author']['email'] = htmlspecialchars($thisPackage->fetch('author/@email'));
-          elseif (isset($default_email))
+          else if (isset($default_email))
             $package['author']['email'] = $default_email;
 
           if ($thisPackage->exists('author') && $thisPackage->fetch('author') != '')
@@ -385,9 +385,9 @@ function PackageGBrowse()
         {
           if ($thisPackage->exists('website') && $thisPackage->exists('website/@title'))
             $package['author']['website']['name'] = htmlspecialchars($thisPackage->fetch('website/@title'));
-          elseif (isset($default_title))
+          else if (isset($default_title))
             $package['author']['website']['name'] = $default_title;
-          elseif ($thisPackage->exists('website'))
+          else if ($thisPackage->exists('website'))
             $package['author']['website']['name'] = htmlspecialchars($thisPackage->fetch('website'));
           else
             $package['author']['website']['name'] = $default_website;
@@ -533,9 +533,9 @@ function PackageDownload()
 
   if ($context['package']['type'] == 'modification')
     $context['package']['install']['link'] = '<a href="' . $scripturl . '?action=packages;sa=install;package=' . $context['package']['filename'] . ';sesc=' . $context['session_id'] . '">[ ' . $txt['package11'] . ' ]</a>';
-  elseif ($context['package']['type'] == 'avatar')
+  else if ($context['package']['type'] == 'avatar')
     $context['package']['install']['link'] = '<a href="' . $scripturl . '?action=packages;sa=install;package=' . $context['package']['filename'] . ';sesc=' . $context['session_id'] . '">[ ' . $txt['package12'] . ' ]</a>';
-  elseif ($context['package']['type'] == 'language')
+  else if ($context['package']['type'] == 'language')
     $context['package']['install']['link'] = '<a href="' . $scripturl . '?action=packages;sa=install;package=' . $context['package']['filename'] . ';sesc=' . $context['session_id'] . '">[ ' . $txt['package13'] . ' ]</a>';
   else
     $context['package']['install']['link'] = '';
@@ -594,9 +594,9 @@ function PackageUpload()
 
   if ($context['package']['type'] == 'modification')
     $context['package']['install']['link'] = '<a href="' . $scripturl . '?action=packages;sa=install;package=' . $context['package']['filename'] . ';sesc=' . $context['session_id'] . '">[ ' . $txt['package11'] . ' ]</a>';
-  elseif ($context['package']['type'] == 'avatar')
+  else if ($context['package']['type'] == 'avatar')
     $context['package']['install']['link'] = '<a href="' . $scripturl . '?action=packages;sa=install;package=' . $context['package']['filename'] . ';sesc=' . $context['session_id'] . '">[ ' . $txt['package12'] . ' ]</a>';
-  elseif ($context['package']['type'] == 'language')
+  else if ($context['package']['type'] == 'language')
     $context['package']['install']['link'] = '<a href="' . $scripturl . '?action=packages;sa=install;package=' . $context['package']['filename'] . ';sesc=' . $context['session_id'] . '">[ ' . $txt['package13'] . ' ]</a>';
   else
     $context['package']['install']['link'] = '';

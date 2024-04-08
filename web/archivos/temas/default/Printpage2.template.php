@@ -31,11 +31,11 @@ table{empty-cells: show;}
 hr{height: 1px;border: 0;color: black;background-color: black;}</style></head><body onload="javascript:window.print();"><center><h1 class="largetext">', $context['topic_subject'], '</h1>';
 foreach ($context['image'] as $post) {
 echo $boardurl . '/imagenes/ver/', $post['ID_PICTURE'], '<br /><b></b><hr />';
-echo '<img alt="" onload="if(this.width > 750) {this.width=750}" src="', $post['filename'], '" title="', $post['title'], '" />';
+echo '<img alt="" onload="if (this.width > 750) {this.width=750}" src="', $post['filename'], '" title="', $post['title'], '" />';
 }
 }
 
-function template_main(){}
+function template_main() {}
 
 function template_print_below()
 {

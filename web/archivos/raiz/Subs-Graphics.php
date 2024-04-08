@@ -50,7 +50,7 @@ function downloadAvatar($url, $memID, $max_width, $max_height) {
     fwrite($fp, $fileContents);
     fclose($fp);
   }
-  elseif ($fp)
+  else if ($fp)
   {
     $fp2 = fopen($url, 'rb');
     $prev_chunk = '';
@@ -147,7 +147,7 @@ function createThumbnail($source, $max_width, $max_height)
       }
   }
   // Or is it one of the formats supported above?
-  elseif (isset($default_formats[$sizes[2]]) && function_exists('imagecreatefrom' . $default_formats[$sizes[2]]))
+  else if (isset($default_formats[$sizes[2]]) && function_exists('imagecreatefrom' . $default_formats[$sizes[2]]))
   {
     $imagecreatefrom = 'imagecreatefrom' . $default_formats[$sizes[2]];
     if ($src_img = @$imagecreatefrom($source))
@@ -182,7 +182,7 @@ function resizeImage($src_img, $destName, $src_width, $src_height, $max_width, $
       $dst_width = $max_width;
       $dst_height = floor($src_height * $max_width / $src_width);
     }
-    elseif (!empty($max_height))
+    else if (!empty($max_height))
     {
       $dst_width = floor($src_width * $max_height / $src_height);
       $dst_height = $max_height;
@@ -348,7 +348,7 @@ if (!function_exists('imagecreatefrombmp'))
           imagesetpixel($dst_img, $x, $y, $color);
         }
       }
-      elseif ($info['bits'] == 24)
+      else if ($info['bits'] == 24)
       {
         $x = 0;
         for ($j = 0; $j < $scan_line_size; $x++)
@@ -370,7 +370,7 @@ if (!function_exists('imagecreatefrombmp'))
           imagesetpixel($dst_img, $x, $y, $color);
         }
       }
-      elseif ($info['bits'] == 16)
+      else if ($info['bits'] == 16)
       {
         $x = 0;
         for ($j = 0; $j < $scan_line_size; $x++)
@@ -398,13 +398,13 @@ if (!function_exists('imagecreatefrombmp'))
           imagesetpixel($dst_img, $x, $y, $color);
         }
       }
-      elseif ($info['bits'] == 8)
+      else if ($info['bits'] == 8)
       {
         $x = 0;
         for ($j = 0; $j < $scan_line_size; $x++)
           imagesetpixel($dst_img, $x, $y, $palette[ord($scan_line{$j++})]);
       }
-      elseif ($info['bits'] == 4)
+      else if ($info['bits'] == 4)
       {
         $x = 0;
         for ($j = 0; $j < $scan_line_size; $x++)
@@ -1087,7 +1087,7 @@ class gif_file
       if ($background_color != -1)
         $background_color = $this->image->m_gih->m_colorTable->colorIndex($background_color);
     }
-    elseif ($this->header->m_bGlobalClr)
+    else if ($this->header->m_bGlobalClr)
     {
       $colors = $this->header->m_nTableSize;
       $pal = $this->header->m_colorTable->toString();
@@ -1180,7 +1180,7 @@ function showCodeImage($code)
   if ($user_info['is_admin'] && isset($_GET['type']))
     $imageType = (int) $_GET['type'];
   // Just incase PM is on, reg is off.
-  elseif ($imageType == 1)
+  else if ($imageType == 1)
     $imageType = 0;
 
   // Some quick references for what we do.
@@ -1248,7 +1248,7 @@ function showCodeImage($code)
   {
     if (preg_match('~^(.+)\.gdf$~', $entry, $matches) === 1)
       $font_list[] = $entry;
-    elseif (preg_match('~^(.+)\.ttf$~', $entry, $matches) === 1)
+    else if (preg_match('~^(.+)\.ttf$~', $entry, $matches) === 1)
       $ttfont_list[] = $entry;
   }
 
@@ -1348,7 +1348,7 @@ function showCodeImage($code)
         $char_fg_color = $colours[$new_index];
         $last_index = $new_index;
       }
-      elseif ($fontColorType == 'random')
+      else if ($fontColorType == 'random')
         $char_fg_color = array(mt_rand(max($foreground_color[0] - 2, 0), $foreground_color[0]), mt_rand(max($foreground_color[1] - 2, 0), $foreground_color[1]), mt_rand(max($foreground_color[2] - 2, 0), $foreground_color[2]));
       else
         $char_fg_color = array($foreground_color[0], $foreground_color[1], $foreground_color[2]);
@@ -1376,7 +1376,7 @@ function showCodeImage($code)
         $fontcord = @imagettftext($code_image, $font_size, $angle, $font_x, $font_y, $char_color, $fontface, $character['id']);
         if (empty($fontcord))
           $can_do_ttf = false;
-        elseif ($is_reverse)
+        else if ($is_reverse)
         {
           imagefilledpolygon($code_image, $fontcord, 4, $fg_color);
           // Put the character back!
@@ -1457,7 +1457,7 @@ function showCodeImage($code)
   if (function_exists('imagegif'))
   {
     header('Content-type: image/gif');
-    imagegif($code_image);
+    imagegif ($code_image);
   }
   else
   {
@@ -1511,7 +1511,7 @@ if (!function_exists('smf_crc32'))
   {
     $crc = crc32($number);
   
-    if($crc & 0x80000000){
+    if ($crc & 0x80000000) {
       $crc ^= 0xffffffff;
       $crc += 1;
       $crc = -$crc;

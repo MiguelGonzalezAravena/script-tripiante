@@ -41,7 +41,7 @@ function db_query($db_string, $file, $line) {
 
         if ($pos1 === false)
           break;
-        elseif ($pos2 == false || $pos2 > $pos1) {
+        else if ($pos2 == false || $pos2 > $pos1) {
           $pos = $pos1;
           break;
         }
@@ -58,15 +58,15 @@ function db_query($db_string, $file, $line) {
     if (strpos($clean, 'union') !== false && preg_match('~(^|[^a-z])union($|[^[a-z])~s', $clean) != 0)
       $fail = true;
     // Comments?  We don't use comments in our queries, we leave 'em outside!
-    elseif (strpos($clean, '/*') > 2 || strpos($clean, '--') !== false || strpos($clean, ';') !== false)
+    else if (strpos($clean, '/*') > 2 || strpos($clean, '--') !== false || strpos($clean, ';') !== false)
       $fail = true;
     // Trying to change passwords, slow us down, or something?
-    elseif (strpos($clean, 'sleep') !== false && preg_match('~(^|[^a-z])sleep($|[^[a-z])~s', $clean) != 0)
+    else if (strpos($clean, 'sleep') !== false && preg_match('~(^|[^a-z])sleep($|[^[a-z])~s', $clean) != 0)
       $fail = true;
-    elseif (strpos($clean, 'benchmark') !== false && preg_match('~(^|[^a-z])benchmark($|[^[a-z])~s', $clean) != 0)
+    else if (strpos($clean, 'benchmark') !== false && preg_match('~(^|[^a-z])benchmark($|[^[a-z])~s', $clean) != 0)
       $fail = true;
     // Sub selects?  We don't use those either.
-    elseif (preg_match('~\([^)]*?select~s', $clean) != 0)
+    else if (preg_match('~\([^)]*?select~s', $clean) != 0)
       $fail = true;
 
     if (!empty($fail)) {
@@ -138,14 +138,14 @@ function updateStats($type, $parameter1 = null, $parameter2 = null) {
       mysqli_free_result($result);
     }
     // If $parameter1 is a number, it's the new ID_MEMBER and #2 is the real name for a new registration.
-    elseif ($parameter1 !== null && $parameter1 !== false) {
+    else if ($parameter1 !== null && $parameter1 !== false) {
       $changes['latestMember'] = $parameter1;
       $changes['latestRealName'] = $parameter2;
 
       updateSettings(array('totalMembers' => true), true);
     }
     // If $parameter1 is false, and approval is off, we need change nothing.
-    elseif ($parameter1 !== false) {
+    else if ($parameter1 !== false) {
       // Update the latest member (highest ID_MEMBER) and count.
       $result = db_query("
         SELECT COUNT(*), MAX(ID_MEMBER)
@@ -287,7 +287,7 @@ function updateMemberData($members, $data) {
   if (is_array($members))
     $condition = 'ID_MEMBER IN (' . implode(', ', $members) . ')
     LIMIT ' . count($members);
-  elseif ($members === null)
+  else if ($members === null)
     $condition = '1';
   else
     $condition = 'ID_MEMBER = ' . $members . '
@@ -339,7 +339,7 @@ function updateMemberData($members, $data) {
   foreach ($data as $var => $val) {
     if ($val === '+')
       $data[$var] = $var . ' + 1';
-    elseif ($val === '-')
+    else if ($val === '-')
       $data[$var] = $var . ' - 1';
   }
 
@@ -410,7 +410,7 @@ function updateSettings($changeArray, $update = false) {
     if (isset($modSettings[$variable]) && $modSettings[$variable] == stripslashes($value))
       continue;
     // If the variable isn't set, but would only be set to nothing'ness, then don't bother setting it.
-    elseif (!isset($modSettings[$variable]) && empty($value))
+    else if (!isset($modSettings[$variable]) && empty($value))
       continue;
 
     $replaceArray[] = "(SUBSTRING('$variable', 1, 255), SUBSTRING('$value', 1, 65534))";
@@ -441,7 +441,7 @@ function constructPageIndex($base_url, &$start, $max_value, $num_per_page, $flex
   if ($start_invalid)
     $start = 0;
   // Not greater than the upper bound.
-  elseif ($start >= $max_value)
+  else if ($start >= $max_value)
     $start = max(0, (int) $max_value - (((int) $max_value % (int) $num_per_page) == 0 ? $num_per_page : ((int) $max_value % (int) $num_per_page)));
   // And it has to be a multiple of $num_per_page!
   else
@@ -564,7 +564,7 @@ function forum_time($use_user_offset = true, $timestamp = null) {
 
   if ($timestamp === null)
     $timestamp = time();
-  elseif ($timestamp == 0)
+  else if ($timestamp == 0)
     return 0;
 
   return $timestamp + ($modSettings['time_offset'] + ($use_user_offset ? $user_info['time_offset'] : 0)) * 3600;
@@ -668,7 +668,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
     }
 
     // Here i remove this content :) or show onetime unhide info :)
-    if(!isset($context['user_post_avaible']) || empty($context['user_post_avaible'])) {
+    if (!isset($context['user_post_avaible']) || empty($context['user_post_avaible'])) {
       // Remove it ;D
       $message = preg_replace("/\[hide\](.+?)\[\/hide\]/i", (empty($modSettings['hide_onlyonetimeinfo']) ? $modSettings['hide_preparedOption']['hiddentext'] : "&nbsp"), $message);
       $message = preg_replace(array('~\n?\[hide.*?\].+?\[/hide\]\n?~is', '~^\n~', '~\[/hide\]~'), (empty($modSettings['hide_onlyonetimeinfo']) ? $modSettings['hide_preparedOption']['hiddentext'] : "&nbsp"), $message);
@@ -778,7 +778,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
             // Older browsers are annoying, aren\'t they?
             if ($context[\'browser\'][\'is_ie4\'] || $context[\'browser\'][\'is_ie5\'] || $context[\'browser\'][\'is_ie5.5\'])
               $data = str_replace("\t", "<pre style=\"display: inline;\">\t</pre>", $data);
-            elseif (!$context[\'browser\'][\'is_gecko\'])
+            else if (!$context[\'browser\'][\'is_gecko\'])
               $data = str_replace("\t", "<span style=\"white-space: pre;\">\t</span>", $data);
           }'),
         'block_level' => true,
@@ -816,7 +816,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
             // Older browsers are annoying, aren\'t they?
             if ($context[\'browser\'][\'is_ie4\'] || $context[\'browser\'][\'is_ie5\'] || $context[\'browser\'][\'is_ie5.5\'])
               $data = str_replace("\t", "<pre style=\"display: inline;\">\t</pre>", $data);
-            elseif (!$context[\'browser\'][\'is_gecko\'])
+            else if (!$context[\'browser\'][\'is_gecko\'])
               $data = str_replace("\t", "<span style=\"white-space: pre;\">\t</span>", $data);
           }'),
         'block_level' => true,
@@ -865,7 +865,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
         'validate' => create_function('&$tag, &$data, $disabled', '
           if (isset($disabled[\'url\']))
             $tag[\'content\'] = \'$1\';
-          elseif (strpos($data[0], \'http://\') !== 0 && strpos($data[0], \'https://\') !== 0)
+          else if (strpos($data[0], \'http://\') !== 0 && strpos($data[0], \'https://\') !== 0)
             $data[0] = \'http://\' . $data[0];
         '),
         'disabled_content' => '<a href="$1" target="_blank">$1</a>',
@@ -915,13 +915,13 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
        'parameters' => array( 'alt' => array('optional' => true),
        'width' => array('optional' => true, 'value' => ' width="$1"', 'match' => '(\d+)'),
        'height' => array('optional' => true, 'value' => ' height="$1"', 'match' => '(\d+)'), ),
-       'content' => '<img onload="if(this.width >720) {this.width=720}" id="imagen" src="$1" border="0" />',
+       'content' => '<img onload="if (this.width >720) {this.width=720}" id="imagen" src="$1" border="0" />',
        'validate' => create_function('&$tag, &$data, $disabled', '$data = strtr($data, array(\'<br />\' => \'\'));'),
        'disabled_content' => '($1)', ),
 
       array(
       'tag' => 'img', 'type' => 'unparsed_content',
-      'content' => '<img onload="if(this.width >720) {this.width=720}" id="imagen" src="$1" border="0">',
+      'content' => '<img onload="if (this.width >720) {this.width=720}" id="imagen" src="$1" border="0">',
       'validate' => create_function('&$tag, &$data, $disabled', '$data = strtr($data, array(\'<br />\' => \'\'));'),
       'disabled_content' => '($1)', ),
       array(
@@ -947,7 +947,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
         'validate' => create_function('&$tag, &$data, $disabled', '
           if (substr($data, 0, 1) == \'#\')
             $data = \'#post_\' . substr($data, 1);
-          elseif (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
+          else if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
             $data = \'http://\' . $data;
         '),
         'disallow_children' => array('email', 'ftp', 'url', 'iurl'),
@@ -1069,7 +1069,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
             // Video or Playlist ID?
             $type = strlen($matches[2]) == 11 ? 1 : 0 ;
             // Set sizes Or Normalise sizes (If sizes are <100 or > 780)
-            if(!is_array($data) || ($data[1] > 780 || $data[1] < 100 || $data[2] > 780 || $data[2] < 100))
+            if (!is_array($data) || ($data[1] > 780 || $data[1] < 100 || $data[2] > 780 || $data[2] < 100))
               $data = array(0, 425, ($type ? 350 : 355));
             // Set ID in the array
             $data[0] = $matches[2];
@@ -1080,7 +1080,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
             if (isset($disabled[\'url\']) && isset($disabled[\'youtube\']))
               // Youtube & Url bbc disabled? (eg Printer friendly pages)
               $tag[\'content\'] = "http://". $site ."youtube.com/". ($type ? "watch?v" : "view_play_list?p") ."=". $data[0];
-            elseif(isset($disabled[\'youtube\']))
+            else if (isset($disabled[\'youtube\']))
               // Only Youtube is disabled, So make an active link
               $tag[\'content\'] = "<a href=\"http://". $site ."youtube.com/". ($type ? "watch?v" : "view_play_list?p") ."=". $data[0]."\" target=\"_blank\">http://". $site ."youtube.com/". ($type ? "watch?v" : "view_play_list?p") ."=". $data[0]."</a>";
             else
@@ -1117,7 +1117,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
             // Video or Playlist ID?
             $type = strlen($matches[2]) == 11 ? 1 : 0 ;
             // Set sizes Or Normalise sizes (If sizes are <100 or > 780)
-            if(!is_array($data) || ($data[1] > 780 || $data[1] < 100 || $data[2] > 780 || $data[2] < 100))
+            if (!is_array($data) || ($data[1] > 780 || $data[1] < 100 || $data[2] > 780 || $data[2] < 100))
               $data = array(0, 425, ($type ? 350 : 355));
             // Set ID in the array
             $data[0] = $matches[2];
@@ -1128,7 +1128,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
             if (isset($disabled[\'url\']) && isset($disabled[\'youtube\']))
               // Youtube & Url bbc disabled? (eg Printer friendly pages)
               $tag[\'content\'] = "http://". $site ."youtube.com/". ($type ? "watch?v" : "view_play_list?p") ."=". $data[0];
-            elseif(isset($disabled[\'youtube\']))
+            else if (isset($disabled[\'youtube\']))
               // Only Youtube is disabled, So make an active link
               $tag[\'content\'] = "<a href=\"http://". $site ."youtube.com/". ($type ? "watch?v" : "view_play_list?p") ."=". $data[0]."\" target=\"_blank\">http://". $site ."youtube.com/". ($type ? "watch?v" : "view_play_list?p") ."=". $data[0]."</a>";
             else
@@ -1137,7 +1137,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
               $tag[\'content\'] = \'\';
 
               // Build the <object> (Non-Mac IE Only)
-              if($context[\'browser\'][\'is_ie\'] && !$context[\'browser\'][\'is_mac_ie\'])
+              if ($context[\'browser\'][\'is_ie\'] && !$context[\'browser\'][\'is_mac_ie\'])
                 $tag[\'content\'] = \'<object width="\'.$data[1].\'px" height="\'.$data[2].\'px">\'
                   .\'<param name="movie" value="http://www.youtube.com/\'.($type ? "v" : "p").\'/\'.$data[0].\'&amp;rel=1&amp;fs=1" />\'
                   .\'<param name="wmode" value="transparent" /><param name="allowFullScreen" value="true" />\'
@@ -1151,7 +1151,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
               // Closing <embed>
               $tag[\'content\'] .= \'</embed>\';
               // Close the <object> (Non-Mac IE Only)
-              if($context[\'browser\'][\'is_ie\'] && !$context[\'browser\'][\'is_mac_ie\'])
+              if ($context[\'browser\'][\'is_ie\'] && !$context[\'browser\'][\'is_mac_ie\'])
                 $tag[\'content\'] .= \'</object>\';
             }
           }
@@ -1215,7 +1215,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
   }
 
   // So i parse now the unhidden bbc code one time ;)
-  if($modSettings['hide_preparedOption']['parse_content']) {
+  if ($modSettings['hide_preparedOption']['parse_content']) {
     $modSettings['hide_preparedOption']['parse_content'] = false;
     if (isset($bbc_codes['h'])) {
       foreach ($bbc_codes['h'] as $key => $item) {
@@ -1400,7 +1400,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
         if ($context['browser']['is_gecko'] || $context['browser']['is_konqueror'])
           $breaker = '<span style="margin: 0 -0.5ex 0 0;"> </span>';
         // Opera...
-        elseif ($context['browser']['is_opera'])
+        else if ($context['browser']['is_opera'])
           $breaker = '<span style="margin: 0 -0.65ex 0 -1px;"> </span>';
         // Internet Explorer...
         else
@@ -1486,7 +1486,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
       if ((empty($open_tags) && (empty($tag) || $tag['tag'] != $look_for))) {
         $open_tags = $to_close;
         continue;
-      } elseif (!empty($to_close) && $tag['tag'] != $look_for) {
+      } else if (!empty($to_close) && $tag['tag'] != $look_for) {
         if ($block_level === null && isset($look_for{0}, $bbc_codes[$look_for{0}])) {
           foreach ($bbc_codes[$look_for{0}] as $temp)
             if ($temp['tag'] == $look_for) {
@@ -1595,7 +1595,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
 
           if (isset($possible['parameters'][$key]['value']))
             $params['{' . $key . '}'] = strtr($possible['parameters'][$key]['value'], array('$1' => $matches[$i + 1]));
-          elseif (isset($possible['parameters'][$key]['validate']))
+          else if (isset($possible['parameters'][$key]['validate']))
             $params['{' . $key . '}'] = $possible['parameters'][$key]['validate']($matches[$i + 1]);
           else
             $params['{' . $key . '}'] = $matches[$i + 1];
@@ -1920,7 +1920,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
   $message = strtr($message, array('  ' => ' &nbsp;', "\r" => '', "\n" => '<br />', '<br /> ' => '<br />&nbsp;', '&#13;' => "\n"));
 
   //Clean up some missing removed hide close tags...
-  if(preg_match("/\[\/hide\]/i", $message) != 0)
+  if (preg_match("/\[\/hide\]/i", $message) != 0)
     $message = preg_replace("/\[\/hide\]/i", '', $message);
 
   // Cache the output if it took some time...
@@ -2385,7 +2385,7 @@ function trackStats($stats = array()) {
 
   if (!empty($stats))
     return $cache_stats = array_merge($cache_stats, $stats);
-  elseif (empty($cache_stats))
+  else if (empty($cache_stats))
     return false;
 
   $setStringUpdate = '';
@@ -2702,7 +2702,7 @@ function template_header() {
     // Are we debugging the template/html content?
     if (!isset($_REQUEST['xml']) && isset($_GET['debug']) && !$context['browser']['is_ie'] && !WIRELESS)
       header('Content-Type: application/xhtml+xml');
-    elseif (!isset($_REQUEST['xml']) && !WIRELESS)
+    else if (!isset($_REQUEST['xml']) && !WIRELESS)
       header('Content-Type: text/html; charset=' . (empty($context['character_set']) ? 'ISO-8859-1' : $context['character_set']));
   }
 
@@ -2897,7 +2897,7 @@ function host_from_ip($ip) {
     $test = @shell_exec('nslookup -timeout=1 ' . @escapeshellarg($ip));
     if (strpos($test, 'Non-existent domain') !== false)
       $host = '';
-    elseif (preg_match('~Name:\s+([^\s]+)~', $test, $match) == 1)
+    else if (preg_match('~Name:\s+([^\s]+)~', $test, $match) == 1)
       $host = $match[1];
   }
 
@@ -3165,7 +3165,7 @@ function ssi_vistaprevia() {
       FROM {$db_prefix}membergroups
       WHERE ID_GROUP = {$idgrup}", __FILE__, __LINE__);
 
-    while($row2 = mysqli_fetch_assoc($userse2)) {
+    while ($row2 = mysqli_fetch_assoc($userse2)) {
       $membergropu = $row2['groupName'];
     }
 
@@ -3174,7 +3174,7 @@ function ssi_vistaprevia() {
       FROM {$db_prefix}membergroups
       WHERE ID_GROUP = {$idgrup2}", __FILE__, __LINE__);
 
-    while($row2 = mysqli_fetch_assoc($userse3)) {
+    while ($row2 = mysqli_fetch_assoc($userse3)) {
       $membergropu2 = $row2['groupName'];
     }
 
@@ -3183,7 +3183,7 @@ function ssi_vistaprevia() {
       FROM {$db_prefix}membergroups
       WHERE ID_GROUP = " . (!empty($idgrup2) ? $idgrup2 : $idgrup), __FILE__, __LINE__);
 
-    while($rows = mysqli_fetch_assoc($medallasa)) {
+    while ($rows = mysqli_fetch_assoc($medallasa)) {
       $medalla = $rows['stars'];
     }
 
@@ -3232,7 +3232,7 @@ function ssi_vistaprevia() {
       </span>';
     echo '<span title="' . ssi_sexo1($context['gender']) . '">' . ssi_sexo2(ssi_sexo3($context['gender'])) . '</span>&nbsp;';
 
-    if($context['usertitle']) {
+    if ($context['usertitle']) {
       echo '<img alt="" title="'. ssi_pais($context['usertitle'])  . '" src="' . $settings['images_url'] . '/icons/banderas/' . $context['usertitle'] . '.gif"> ';
     } else {
       echo '<img alt="" title="" src="' . $settings['images_url'] . '/icons/banderas/ot.gif"> ';

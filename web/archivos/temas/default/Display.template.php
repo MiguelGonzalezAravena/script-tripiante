@@ -38,7 +38,7 @@ function template_main() {
 
   // Diseño del post
   while ($message = $context['get_message']()) {
-    $firma = str_replace('if(this.width >720) {this.width=720}','if(this.width > 375) {this.width=375}', $message['member']['signature']);  
+    $firma = str_replace('if (this.width >720) {this.width=720}','if (this.width > 375) {this.width=375}', $message['member']['signature']);  
 
     echo '
       <div style="margin-bottom:8px;">

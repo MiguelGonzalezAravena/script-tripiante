@@ -107,11 +107,11 @@ function url_parts($local, $global)
       $parsed_url['host'] = '.' . $parts[1];
 
   // We shouldn't use a host at all if both options are off.
-  elseif (!$local && !$global)
+  else if (!$local && !$global)
     $parsed_url['host'] = '';
     
   // The host also shouldn't be set if there aren't any dots in it.
-  elseif (!isset($parsed_url['host']) || strpos($parsed_url['host'], '.') === false)
+  else if (!isset($parsed_url['host']) || strpos($parsed_url['host'], '.') === false)
     $parsed_url['host'] = '';
   
   return array($parsed_url['host'], $parsed_url['path'] . '/');
@@ -169,7 +169,7 @@ function adminLogin()
       if (!isset($temp[$k]))
         $context['get_data'] .= urlencode($k) . '=' . urlencode($v) . ';';
       // If it changed, put it out there, but with an ampersand.
-      elseif ($temp[$k] != $_GET[$k])
+      else if ($temp[$k] != $_GET[$k])
         $context['get_data'] .= urlencode($k) . '=' . urlencode($v) . '&amp;';
     }
   }
@@ -254,7 +254,7 @@ function show_db_error($loadavg = false)
         updateSettingsFile(array('db_last_error' => time()));
 
       // Language files aren't loaded yet :(.
-      $mysql_error = @mysql_error($db_connection);
+      $mysql_error = @mysqli_error($db_connection);
       @mail($webmaster_email, $mbname . ': SMF Database Error!', 'There has been a problem with the database!' . ($mysql_error == '' ? '' : "\nMySQL reported:\n" . $mysql_error) . "\n\nThis is a notice email to let you know that SMF could not connect to the database, contact your host if this continues.");
     }
   }
@@ -271,7 +271,7 @@ function show_db_error($loadavg = false)
   </body>
 </html>';
   // If this is a load average problem, display an appropriate message (but we still don't have language files!)
-  elseif ($loadavg)
+  else if ($loadavg)
     echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
@@ -465,9 +465,9 @@ function RequestMembers()
       $fixchar = create_function('$n', '
         if ($n < 128)
           return chr($n);
-        elseif ($n < 2048)
+        else if ($n < 2048)
           return chr(192 | $n >> 6) . chr(128 | $n & 63);
-        elseif ($n < 65536)
+        else if ($n < 65536)
           return chr(224 | $n >> 12) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
         else
           return chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);');
@@ -563,7 +563,7 @@ function validatePassword($password, $username, $restrict_in = array())
   // Otherwise, perform the medium strength test - checking if password appears in the restricted string.
   if (preg_match('~\b' . preg_quote($password, '~') . '\b~', implode(' ', $restrict_in)) != 0)
     return 'restricted_words';
-  elseif ($func['strpos']($password, $username) !== false)
+  else if ($func['strpos']($password, $username) !== false)
     return 'restricted_words';
 
   // !!! If pspell is available, use it on the word, and return restricted_words if it doesn't give "bad spelling"?

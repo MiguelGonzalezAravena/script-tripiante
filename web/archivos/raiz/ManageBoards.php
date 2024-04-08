@@ -152,7 +152,7 @@ function ManageBoardsMain()
         $difference = $boards[$boardid]['level'] - $prev_child_level;
         if ($difference == 1 && !empty($context['categories'][$catid]['boards'][$prev_board]['move_links']))
           array_push($stack, array_shift($context['categories'][$catid]['boards'][$prev_board]['move_links']));
-        elseif ($difference < 0)
+        else if ($difference < 0)
         {
           if (empty($context['categories'][$catid]['boards'][$prev_board]['move_links']))
             $context['categories'][$catid]['boards'][$prev_board]['move_links'] = array();
@@ -166,7 +166,7 @@ function ManageBoardsMain()
       }
       if (!empty($stack) && !empty($context['categories'][$catid]['boards'][$prev_board]['move_links']))
         $context['categories'][$catid]['boards'][$prev_board]['move_links'] = array_merge($stack, $context['categories'][$catid]['boards'][$prev_board]['move_links']);
-      elseif (!empty($stack))
+      else if (!empty($stack))
         $context['categories'][$catid]['boards'][$prev_board]['move_links'] = $stack;
 
       if (empty($boardList[$catid]))
@@ -217,7 +217,7 @@ function EditCategory()
     );
   }
   // Category doesn't exist, man... sorry.
-  elseif (!isset($cat_tree[$_REQUEST['cat']]))
+  else if (!isset($cat_tree[$_REQUEST['cat']]))
     redirectexit('action=manageboards');
   else
   {
@@ -292,13 +292,13 @@ function EditCategory2()
       modifyCategory($_POST['cat'], $catOptions);
   }
   // If they want to delete - first give them confirmation.
-  elseif (isset($_POST['delete']) && !isset($_POST['confirmation']) && !isset($_POST['empty']))
+  else if (isset($_POST['delete']) && !isset($_POST['confirmation']) && !isset($_POST['empty']))
   {
     EditCategory();
     return;
   }
   // Delete the category!
-  elseif (isset($_POST['delete']))
+  else if (isset($_POST['delete']))
   {
     // First off - check if we are moving all the current boards first - before we start deleting!
     if (isset($_POST['delete_action']) && $_POST['delete_action'] == 1)
@@ -499,7 +499,7 @@ function EditBoard2()
       $boardOptions['target_category'] = (int) $_POST['new_cat'];
     }
     // Change the boardorder of this board?
-    elseif (!empty($_POST['placement']) && !empty($_POST['board_order']))
+    else if (!empty($_POST['placement']) && !empty($_POST['board_order']))
     {
       if (!in_array($_POST['placement'], array('before', 'after', 'child')))
         fatal_lang_error('mangled_post', false);
@@ -546,12 +546,12 @@ function EditBoard2()
     else
       modifyBoard($_POST['boardid'], $boardOptions);
   }
-  elseif (isset($_POST['delete']) && !isset($_POST['confirmation']) && !isset($_POST['no_children']))
+  else if (isset($_POST['delete']) && !isset($_POST['confirmation']) && !isset($_POST['no_children']))
   {
     EditBoard();
     return;
   }
-  elseif (isset($_POST['delete']))
+  else if (isset($_POST['delete']))
   {
     // First off - check if we are moving all the current child boards first - before we start deleting!
     if (isset($_POST['delete_action']) && $_POST['delete_action'] == 1)

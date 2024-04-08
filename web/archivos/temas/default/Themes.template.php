@@ -291,7 +291,7 @@ function template_set_options()
             <input type="hidden" name="' . (!empty($setting['default']) ? 'default_' : '') . 'options[' . $setting['id'] . ']" value="0" />
             <label for="options_', $setting['id'], '"><input type="checkbox" name="', !empty($setting['default']) ? 'default_' : '', 'options[', $setting['id'], ']" id="options_', $setting['id'], '"', !empty($setting['value']) ? ' checked="checked"' : '', $context['theme_options_reset'] ? ' disabled="disabled"' : '', ' value="1" class="check" /> ', $setting['label'], '</label>';
     }
-    elseif ($setting['type'] == 'list')
+    else if ($setting['type'] == 'list')
     {
       echo '
             &nbsp;<label for="options_', $setting['id'], '">', $setting['label'], '</label>
@@ -387,7 +387,7 @@ function template_set_settings()
       echo '
           <input type="hidden" name="', !empty($setting['default']) ? 'default_' : '', 'options[', $setting['id'], ']" value="0" />
           <label for="', $setting['id'], '"><input type="checkbox" name="', !empty($setting['default']) ? 'default_' : '', 'options[', $setting['id'], ']" id="', $setting['id'], '"', !empty($setting['value']) ? ' checked="checked"' : '', ' value="1" class="check" /> ', $setting['label'], '</label>';
-    elseif ($setting['type'] == 'list')
+    else if ($setting['type'] == 'list')
     {
       echo '
           <label for="', $setting['id'], '">', $setting['label'], '</label>
@@ -557,7 +557,7 @@ function template_edit_browse()
         <td>';
     if ($file['is_editable'])
       echo '<a href="', $file['href'], '"', $file['is_template'] ? ' style="font-weight: bold;"' : '', '>', $file['filename'], '</a>';
-    elseif ($file['is_directory'])
+    else if ($file['is_directory'])
       echo '<a href="', $file['href'], '">', $file['filename'], '</a>';
     else
       echo $file['filename'];

@@ -108,7 +108,7 @@ function template_eliminarci() {
   $idimg = (int) $_POST['idimg'];
 
   // TO-DO: Validar permisos antes de eliminar
-  if(!empty($_POST['campos']))   {
+  if (!empty($_POST['campos']))   {
     $aLista = array_keys($_POST['campos']);
     db_query("
       DELETE FROM {$db_prefix}gallery_comment

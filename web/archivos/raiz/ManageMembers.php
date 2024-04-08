@@ -44,7 +44,7 @@ function ViewMembers()
   {
     if (in_array($activation_type, array(0, 2)))
       $context['awaiting_activation'] += $total_members;
-    elseif (in_array($activation_type, array(3, 4, 5)))
+    else if (in_array($activation_type, array(3, 4, 5)))
       $context['awaiting_approval'] += $total_members;
   }
 
@@ -138,7 +138,7 @@ function ViewMemberlist()
         array((int) $_GET['group']),
         array((int) $_GET['group']),
       );
-    elseif (isset($_GET['pgroup']))
+    else if (isset($_GET['pgroup']))
       $_POST['postgroups'] = array((int) $_GET['pgroup']);
   }
 
@@ -165,7 +165,7 @@ function ViewMemberlist()
       SELECT ID_GROUP, groupName, minPosts
       FROM {$db_prefix}membergroups
       WHERE ID_GROUP != 3
-      ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
+      ORDER BY minPosts, if (ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($request))
     {
       if ($row['minPosts'] == -1)
@@ -215,7 +215,7 @@ function ViewMemberlist()
         'values' => array('0', '1', '2'),
       ),
       'activated' => array(
-        'db_fields' => array('IF(is_activated IN (1, 11), 1, 0)'),
+        'db_fields' => array('if (is_activated IN (1, 11), 1, 0)'),
         'type' => 'checkbox',
         'values' => array('0', '1'),
       ),
@@ -266,7 +266,7 @@ function ViewMemberlist()
       if (in_array($param_info['type'], array('int', 'age')))
         $_POST[$param_name] = (int) $_POST[$param_name];
       // Date values have to match the specified format.
-      elseif ($param_info['type'] == 'date')
+      else if ($param_info['type'] == 'date')
       {
         // Check if this date format is valid.
         if (preg_match('/^\d{4}-\d{1,2}-\d{1,2}$/', $_POST[$param_name]) == 0)
@@ -299,13 +299,13 @@ function ViewMemberlist()
             $query_parts[] = "{$param_info['db_fields'][0]} > '0000-12-31'";
           }
         }
-        elseif ($param_info['type'] == 'date' && $_POST['types'][$param_name] == '=')
+        else if ($param_info['type'] == 'date' && $_POST['types'][$param_name] == '=')
           $query_parts[] = $param_info['db_fields'][0] . ' > ' . $_POST[$param_name] . ' AND ' . $param_info['db_fields'][0] . ' < ' . ($_POST[$param_name] + 86400);
         else
           $query_parts[] = $param_info['db_fields'][0] . ' ' . $range_trans[$_POST['types'][$param_name]] . ' ' . $_POST[$param_name];
       }
       // Checkboxes.
-      elseif ($param_info['type'] == 'checkbox')
+      else if ($param_info['type'] == 'checkbox')
       {
         // Each checkbox or no checkbox at all is checked -> ignore.
         if (!is_array($_POST[$param_name]) || count($_POST[$param_name]) == 0 || count($_POST[$param_name]) == count($param_info['values']))
@@ -424,7 +424,7 @@ function ViewMemberlist()
       $difference = jeffsdatediff($row['lastLogin']);
       if (empty($difference))
         $difference = $txt['viewmembers_today'];
-      elseif ($difference == 1)
+      else if ($difference == 1)
         $difference .= ' ' . $txt['viewmembers_day_ago'];
       else
         $difference .= ' ' . $txt['viewmembers_days_ago'];
@@ -469,7 +469,7 @@ function SearchMembers()
     SELECT ID_GROUP, groupName, minPosts
     FROM {$db_prefix}membergroups
     WHERE ID_GROUP != 3
-    ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
+    ORDER BY minPosts, if (ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
   while ($row = mysqli_fetch_assoc($request))
   {
     if ($row['minPosts'] == -1)
@@ -585,7 +585,7 @@ function MembersAwaitingActivation()
         'rejectemail' => $txt['admin_browse_w_reject'] . ' ' . $txt['admin_browse_w_email'],
       );
   }
-  elseif ($context['browse_type'] == 'activate')
+  else if ($context['browse_type'] == 'activate')
     $context['allowed_actions'] = array(
       'ok' => $txt['admin_browse_w_activate'],
       'okemail' => $txt['admin_browse_w_activate'] . ' ' . $txt['admin_browse_w_email'],
@@ -721,7 +721,7 @@ function AdminApprove()
     }
   }
   // Maybe we're sending it off for activation?
-  elseif ($_POST['todo'] == 'require_activation')
+  else if ($_POST['todo'] == 'require_activation')
   {
     require_once($sourcedir . '/Subs-Members.php');
 
@@ -755,7 +755,7 @@ function AdminApprove()
     }
   }
   // Are we rejecting them?
-  elseif ($_POST['todo'] == 'reject' || $_POST['todo'] == 'rejectemail')
+  else if ($_POST['todo'] == 'reject' || $_POST['todo'] == 'rejectemail')
   {
     require_once($sourcedir . '/Subs-Members.php');
     deleteMembers($members);
@@ -776,7 +776,7 @@ function AdminApprove()
     }
   }
   // A simple delete?
-  elseif ($_POST['todo'] == 'delete' || $_POST['todo'] == 'deleteemail')
+  else if ($_POST['todo'] == 'delete' || $_POST['todo'] == 'deleteemail')
   {
     require_once($sourcedir . '/Subs-Members.php');
     deleteMembers($members);
@@ -797,7 +797,7 @@ function AdminApprove()
     }
   }
   // Remind them to activate their account?
-  elseif ($_POST['todo'] == 'remind')
+  else if ($_POST['todo'] == 'remind')
   {
     foreach ($member_info as $member)
     {

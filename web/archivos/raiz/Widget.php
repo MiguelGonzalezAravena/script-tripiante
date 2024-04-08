@@ -43,7 +43,7 @@ function ShowHelp() {
       'nump' => $row['numPosts'],
     );
 
-    if(!empty($row['childLevel']) && $row['childLevel'] == '1') {
+    if (!empty($row['childLevel']) && $row['childLevel'] == '1') {
       $context['sitemap']['board'][$row['ID_PARENT']]['has_children'] = true;
       $context['sitemap']['collapsible'] = $context['sitemap']['collapsible'] + array($row['ID_PARENT'] => $row['ID_PARENT']);
     }

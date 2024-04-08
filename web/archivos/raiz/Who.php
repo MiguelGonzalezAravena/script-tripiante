@@ -112,7 +112,7 @@ function Who() {
       mg.onlineColor, IFNULL(mem.showOnline, 1) AS showOnline
     FROM {$db_prefix}log_online AS lo
       LEFT JOIN {$db_prefix}members AS mem ON (lo.ID_MEMBER = mem.ID_MEMBER)
-      LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))" . (!allowedTo('moderate_forum') ? "
+      LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = if (mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))" . (!allowedTo('moderate_forum') ? "
     WHERE IFNULL(mem.showOnline, 1) = 1" : '') . "
     ORDER BY $_REQUEST[sort] " . (isset($_REQUEST['asc']) ? 'ASC' : 'DESC') . "
     LIMIT $context[start], $modSettings[defaultMaxMembers]", __FILE__, __LINE__);
@@ -304,10 +304,10 @@ function determineActions($urls) {
           $data[$k] = $txt['who_hidden'];
       }
       // Viewable only by administrators.. (if it starts with whoadmin, it's admin only!)
-      elseif (allowedTo('moderate_forum') && isset($txt['whoadmin_' . $actions['action']]))
+      else if (allowedTo('moderate_forum') && isset($txt['whoadmin_' . $actions['action']]))
         $data[$k] = $txt['whoadmin_' . $actions['action']];
       // Viewable by permission level.
-      elseif (isset($allowedActions[$actions['action']])) {
+      else if (isset($allowedActions[$actions['action']])) {
         if (allowedTo($allowedActions[$actions['action']]))
           $data[$k] = $txt['whoallow_' . $actions['action']];
         else

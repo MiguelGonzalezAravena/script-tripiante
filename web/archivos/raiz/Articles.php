@@ -493,7 +493,7 @@ function AddArticle() {
 
   $context['articles_cat'] = array();
 
-  while($row = mysqli_fetch_assoc($dbresult)) {
+  while ($row = mysqli_fetch_assoc($dbresult)) {
     // Check if they have permission to add to this category.
     if ($row['view'] == '0' || $row['addarticle'] == '0' )
       continue;
@@ -686,7 +686,7 @@ function EditArticle() {
 
   $context['articles_cat'] = array();
 
-  while($row = mysqli_fetch_assoc($dbresult)) {
+  while ($row = mysqli_fetch_assoc($dbresult)) {
     // Check if they have permission to add to this category.
     if ($row['view'] == '0' || $row['addarticle'] == '0')
       continue;
@@ -1295,7 +1295,7 @@ function ReOrderCats($cat) {
   if (db_affected_rows() != 0) {
     $count = 1;
 
-    while($row2 = mysqli_fetch_assoc($dbresult)) {
+    while ($row2 = mysqli_fetch_assoc($dbresult)) {
       db_query("
         UPDATE {$db_prefix}articles_cat
         SET roworder = $count
@@ -1380,7 +1380,7 @@ function GetArticleTotals($cat) {
       WHERE seotitle = '$cat'
       ORDER BY roworder ASC", __FILE__, __LINE__);
 
-    while($row3 = mysqli_fetch_assoc($dbresult3)) {
+    while ($row3 = mysqli_fetch_assoc($dbresult3)) {
       if ($firstCatDone == 1)
         $subcats_linktree .=',&nbsp;';
 
@@ -1536,7 +1536,7 @@ function MyArticles() {
     $sort = 'a.ID_ARTICLE';
 
   if (isset($_REQUEST['sorto'])) {
-    if($_REQUEST['sorto'] == 'ASC')
+    if ($_REQUEST['sorto'] == 'ASC')
       $sorto = 'ASC';
     else
       $sorto = 'DESC';
@@ -1618,7 +1618,7 @@ function Search() {
 
   $context['articles_cat'] = array();
 
-  while($row = mysqli_fetch_assoc($dbresult)) {
+  while ($row = mysqli_fetch_assoc($dbresult)) {
     // Check if they have permission to search these categories
     if ($row['view'] == '0')
       continue;
@@ -1788,7 +1788,7 @@ function Search2() {
 
   $context['articles_listing'] = array();
 
-  while($row = mysqli_fetch_assoc($dbresult))
+  while ($row = mysqli_fetch_assoc($dbresult))
     $context['articles_listing'][] = $row;
 
   mysqli_free_result($dbresult);
@@ -2034,7 +2034,7 @@ function CreateArticlesPrettryCategory() {
     } else {
       $tmpArray2 = array();
 
-      for($j = 0; $j < count($finalArray); $j++) {
+      for ($j = 0; $j < count($finalArray); $j++) {
         $tmpArray2[] = $finalArray[$j];
 
         // Find Parent good Now we just insert the records that we found right after the parent

@@ -820,12 +820,12 @@ function template_show_settings()
         echo '
               <input type="hidden" name="', $config_var['name'], '" value="0" /><input type="checkbox"', ($config_var['disabled'] ? ' disabled="disabled"' : ''), ' name="', $config_var['name'], '" id="', $config_var['name'], '" ', ($config_var['value'] ? ' checked="checked"' : ''), ' class="check" />';
       // Escape (via htmlspecialchars.) the text box.
-      elseif ($config_var['type'] == 'password')
+      else if ($config_var['type'] == 'password')
         echo '
               <input type="password"', ($config_var['disabled'] ? ' disabled="disabled"' : ''), ' name="', $config_var['name'], '[0]"', ($config_var['size'] ? ' size="' . $config_var['size'] . '"' : ''), ' value="*#fakepass#*" onfocus="this.value = \'\'; this.form.', $config_var['name'], '.disabled = false;" /><br />
               <input type="password" disabled="disabled" id="', $config_var['name'], '" name="', $config_var['name'], '[1]"', ($config_var['size'] ? ' size="' . $config_var['size'] . '"' : ''), ' />';
       // Show a selection box.
-      elseif ($config_var['type'] == 'select')
+      else if ($config_var['type'] == 'select')
       {
         echo '
               <select name="', $config_var['name'], '"', ($config_var['disabled'] ? ' disabled="disabled"' : ''), '>';
@@ -836,7 +836,7 @@ function template_show_settings()
               </select>';
       }
       // Text area?
-      elseif ($config_var['type'] == 'large_text')
+      else if ($config_var['type'] == 'large_text')
       {
         echo '
               <textarea rows="', ($config_var['size'] ? $config_var['size'] : 4), '" cols="30" ', ($config_var['disabled'] ? ' disabled="disabled"' : ''), ' name="', $config_var['name'], '">', $config_var['value'], '</textarea>';

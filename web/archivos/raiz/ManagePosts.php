@@ -94,7 +94,7 @@ function SetCensor()
       foreach ($_POST['censortext'] as $c)
         list ($censored_vulgar[], $censored_proper[]) = array_pad(explode('=', trim($c)), 2, '');
     }
-    elseif (isset($_POST['censor_vulgar'], $_POST['censor_proper']))
+    else if (isset($_POST['censor_vulgar'], $_POST['censor_proper']))
     {
       if (is_array($_POST['censor_vulgar']))
       {
@@ -206,7 +206,7 @@ function ModifyPostSettings()
             CHANGE COLUMN body body mediumtext", __FILE__, __LINE__);
         }
       }
-      elseif (isset($body_type) && $_POST['max_messageLength'] <= 65535 && $body_type != 'text')
+      else if (isset($body_type) && $_POST['max_messageLength'] <= 65535 && $body_type != 'text')
       {
         // Shorten the column so we can have the benefit of fulltext searching again!
         db_query("
@@ -255,11 +255,11 @@ function ModifyHideTagSpecialSettings()
     $_POST['hide_unhiddentext'] = $func['htmlspecialchars'](stripslashes($_POST['hide_unhiddentext']), ENT_QUOTES);
   
     //Allowed Groups ;)
-    if(!empty($_POST['hide_autounhidegroups'])) {
+    if (!empty($_POST['hide_autounhidegroups'])) {
       $new_array = array();
       foreach($_POST['hide_autounhidegroups'] as $i) {
         $i = (int) $i;
-        if(!empty($i))
+        if (!empty($i))
           $new_array[$i] = $i;
       }
       $_POST['hide_autounhidegroups'] = implode(',', $new_array);
@@ -314,7 +314,7 @@ function ModifyHideTagSpecialSettings()
   loadLanguage('ManageBoards');
 
   //Fix something the first time :D
-  if(empty($modSettings['hide_posUnhiddenText'])) 
+  if (empty($modSettings['hide_posUnhiddenText'])) 
     updateSettings(array('hide_posUnhiddenText' => 4));
 }
 
@@ -346,7 +346,7 @@ function ModifyBBCSettings()
 
     if (!isset($_POST['enabledTags']))
       $_POST['enabledTags'] = array();
-    elseif (!is_array($_POST['enabledTags']))
+    else if (!is_array($_POST['enabledTags']))
       $_POST['enabledTags'] = array($_POST['enabledTags']);
 
     // Update the actual settings.

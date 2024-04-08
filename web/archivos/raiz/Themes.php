@@ -344,7 +344,7 @@ function SetThemeOptions()
 
     redirectexit('action=theme;sesc=' . $sc . ';sa=reset');
   }
-  elseif (isset($_POST['submit']) && $_POST['who'] == 1)
+  else if (isset($_POST['submit']) && $_POST['who'] == 1)
   {
     checkSession();
 
@@ -358,7 +358,7 @@ function SetThemeOptions()
     {
       if ($_POST['default_options_master'][$opt] == 0)
         continue;
-      elseif ($_POST['default_options_master'][$opt] == 1)
+      else if ($_POST['default_options_master'][$opt] == 1)
       {
         db_query("
           REPLACE INTO {$db_prefix}themes
@@ -368,7 +368,7 @@ function SetThemeOptions()
 
         $old_settings[] = $opt;
       }
-      elseif ($_POST['default_options_master'][$opt] == 2)
+      else if ($_POST['default_options_master'][$opt] == 2)
       {
         db_query("
           DELETE FROM {$db_prefix}themes
@@ -389,7 +389,7 @@ function SetThemeOptions()
     {
       if ($_POST['options_master'][$opt] == 0)
         continue;
-      elseif ($_POST['options_master'][$opt] == 1)
+      else if ($_POST['options_master'][$opt] == 1)
       {
         db_query("
           REPLACE INTO {$db_prefix}themes
@@ -397,7 +397,7 @@ function SetThemeOptions()
           SELECT ID_MEMBER, $_GET[th], SUBSTRING('$opt', 1, 255), SUBSTRING('" . (is_array($val) ? implode(',', $val) : $val) . "', 1, 65534)
           FROM {$db_prefix}members", __FILE__, __LINE__);
       }
-      elseif ($_POST['options_master'][$opt] == 2)
+      else if ($_POST['options_master'][$opt] == 2)
       {
         db_query("
           DELETE FROM {$db_prefix}themes
@@ -409,7 +409,7 @@ function SetThemeOptions()
 
     redirectexit('action=theme;sesc=' . $sc . ';sa=reset');
   }
-  elseif (!empty($_GET['who']) && $_GET['who'] == 2)
+  else if (!empty($_GET['who']) && $_GET['who'] == 2)
   {
     checkSession('get');
 
@@ -464,9 +464,9 @@ function SetThemeOptions()
   {
     if (!isset($setting['type']) || $setting['type'] == 'bool')
       $context['options'][$i]['type'] = 'checkbox';
-    elseif ($setting['type'] == 'int' || $setting['type'] == 'integer')
+    else if ($setting['type'] == 'int' || $setting['type'] == 'integer')
       $context['options'][$i]['type'] = 'number';
-    elseif ($setting['type'] == 'string')
+    else if ($setting['type'] == 'string')
       $context['options'][$i]['type'] = 'text';
 
     if (isset($setting['options']))
@@ -576,9 +576,9 @@ function SetThemeSettings()
   {
     if (!isset($setting['type']) || $setting['type'] == 'bool')
       $context['settings'][$i]['type'] = 'checkbox';
-    elseif ($setting['type'] == 'int' || $setting['type'] == 'integer')
+    else if ($setting['type'] == 'int' || $setting['type'] == 'integer')
       $context['settings'][$i]['type'] = 'number';
-    elseif ($setting['type'] == 'string')
+    else if ($setting['type'] == 'string')
       $context['settings'][$i]['type'] = 'text';
 
     if (isset($setting['options']))
@@ -663,14 +663,14 @@ function PickTheme()
       redirectexit('action=profile;sa=theme');
     }
     // For everyone.
-    elseif ($_REQUEST['u'] == '0')
+    else if ($_REQUEST['u'] == '0')
     {
       updateMemberData(null, array('ID_THEME' => (int) $_GET['th']));
 
       redirectexit('action=theme;sa=admin;sesc=' . $sc);
     }
     // Change the default/guest theme.
-    elseif ($_REQUEST['u'] == '-1')
+    else if ($_REQUEST['u'] == '-1')
     {
       updateSettings(array('theme_guests' => (int) $_GET['th']));
 
@@ -692,13 +692,13 @@ function PickTheme()
     $context['current_theme'] = $user_info['theme'];
   }
   // Everyone can't chose just one.
-  elseif ($_REQUEST['u'] == '0')
+  else if ($_REQUEST['u'] == '0')
   {
     $context['current_member'] = 0;
     $context['current_theme'] = 0;
   }
   // Guests and such...
-  elseif ($_REQUEST['u'] == '-1')
+  else if ($_REQUEST['u'] == '-1')
   {
     $context['current_member'] = -1;
     $context['current_theme'] = $modSettings['theme_guests'];
@@ -763,7 +763,7 @@ function PickTheme()
     // Figure out which theme it is they are REALLY using.
     if ($row['ID_THEME'] == 1 && empty($modSettings['theme_default']))
       $row['ID_THEME'] = $guest_theme;
-    elseif (empty($modSettings['theme_allow']))
+    else if (empty($modSettings['theme_allow']))
       $row['ID_THEME'] = $guest_theme;
 
     if (isset($context['available_themes'][$row['ID_THEME']]))
@@ -784,7 +784,7 @@ function PickTheme()
 
     if (file_exists($boarddir . '/web/archivos/idiomas/Settings.' . $user_info['language'] . '.php'))
       include($boarddir . '/web/archivos/idiomas/Settings.' . $user_info['language'] . '.php');
-    elseif (file_exists($boarddir . '/web/archivos/idiomas/Settings.' . $language . '.php'))
+    else if (file_exists($boarddir . '/web/archivos/idiomas/Settings.' . $language . '.php'))
       include($boarddir . '/web/archivos/idiomas/Settings.' . $language . '.php');
     else
     {
@@ -853,7 +853,7 @@ function ThemeInstall()
 
   if ((!empty($_FILES['theme_gz']) && (!isset($_FILES['theme_gz']['error']) || $_FILES['theme_gz']['error'] != 4)) || !empty($_REQUEST['theme_gz']))
     $method = 'upload';
-  elseif (isset($_REQUEST['theme_dir']) && realpath(stripslashes($_REQUEST['theme_dir'])) != realpath($boarddir . '/web/archivos/temas') && file_exists(stripslashes($_REQUEST['theme_dir'])))
+  else if (isset($_REQUEST['theme_dir']) && realpath(stripslashes($_REQUEST['theme_dir'])) != realpath($boarddir . '/web/archivos/temas') && file_exists(stripslashes($_REQUEST['theme_dir'])))
     $method = 'path';
   else
     $method = 'copy';
@@ -885,7 +885,7 @@ function ThemeInstall()
     $images_url = $boardurl . '/images';
     $theme_dir = realpath($theme_dir);
   }
-  elseif (isset($_REQUEST['theme_dir']) && $method == 'path')
+  else if (isset($_REQUEST['theme_dir']) && $method == 'path')
   {
     if (!is_dir(stripslashes($_REQUEST['theme_dir'])) || !file_exists(stripslashes($_REQUEST['theme_dir']) . '/theme_info.xml'))
       fatal_lang_error('theme_install_error', false);
@@ -893,7 +893,7 @@ function ThemeInstall()
     $theme_name = basename($_REQUEST['theme_dir']);
     $theme_dir = stripslashes($_REQUEST['theme_dir']);
   }
-  elseif ($method = 'upload')
+  else if ($method = 'upload')
   {
     // Hopefully the themes directory is writable, or we might have a problem.
     if (!is_writable($boarddir . '/web/archivos/temas'))
@@ -908,7 +908,7 @@ function ThemeInstall()
 
     if (isset($_FILES['theme_gz']) && is_uploaded_file($_FILES['theme_gz']['tmp_name']) && (@ini_get('open_basedir') != '' || file_exists($_FILES['theme_gz']['tmp_name'])))
       $extracted = read_tgz_file($_FILES['theme_gz']['tmp_name'], $boarddir . '/web/archivos/temas/' . $theme_name, false, true);
-    elseif (isset($_REQUEST['theme_gz']))
+    else if (isset($_REQUEST['theme_gz']))
     {
       // Check that the theme is from simplemachines.org, for now... maybe add mirroring later.
       if (preg_match('~^http://[\w_\-]+\.simplemachines\.org/~', $_REQUEST['theme_gz']) == 0 || strpos($_REQUEST['theme_gz'], 'dlattach') !== false)
@@ -963,7 +963,7 @@ function ThemeInstall()
         $install_info['theme_url'] = $settings['default_theme_url'];
         $install_info['images_url'] = $settings['default_images_url'];
       }
-      elseif ($install_info['based_on'] != '')
+      else if ($install_info['based_on'] != '')
       {
         $install_info['based_on'] = preg_replace('~[^A-Za-z0-9\-_ ]~', '', $install_info['based_on']);
 
@@ -1049,7 +1049,7 @@ function WrapAction()
     $settings['catch_action']['function']();
   }
   // And finally, the main sub template ;).
-  elseif (isset($settings['catch_action']['sub_template']))
+  else if (isset($settings['catch_action']['sub_template']))
     $context['sub_template'] = $settings['catch_action']['sub_template'];
 }
 
@@ -1327,7 +1327,7 @@ function EditTheme()
 
     $context['entire_file'] = htmlspecialchars(strtr(file_get_contents($theme_dir . '/' . $_REQUEST['filename']), array("\t" => '   ')));
   }
-  elseif (substr($_REQUEST['filename'], -13) == '.template.php')
+  else if (substr($_REQUEST['filename'], -13) == '.template.php')
   {
     $context['sub_template'] = 'edit_template';
 
@@ -1452,7 +1452,7 @@ function CopyTemplate()
   {
     if (!empty($base_theme_dir) && file_exists($base_theme_dir . '/' . $_REQUEST['template'] . '.template.php'))
       $filename = $base_theme_dir . '/' . $_REQUEST['template'] . '.template.php';
-    elseif (file_exists($settings['default_theme_dir'] . '/' . $_REQUEST['template'] . '.template.php'))
+    else if (file_exists($settings['default_theme_dir'] . '/' . $_REQUEST['template'] . '.template.php'))
       $filename = $settings['default_theme_dir'] . '/' . $_REQUEST['template'] . '.template.php';
     else
       fatal_lang_error(1, false);
@@ -1463,11 +1463,11 @@ function CopyTemplate()
 
     redirectexit('action=theme;th=' . $context['theme_id'] . ';sesc=' . $context['session_id'] . ';sa=copy');
   }
-  elseif (isset($_REQUEST['lang_file']) && preg_match('~^[^\./\\\\:\0]\.[^\./\\\\:\0]$~', $_REQUEST['lang_file']) != 0)
+  else if (isset($_REQUEST['lang_file']) && preg_match('~^[^\./\\\\:\0]\.[^\./\\\\:\0]$~', $_REQUEST['lang_file']) != 0)
   {
     if (!empty($base_theme_dir) && file_exists($base_theme_dir . '/web/archivos/idiomas/' . $_REQUEST['lang_file'] . '.php'))
       $filename = $base_theme_dir . '/web/archivos/idiomas/' . $_REQUEST['template'] . '.php';
-    elseif (file_exists($settings['default_theme_dir'] . '/web/archivos/idiomas/' . $_REQUEST['template'] . '.php'))
+    else if (file_exists($settings['default_theme_dir'] . '/web/archivos/idiomas/' . $_REQUEST['template'] . '.php'))
       $filename = $settings['default_theme_dir'] . '/web/archivos/idiomas/' . $_REQUEST['template'] . '.php';
     else
       fatal_lang_error(1, false);
@@ -1577,7 +1577,7 @@ function convert_template($output_dir, $old_template = '')
     // Step 1: Get the template.php file.
     if (file_exists($boarddir . '/template.php'))
       $old_template = file_get_contents($boarddir . '/template.php');
-    elseif (file_exists($boarddir . '/template.html'))
+    else if (file_exists($boarddir . '/template.html'))
       $old_template = file_get_contents($boarddir . '/template.html');
     else
       fatal_lang_error('theme_convert_error');

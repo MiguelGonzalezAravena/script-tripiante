@@ -102,10 +102,10 @@ function read_tgz_data($data, $destination, $single_file = false, $overwrite = f
     if (substr($current['filename'], -1, 1) != '/' && !file_exists($destination . '/' . $current['filename']))
       $write_this = true;
     // File exists... check if it is newer.
-    elseif (substr($current['filename'], -1, 1) != '/')
+    else if (substr($current['filename'], -1, 1) != '/')
       $write_this = $overwrite || filemtime($destination . '/' . $current['filename']) < $current['mtime'];
     // Folder... create.
-    elseif ($destination !== null && !$single_file)
+    else if ($destination !== null && !$single_file)
     {
       // Protect from accidental parent directory writing...
       $current['filename'] = strtr($current['filename'], array('../' => '', '/..' => ''));
@@ -126,7 +126,7 @@ function read_tgz_data($data, $destination, $single_file = false, $overwrite = f
       if ($single_file && ($destination == $current['filename'] || $destination == '*/' . basename($current['filename'])))
         return $current['data'];
       // If we're looking for another file, keep going.
-      elseif ($single_file)
+      else if ($single_file)
         continue;
 
       package_put_contents($destination . '/' . $current['filename'], $current['data']);
@@ -196,10 +196,10 @@ function read_zip_data($data, $destination, $single_file = false, $overwrite = f
     if (substr($file_info['filename'], -1, 1) != '/' && !file_exists($destination . '/' . $file_info['filename']))
       $write_this = true;
     // If the file exists, we may not want to overwrite it.
-    elseif (substr($file_info['filename'], -1, 1) != '/')
+    else if (substr($file_info['filename'], -1, 1) != '/')
       $write_this = $overwrite;
     // This is a directory, so we're gonna want to create it. (probably...)
-    elseif ($destination !== null && !$single_file)
+    else if ($destination !== null && !$single_file)
     {
       // Just a little accident prevention, don't mind me.
       $file_info['filename'] = strtr($file_info['filename'], array('../' => '', '/..' => ''));
@@ -232,7 +232,7 @@ function read_zip_data($data, $destination, $single_file = false, $overwrite = f
       if ($single_file && ($destination == $file_info['filename'] || $destination == '*/' . basename($file_info['filename'])))
         return $file_info['data'];
       // Oh?  Another file.  Fine.  You don't like this file, do you?  I know how it is.  Yeah... just go away.  No, don't apologize.  I know this file's just not *good enough* for you.
-      elseif ($single_file)
+      else if ($single_file)
         continue;
 
       package_put_contents($destination . '/' . $file_info['filename'], $file_info['data']);
@@ -339,7 +339,7 @@ function getPackageInfo($gzfilename)
 
     if (is_file($boarddir . '\\web\\archivos/paquetes/' . $gzfilename))
       $packageInfo = read_tgz_file($boarddir . '\\web\\archivos/paquetes/' . $gzfilename, '*/package-info.xml', true);
-    elseif (file_exists($boarddir . '\\web\\archivos/paquetes/' . $gzfilename . '/package-info.xml'))
+    else if (file_exists($boarddir . '\\web\\archivos/paquetes/' . $gzfilename . '/package-info.xml'))
       $packageInfo = file_get_contents($boarddir . '\\web\\archivos/paquetes/' . $gzfilename . '/package-info.xml');
     else
       return false;
@@ -430,7 +430,7 @@ function packageRequireFTP($destination_url, $files = null)
 
     return;
   }
-  elseif (isset($_SESSION['pack_ftp']))
+  else if (isset($_SESSION['pack_ftp']))
   {
     $package_ftp = new ftp_connection($_SESSION['pack_ftp']['server'], $_SESSION['pack_ftp']['port'], $_SESSION['pack_ftp']['username'], package_crypt($_SESSION['pack_ftp']['password']));
 
@@ -468,7 +468,7 @@ function packageRequireFTP($destination_url, $files = null)
     packageRequireFTP($destination_url, $files);
     return;
   }
-  elseif (isset($_POST['ftp_username']))
+  else if (isset($_POST['ftp_username']))
   {
     $ftp = new ftp_connection($_POST['ftp_server'], $_POST['ftp_port'], $_POST['ftp_username'], $_POST['ftp_password']);
 
@@ -487,14 +487,14 @@ function packageRequireFTP($destination_url, $files = null)
   {
     if (!isset($ftp))
       $ftp = new ftp_connection(null);
-    elseif ($ftp->error !== false && !isset($ftp_error))
+    else if ($ftp->error !== false && !isset($ftp_error))
       $ftp_error = $ftp->last_message === null ? '' : $ftp->last_message;
 
     list ($username, $detect_path, $found_path) = $ftp->detect_path($boarddir);
 
     if ($found_path)
       $_POST['ftp_path'] = $detect_path;
-    elseif (!isset($_POST['ftp_path']))
+    else if (!isset($_POST['ftp_path']))
       $_POST['ftp_path'] = isset($modSettings['package_path']) ? $modSettings['package_path'] : $detect_path;
 
     if (!isset($_POST['ftp_username']))
@@ -623,7 +623,7 @@ function parsePackageInfo(&$packageXML, $testing_only = true, $method = 'install
 
       continue;
     }
-    elseif ($actionType == 'error')
+    else if ($actionType == 'error')
     {
       $return[] = array(
         'type' => 'error',
@@ -667,7 +667,7 @@ function parsePackageInfo(&$packageXML, $testing_only = true, $method = 'install
         );
       }
     }
-    elseif ($actionType == 'create-file')
+    else if ($actionType == 'create-file')
     {
       if (!mktree(dirname($this_action['destination']), false))
       {
@@ -687,7 +687,7 @@ function parsePackageInfo(&$packageXML, $testing_only = true, $method = 'install
           'filename' => $this_action['destination']
         );
     }
-    elseif ($actionType == 'require-dir')
+    else if ($actionType == 'require-dir')
     {
       if (!mktree($this_action['destination'], false))
       {
@@ -701,7 +701,7 @@ function parsePackageInfo(&$packageXML, $testing_only = true, $method = 'install
         );
       }
     }
-    elseif ($actionType == 'require-file')
+    else if ($actionType == 'require-file')
     {
       if (!mktree(dirname($this_action['destination']), false))
       {
@@ -721,7 +721,7 @@ function parsePackageInfo(&$packageXML, $testing_only = true, $method = 'install
           'filename' => $this_action['destination']
         );
     }
-    elseif ($actionType == 'move-dir' || $actionType == 'move-file')
+    else if ($actionType == 'move-dir' || $actionType == 'move-file')
     {
       if (!mktree(dirname($this_action['destination']), false))
       {
@@ -741,7 +741,7 @@ function parsePackageInfo(&$packageXML, $testing_only = true, $method = 'install
           'filename' => $this_action['destination']
         );
     }
-    elseif ($actionType == 'remove-dir')
+    else if ($actionType == 'remove-dir')
     {
       if (!is_writable($this_action['filename']) && file_exists($this_action['destination']))
         $return[] = array(
@@ -749,7 +749,7 @@ function parsePackageInfo(&$packageXML, $testing_only = true, $method = 'install
           'filename' => $this_action['filename']
         );
     }
-    elseif ($actionType == 'remove-file')
+    else if ($actionType == 'remove-file')
     {
       if (!is_writable($this_action['filename']) && file_exists($this_action['filename']))
         $return[] = array(
@@ -777,7 +777,7 @@ function parsePackageInfo(&$packageXML, $testing_only = true, $method = 'install
       if (!mktree($action['destination'], 0755) || !is_writable($action['destination']))
         $failure |= !mktree($action['destination'], 0777);
     }
-    elseif ($action['type'] == 'create-file')
+    else if ($action['type'] == 'create-file')
     {
       if (!mktree(dirname($action['destination']), 0755) || !is_writable(dirname($action['destination'])))
         $failure |= !mktree(dirname($action['destination']), 0777);
@@ -788,9 +788,9 @@ function parsePackageInfo(&$packageXML, $testing_only = true, $method = 'install
       if (!file_exists($action['destination']))
         $failure = true;
     }
-    elseif ($action['type'] == 'require-dir')
+    else if ($action['type'] == 'require-dir')
       copytree($action['source'], $action['destination']);
-    elseif ($action['type'] == 'require-file')
+    else if ($action['type'] == 'require-file')
     {
       if (!mktree(dirname($action['destination']), 0755) || !is_writable(dirname($action['destination'])))
         $failure |= !mktree(dirname($action['destination']), 0777);
@@ -799,23 +799,23 @@ function parsePackageInfo(&$packageXML, $testing_only = true, $method = 'install
 
       $failure |= !copy($action['source'], $action['destination']);
     }
-    elseif ($action['type'] == 'move-file')
+    else if ($action['type'] == 'move-file')
     {
       if (!mktree(dirname($action['destination']), 0755) || !is_writable(dirname($action['destination'])))
         $failure |= !mktree(dirname($action['destination']), 0777);
 
       $failure |= !rename($action['source'], $action['destination']);
     }
-    elseif ($action['type'] == 'move-dir')
+    else if ($action['type'] == 'move-dir')
     {
       if (!mktree($action['destination'], 0755) || !is_writable($action['destination']))
         $failure |= !mktree($action['destination'], 0777);
 
       $failure |= !rename($action['source'], $action['destination']);
     }
-    elseif ($action['type'] == 'remove-dir')
+    else if ($action['type'] == 'remove-dir')
       deltree($action['filename']);
-    elseif ($action['type'] == 'remove-file')
+    else if ($action['type'] == 'remove-file')
     {
       package_chmod($action['filename']);
 
@@ -848,7 +848,7 @@ function matchPackageVersion($version, $versions)
       $list = substr($list, 0, -1) . '-' . substr($list, 0, -1) . 'z';
     }
     // Look for a version specification like "1.0-1.2".
-    elseif (strpos($list, '-') === false)
+    else if (strpos($list, '-') === false)
       continue;
 
     list ($lower, $upper) = explode('-', $list);
@@ -991,7 +991,7 @@ function mktree($strPath, $mode)
 
   if ($mode !== false && isset($package_ftp))
     return $package_ftp->create_dir(strtr($strPath, array($_SESSION['pack_ftp']['root'] => '')));
-  elseif ($mode === false)
+  else if ($mode === false)
   {
     $test = @opendir(dirname($strPath));
     if ($test)
@@ -1041,7 +1041,7 @@ function copytree($source, $destination)
     {
       if (isset($package_ftp) && !file_exists($destination . '/' . $entryname))
         $package_ftp->create_file($ftp_file);
-      elseif (!file_exists($destination . '/' . $entryname))
+      else if (!file_exists($destination . '/' . $entryname))
         @touch($destination . '/' . $entryname);
     }
 
@@ -1049,7 +1049,7 @@ function copytree($source, $destination)
 
     if (is_dir($source . '/' . $entryname))
       copytree($source . '/' . $entryname, $destination . '/' . $entryname);
-    elseif (file_exists($destination . '/' . $entryname))
+    else if (file_exists($destination . '/' . $entryname))
       package_put_contents($destination . '/' . $entryname, package_get_contents($source . '/' . $entryname));
     else
       copy($source . '/' . $entryname, $destination . '/' . $entryname);
@@ -1129,7 +1129,7 @@ function parseModification($file, $testing = true, $undo = false)
       continue;
     }
     // Skip the file if it doesn't exist.
-    elseif (!file_exists($working_file) && $file->exists('@error') && trim($file->fetch('@error')) === 'skip')
+    else if (!file_exists($working_file) && $file->exists('@error') && trim($file->fetch('@error')) === 'skip')
     {
       $actions[] = array(
         'type' => 'skipping',
@@ -1138,7 +1138,7 @@ function parseModification($file, $testing = true, $undo = false)
       continue;
     }
     // Okay, we're creating this file then...?
-    elseif (!file_exists($working_file))
+    else if (!file_exists($working_file))
       $working_data = '';
     // Phew, it exists!  Load 'er up!
     else
@@ -1217,7 +1217,7 @@ function parseModification($file, $testing = true, $undo = false)
 
             if ($search['position'] === 'before')
               $actual_operation['searches'][$i]['search'] .= $search['add'];
-            elseif ($search['position'] === 'after')
+            else if ($search['position'] === 'after')
               $actual_operation['searches'][$i]['search'] = $search['add'] . $search['search'];
           }
 
@@ -1269,14 +1269,14 @@ function parseModification($file, $testing = true, $undo = false)
         }
 
         // After, after what?
-        elseif ($search['position'] === 'after')
+        else if ($search['position'] === 'after')
         {
           $actual_operation['searches'][$i]['preg_search'] = '(' . $actual_operation['searches'][$i]['preg_search'] . ')';
           $actual_operation['searches'][$i]['preg_replace'] .= '$1';
         }
 
         // Position the replacement at the end of the file (or just before the closing PHP tags).
-        elseif ($search['position'] === 'end')
+        else if ($search['position'] === 'end')
         {
           if ($undo)
           {
@@ -1306,7 +1306,7 @@ function parseModification($file, $testing = true, $undo = false)
         }
 
         // Found, but in this case, that means failure!
-        elseif (!$failed && $actual_operation['error'] === 'required')
+        else if (!$failed && $actual_operation['error'] === 'required')
         {
           $actions[] = array(
             'type' => 'failure',
@@ -1474,7 +1474,7 @@ function parseBoardMod($file, $testing = true, $undo = false)
       $working_search = null;
     }
     // Search for a specific string.
-    elseif (($code_match[1] == 'search' || $code_match[1] == 'search for') && $working_file !== null)
+    else if (($code_match[1] == 'search' || $code_match[1] == 'search for') && $working_file !== null)
     {
       if ($working_search !== null)
       {
@@ -1489,7 +1489,7 @@ function parseBoardMod($file, $testing = true, $undo = false)
       $working_search = $code_match[2];
     }
     // Must've already loaded a search string.
-    elseif ($working_search !== null)
+    else if ($working_search !== null)
     {
       // This is the base string....
       $replace_with = $code_match[2];
@@ -1498,7 +1498,7 @@ function parseBoardMod($file, $testing = true, $undo = false)
       if ($code_match[1] == 'add' || $code_match[1] == 'add after')
         $replace_with = $working_search . "\n" . $replace_with;
       // Add this beforehand.
-      elseif ($code_match[1] == 'before' || $code_match[1] == 'add before' || $code_match[1] == 'above' || $code_match[1] == 'add above')
+      else if ($code_match[1] == 'before' || $code_match[1] == 'add before' || $code_match[1] == 'above' || $code_match[1] == 'add above')
         $replace_with .= "\n" . $working_search;
       // Otherwise.. replace with $replace_with ;).
     }
@@ -1620,7 +1620,7 @@ function package_put_contents($filename, $data, $testing = false)
 
   if (!file_exists($filename) && isset($package_ftp))
     $package_ftp->create_file($ftp_file);
-  elseif (!file_exists($filename))
+  else if (!file_exists($filename))
     @touch($filename);
 
   package_chmod($filename);
@@ -1636,7 +1636,7 @@ function package_put_contents($filename, $data, $testing = false)
     fwrite($fp, $data);
     fclose($fp);
   }
-  elseif (strpos($filename, 'Packages/') !== false || $package_cache === false)
+  else if (strpos($filename, 'Packages/') !== false || $package_cache === false)
     return strlen($data);
   else
   {
@@ -1668,7 +1668,7 @@ function package_flush_cache($trash = false)
 
     if (!file_exists($filename) && isset($package_ftp))
       $package_ftp->create_file($ftp_file);
-    elseif (!file_exists($filename))
+    else if (!file_exists($filename))
       @touch($filename);
 
     package_chmod($filename);
@@ -1716,14 +1716,14 @@ function package_chmod($filename)
       $package_ftp->chmod($ftp_file, 0777);
   }
   // File exists, but no FTP help.
-  elseif (file_exists($filename))
+  else if (file_exists($filename))
   {
     @chmod($filename, 0755);
     if (!is_writable($filename))
       @chmod($filename, 0777);
   }
   // File does not exist, and we have FTP.
-  elseif (isset($package_ftp))
+  else if (isset($package_ftp))
   {
     $ftp_file = strtr(dirname($filename), array($_SESSION['pack_ftp']['root'] => ''));
 
@@ -1917,7 +1917,7 @@ function fetch_web_data($url, $post_data = '', $keep_alive = false)
     $ftp->close();
   }
   // This is more likely; a standard HTTP URL.
-  elseif (isset($match[1]) && $match[1] == 'http')
+  else if (isset($match[1]) && $match[1] == 'http')
   {
     if ($keep_alive && $match[3] == $keep_alive_dom)
       $fp = $keep_alive_fp;
@@ -1970,7 +1970,7 @@ function fetch_web_data($url, $post_data = '', $keep_alive = false)
     {
       if (preg_match('~content-length:\s*(\d+)~i', $header, $match) != 0)
         $content_length = $match[1];
-      elseif (preg_match('~connection:\s*close~i', $header) != 0)
+      else if (preg_match('~connection:\s*close~i', $header) != 0)
       {
         $keep_alive_dom = null;
         $keep_alive = false;
@@ -2100,7 +2100,7 @@ class xmlArray
         $el = substr($el, 0, strpos($el, '['));
       }
       // Find an attribute.
-      elseif (substr($el, 0, 1) == '@')
+      else if (substr($el, 0, 1) == '@')
       {
         // It simplifies things if the attribute is already there ;).
         if (isset($array[$el]))
@@ -2163,7 +2163,7 @@ class xmlArray
         $el = substr($el, 0, strpos($el, '['));
       }
       // Find an attribute.
-      elseif (substr($el, 0, 1) == '@')
+      else if (substr($el, 0, 1) == '@')
         return isset($array[$el]);
       else
         $lvl = null;
@@ -2297,7 +2297,7 @@ class xmlArray
             );
         }
         // If the < isn't immediately next to the current position... more data.
-        elseif (strpos($data, '<') > 0)
+        else if (strpos($data, '<') > 0)
         {
           $text_value = $this->_from_cdata(substr($data, 0, strpos($data, '<')));
           $data = substr($data, strpos($data, '<'));
@@ -2309,7 +2309,7 @@ class xmlArray
             );
         }
         // If we're looking at a </something> with no start, kill it.
-        elseif (strpos($data, '<') !== false && strpos($data, '<') == 0)
+        else if (strpos($data, '<') !== false && strpos($data, '<') == 0)
         {
           if (strpos($data, '<', 1) !== false)
           {
@@ -2382,7 +2382,7 @@ class xmlArray
           // Parse the inner data.
           if (strpos($inner_match, '<') !== false)
             $el += $this->_parse($inner_match);
-          elseif (trim($inner_match) != '')
+          else if (trim($inner_match) != '')
           {
             $text_value = $this->_from_cdata($inner_match);
             if ($text_value != '')
@@ -2427,7 +2427,7 @@ class xmlArray
     // This is just text!
     if ($array['name'] == '!')
       return $indentation . '<![CDATA[' . $array['value'] . ']]>';
-    elseif (substr($array['name'], -2) == '[]')
+    else if (substr($array['name'], -2) == '[]')
       $array['name'] = substr($array['name'], 0, -2);
 
     // Start the element.
@@ -2441,7 +2441,7 @@ class xmlArray
     {
       if (substr($k, 0, 1) == '@')
         $output .= ' ' . substr($k, 1) . '="' . $v . '"';
-      elseif (is_array($v))
+      else if (is_array($v))
       {
         $output_el .= $this->_xml($v, $indent === null ? null : $indent + 1);
         $inside_elements = true;
@@ -2493,15 +2493,15 @@ class xmlArray
         $inComment = true;
       if ($inComment && $part === '-->')
         $inComment = false;
-      elseif ($inComment)
+      else if ($inComment)
         continue;
 
       // Handle Cdata blocks.
-      elseif (!$inComment && $part === '<![CDATA[')
+      else if (!$inComment && $part === '<![CDATA[')
         $inCdata = true;
-      elseif ($inCdata && $part === ']]>')
+      else if ($inCdata && $part === ']]>')
         $inCdata = false;
-      elseif ($inCdata)
+      else if ($inCdata)
         $output .= htmlentities($part, ENT_QUOTES);
 
       // Everything else is kept as is.
@@ -2603,7 +2603,7 @@ class xmlArray
       return false;
     }
     // Only one result.
-    elseif (count($results) == 1 || $level !== null)
+    else if (count($results) == 1 || $level !== null)
       return $results[0];
     // Return the result set.
     else
@@ -2627,7 +2627,7 @@ class ftp_connection
   {
     if (substr($ftp_server, 0, 6) == 'ftp://')
       $ftp_server = substr($ftp_server, 6);
-    elseif (substr($ftp_server, 0, 7) == 'ftps://')
+    else if (substr($ftp_server, 0, 7) == 'ftps://')
       $ftp_server = 'ssl://' . substr($ftp_server, 7);
     if (substr($ftp_server, 0, 7) == 'http://')
       $ftp_server = substr($ftp_server, 7);
@@ -2917,7 +2917,7 @@ class ftp_connection
         if (strlen(dirname($_SERVER['PHP_SELF'])) > 1)
           $path .= dirname($_SERVER['PHP_SELF']);
       }
-      elseif (substr($filesystem_path, 0, 9) == '/var/www/')
+      else if (substr($filesystem_path, 0, 9) == '/var/www/')
         $path = substr($filesystem_path, 8);
       else
         $path = strtr(strtr($filesystem_path, array('\\' => '/')), array($_SERVER['DOCUMENT_ROOT'] => ''));
@@ -2938,7 +2938,7 @@ class ftp_connection
       if ($found_path != false)
         $path = $found_path;
     }
-    elseif (is_resource($this->connection))
+    else if (is_resource($this->connection))
       $found_path = true;
 
     return array($username, $path, isset($found_path));
@@ -2962,7 +2962,7 @@ if (!function_exists('smf_crc32'))
   {
     $crc = crc32($number);
   
-    if($crc & 0x80000000){
+    if ($crc & 0x80000000) {
       $crc ^= 0xffffffff;
       $crc += 1;
       $crc = -$crc;

@@ -185,15 +185,15 @@ function MessageFolder()
   global $txt, $scripturl, $db_prefix, $ID_MEMBER, $modSettings, $context;
   global $messages_request, $user_info, $recipients, $options;
 
-  if(isset($_GET['p']))
+  if (isset($_GET['p']))
     $context['sl-singlepm'] = (int) $_GET['p'];
 
-  if(isset($context['sl-singlepm']) && !isset($modSettings['enableSinglePM']))
+  if (isset($context['sl-singlepm']) && !isset($modSettings['enableSinglePM']))
     $modSettings['enableSinglePM'] = 1;
     
   if (isset($_GET['start']) && $_GET['start'] != 'new')
     $_GET['start'] = (int) $_GET['start'];
-  elseif (!isset($_GET['start']) && !empty($options['view_newest_pm_first']))
+  else if (!isset($_GET['start']) && !empty($options['view_newest_pm_first']))
     $_GET['start'] = 0;
   else
     $_GET['start'] = 'new';
@@ -245,12 +245,12 @@ function MessageFolder()
   $txt[412] = str_replace('PMBOX', $pmbox, $txt[412]);
 
 
-  if(isset($context['sl-singlepm']))
+  if (isset($context['sl-singlepm']))
     $context['linktree'][] = array(
     'url' => $scripturl . '?action=pm;f=' . $context['folder'] . ';p=' . $context['sl-singlepm'],
     'name' => $txt['singlepm_vmsg'] . $context['sl-singlepm']
     );
-      if(isset($context['sl-singlepm']))
+      if (isset($context['sl-singlepm']))
     --$context['sl-singlepm'];
 
   // Mark all messages as read if in the inbox.
@@ -279,7 +279,7 @@ function MessageFolder()
   // Start on the last page.
   if (!is_numeric($_GET['start']) || $_GET['start'] >= $max_messages)
     $_GET['start'] = ($max_messages - 1) - (($max_messages - 1) % $modSettings['defaultMaxMessages']);
-  elseif ($_GET['start'] < 0)
+  else if ($_GET['start'] < 0)
     $_GET['start'] = 0;
 
   // ... but wait - what if we want to start from a specific message?
@@ -369,7 +369,7 @@ ORDER BY " . ($_GET['sort'] == 'pm.ID_PM' && $context['folder'] != 'outbox' ? 'p
   if (!empty($pms))
   {
 
-if(isset($context['sl-singlepm']) && empty($pms))
+if (isset($context['sl-singlepm']) && empty($pms))
     fatal_error($txt['singlepm_prange'], false);
     
         $request = db_query("
@@ -813,7 +813,7 @@ function MessagePost2()
 
   $to=$POST['to'];
 
-  if($to == $context['user']['name'])
+  if ($to == $context['user']['name'])
   fatal_error('Tu no puedes enviarte Mensajes privados.');
   
   if (loadLanguage('PersonalMessage', '', false) === false)
@@ -864,7 +864,7 @@ function MessagePost2()
     $post_errors[] = 'no_subject';
   if (!isset($_REQUEST['message']) || $_REQUEST['message'] == '')
     $post_errors[] = 'no_message';
-  elseif (!empty($modSettings['max_messageLength']) && $func['strlen']($_REQUEST['message']) > $modSettings['max_messageLength'])
+  else if (!empty($modSettings['max_messageLength']) && $func['strlen']($_REQUEST['message']) > $modSettings['max_messageLength'])
     $post_errors[] = 'long_message';
   if (empty($_REQUEST['to']) && empty($_REQUEST['bcc']) && empty($_REQUEST['u']))
     $post_errors[] = 'no_to';
@@ -1101,7 +1101,7 @@ function MessageActionsApply()
         $type = 'add';
         $action = substr($action, 4);
       }
-      elseif (substr($action, 0, 4) == 'rem_')
+      else if (substr($action, 0, 4) == 'rem_')
       {
         $type = 'rem';
         $action = substr($action, 4);
@@ -1141,7 +1141,7 @@ function MessageActionsApply()
       $ID_LABEL = array_search($to_label[$row['ID_PM']], $labels);
       if ($ID_LABEL !== false && $label_type[$row['ID_PM']] !== 'add')
         unset($labels[$ID_LABEL]);
-      elseif ($label_type[$row['ID_PM']] !== 'rem')
+      else if ($label_type[$row['ID_PM']] !== 'rem')
         $labels[] = $to_label[$row['ID_PM']];
 
       $set = implode(',', array_unique($labels));
@@ -1259,9 +1259,9 @@ function deleteMessages($personal_messages, $folder = null, $owner = null)
 
   if ($owner === null)
     $owner = array($ID_MEMBER);
-  elseif (empty($owner))
+  else if (empty($owner))
     return;
-  elseif (!is_array($owner))
+  else if (!is_array($owner))
     $owner = array($owner);
 
   if ($personal_messages !== null)
@@ -1290,7 +1290,7 @@ function deleteMessages($personal_messages, $folder = null, $owner = null)
   {
     // Calculate the number of messages each member's gonna lose...
     $request = db_query("
-      SELECT ID_MEMBER, COUNT(*) AS numDeletedMessages, IF(is_read & 1, 1, 0) AS is_read
+      SELECT ID_MEMBER, COUNT(*) AS numDeletedMessages, if (is_read & 1, 1, 0) AS is_read
       FROM {$db_prefix}pm_recipients
       WHERE ID_MEMBER IN (" . implode(', ', $owner) . ")
         AND deleted = 0$where
@@ -1433,7 +1433,7 @@ function ManageLabels()
         $the_labels[] = $_POST['label'];
     }
     // Deleting an existing label?
-    elseif (isset($_POST['delete'], $_POST['delete_label']))
+    else if (isset($_POST['delete'], $_POST['delete_label']))
     {
       $i = 0;
       foreach ($the_labels as $id => $name)
@@ -1448,14 +1448,14 @@ function ManageLabels()
       }
     }
     // The hardest one to deal with... changes.
-    elseif (isset($_POST['save']) && !empty($_POST['label_name']))
+    else if (isset($_POST['save']) && !empty($_POST['label_name']))
     {
       $i = 0;
       foreach ($the_labels as $id => $name)
       {
         if ($id == -1)
           continue;
-        elseif (isset($_POST['label_name'][$id]))
+        else if (isset($_POST['label_name'][$id]))
         {
           $_POST['label_name'][$id] = trim(strtr($func['htmlspecialchars']($_POST['label_name'][$id]), array(',' => '&#044;')));
 
@@ -1559,7 +1559,7 @@ function theme_quickreply_box()
     $context['smileys']['postform'][] = array(
       'last' => true,
     );
-  elseif ($user_info['smiley_set'] != 'none')
+  else if ($user_info['smiley_set'] != 'none')
   {
     if (($temp = cache_get_data('posting_smileys', 480)) == null)
     {
@@ -1625,7 +1625,7 @@ function theme_quickreply_box()
     $settings['theme_dir'] = $temp3;
   }
 }
-function ReportMessage(){}
-function MessageSearch(){}
-function MessageSearch2(){}
+function ReportMessage() {}
+function MessageSearch() {}
+function MessageSearch2() {}
 ?>

@@ -1,8 +1,8 @@
 <?php
 
-function template_manual_above(){}
+function template_manual_above() {}
 
-function template_manual_below(){}
+function template_manual_below() {}
 
 function template_manual_intro() {
   global $context, $settings, $db_prefix, $boardurl;
@@ -37,7 +37,7 @@ function template_manual_intro() {
     echo '
         <script type="text/javascript">
           function errorrojos(comentario) {
-            if(comentario == \'\') {
+            if (comentario == \'\') {
               document.getElementById(\'errorss\').innerHTML = \'<br /><font class="size10" style="color: red;">Es necesario escribir un comentario sobre la denuncia.</font>\';
               return false;
             }

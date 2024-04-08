@@ -288,7 +288,7 @@ function BanEdit()
 
       $modlogInfo['ip_range'] = $_POST['ip'];
     }
-    elseif ($_POST['bantype'] == 'hostname_ban')
+    else if ($_POST['bantype'] == 'hostname_ban')
     {
       if (preg_match("/[^\w.\-*]/", $_POST['hostname']) == 1)
         fatal_lang_error('invalid_hostname', false);
@@ -308,7 +308,7 @@ function BanEdit()
 
       $modlogInfo['hostname'] = stripslashes($_POST['hostname']);
     }
-    elseif ($_POST['bantype'] == 'email_ban')
+    else if ($_POST['bantype'] == 'email_ban')
     {
       if (preg_match("/[^\w.\-*@]/", $_POST['email']) == 1)
         fatal_lang_error('invalid_email', false);
@@ -337,7 +337,7 @@ function BanEdit()
 
       $modlogInfo['email'] = stripslashes($_POST['email']);
     }
-    elseif ($_POST['bantype'] == 'user_ban')
+    else if ($_POST['bantype'] == 'user_ban')
     {
       $_POST['user'] = $func['htmlspecialchars']($_POST['user'], ENT_QUOTES);
 
@@ -396,7 +396,7 @@ function BanEdit()
   }
 
   // The user pressed 'Remove selected ban entries'.
-  elseif (!empty($_POST['remove_selection']) && !empty($_POST['ban_items']) && is_array($_POST['ban_items']))
+  else if (!empty($_POST['remove_selection']) && !empty($_POST['ban_items']) && is_array($_POST['ban_items']))
   {
     checkSession();
 
@@ -416,7 +416,7 @@ function BanEdit()
   }
 
   // Modify OR add a ban.
-  elseif (!empty($_POST['modify_ban']) || !empty($_POST['add_ban']))
+  else if (!empty($_POST['modify_ban']) || !empty($_POST['add_ban']))
   {
     checkSession();
 
@@ -604,17 +604,17 @@ function BanEdit()
           $context['ban_items'][$row['ID_BAN']]['type'] = 'ip';
           $context['ban_items'][$row['ID_BAN']]['ip'] = range2ip(array($row['ip_low1'], $row['ip_low2'], $row['ip_low3'], $row['ip_low4']), array($row['ip_high1'], $row['ip_high2'], $row['ip_high3'], $row['ip_high4']));
         }
-        elseif (!empty($row['hostname']))
+        else if (!empty($row['hostname']))
         {
           $context['ban_items'][$row['ID_BAN']]['type'] = 'hostname';
           $context['ban_items'][$row['ID_BAN']]['hostname'] = str_replace('%', '*', $row['hostname']);
         }
-        elseif (!empty($row['email_address']))
+        else if (!empty($row['email_address']))
         {
           $context['ban_items'][$row['ID_BAN']]['type'] = 'email';
           $context['ban_items'][$row['ID_BAN']]['email'] = str_replace('%', '*', $row['email_address']);
         }
-        elseif (!empty($row['ID_MEMBER']))
+        else if (!empty($row['ID_MEMBER']))
         {
           $context['ban_items'][$row['ID_BAN']]['type'] = 'user';
           $context['ban_items'][$row['ID_BAN']]['user'] = array(
@@ -882,9 +882,9 @@ function BanBrowseTriggers()
       );
       if ($context['selected_entity'] == 'ip')
         $context['ban_items'][$row['ID_BAN']]['entity'] = range2ip(array($row['ip_low1'], $row['ip_low2'], $row['ip_low3'], $row['ip_low4']), array($row['ip_high1'], $row['ip_high2'], $row['ip_high3'], $row['ip_high4']));
-      elseif ($context['selected_entity'] == 'hostname')
+      else if ($context['selected_entity'] == 'hostname')
         $context['ban_items'][$row['ID_BAN']]['entity'] = str_replace('%', '*', $row['hostname']);
-      elseif ($context['selected_entity'] == 'email')
+      else if ($context['selected_entity'] == 'email')
         $context['ban_items'][$row['ID_BAN']]['entity'] = str_replace('%', '*', $row['email_address']);
       else
       {
@@ -996,7 +996,7 @@ function range2ip($low, $high)
   {
     if ($low[$i] == $high[$i])
       $ip[$i] = $low[$i];
-    elseif ($low[$i] == '0' && $high[$i] == '255')
+    else if ($low[$i] == '0' && $high[$i] == '255')
       $ip[$i] = '*';
     else
       $ip[$i] = $low[$i] . '-' . $high[$i];
@@ -1026,9 +1026,9 @@ function ip2range($fullip)
   {
     if ($ip_parts[$i] == '*')
       $ip_array[$i] = array('low' => '0', 'high' => '255');
-    elseif (preg_match('/^(\d{1,3})\-(\d{1,3})$/', $ip_parts[$i], $range) == 1)
+    else if (preg_match('/^(\d{1,3})\-(\d{1,3})$/', $ip_parts[$i], $range) == 1)
       $ip_array[$i] = array('low' => $range[1], 'high' => $range[2]);
-    elseif (is_numeric($ip_parts[$i]))
+    else if (is_numeric($ip_parts[$i]))
       $ip_array[$i] = array('low' => $ip_parts[$i], 'high' => $ip_parts[$i]);
   }
 

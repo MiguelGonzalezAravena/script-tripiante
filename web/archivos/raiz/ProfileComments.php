@@ -121,7 +121,7 @@ function ShowUserBox($memCommID, $onlineColor = '') {
 
         echo '<b><span style="font-size:12px;"><a href="' . $boardurl . '/perfil/', $muro['memberName'], '" title="', $muro['realName'], '">', $muro['realName'], '</a></span> escribi&oacute; </b><span style="color:grey;font-size:10px;">(', timeformat($muro['date']), ')</span><table><tr><td valign="top"><img style="width:50px;height:50px;" alt="" src="', $muro['avatar'], '" onerror="error_avatar(this)" /></td><td valign="top" style="margin:0px;padding:4px;"><div style="overflow: hidden;">', $muro['comment'], '</div>';
 
-        if($context['user']['is_logged']) {
+        if ($context['user']['is_logged']) {
           echo '<br /><br /><a href="' . $boardurl . '/perfil/', $muro['memberName'], '/muro/" title="Escribe en el Muro de ', $muro['realName'], '">Escribe en el Muro de ', $muro['realName'], '</a>';
         }
 

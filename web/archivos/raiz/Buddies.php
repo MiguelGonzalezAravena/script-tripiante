@@ -19,10 +19,10 @@ function Buddies() {
 
   // Approved buddies
   $buddies = array();
-  $request = db_query ('
-    SELECT BUDDY_ID FROM ' . $db_prefix . 'buddies
-    WHERE ID_MEMBER = ' . $ID_MEMBER . '
-    ORDER BY position ASC, time_updated DESC', __FILE__, __LINE__);
+  $request = db_query("
+    SELECT BUDDY_ID FROM {$db_prefix}buddies
+    WHERE ID_MEMBER = $ID_MEMBER
+    ORDER BY position ASC, time_updated DESC", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request))
     $buddies[] = $row['BUDDY_ID'];
@@ -47,24 +47,54 @@ function BuddyOrder() {
 
   checkSession('get');
 
-  $_GET['u'] = (int) $_GET['u'];
-  $request = db_query ('SELECT position FROM ' . $db_prefix . 'buddies WHERE BUDDY_ID = ' . $_GET['u'] . ' AND ID_MEMBER = ' . $ID_MEMBER, __FILE__, __LINE__);
-  list($old_position) = mysql_fetch_row ($request);
+  $u = (int) $_GET['u'];
+  $request = db_query("
+    SELECT position
+    FROM {$db_prefix}buddies
+    WHERE BUDDY_ID = $u
+    AND ID_MEMBER = " . $ID_MEMBER, __FILE__, __LINE__);
 
-  if ($_GET['dir'] == 'up')
-    $request = db_query ('SELECT BUDDY_ID, position FROM ' . $db_prefix . 'buddies WHERE ID_MEMBER = ' . $ID_MEMBER . ' AND position < ' . $old_position . ' ORDER BY time_updated DESC LIMIT 1', __FILE__, __LINE__);
-  else
-    $request = db_query ('SELECT BUDDY_ID, position FROM ' . $db_prefix . 'buddies WHERE ID_MEMBER = ' . $ID_MEMBER . ' AND position > ' . $old_position . ' ORDER BY time_updated DESC LIMIT 1', __FILE__, __LINE__);
+  list($old_position) = mysqli_fetch_row($request);
+
+  if ($_GET['dir'] == 'up') {
+    $request = db_query("
+      SELECT BUDDY_ID, position
+      FROM {$db_prefix}buddies
+      WHERE ID_MEMBER = $ID_MEMBER
+      AND position < $old_position
+      ORDER BY time_updated DESC
+      LIMIT 1", __FILE__, __LINE__);
+  } else {
+    $request = db_query("
+      SELECT BUDDY_ID, position
+      FROM {$db_prefix}buddies
+      WHERE ID_MEMBER = $ID_MEMBER
+      AND position > $old_position
+      ORDER BY time_updated DESC
+      LIMIT 1", __FILE__, __LINE__);
+  }
 
   list($buddy_id, $new_position) = mysqli_fetch_row($request);
+
   $buddy_id = (int) $buddy_id;
   $new_position = (int) $new_position;
+  $t = time();
 
-  if ($new_position == 0)
+  if ($new_position == 0) {
     $new_position = ($_GET['dir'] == 'up') ? $old_position - 1 : $old_position + 1;
+  }
 
-  db_query('UPDATE ' . $db_prefix . 'buddies SET position = "' . $new_position . '", time_updated = "' . time() . '" WHERE ID_MEMBER = ' . $ID_MEMBER . ' AND BUDDY_ID = ' . $_GET['u'], __FILE__, __LINE__);
-  db_query('UPDATE ' . $db_prefix . 'buddies SET position = "' . $old_position . '", time_updated = "' . time() . '" WHERE ID_MEMBER = ' . $ID_MEMBER . ' AND BUDDY_ID = ' . $buddy_id, __FILE__, __LINE__);
+  db_query("
+    UPDATE {$db_prefix}buddies
+    SET position = $new_position, time_updated = $t
+    WHERE ID_MEMBER = $ID_MEMBER
+    AND BUDDY_ID = " . $u, __FILE__, __LINE__);
+
+  db_query("
+    UPDATE {$db_prefix}buddies
+    SET position = $old_position, time_updated = $t
+    WHERE ID_MEMBER = $ID_MEMBER
+    AND BUDDY_ID = " . $buddy_id, __FILE__, __LINE__);
 
   redirectexit('action=buddies');
 }
@@ -72,25 +102,49 @@ function BuddyOrder() {
 function BuddyAdd() {
   global $db_prefix, $ID_MEMBER, $txt, $boardurl;
 
-  $_GET['user'] = $_GET['user'];
-  $request = db_query("SELECT * FROM ({$db_prefix}buddies AS b, {$db_prefix}members AS mem) WHERE b.ID_MEMBER = mem.ID_MEMBER AND b.BUDDY_ID = mem.ID_MEMBER AND mem.memberName = '" . $_GET['user'] . "' ", __FILE__, __LINE__);
-  if (mysqli_num_rows($request) > 0)
+  $user = htmlentities(addslashes($_GET['user']), ENT_QUOTES, 'UTF-8');
+  $t = time();
+
+  $request = db_query("
+    SELECT *
+    FROM ({$db_prefix}buddies AS b, {$db_prefix}members AS mem)
+    WHERE b.ID_MEMBER = mem.ID_MEMBER
+    AND b.BUDDY_ID = mem.ID_MEMBER
+    AND mem.memberName = '" . $user . "'", __FILE__, __LINE__);
+
+  if (mysqli_num_rows($request) > 0) {
     fatal_error($txt['buddy_already_added'], false);
-  $request = db_query("SELECT realName, memberName FROM {$db_prefix}members WHERE memberName = '" . $_GET['user'] . "'", __FILE__, __LINE__);
-  if (mysqli_num_rows($request) < 1)
+  }
+
+  $request = db_query("
+    SELECT realName, memberName
+    FROM {$db_prefix}members
+    WHERE memberName = '" . $user . "'", __FILE__, __LINE__);
+
+  if (mysqli_num_rows($request) < 1) {
     redirectexit();
+  }
 
   // Find the new position.
-  $request = db_query("SELECT position FROM {$db_prefix}buddies 
+  $request = db_query("
+    SELECT position FROM {$db_prefix}buddies 
     WHERE ID_MEMBER = {$ID_MEMBER}
     ORDER BY position DESC
     LIMIT 1", __FILE__, __LINE__);
 
   list($position) = mysqli_fetch_row($request);
+
   $position = $position + 1;
-  $request = db_query("SELECT * FROM {$db_prefix}members WHERE memberName = '" . $_GET['user'] . "'", __FILE__, __LINE__);
+  $request = db_query("
+    SELECT *
+    FROM {$db_prefix}members
+    WHERE memberName = '" . $user . "'", __FILE__, __LINE__);
+
   $row = mysqli_fetch_assoc($request);
-  db_query ('INSERT INTO ' . $db_prefix . 'buddies SET ID_MEMBER = ' . $ID_MEMBER . ', BUDDY_ID = ' . $row['ID_MEMBER'] . ', position = ' . $position . ', time_updated = "' . time() . '", requested = ' . $ID_MEMBER, __FILE__, __LINE__);
+
+  db_query("
+    INSERT INTO {$db_prefix}buddies
+    SET ID_MEMBER = $ID_MEMBER, BUDDY_ID = {$row['ID_MEMBER']}, position = {$position}, time_updated = {$t}, requested = " . $ID_MEMBER, __FILE__, __LINE__);
   /*
   $request = db_query('SELECT position FROM ' . $db_prefix . 'buddies 
     WHERE ID_MEMBER = ' . $row['ID_MEMBER'] . '  
@@ -108,12 +162,20 @@ function BuddyAdd() {
 function BuddyRemove() {
   global $db_prefix, $ID_MEMBER, $user_info, $user_profile, $boardurl;
 
-  $_GET['user'] = $_GET['user'];
+  $user = $_GET['user'];
     
-  $request = db_query("SELECT * FROM {$db_prefix}members WHERE memberName = '" . $_GET['user'] . "'", __FILE__, __LINE__);
+  $request = db_query("
+    SELECT *
+    FROM {$db_prefix}members
+    WHERE memberName = '" . $user . "'", __FILE__, __LINE__);
+
   $row = mysqli_fetch_assoc($request);
 
-  db_query("DELETE FROM {$db_prefix}buddies WHERE ID_MEMBER = {$ID_MEMBER} AND BUDDY_ID = " . $row['ID_MEMBER'] . "", __FILE__, __LINE__);
+  db_query("
+    DELETE FROM {$db_prefix}buddies
+    WHERE ID_MEMBER = {$ID_MEMBER}
+    AND BUDDY_ID = {$row['ID_MEMBER']}", __FILE__, __LINE__);
+
   /*
   db_query ('DELETE FROM ' . $db_prefix . 'buddies WHERE BUDDY_ID = ' . $ID_MEMBER . ' AND ID_MEMBER = ' . $row['ID_MEMBER'], __FILE__, __LINE__);
   */

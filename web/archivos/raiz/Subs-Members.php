@@ -17,7 +17,7 @@ function deleteMembers($users) {
   // How many are they deleting?
   if (empty($users))
     return;
-  elseif (count($users) == 1)
+  else if (count($users) == 1)
   {
     list ($user) = $users;
     $condition = '= ' . $user;
@@ -255,7 +255,7 @@ function removeMembersFromGroups($members, $groups = null)
   // Just incase.
   if (empty($members))
     return false;
-  elseif ($groups === null)
+  else if ($groups === null)
   {
     // Wanna remove all groups from these members? That's easy.
     db_query("
@@ -272,7 +272,7 @@ function removeMembersFromGroups($members, $groups = null)
 
     return true;
   }
-  elseif (!is_array($groups))
+  else if (!is_array($groups))
     $groups = array((int) $groups);
   else
   {
@@ -404,12 +404,12 @@ function addMembersToGroup($members, $group, $type = 'auto')
   if ($type == 'only_additional')
     db_query("
       UPDATE {$db_prefix}members
-      SET additionalGroups = IF(additionalGroups = '', '$group', CONCAT(additionalGroups, ',$group'))
+      SET additionalGroups = if (additionalGroups = '', '$group', CONCAT(additionalGroups, ',$group'))
       WHERE ID_MEMBER IN (" . implode(', ', $members) . ")
         AND ID_GROUP != $group
         AND NOT FIND_IN_SET($group, additionalGroups)
       LIMIT " . count($members), __FILE__, __LINE__);
-  elseif ($type == 'only_primary' || $type == 'force_primary')
+  else if ($type == 'only_primary' || $type == 'force_primary')
     db_query("
       UPDATE {$db_prefix}members
       SET ID_GROUP = $group
@@ -417,12 +417,12 @@ function addMembersToGroup($members, $group, $type = 'auto')
         AND ID_GROUP = 0
         AND NOT FIND_IN_SET($group, additionalGroups)") . "
       LIMIT " . count($members), __FILE__, __LINE__);
-  elseif ($type == 'auto')
+  else if ($type == 'auto')
     db_query("
       UPDATE {$db_prefix}members
       SET
-        additionalGroups = IF(ID_GROUP = 0, additionalGroups, IF(additionalGroups = '', '$group', CONCAT(additionalGroups, ',$group'))),
-        ID_GROUP = IF(ID_GROUP = 0, $group, ID_GROUP)
+        additionalGroups = if (ID_GROUP = 0, additionalGroups, if (additionalGroups = '', '$group', CONCAT(additionalGroups, ',$group'))),
+        ID_GROUP = if (ID_GROUP = 0, $group, ID_GROUP)
       WHERE ID_MEMBER IN (" . implode(', ', $members) . ")
         AND ID_GROUP != $group
         AND NOT FIND_IN_SET($group, additionalGroups)
@@ -455,7 +455,7 @@ function registerMember(&$regOptions)
     isAllowedTo('moderate_forum');
   }
   // If you're an admin, you're special ;).
-  elseif ($regOptions['interface'] == 'guest')
+  else if ($regOptions['interface'] == 'guest')
   {
     spamProtection('register');
 
@@ -510,7 +510,7 @@ function registerMember(&$regOptions)
     $regOptions['password_check'] = $regOptions['password'];
   }
   // Does the first password match the second?
-  elseif ($regOptions['password'] != $regOptions['password_check'])
+  else if ($regOptions['password'] != $regOptions['password_check'])
     fatal_lang_error(213, false);
 
   // That's kind of easy to guess...
@@ -612,10 +612,10 @@ function registerMember(&$regOptions)
     $regOptions['register_vars']['validation_code'] = "''";
   }
   // Maybe it can be activated right away?
-  elseif ($regOptions['require'] == 'nothing')
+  else if ($regOptions['require'] == 'nothing')
     $regOptions['register_vars']['is_activated'] = 1;
   // Maybe it must be activated by email?
-  elseif ($regOptions['require'] == 'activation')
+  else if ($regOptions['require'] == 'activation')
     $regOptions['register_vars']['is_activated'] = 0;
   // Otherwise it must be awaiting approval!
   else
@@ -689,7 +689,7 @@ function registerMember(&$regOptions)
   {
     if ($regOptions['require'] == 'activation')
       $email_message = 'register_activate_message';
-    elseif (!empty($regOptions['send_welcome_email']))
+    else if (!empty($regOptions['send_welcome_email']))
       $email_message = 'register_immediate_message';
 
     if (isset($email_message))
@@ -709,7 +709,7 @@ function registerMember(&$regOptions)
     adminNotify('standard', $memberID, $regOptions['username']);
   }
   // Need to activate their account - or fall under COPPA.
-  elseif ($regOptions['require'] == 'activation' || $regOptions['require'] == 'coppa')
+  else if ($regOptions['require'] == 'activation' || $regOptions['require'] == 'coppa')
     sendmail($regOptions['email'], $txt['register_subject'], sprintf($txt['register_activate_message'], $realName, $regOptions['username'], $regOptions['password'], $validation_code, $scripturl . '?action=activate;u=' . $memberID . ';code=' . $validation_code));
   // Must be awaiting approval.
   else
@@ -827,7 +827,7 @@ function groupsAllowedTo($permission, $board_id = null)
     // First get the permission mode of the given board.
     if (isset($board_info['id']) && $board_info['id'] == $board_id)
       $permission_mode = $board_info['permission_mode'] == 'no_polls' ? 2 : ($board_info['permission_mode'] == 'reply_only' ? 3 : ($board_info['permission_mode'] == 'read_only' ? 4 : 0));
-    elseif ($board_id !== 0)
+    else if ($board_id !== 0)
     {
       $request = db_query("
         SELECT permission_mode
@@ -847,7 +847,7 @@ function groupsAllowedTo($permission, $board_id = null)
       $max_allowable_mode = 3;
       if ($permission == 'post_new')
         $max_allowable_mode = 2;
-      elseif ($permission == 'poll_post')
+      else if ($permission == 'poll_post')
         $max_allowable_mode = 0;
 
       if ($permission_mode > $max_allowable_mode)

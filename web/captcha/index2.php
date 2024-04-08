@@ -283,7 +283,7 @@ function showCodeImage($code) {
   // Show the image.
   if (function_exists('imagegif')) {
     header('Content-type: image/gif');
-    imagegif($code_image);
+    imagegif ($code_image);
   } else {
     header('Content-type: image/png');
     imagepng($code_image);

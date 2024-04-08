@@ -49,7 +49,7 @@ function template_pm_above() {
     </div>';
 }
 
-function template_pm_below(){}
+function template_pm_below() {}
 
 function template_folder() {
   global $context, $settings, $modSettings, $txt, $boardurl;
@@ -161,7 +161,7 @@ function template_folder() {
     <div style="clear:both"></div>';
 }
 
-function template_search(){}
+function template_search() {}
 function template_search_results() {}
 
 function template_send() {

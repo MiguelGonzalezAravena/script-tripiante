@@ -656,9 +656,9 @@ function comunidad() {
 
   mysqli_free_result($dbresult);
 
-  if(!empty($context['existecomunidad'])) {
+  if (!empty($context['existecomunidad'])) {
     $context['page_title'] = 'Comunidad de ' . $context['comunidad']['title'];
-  } elseif(empty($context['existecomunidad'])) {
+  } else if (empty($context['existecomunidad'])) {
     $context['page_title'] = $txt[18];
     fatal_error('La comunidad no existe.-', false);
   }
@@ -970,7 +970,7 @@ function adminmiembro2() {
       WHERE ID_MEMBER = " . $row['ID_MEMBER'] . "
       AND ID_COMMUNITY = " . $comunidad . "
       LIMIT 1", __FILE__, __LINE__);
-    if($desbanear == 1) {
+    if ($desbanear == 1) {
       db_query("
         DELETE FROM {$db_prefix}community_banned
         WHERE ID_COMMUNITY = $comunidad
@@ -1931,7 +1931,7 @@ function editartema() {
 
   $id = (int) $_REQUEST['id'];
 
-  if(!$context['allow_admin']) {
+  if (!$context['allow_admin']) {
     fatal_error('No puedes editar un tema si no eres Administrador', false);
   }
 
@@ -2134,7 +2134,7 @@ function editartema2() {
       AND ID_TOPIC = " . $context['editar']['ID_TOPIC'], __FILE__, __LINE__);
 
     redirectexit($boardurl . '/comunidades/' . $context['editar']['friendly_url']);
-  } else if($context['editar']['ID_MEMBER'] != $ID_MEMBER || !$context['allow_admin']) {
+  } else if ($context['editar']['ID_MEMBER'] != $ID_MEMBER || !$context['allow_admin']) {
     fatal_error('No puedes editar este tema', false);
   }
 }

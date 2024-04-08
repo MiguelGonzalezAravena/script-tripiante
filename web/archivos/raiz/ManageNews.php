@@ -86,7 +86,7 @@ function EditNews()
     updateSettings(array('news' => addslashes(implode("\n", $temp_news))));
   }
   // The 'Save' button was pressed.
-  elseif (!empty($_POST['save_items']))
+  else if (!empty($_POST['save_items']))
   {
     checkSession();
 
@@ -143,7 +143,7 @@ function SelectMailingMembers()
     FROM {$db_prefix}membergroups AS mg" . (empty($modSettings['permission_enable_postgroups']) ? "
     WHERE mg.minPosts = -1" : '') . "
     GROUP BY mg.ID_GROUP
-    ORDER BY mg.minPosts, IF(mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
+    ORDER BY mg.minPosts, if (mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
   while ($row = mysqli_fetch_assoc($request))
   {
     $context['groups'][$row['ID_GROUP']] = array(

@@ -7,9 +7,9 @@ function Captcha() {
 
   if (empty($captchaCode)) {
     echo 'Ingresa un número.-';
-  } else if(!is_numeric($captchaCode)) {
+  } else if (!is_numeric($captchaCode)) {
     echo 'Tiene que ser un número.-';
-  } else if(strlen($captchaCode) > 4) {
+  } else if (strlen($captchaCode) > 4) {
     echo 'Sólo están permitidos hasta 4 números.-';
   } else {
     // Generar el codigo y guardar en la sesión
@@ -41,9 +41,9 @@ function Register() {
   $hostaddr = gethostbyaddr($_SERVER['REMOTE_ADDR']);
   if (allowedTo('moderate_forum') && !$user_info['is_guest'])
     redirectexit('action=regcenter;sa=register');
-  elseif (empty($user_info['is_guest']))
+  else if (empty($user_info['is_guest']))
     redirectexit();
-  elseif(
+  else if (
     !empty($modSettings['proxyblock_index'])
     && empty($kill_proxyblocker)
     && (!$hostaddr
@@ -177,9 +177,9 @@ function Register2()
   }
 
   // Check whether the visual verification code was entered correctly.
-  if(!empty($modSettings['recaptcha_enabled']) && ($modSettings['recaptcha_enabled'] == 1 && !empty($modSettings['recaptcha_public_key']) && !empty($modSettings['recaptcha_private_key'])))
+  if (!empty($modSettings['recaptcha_enabled']) && ($modSettings['recaptcha_enabled'] == 1 && !empty($modSettings['recaptcha_public_key']) && !empty($modSettings['recaptcha_private_key'])))
   {
-    if(!empty($_POST["recaptcha_response_field"]) && !empty($_POST["recaptcha_challenge_field"])) //Check the input if this exists, if it doesn't, then the user didn't fill it out.
+    if (!empty($_POST["recaptcha_response_field"]) && !empty($_POST["recaptcha_challenge_field"])) //Check the input if this exists, if it doesn't, then the user didn't fill it out.
     {
       require($sourcedir . "/recaptchalib.php");
 
@@ -191,7 +191,7 @@ function Register2()
     else
       fatal_lang_error('visual_verification_failed', false);
   }
-  elseif ((empty($modSettings['disable_visual_verification']) || $modSettings['disable_visual_verification'] != 1) && (empty($_REQUEST['visual_verification_code']) || strtoupper($_REQUEST['visual_verification_code']) !== $_SESSION['visual_verification_code']))
+  else if ((empty($modSettings['disable_visual_verification']) || $modSettings['disable_visual_verification'] != 1) && (empty($_REQUEST['visual_verification_code']) || strtoupper($_REQUEST['visual_verification_code']) !== $_SESSION['visual_verification_code']))
   {
     $_SESSION['visual_errors'] = isset($_SESSION['visual_errors']) ? $_SESSION['visual_errors'] + 1 : 1;
     if ($_SESSION['visual_errors'] > 3 && isset($_SESSION['visual_verification_code']))
@@ -199,7 +199,7 @@ function Register2()
 
     fatal_lang_error('visual_verification_failed', false);
   }
-  elseif (isset($_SESSION['visual_errors']))
+  else if (isset($_SESSION['visual_errors']))
     unset($_SESSION['visual_errors']);
 
   $possible_strings = array(
@@ -250,7 +250,7 @@ function Register2()
   if (isset($_POST['birthdate']) && $_POST['birthdate'] != '')
     $_POST['birthdate'] = strftime('%Y-%m-%d', strtotime($_POST['birthdate']));
   // Or birthdate parts...
-  elseif (!empty($_POST['bday1']) && !empty($_POST['bday2']))
+  else if (!empty($_POST['bday1']) && !empty($_POST['bday2']))
     $_POST['birthdate'] = sprintf('%04d-%02d-%02d', empty($_POST['bday3']) ? 0 : (int) $_POST['bday3'], (int) $_POST['bday1'], (int) $_POST['bday2']);
 
   // Validate the passed langauge file.
@@ -330,7 +330,7 @@ function Register2()
   if (!empty($modSettings['coppaAge']) && !isset($_POST['skip_coppa']))
     redirectexit('action=coppa;member=' . $memberID);
   // Basic template variable setup.
-  elseif (!empty($modSettings['registration_method']))
+  else if (!empty($modSettings['registration_method']))
   {
     loadTemplate('Register');
 
@@ -436,7 +436,7 @@ function Activate()
   {
     if (!empty($row['is_activated']))
       fatal_lang_error('already_activated', false);
-    elseif ($row['validation_code'] == '')
+    else if ($row['validation_code'] == '')
     {
       loadLanguage('Profile');
       fatal_error($txt['registration_not_approved'] . ' <a href="' . $scripturl . '?action=activate;user=' . $row['memberName'] . '">' . $txt[662] . '</a>.', false);
@@ -562,7 +562,7 @@ function VerificationCode()
     header('HTTP/1.1 408 - Request Timeout');
 
   // Show a window that will play the verification code.
-  elseif (isset($_REQUEST['sound']))
+  else if (isset($_REQUEST['sound']))
   {
     loadLanguage('Login');
     loadTemplate('Register');
@@ -575,7 +575,7 @@ function VerificationCode()
   }
 
   // If we have GD, try the nice code.
-  elseif (empty($_REQUEST['format']))
+  else if (empty($_REQUEST['format']))
   {
     require_once($sourcedir . '/Subs-Graphics.php');
 
@@ -583,7 +583,7 @@ function VerificationCode()
       header('HTTP/1.1 400 Bad Request');
 
     // Otherwise just show a pre-defined letter.
-    elseif (isset($_REQUEST['letter']))
+    else if (isset($_REQUEST['letter']))
     {
       $_REQUEST['letter'] = (int) $_REQUEST['letter'];
       if ($_REQUEST['letter'] > 0 && $_REQUEST['letter'] <= strlen($_SESSION['visual_verification_code']) && !showLetterImage(strtolower($_SESSION['visual_verification_code']{$_REQUEST['letter'] - 1})))
@@ -594,7 +594,7 @@ function VerificationCode()
       header('HTTP/1.1 400 Bad Request');
   }
 
-  elseif ($_REQUEST['format'] === '.wav')
+  else if ($_REQUEST['format'] === '.wav')
   {
     require_once($sourcedir . '/Subs-Sound.php');
 

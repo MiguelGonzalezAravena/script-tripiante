@@ -56,7 +56,7 @@ function ViewTags() {
     $tags2[$row['tag']] = $row['ID_TAG'];
   }
     
-  if(count($tags2) > 0) {
+  if (count($tags2) > 0) {
     $max_size = $modSettings['smftags_set_cloud_max_font_size_precent'];
     $min_size = $modSettings['smftags_set_cloud_min_font_size_precent'];
     $max_qty = max(array_values($tags));

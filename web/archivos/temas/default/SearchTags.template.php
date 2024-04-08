@@ -5,7 +5,7 @@ function template_main() {
   global $context, $settings, $scripturl;
 
   echo '
-<script type="text/javascript">function errorr(search){if(search == \'\'){document.getElementById(\'errorss\').innerHTML=\'<br /><font class="size10" style="color: red;">Es necesario escribir una palabra para buscar.</font>\'; return false;}}</script>
+<script type="text/javascript">function errorr(search) {if (search == \'\') {document.getElementById(\'errorss\').innerHTML=\'<br /><font class="size10" style="color: red;">Es necesario escribir una palabra para buscar.</font>\'; return false;}}</script>
 <div class="box_buscador"><div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>Buscador</center></div><div class="box_rss"><img alt="" src="', $settings['images_url'], '/blank.gif" style="width: 14px; height: 12px;" border="0" /></div></div><div style="width:912px;padding:4px;" class="windowbg"><form action="', $scripturl, '?action=searchtag2" method="post" accept-charset="', $context['character_set'], '" name="searchform" id="searchform"><center>
 <div class="dataL">
 <b class="size12">Buscar:</b><br/><input title="Busca con ', $context['forum_name'], '" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="search"', !empty($context['search_params']['search']) ? ' value="' . $context['search_params']['search'] . '"' : '', ' style="width: 200px;" /></div><div class="dataR"><b class="size12">Usuario:</b><br/><input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="userspec" value="', empty($context['search_params']['userspec']) ? '' : $context['search_params']['userspec'], '" style="width: 200px;" /></div>
@@ -15,7 +15,7 @@ function template_main() {
 <div class="dataL"><b class="size12">Orden:</b><br/><select style="width: 200px;" name="sort"><option value="ID_MSG|desc">M&aacute;s reciente</option><option value="ID_MSG|asc">M&aacute;s antiguo</option><option value="points">M&aacute;s puntuados</option></select></div><div class="dataR"><b class="size12">Categor&iacute;as:</b><br/>
 
 <select style="width:202px;" name="brd" class="select"><option value="0" selected="selected">Todas</option>';
-  foreach ($context['boards'] as $board){
+  foreach ($context['boards'] as $board) {
   echo '<option value="', $board['id'], '"', $board['selected'] ? ' selected="selected"' : '', '>', $board['name'], '</option>';}
   
 echo '</select></div>
@@ -32,17 +32,17 @@ function template_results()
 
   if ($context['compact'])
   {
-echo '<script type="text/javascript">function errorr(tag){if(tag == \'\'){document.getElementById(\'errorss\').innerHTML=\'<br /><font class="size10" style="color: red;">Es necesario escribir un TAG para buscar.</font>\'; return false;}}</script>
+echo '<script type="text/javascript">function errorr(tag) {if (tag == \'\') {document.getElementById(\'errorss\').innerHTML=\'<br /><font class="size10" style="color: red;">Es necesario escribir un TAG para buscar.</font>\'; return false;}}</script>
 
 <div class="box_buscador"><div class="box_title" style="width: 920px;"><div class="box_txt box_buscadort"><center>Buscador por tags</center></div><div class="box_rss"><img alt="" src="', $settings['images_url'], '/blank.gif" style="width:14px;height:12px;" border="0" /></div></div>
 
 <div style="width:912px;padding:4px;" class="windowbg"><form name="buscador" action="', $scripturl, '?action=searchtag2" method="post"><center><b class="size11">TAG a buscar: </b>&nbsp;<input title="Busca con ', $context['forum_name'], '" type="text" onfocus="foco(this);" onblur="no_foco(this);" name="search"', !empty($context['search_params']['search']) ? ' value="' . $context['search_params']['search'] . '"' : '', ' style="width: 200px;" />&nbsp;<b class="size11">Orden:</b>&nbsp;<select style="width: 200px;" name="sort"><option value="ID_MSG|desc">M&aacute;s reciente</option><option value="ID_MSG|asc">M&aacute;s antiguo</option><option value="points|desc">M&aacute;s puntuados</option></select>&nbsp;<b class="size11">Categor&iacute;as:</b>&nbsp;<select style="width: 200px;" name="board"><option value="0" selected="selected">Todas</option>';
-  foreach ($context['boards'] as $board){
+  foreach ($context['boards'] as $board) {
   echo '<option value="', $board['id'], '"', $board['selected'] ? ' selected="selected"' : '', '>', $board['name'], '</option>';}
   
 echo '</select><label id="errorss"></label><br><input class="login" onclick="return errorr(this.form.tag.value);" style="font-size: 15px; width: 200px;" value="Buscar" title="Buscar" type="submit"></center></form></div></div>
 ';
-if(!empty($context['topics']))
+if (!empty($context['topics']))
 {
 echo '<div style="float:left;width:708px;margin-bottom:8px;"><table class="linksList" style="width:700px;">
 
@@ -61,16 +61,16 @@ echo '<span class="size12"><b>', implode('<br />', $context['search_errors']['me
     }}
     /*
     <table width="100%"><tr><td width="100%"><div><div style="float: left;"><div class="box_icono4"><img title="', $topic['board']['name'], '" src="/Themes/default/images/post/icono_', $topic['board']['id'], '.gif"></div> <span title="' , $topic['first_post']['subject'] , '">' , $topic['first_post']['link'] , '</div><div align="right" class="opc_fav">Creado: ' , $topic['first_post']['fecha'] , ' por: ' , $topic['first_post']['name'] , ' | ' , $topic['first_post']['puntos'] , ' pts.</div></div></td></tr></table>';}}*/
-if (!empty($context['topics'])){} else
+if (!empty($context['topics'])) {} else
 echo '<div class="noesta" style="width:922px;">', $txt['search_no_results'], '</div>';
 if ($context['page_index'])
 echo $context['page_index'];
-if(!empty($context['topics']))
+if (!empty($context['topics']))
 {
 echo '</tbody></table>';
 }
 echo '</div>';
-if(!empty($context['topics']))
+if (!empty($context['topics']))
 {
 echo'<div style="float:left;width:212px;margin-bottom:8px;"><div class="publicidad"  style="margin-bottom:8px;"><div class="box_title" style="width: 212px;"><div class="box_txt publicidad_r">Tags relacionados</div><div class="box_rss"><img alt="" src="/images/blank.gif" style="width:14px;height:12px;" border="0" /></div></div><div class="windowbg" style="width:204px;padding:4px;">';
     $request = db_query("SELECT t.ID_TAG

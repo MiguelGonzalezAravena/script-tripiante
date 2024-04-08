@@ -40,7 +40,7 @@ function Display() {
 
   $context['topic_tags'] = array();
 
-  while($row = mysqli_fetch_assoc($request)) {
+  while ($row = mysqli_fetch_assoc($request)) {
     $context['topic_tags'][] = array(
       'ID' => $row['ID'],
       'ID_TAG' => $row['ID_TAG'],
@@ -458,7 +458,7 @@ function prepareDisplayContext($reset = false) {
     'can_view_post' => $message['can_view_post'],
   );
 
-  if($disable_unhideafter) {
+  if ($disable_unhideafter) {
     $context['user_post_avaible'] = 0;
   }
 

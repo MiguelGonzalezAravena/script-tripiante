@@ -64,13 +64,13 @@ function DeleteMessage()
     {
       if ($starter == $ID_MEMBER && !allowedTo('delete_any'))
         isAllowedTo('delete_replies');
-      elseif (!allowedTo('delete_any'))
+      else if (!allowedTo('delete_any'))
         isAllowedTo('delete_own');
     }
-    elseif (!allowedTo('delete_any') && ($starter != $ID_MEMBER || !allowedTo('delete_replies')) && !empty($modSettings['edit_disable_time']) && $post_time + $modSettings['edit_disable_time'] * 60 < time())
+    else if (!allowedTo('delete_any') && ($starter != $ID_MEMBER || !allowedTo('delete_replies')) && !empty($modSettings['edit_disable_time']) && $post_time + $modSettings['edit_disable_time'] * 60 < time())
       fatal_lang_error('modify_post_time_passed', false);
   }
-  elseif ($starter == $ID_MEMBER && !allowedTo('delete_any'))
+  else if ($starter == $ID_MEMBER && !allowedTo('delete_any'))
     isAllowedTo('delete_replies');
   else
     isAllowedTo('delete_any');
@@ -83,7 +83,7 @@ function DeleteMessage()
 
   if (isset($_REQUEST['recent']))
     redirectexit('action=recent');
-  elseif ($full_topic)
+  else if ($full_topic)
     redirectexit($boardurl);
   else
     redirectexit($boardurl);
@@ -113,7 +113,7 @@ function RemoveOldTopics2()
       AND m.icon = \'moved\'
       AND t.locked = 1';
   // Otherwise, maybe locked topics only?
-  elseif ($_POST['delete_type'] == 'locked')
+  else if ($_POST['delete_type'] == 'locked')
     $condition .= '
       AND t.locked = 1';
 
@@ -151,12 +151,12 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
   if (empty($topics))
     return;
   // Only a single topic.
-  elseif (is_numeric($topics))
+  else if (is_numeric($topics))
   {
     $condition = '= ' . $topics;
     $topics = array($topics);
   }
-  elseif (count($topics) == 1)
+  else if (count($topics) == 1)
     $condition = '= ' . $topics[0];
   // More than one topic.
   else
@@ -281,7 +281,7 @@ function removeTopics($topics, $decreasePostCount = true, $ignoreRecycling = fal
     db_query("
       UPDATE {$db_prefix}boards
       SET 
-        numTopics = IF($stats[numTopics] > numTopics, 0, numTopics - $stats[numTopics]),
+        numTopics = if ($stats[numTopics] > numTopics, 0, numTopics - $stats[numTopics]),
         numPosts = IF ($stats[numPosts] > numPosts, 0, numPosts - $stats[numPosts])
       WHERE ID_BOARD = $stats[ID_BOARD]
       LIMIT 1", __FILE__, __LINE__);

@@ -1798,7 +1798,7 @@ function template_denunciar() {
       </div>
       <div style="clear:both"></div>';
   } else if ($ban <= 0) {
-    if($context['comunidad']['view'] == 2 && $context['user']['is_guest']) {
+    if ($context['comunidad']['view'] == 2 && $context['user']['is_guest']) {
       $context['page_title'] = $txt[18];
       fatal_error('S&oacute;lo usuarios registrados tienen acceso a esta comunidad.-', false);
     }
@@ -2338,7 +2338,7 @@ function template_vertema() {
     include($_SERVER['DOCUMENT_ROOT'] . '/web/tp-comunidadesComenCar.php');
 
     if (!empty($options['display_quick_reply']) && !$context['tema']['locked'] == 1 && $context['user']['is_logged']) {
-      if(
+      if (
           $context['usercomunidad'] == 1 && $context['rango']['grade'] == 1 ||
           $context['usercomunidad'] == 1 && $context['rango']['grade'] == 2 ||
           $context['usercomunidad'] == 1 && $context['rango']['grade'] == 3 ||
@@ -2620,7 +2620,7 @@ function template_editartema() {
         </div>
       </div>
       <div style="clear:both"></div>';
-  } else if($context['editar']['ID_MEMBER'] != $context['user']['id'] || !$context['allow_admin']) {
+  } else if ($context['editar']['ID_MEMBER'] != $context['user']['id'] || !$context['allow_admin']) {
     fatal_error('No eres administrador (?)', false);
   }
 }

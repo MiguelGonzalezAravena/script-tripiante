@@ -161,10 +161,10 @@ function EditSmileySets()
       cache_put_data('posting_smileys', null, 480);
     }
     // Add a new smiley set.
-    elseif (!empty($_POST['add']))
+    else if (!empty($_POST['add']))
       $context['sub_action'] = 'modifyset';
     // Create or modify a smiley set.
-    elseif (isset($_POST['set']))
+    else if (isset($_POST['set']))
     {
       $set_paths = explode(',', $modSettings['smiley_sets_known']);
       $set_names = explode("\n", $modSettings['smiley_sets_names']);
@@ -407,7 +407,7 @@ function AddSmiley()
       $_POST['smiley_filename'] = $destName;
     }
     // What about uploading several files?
-    elseif ($_POST['method'] != 'existing')
+    else if ($_POST['method'] != 'existing')
     {
       foreach ($_FILES as $name => $data)
       {
@@ -416,7 +416,7 @@ function AddSmiley()
 
         if (empty($newName))
           $newName = basename($_FILES[$name]['name']);
-        elseif (basename($_FILES[$name]['name']) != $newName)
+        else if (basename($_FILES[$name]['name']) != $newName)
           fatal_lang_error('smileys_upload_error_name');
       }
 
@@ -567,7 +567,7 @@ function EditSmileys()
       }
     }
     // Create/modify a smiley.
-    elseif (isset($_POST['smiley']))
+    else if (isset($_POST['smiley']))
     {
       $_POST['smiley'] = (int) $_POST['smiley'];
       $_POST['smiley_code'] = htmltrim__recursive($_POST['smiley_code']);
@@ -666,7 +666,7 @@ function EditSmileys()
     $context['selected_set'] = $modSettings['smiley_sets_default'];
   }
   // Modifying smileys.
-  elseif ($context['sub_action'] == 'modifysmiley')
+  else if ($context['sub_action'] == 'modifysmiley')
   {
     // Get a list of all known smiley sets.
     $context['smileys_dir'] = empty($modSettings['smileys_dir']) ? $boarddir . '/Smileys' : $modSettings['smileys_dir'];
@@ -864,7 +864,7 @@ function InstallSmileySet()
   // !!! Decide: overwrite or not?
   if (isset($_FILES['set_gz']) && is_uploaded_file($_FILES['set_gz']['tmp_name']) && (@ini_get('open_basedir') != '' || file_exists($_FILES['set_gz']['tmp_name'])))
     $extracted = read_tgz_file($_FILES['set_gz']['tmp_name'], $boarddir . '/images/' . $name);
-  elseif (isset($_REQUEST['set_gz']))
+  else if (isset($_REQUEST['set_gz']))
   {
     checkSession('request');
 

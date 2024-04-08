@@ -5,17 +5,17 @@ if (!defined('SMF'))
 function Contact() {
   global $context, $sourcedir, $modSettings, $user_info, $txt, $webmaster_email;
 
-  if($user_info['is_guest'] && empty($modSettings['contact_form_enable_guest_access']))
+  if ($user_info['is_guest'] && empty($modSettings['contact_form_enable_guest_access']))
     redirectexit();
 
-  if(!$user_info['is_guest'] && empty($modSettings['contact_form_enable_member_access']))
+  if (!$user_info['is_guest'] && empty($modSettings['contact_form_enable_member_access']))
     redirectexit();
 
   $global_error = false;
 
-  if(isset($_POST['enviar'])) {
-    if(!empty($modSettings['recaptcha_enabled']) && ($modSettings['recaptcha_enabled'] == 1 && !empty($modSettings['recaptcha_public_key']) && !empty($modSettings['recaptcha_private_key']))) {
-      if(!empty($_POST['recaptcha_response_field']) && !empty($_POST['recaptcha_challenge_field'])) //Check the input if this exists, if it doesn't, then the user didn't fill it out. 
+  if (isset($_POST['enviar'])) {
+    if (!empty($modSettings['recaptcha_enabled']) && ($modSettings['recaptcha_enabled'] == 1 && !empty($modSettings['recaptcha_public_key']) && !empty($modSettings['recaptcha_private_key']))) {
+      if (!empty($_POST['recaptcha_response_field']) && !empty($_POST['recaptcha_challenge_field'])) //Check the input if this exists, if it doesn't, then the user didn't fill it out. 
       {
         require($sourcedir . '/recaptchalib.php');
 

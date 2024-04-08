@@ -48,7 +48,7 @@ function template_main() {
         }
 
         var separar_tags = tags.split(",");
-        if(separar_tags.length -1 >= 2) {
+        if (separar_tags.length -1 >= 2) {
         for (x in separar_tags) {
           if (separar_tags[x].length <3) {
             alert("El Tag \"" + separar_tags[x] + "\" tiene menos de 3 caracteres");
@@ -445,6 +445,6 @@ function template_announcement_send() {
     </script>';
 }
 
-function template_quickreply_box(){}
+function template_quickreply_box() {}
 
 ?>

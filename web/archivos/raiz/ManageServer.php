@@ -144,7 +144,7 @@ function ModifyCoreSettings()
 
   if ($settings_not_writable)
     $context['settings_message'] = '<div align="center"><b>' . $txt['settings_not_writable'] . '</b></div><br />';
-  elseif ($settings_backup_fail)
+  else if ($settings_backup_fail)
     $context['settings_message'] = '<div align="center"><b>' . $txt['smf1'] . '</b></div><br />';
 
   // Fill the config array.
@@ -189,7 +189,7 @@ function ModifyCoreSettings2()
   // Fix the forum's URL if necessary.
   if (substr($_POST['boardurl'], -10) == '/index.php')
     $_POST['boardurl'] = substr($_POST['boardurl'], 0, -10);
-  elseif (substr($_POST['boardurl'], -1) == '/')
+  else if (substr($_POST['boardurl'], -1) == '/')
     $_POST['boardurl'] = substr($_POST['boardurl'], 0, -1);
   if (substr($_POST['boardurl'], 0, 7) != 'http://' && substr($_POST['boardurl'], 0, 7) != 'file://' && substr($_POST['boardurl'], 0, 8) != 'https://')
     $_POST['boardurl'] = 'http://' . $_POST['boardurl'];
@@ -342,13 +342,13 @@ function ModifyCacheSettings()
   // Detect an optimizer?
   if (function_exists('eaccelerator_put'))
     $detected = 'eAccelerator';
-  elseif (function_exists('mmcache_put'))
+  else if (function_exists('mmcache_put'))
     $detected = 'MMCache';
-  elseif (function_exists('apc_store'))
+  else if (function_exists('apc_store'))
     $detected = 'APC';
-  elseif (function_exists('output_cache_put'))
+  else if (function_exists('output_cache_put'))
     $detected = 'Zend';
-  elseif (function_exists('memcache_set'))
+  else if (function_exists('memcache_set'))
     $detected = 'Memcached';
   else
     $detected = 'no_caching';
@@ -407,22 +407,22 @@ function saveDBSettings(&$config_vars)
       continue;
 
     // Checkboxes!
-    elseif ($var[0] == 'check')
+    else if ($var[0] == 'check')
       $setArray[$var[1]] = !empty($_POST[$var[1]]) ? '1' : '0';
     // Select boxes!
-    elseif ($var[0] == 'select' && in_array($_POST[$var[1]], array_keys($var[2])))
+    else if ($var[0] == 'select' && in_array($_POST[$var[1]], array_keys($var[2])))
       $setArray[$var[1]] = $_POST[$var[1]];
     // Integers!
-    elseif ($var[0] == 'int')
+    else if ($var[0] == 'int')
       $setArray[$var[1]] = (int) $_POST[$var[1]];
     // Floating point!
-    elseif ($var[0] == 'float')
+    else if ($var[0] == 'float')
       $setArray[$var[1]] = (float) $_POST[$var[1]];
     // Text!
-    elseif ($var[0] == 'text' || $var[0] == 'large_text')
+    else if ($var[0] == 'text' || $var[0] == 'large_text')
       $setArray[$var[1]] = $_POST[$var[1]];
     // Passwords!
-    elseif ($var[0] == 'password')
+    else if ($var[0] == 'password')
     {
       if (isset($_POST[$var[1]][1]) && $_POST[$var[1]][0] == $_POST[$var[1]][1])
         $setArray[$var[1]] = $_POST[$var[1]][0];

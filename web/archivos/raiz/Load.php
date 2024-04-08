@@ -95,7 +95,7 @@ function reloadSettings()
     'truncate' => create_function('$string, $length', (empty($modSettings['disableEntityCheck']) ? '
       global $func;
       $string = ' . implode('$string', $ent_check) . ';' : '') . '
-      preg_match(\'~^(' . $ent_list . '|.){\' . $func[\'strlen\'](substr($string, 0, $length)) . \'}~'.  ($utf8 ? 'u' : '') . '\', $string, $matches);
+      preg_match(\'~^(' . $ent_list . '|.) {\' . $func[\'strlen\'](substr($string, 0, $length)) . \'}~'.  ($utf8 ? 'u' : '') . '\', $string, $matches);
       $string = $matches[0];
       while (strlen($string) > $length)
         $string = preg_replace(\'~(' . $ent_list . '|.)$~'.  ($utf8 ? 'u' : '') . '\', \'\', $string);
@@ -134,7 +134,7 @@ function reloadSettings()
       $modSettings['load_average'] = @file_get_contents('/proc/loadavg');
       if (!empty($modSettings['load_average']) && preg_match('~^([^ ]+?) ([^ ]+?) ([^ ]+)~', $modSettings['load_average'], $matches) != 0)
         $modSettings['load_average'] = (float) $matches[1];
-      elseif (($modSettings['load_average'] = @`uptime`) != null && preg_match('~load average[s]?: (\d+\.\d+), (\d+\.\d+), (\d+\.\d+)~i', $modSettings['load_average'], $matches) != 0)
+      else if (($modSettings['load_average'] = @`uptime`) != null && preg_match('~load average[s]?: (\d+\.\d+), (\d+\.\d+), (\d+\.\d+)~i', $modSettings['load_average'], $matches) != 0)
         $modSettings['load_average'] = (float) $matches[1];
       else
         unset($modSettings['load_average']);
@@ -235,7 +235,7 @@ function loadUserSettings()
     else
       $ID_MEMBER = 0;
   }
-  elseif (empty($ID_MEMBER) && isset($_SESSION['login_' . $cookiename]) && ($_SESSION['USER_AGENT'] == $_SERVER['HTTP_USER_AGENT'] || !empty($modSettings['disableCheckUA'])))
+  else if (empty($ID_MEMBER) && isset($_SESSION['login_' . $cookiename]) && ($_SESSION['USER_AGENT'] == $_SERVER['HTTP_USER_AGENT'] || !empty($modSettings['disableCheckUA'])))
   {
     // !!! Perhaps we can do some more checking on this, such as on the first octet of the IP?
     list ($ID_MEMBER, $password, $login_span) = @unserialize(stripslashes($_SESSION['login_' . $cookiename]));
@@ -267,7 +267,7 @@ function loadUserSettings()
       if (!empty($already_verified) && $already_verified === true)
         $check = true;
       // SHA-1 passwords should be 40 characters long.
-      elseif (strlen($password) == 40)
+      else if (strlen($password) == 40)
         $check = sha1($user_settings['passwd'] . $user_settings['passwordSalt']) == $password;
       else
         $check = false;
@@ -313,7 +313,7 @@ function loadUserSettings()
           cache_put_data('user_last_visit-' . $ID_MEMBER, $_SESSION['ID_MSG_LAST_VISIT'], 5 * 3600);
       }
     }
-    elseif (empty($_SESSION['ID_MSG_LAST_VISIT']))
+    else if (empty($_SESSION['ID_MSG_LAST_VISIT']))
       $_SESSION['ID_MSG_LAST_VISIT'] = $user_settings['ID_MSG_LAST_VISIT'];
 
     $username = $user_settings['memberName'];
@@ -381,14 +381,14 @@ function loadUserSettings()
     $user_info['language'] = strtr($_REQUEST['language'], './\\:', '____');
     $_SESSION['language'] = $user_info['language'];
   }
-  elseif (!empty($modSettings['userLanguage']) && !empty($_SESSION['language']))
+  else if (!empty($modSettings['userLanguage']) && !empty($_SESSION['language']))
     $user_info['language'] = strtr($_SESSION['language'], './\\:', '____');
 
   // Just build this here, it makes it easier to change/use.
   if ($user_info['is_guest'])
     $user_info['query_see_board'] = 'FIND_IN_SET(-1, b.memberGroups)';
   // Administrators can see all boards.
-  elseif ($user_info['is_admin'])
+  else if ($user_info['is_admin'])
     $user_info['query_see_board'] = '1';
   // Registered user.... just the groups in $user_info['groups'].
   else
@@ -544,7 +544,7 @@ function loadBoard()
       header('HTTP/1.1 403 Forbidden');
       die;
     }
-    elseif ($user_info['is_guest'])
+    else if ($user_info['is_guest'])
     {
     loadLanguage('Errors');
     loadTemplate('NoPost');
@@ -587,7 +587,7 @@ function loadPermissions()
 
       return;
     }
-    elseif (($temp = cache_get_data('permissions:' . $cache_groups, 240)) != null)
+    else if (($temp = cache_get_data('permissions:' . $cache_groups, 240)) != null)
       list ($user_info['permissions'], $removals) = $temp;
   }
 
@@ -703,14 +703,14 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
       mem.ID_POST_GROUP, mem.lngfile, mem.ID_GROUP, mem.timeOffset, mem.altura, mem.peso, mem.pelo_color, mem.ojos_color, mem.fisico, mem.dieta, mem.fumo, mem.tomo_alcohol, mem.showOnline,
       mem.buddy_list, mg.onlineColor AS member_group_color, IFNULL(mg.groupName, '') AS member_group,
       pg.onlineColor AS post_group_color, IFNULL(pg.groupName, '') AS post_group, mem.is_activated, mem.money, mem.moneyBank,
-      IF(mem.ID_GROUP = 0 OR mg.stars = '', pg.stars, mg.stars) AS stars" . (!empty($modSettings['titlesEnable']) ? ',
+      if (mem.ID_GROUP = 0 OR mg.stars = '', pg.stars, mg.stars) AS stars" . (!empty($modSettings['titlesEnable']) ? ',
       mem.usertitle' : '');
     $select_tables = "
       LEFT JOIN {$db_prefix}log_online AS lo ON (lo.ID_MEMBER = mem.ID_MEMBER)
       LEFT JOIN {$db_prefix}membergroups AS pg ON (pg.ID_GROUP = mem.ID_POST_GROUP)
       LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = mem.ID_GROUP)";
   }
-  elseif ($set == 'profile')
+  else if ($set == 'profile')
   {
     $select_columns = "
       IFNULL(lo.logTime, 0) AS isOnline, mem.signature, mem.personalText, mem.location, mem.gender, mem.avatar, mem.ID_MEMBER, mem.name, mem.memberName, mem.estado_icon,
@@ -722,13 +722,13 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
       mem.totalTimeLoggedIn, mem.ID_POST_GROUP, mem.notifyAnnouncements, mem.notifyOnce, mem.notifySendBody,
       mem.notifyTypes, lo.url, mg.onlineColor AS member_group_color, IFNULL(mg.groupName, '') AS member_group,
       pg.onlineColor AS post_group_color, IFNULL(pg.groupName, '') AS post_group,
-      IF(mem.ID_GROUP = 0 OR mg.stars = '', pg.stars, mg.stars) AS stars, mem.money, mem.moneyBank, mem.passwordSalt";
+      if (mem.ID_GROUP = 0 OR mg.stars = '', pg.stars, mg.stars) AS stars, mem.money, mem.moneyBank, mem.passwordSalt";
     $select_tables = "
       LEFT JOIN {$db_prefix}log_online AS lo ON (lo.ID_MEMBER = mem.ID_MEMBER)
       LEFT JOIN {$db_prefix}membergroups AS pg ON (pg.ID_GROUP = mem.ID_POST_GROUP)
       LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = mem.ID_GROUP)";
   }
-  elseif ($set == 'minimal')
+  else if ($set == 'minimal')
   {
     $select_columns = '
       mem.ID_MEMBER, mem.name, mem.memberName, mem.realName, mem.emailAddress, mem.hideEmail, mem.dateRegistered, mem.estudios, mem.profesion, mem.empresa, mem.ingresos, mem.intereses_profesionales, mem.habilidades_profesionales, mem.mis_intereses, mem.hobbies, mem.series_tv_favoritas, mem.musica_favorita, mem.deportes_y_equipos_favoritos, mem.libros_favoritos, mem.peliculas_favoritas, mem.comida_favorita, mem.mis_heroes_son,  
@@ -950,22 +950,22 @@ function loadTheme($ID_THEME = 0, $initialize = true)
   if (!empty($ID_THEME))
     $ID_THEME = (int) $ID_THEME;
   // Use the board's specific theme.
-  elseif (!empty($board_info['theme']) && $board_info['override_theme'])
+  else if (!empty($board_info['theme']) && $board_info['override_theme'])
     $ID_THEME = $board_info['theme'];
   // The theme was specified by REQUEST.
-  elseif (!empty($_REQUEST['theme']) && (!empty($modSettings['theme_allow']) || allowedTo('admin_forum')))
+  else if (!empty($_REQUEST['theme']) && (!empty($modSettings['theme_allow']) || allowedTo('admin_forum')))
   {
     $ID_THEME = (int) $_REQUEST['theme'];
     $_SESSION['ID_THEME'] = $ID_THEME;
   }
   // The theme was specified by REQUEST... previously.
-  elseif (!empty($_SESSION['ID_THEME']) && (!empty($modSettings['theme_allow']) || allowedTo('admin_forum')))
+  else if (!empty($_SESSION['ID_THEME']) && (!empty($modSettings['theme_allow']) || allowedTo('admin_forum')))
     $ID_THEME = (int) $_SESSION['ID_THEME'];
   // The theme is just the user's choice. (might use ?board=1;theme=0 to force board theme.)
-  elseif (!empty($user_info['theme']) && !isset($_REQUEST['theme']) && (!empty($modSettings['theme_allow']) || allowedTo('admin_forum')))
+  else if (!empty($user_info['theme']) && !isset($_REQUEST['theme']) && (!empty($modSettings['theme_allow']) || allowedTo('admin_forum')))
     $ID_THEME = $user_info['theme'];
   // The theme was specified by the board.
-  elseif (!empty($board_info['theme']))
+  else if (!empty($board_info['theme']))
     $ID_THEME = $board_info['theme'];
   // The theme is the forum's default.
   else
@@ -974,7 +974,7 @@ function loadTheme($ID_THEME = 0, $initialize = true)
   // Verify the ID_THEME... no foul play.
   if (empty($modSettings['theme_default']) && $ID_THEME == 1 && !allowedTo('admin_forum'))
     $ID_THEME = $modSettings['theme_guests'];
-  elseif (!empty($modSettings['knownThemes']) && !empty($modSettings['theme_allow']) && !allowedTo('admin_forum'))
+  else if (!empty($modSettings['knownThemes']) && !empty($modSettings['theme_allow']) && !allowedTo('admin_forum'))
   {
     $themes = explode(',', $modSettings['knownThemes']);
     if (!in_array($ID_THEME, $themes))
@@ -992,7 +992,7 @@ function loadTheme($ID_THEME = 0, $initialize = true)
     $themeData = $temp;
     $flag = true;
   }
-  elseif (($temp = cache_get_data('theme_settings-' . $ID_THEME, 90)) != null)
+  else if (($temp = cache_get_data('theme_settings-' . $ID_THEME, 90)) != null)
     $themeData = $temp + array($member => array());
   else
     $themeData = array(-1 => array(), 0 => array(), $member => array());
@@ -1028,7 +1028,7 @@ function loadTheme($ID_THEME = 0, $initialize = true)
     if (!empty($modSettings['cache_enable']) && $modSettings['cache_enable'] >= 2)
       cache_put_data('theme_settings-' . $ID_THEME . ':' . $member, $themeData, 60);
     // Only if we didn't already load that part of the cache...
-    elseif (!isset($temp))
+    else if (!isset($temp))
       cache_put_data('theme_settings-' . $ID_THEME, array(-1 => $themeData[-1], 0 => $themeData[0]), 90);
   }
 
@@ -1229,14 +1229,14 @@ function loadTheme($ID_THEME = 0, $initialize = true)
     loadLanguage('index');
   }
   // Output is fully XML, so no need for the index template.
-  elseif (isset($_REQUEST['xml']))
+  else if (isset($_REQUEST['xml']))
   {
     loadLanguage('index');
     loadTemplate('Xml');
     $context['template_layers'] = array();
   }
   // These actions don't require the index template at all.
-  elseif (!empty($_REQUEST['action']) && in_array($_REQUEST['action'], $simpleActions))
+  else if (!empty($_REQUEST['action']) && in_array($_REQUEST['action'], $simpleActions))
   {
     loadLanguage('index');
     $context['template_layers'] = array();
@@ -1301,13 +1301,13 @@ function loadTemplate($template_name, $fatal = true)
     $template_name .= ' (' . basename($settings['theme_dir']) . ')';
   }
   // Are we using a base theme?  If so, does it have the template?
-  elseif (isset($settings['base_theme_dir']) && file_exists($settings['base_theme_dir'] . '/' . $template_name . '.template.php'))
+  else if (isset($settings['base_theme_dir']) && file_exists($settings['base_theme_dir'] . '/' . $template_name . '.template.php'))
   {
     template_include($settings['base_theme_dir'] . '/' . $template_name . '.template.php', true);
     $template_name .= ' (' . basename($settings['base_theme_dir']) . ')';
   }
   // Perhaps we'll just use the default template, then...
-  elseif (file_exists($settings['default_theme_dir'] . '/' . $template_name . '.template.php'))
+  else if (file_exists($settings['default_theme_dir'] . '/' . $template_name . '.template.php'))
   {
     // Make it known that this template uses different directories...
     $settings['default_template'] = true;
@@ -1315,7 +1315,7 @@ function loadTemplate($template_name, $fatal = true)
     $template_name .= ' (' . basename($settings['default_theme_dir']) . ')';
   }
   // Hmmm... doesn't exist?!  I don't suppose the directory is wrong, is it?
-  elseif (!file_exists($settings['default_theme_dir']) && file_exists($boarddir . '/web/archivos/temas/default'))
+  else if (!file_exists($settings['default_theme_dir']) && file_exists($boarddir . '/web/archivos/temas/default'))
   {
     $settings['default_theme_dir'] = $boarddir . '/web/archivos/temas/default';
 
@@ -1331,9 +1331,9 @@ function loadTemplate($template_name, $fatal = true)
     loadTemplate($template_name);
   }
   // Cause an error otherwise.
-  elseif ($template_name != 'Errors' && $template_name != 'index' && $fatal)
+  else if ($template_name != 'Errors' && $template_name != 'index' && $fatal)
     fatal_lang_error('theme_template_error', true, array((string) $template_name));
-  elseif ($fatal)
+  else if ($fatal)
     die(log_error(sprintf(isset($txt['theme_template_error']) ? $txt['theme_template_error'] : 'Unable to load Themes/default/%s.template.php!', (string) $template_name)));
   else
     return false;
@@ -1358,9 +1358,9 @@ function loadSubTemplate($sub_template_name, $fatal = false)
   $theme_function = 'template_' . $sub_template_name;
   if (function_exists($theme_function))
     $theme_function();
-  elseif ($fatal === false)
+  else if ($fatal === false)
     fatal_lang_error('theme_template_error', true, array((string) $sub_template_name));
-  elseif ($fatal !== 'ignore')
+  else if ($fatal !== 'ignore')
     die(log_error(sprintf(isset($txt['theme_template_error']) ? $txt['theme_template_error'] : 'Unable to load the %s sub template!', (string) $sub_template_name)));
 
   // Are we showing debugging for templates?  Just make sure not to do it before the doctype...
@@ -1577,7 +1577,7 @@ function template_include($filename, $once = false)
 
     if ($once && $file_found)
       require_once($filename);
-    elseif ($file_found)
+    else if ($file_found)
       require($filename);
   }
 
@@ -1621,7 +1621,7 @@ function template_include($filename, $once = false)
     ', $mmessage, '
   </body>
 </html>';
-    elseif (!allowedTo('admin_forum'))
+    else if (!allowedTo('admin_forum'))
       echo '
     <title>', $txt['template_parse_error'], '</title>
   </head>
@@ -1661,7 +1661,7 @@ function template_include($filename, $once = false)
         // Fix the PHP code stuff...
         if ($context['browser']['is_ie4'] || $context['browser']['is_ie5'] || $context['browser']['is_ie5.5'])
           $data2 = str_replace("\t", "<pre style=\"display: inline;\">\t</pre>", $data2);
-        elseif (!$context['browser']['is_gecko'])
+        else if (!$context['browser']['is_gecko'])
           $data2 = str_replace("\t", "<span style=\"white-space: pre;\">\t</span>", $data2);
         else
           $data2 = str_replace("<pre style=\"display: inline;\">\t</pre>", "\t", $data2);
@@ -1715,9 +1715,9 @@ function template_include($filename, $once = false)
             $last_line = $color_match[1];
             echo '</', substr($last_line, 1, 4), '>';
           }
-          elseif ($last_line != '' && strpos($data2[$line], '<') !== false)
+          else if ($last_line != '' && strpos($data2[$line], '<') !== false)
             $last_line = '';
-          elseif ($last_line != '' && $data2[$line] != '')
+          else if ($last_line != '' && $data2[$line] != '')
             echo '</', substr($last_line, 1, 4), '>';
 
           if ($line == $match[1])
@@ -1754,7 +1754,7 @@ function loadSession()
   {
     $parsed_url = parse_url($boardurl);
 
-    if (preg_match('~^\d{1,3}(\.\d{1,3}){3}$~', $parsed_url['host']) == 0 && preg_match('~(?:[^\.]+\.)?([^\.]{2,}\..+)\z~i', $parsed_url['host'], $parts) == 1)
+    if (preg_match('~^\d{1,3}(\.\d{1,3}) {3}$~', $parsed_url['host']) == 0 && preg_match('~(?:[^\.]+\.)?([^\.]{2,}\..+)\z~i', $parsed_url['host'], $parts) == 1)
       @ini_set('session.cookie_domain', '.' . $parts[1]);
   }
   // !!! Set the session cookie path?
@@ -1780,7 +1780,7 @@ function loadSession()
       session_set_save_handler('sessionOpen', 'sessionClose', 'sessionRead', 'sessionWrite', 'sessionDestroy', 'sessionGC');
       @ini_set('session.gc_probability', '1');
     }
-    elseif (@ini_get('session.gc_maxlifetime') <= 1440 && !empty($modSettings['databaseSession_lifetime']))
+    else if (@ini_get('session.gc_maxlifetime') <= 1440 && !empty($modSettings['databaseSession_lifetime']))
       @ini_set('session.gc_maxlifetime', max($modSettings['databaseSession_lifetime'], 60));
 
     // Use cache setting sessions?
@@ -1788,7 +1788,7 @@ function loadSession()
     {
       if (function_exists('mmcache_set_session_handlers'))
         mmcache_set_session_handlers();
-      elseif (function_exists('eaccelerator_set_session_handlers'))
+      else if (function_exists('eaccelerator_set_session_handlers'))
         eaccelerator_set_session_handlers();
     }
 
@@ -1929,7 +1929,7 @@ function cache_put_data($key, $value, $ttl = 120)
 
     memcache_set($memcached, $key, $value, 0, $ttl);
   }
-  elseif (function_exists('eaccelerator_put'))
+  else if (function_exists('eaccelerator_put'))
   {
     if (mt_rand(0, 10) == 1)
       eaccelerator_gc();
@@ -1939,7 +1939,7 @@ function cache_put_data($key, $value, $ttl = 120)
     else
       eaccelerator_put($key, $value, $ttl);
   }
-  elseif (function_exists('mmcache_put'))
+  else if (function_exists('mmcache_put'))
   {
     if (mt_rand(0, 10) == 1)
       mmcache_gc();
@@ -1949,14 +1949,14 @@ function cache_put_data($key, $value, $ttl = 120)
     else
       mmcache_put($key, $value, $ttl);
   }
-  elseif (function_exists('apc_store'))
+  else if (function_exists('apc_store'))
   {
     if ($value === null)
       apc_delete($key . 'smf');
     else
       apc_store($key . 'smf', $value, $ttl);
   }
-  elseif (function_exists('output_cache_put'))
+  else if (function_exists('output_cache_put'))
     output_cache_put($key, $value);
   if (isset($db_show_debug) && $db_show_debug === true)
     $cache_hits[$cache_count]['t'] = array_sum(explode(' ', microtime())) - array_sum(explode(' ', $st));
@@ -1991,16 +1991,16 @@ function cache_get_data($key, $ttl = 120)
     $value = memcache_get($memcached, $key);
   }
   // Again, eAccelerator.
-  elseif (function_exists('eaccelerator_get'))
+  else if (function_exists('eaccelerator_get'))
     $value = eaccelerator_get($key);
   // The older, but ever-stable, Turck MMCache...
-  elseif (function_exists('mmcache_get'))
+  else if (function_exists('mmcache_get'))
     $value = mmcache_get($key);
   // This is the free APC from PECL.
-  elseif (function_exists('apc_fetch'))
+  else if (function_exists('apc_fetch'))
     $value = apc_fetch($key . 'smf');
   // Zend's pricey stuff.
-  elseif (function_exists('output_cache_get'))
+  else if (function_exists('output_cache_get'))
     $value = output_cache_get($key, $ttl);
 
   if (isset($db_show_debug) && $db_show_debug === true)

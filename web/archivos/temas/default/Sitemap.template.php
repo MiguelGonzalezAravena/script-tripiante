@@ -7,7 +7,7 @@ function template_Begin() {}
 function template_Boards() {
   global $context, $settings, $boardurl;
 
-  if(isset($context['sitemap']['board'])) {
+  if (isset($context['sitemap']['board'])) {
     $switch = false;
   }
     

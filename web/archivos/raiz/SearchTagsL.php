@@ -253,12 +253,12 @@ function PlushSearch2()
       $min_word_length = '4';
 
     // Some MySQL versions are superior to others :P.
-    $canDoBooleanSearch = version_compare(mysql_get_server_info($db_connection), '4.0.1', '>=') == 1;
+    $canDoBooleanSearch = version_compare(mysqli_get_server_info($db_connection), '4.0.1', '>=') == 1;
 
     // Get a list of banned fulltext words.
     $banned_words = empty($modSettings['search_banned_words']) ? array() : explode(',', addslashes($modSettings['search_banned_words']));
   }
-  elseif (!empty($modSettings['search_index']) && $modSettings['search_index'] == 'custom' && !empty($modSettings['search_custom_index_config']))
+  else if (!empty($modSettings['search_index']) && $modSettings['search_index'] == 'custom' && !empty($modSettings['search_custom_index_config']))
   {
     $customIndexSettings = unserialize($modSettings['search_custom_index_config']);
 
@@ -293,7 +293,7 @@ function PlushSearch2()
     $search_params['topic'] = (int) $_REQUEST['topic'];
     $search_params['show_complete'] = true;
   }
-  elseif (!empty($search_params['topic']))
+  else if (!empty($search_params['topic']))
     $search_params['topic'] = (int) $search_params['topic'];
 
   if (!empty($search_params['minage']) || !empty($search_params['maxage']))
@@ -336,7 +336,7 @@ function PlushSearch2()
     mysqli_free_result($request);
   }
   // Select all boards you've selected AND are allowed to see.
-  elseif ($user_info['is_admin'] && (!empty($search_params['advanced']) || !empty($_REQUEST['brd'])))
+  else if ($user_info['is_admin'] && (!empty($search_params['advanced']) || !empty($_REQUEST['brd'])))
     $search_params['brd'] = empty($_REQUEST['brd']) ? array() : $_REQUEST['brd'];
   else
   {
@@ -363,7 +363,7 @@ function PlushSearch2()
 
     if (count($search_params['brd']) == $num_boards)
       $boardQuery = '';
-    elseif (count($search_params['brd']) == $num_boards - 1 && !empty($modSettings['recycle_board']) && !in_array($modSettings['recycle_board'], $search_params['brd']))
+    else if (count($search_params['brd']) == $num_boards - 1 && !empty($modSettings['recycle_board']) && !in_array($modSettings['recycle_board'], $search_params['brd']))
       $boardQuery = '!= ' . $modSettings['recycle_board'];
     else
       $boardQuery = 'IN (' . implode(', ', $search_params['brd']) . ')';
@@ -384,7 +384,7 @@ function PlushSearch2()
   $search_params['sort'] = !empty($search_params['sort']) && in_array($search_params['sort'], $sort_columns) ? $search_params['sort'] : 'relevance';
   if (!empty($search_params['topic']) && $search_params['sort'] === 'numReplies')
     $search_params['sort'] = 'ID_MSG';
-  elseif (!empty($search_params['topic']) && $search_params['sort'] === 'points')
+  else if (!empty($search_params['topic']) && $search_params['sort'] === 'points')
     $search_params['sort'] = 'points';
 
   $search_params['sort_dir'] = !empty($search_params['sort_dir']) && $search_params['sort_dir'] == 'asc' ? 'asc' : 'desc';
@@ -397,7 +397,7 @@ function PlushSearch2()
   {
     if (isset($_GET['search']))
       $search_params['search'] = un_htmlspecialchars($_GET['search']);
-    elseif (isset($_POST['search']))
+    else if (isset($_POST['search']))
       $search_params['search'] = stripslashes($_POST['search']);
     else
       $search_params['search'] = '';
@@ -476,7 +476,7 @@ function PlushSearch2()
   if (empty($searchArray))
     $context['search_errors']['invalid_search_string'] = true;
   // All words/sentences must match.
-  elseif (empty($search_params['searchtype']))
+  else if (empty($search_params['searchtype']))
     $orParts[0] = $searchArray;
   // Any word/sentence must match.
   else
@@ -534,7 +534,7 @@ function PlushSearch2()
         }
 
         // Excluded phrases don't benefit from being split into subwords.
-        elseif (count($subwords) > 1 && $is_excluded)
+        else if (count($subwords) > 1 && $is_excluded)
           continue;
 
         else
@@ -548,7 +548,7 @@ function PlushSearch2()
               if ($is_excluded)
                 $excludedIndexWords[] = $subword;
             }
-            elseif (!in_array($subword, $banned_words))
+            else if (!in_array($subword, $banned_words))
               $relyOnIndex = false;
           }
 
@@ -605,13 +605,13 @@ function PlushSearch2()
         continue;
       }
       // For some strange reason spell check can crash PHP on decimals.
-      elseif (preg_match('~\d~', $word) === 1)
+      else if (preg_match('~\d~', $word) === 1)
       {
         $did_you_mean['search'][] = $word;
         $did_you_mean['display'][] = $func['htmlspecialchars']($word);
         continue;
       }
-      elseif (pspell_check($pspell_link, $word))
+      else if (pspell_check($pspell_link, $word))
       {
         $did_you_mean['search'][] = $word;
         $did_you_mean['display'][] = $func['htmlspecialchars']($word);
@@ -788,8 +788,8 @@ function PlushSearch2()
             t.ID_TOPIC,
             1000 * (
               $weight[frequency] / (t.numReplies + 1) +
-              $weight[age] * IF(t.ID_FIRST_MSG < $minMsg, 0, (t.ID_FIRST_MSG - $minMsg) / $recentMsg) +
-              $weight[length] * IF(t.numReplies < $humungousTopicPosts, t.numReplies / $humungousTopicPosts, 1) +
+              $weight[age] * if (t.ID_FIRST_MSG < $minMsg, 0, (t.ID_FIRST_MSG - $minMsg) / $recentMsg) +
+              $weight[length] * if (t.numReplies < $humungousTopicPosts, t.numReplies / $humungousTopicPosts, 1) +
               $weight[subject] +
               $weight[sticky] * t.isSticky
             ) / $weight_total AS relevance,
@@ -842,10 +842,10 @@ function PlushSearch2()
 
         $main_query['weights'] = array(
           'frequency' => 'COUNT(*) / (t.numReplies + 1)',
-          'age' => "IF(MAX(m.ID_MSG) < $minMsg, 0, (MAX(m.ID_MSG) - $minMsg) / $recentMsg)",
-          'length' => "IF(t.numReplies < $humungousTopicPosts, t.numReplies / $humungousTopicPosts, 1)",
+          'age' => "if (MAX(m.ID_MSG) < $minMsg, 0, (MAX(m.ID_MSG) - $minMsg) / $recentMsg)",
+          'length' => "if (t.numReplies < $humungousTopicPosts, t.numReplies / $humungousTopicPosts, 1)",
           'subject' => '0',
-          'first_message' => "IF(MIN(m.ID_MSG) = t.ID_FIRST_MSG, 1, 0)",
+          'first_message' => "if (MIN(m.ID_MSG) = t.ID_FIRST_MSG, 1, 0)",
           'sticky' => 't.isSticky',
         );
 
@@ -860,8 +860,8 @@ function PlushSearch2()
         $main_query['select']['num_matches'] = '1 AS num_matches';
 
         $main_query['weights'] = array(
-          'age' => "((m.ID_MSG - t.ID_FIRST_MSG) / IF(t.ID_LAST_MSG = t.ID_FIRST_MSG, 1, t.ID_LAST_MSG - t.ID_FIRST_MSG))",
-          'first_message' => "IF(m.ID_MSG = t.ID_FIRST_MSG, 1, 0)",
+          'age' => "((m.ID_MSG - t.ID_FIRST_MSG) / if (t.ID_LAST_MSG = t.ID_FIRST_MSG, 1, t.ID_LAST_MSG - t.ID_FIRST_MSG))",
+          'first_message' => "if (m.ID_MSG = t.ID_FIRST_MSG, 1, 0)",
         );
 
         $main_query['where'][] = 't.ID_TOPIC = ' . $search_params['topic'];
@@ -974,7 +974,7 @@ function PlushSearch2()
 
         if ($numSubjectResults !== 0)
         {
-          $main_query['weights']['subject'] = 'IF(lst.ID_TOPIC IS NULL, 0, 1)';
+          $main_query['weights']['subject'] = 'if (lst.ID_TOPIC IS NULL, 0, 1)';
           $main_query['left_join'][] = "{$db_prefix}" . ($createTemporary ? 'tmp_' : '') . "log_search_topics AS lst ON (" . ($createTemporary ? '' : 'lst.ID_SEARCH = ' . $_SESSION['search_cache']['ID_SEARCH'] . ' AND ') . "lst.ID_TOPIC = t.ID_TOPIC)";
         }
       }
@@ -1037,7 +1037,7 @@ function PlushSearch2()
 
             if (!empty($modSettings['search_simple_fulltext']))
               $fulltext_query['where'][] = "MATCH (body) AGAINST ('" . implode(' ', array_diff($words['indexed_words'], $excludedIndexWords)) . "')";
-            elseif ($canDoBooleanSearch)
+            else if ($canDoBooleanSearch)
             {
               $where = "MATCH (body) AGAINST ('";
               foreach ($words['indexed_words'] as $fulltextWord)
@@ -1066,7 +1066,7 @@ function PlushSearch2()
 
           // *** Do the custom index search.
 
-          elseif (!empty($words['indexed_words']) && $modSettings['search_index'] == 'custom')
+          else if (!empty($words['indexed_words']) && $modSettings['search_index'] == 'custom')
           {
             $custom_query = array(
               'insert_into' => $db_prefix . ($createTemporary ? 'tmp_' : '') . 'log_search_messages',
@@ -1145,7 +1145,7 @@ function PlushSearch2()
           $_REQUEST['params'] = $context['params'];
           return PlushSearch1();
         }
-        elseif (!empty($indexedResults))
+        else if (!empty($indexedResults))
         {
           $main_query['from'][] = $db_prefix . ($createTemporary ? 'tmp_' : '') . 'log_search_messages AS lsm';
           $main_query['where'][] = 'lsm.ID_MSG = m.ID_MSG';
@@ -1224,8 +1224,8 @@ function PlushSearch2()
             t.ID_TOPIC,
             1000 * (
               $weight[frequency] / (t.numReplies + 1) +
-              $weight[age] * IF(t.ID_FIRST_MSG < $minMsg, 0, (t.ID_FIRST_MSG - $minMsg) / $recentMsg) +
-              $weight[length] * IF(t.numReplies < $humungousTopicPosts, t.numReplies / $humungousTopicPosts, 1) +
+              $weight[age] * if (t.ID_FIRST_MSG < $minMsg, 0, (t.ID_FIRST_MSG - $minMsg) / $recentMsg) +
+              $weight[length] * if (t.numReplies < $humungousTopicPosts, t.numReplies / $humungousTopicPosts, 1) +
               $weight[subject] +
               $weight[sticky] * t.isSticky
             ) / $weight_total AS relevance,
@@ -1237,7 +1237,7 @@ function PlushSearch2()
 
         $_SESSION['search_cache']['num_results'] += db_affected_rows();
       }
-      elseif ($_SESSION['search_cache']['num_results'] == -1)
+      else if ($_SESSION['search_cache']['num_results'] == -1)
         $_SESSION['search_cache']['num_results'] = 0;
     }
   }

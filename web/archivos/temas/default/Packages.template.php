@@ -210,15 +210,15 @@ function template_extract_package() {
         <td class="windowbg2" width="100%" align="center">
           <a href="', $context['redirect_url'], '">', $txt['package_installed_redirect_go_now'], '</a> | <a href="', $scripturl, '?action=packages;sa=browse">', $txt['package_installed_redirect_cancel'], '</a>';
   }
-  elseif ($context['uninstalling'])
+  else if ($context['uninstalling'])
     echo '
           ', $txt['package_uninstall_done'];
-  elseif ($context['install_finished'])
+  else if ($context['install_finished'])
   {
     if ($context['extract_type'] == 'avatar')
       echo '
           ', $txt['package39'];
-    elseif ($context['extract_type'] == 'language')
+    else if ($context['extract_type'] == 'language')
       echo '
           ', $txt['package41'];
     else
@@ -432,10 +432,10 @@ function template_browse()
     if ($package['can_uninstall'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=uninstall;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['smf198b'], ' ]</a>';
-    elseif ($package['can_upgrade'])
+    else if ($package['can_upgrade'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=install;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['package_upgrade'], ' ]</a>';
-    elseif ($package['can_install'])
+    else if ($package['can_install'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=install;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['package11'], ' ]</a>';
 
@@ -486,10 +486,10 @@ function template_browse()
     if ($package['can_uninstall'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=uninstall;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['smf198b'], ' ]</a>';
-    elseif ($package['can_upgrade'])
+    else if ($package['can_upgrade'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=install;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['package_upgrade'], ' ]</a>';
-    elseif ($package['can_install'])
+    else if ($package['can_install'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=install;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['package11'], ' ]</a>';
 
@@ -540,10 +540,10 @@ function template_browse()
     if ($package['can_uninstall'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=uninstall;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['smf198b'], ' ]</a>';
-    elseif ($package['can_upgrade'])
+    else if ($package['can_upgrade'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=install;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['package_upgrade'], ' ]</a>';
-    elseif ($package['can_install'])
+    else if ($package['can_install'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=install;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['package11'], ' ]</a>';
 
@@ -594,10 +594,10 @@ function template_browse()
     if ($package['can_uninstall'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=uninstall;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['smf198b'], ' ]</a>';
-    elseif ($package['can_upgrade'])
+    else if ($package['can_upgrade'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=install;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['package_upgrade'], ' ]</a>';
-    elseif ($package['can_install'])
+    else if ($package['can_install'])
       echo '
                 <a href="', $scripturl, '?action=packages;sa=install;package=', $package['filename'], ';sesc=', $context['session_id'], '">[ ', $txt['package11'], ' ]</a>';
 
@@ -797,19 +797,19 @@ function template_package_list()
         echo '
           <b style="font-size: larger;">', $package['name'], '</b><br /><br />';
       // A heading.
-      elseif ($package['is_heading'])
+      else if ($package['is_heading'])
         echo '
           <b style="font-size: larger;">', $package['name'], '</b><br /><br />';
       // Textual message. Could be empty just for a blank line...
-      elseif ($package['is_text'])
+      else if ($package['is_text'])
         echo '
           ', $package['name'], '<br /><br />';
       // This is supposed to be a rule..
-      elseif ($package['is_line'])
+      else if ($package['is_line'])
         echo '
           <hr width="100%" />';
       // A remote link.
-      elseif ($package['is_remote'])
+      else if ($package['is_remote'])
         echo '
           <b>', $package['link'], '</b><br /><br />';
       // Otherwise, it's a package.

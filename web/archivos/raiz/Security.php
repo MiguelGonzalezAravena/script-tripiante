@@ -127,7 +127,7 @@ function is_not_banned($forceCheck = false)
         }
       }
       // We use '255.255.255.255' for 'unknown' since it's not valid anyway.
-      elseif ($user_info[$ip_number] == 'unknown')
+      else if ($user_info[$ip_number] == 'unknown')
         $ban_query[] = "(bi.ip_low1 = 255 AND bi.ip_high1 = 255
               AND bi.ip_low2 = 255 AND bi.ip_high2 = 255
               AND bi.ip_low3 = 255 AND bi.ip_high3 = 255
@@ -264,7 +264,7 @@ function is_not_banned($forceCheck = false)
     trigger_error('Hacking attempt...', E_USER_ERROR);
   }
   // You're not allowed to log in but yet you are. Let's fix that.
-  elseif (isset($_SESSION['ban']['cannot_login']) && !$user_info['is_guest'])
+  else if (isset($_SESSION['ban']['cannot_login']) && !$user_info['is_guest'])
   {
     // !!! Why doesn't this use the function made for logging bans?
     db_query("
@@ -302,7 +302,7 @@ function banPermissions()
   if (isset($_SESSION['ban']['cannot_access']))
     $user_info['permissions'] = array();
   // Okay, well, you can watch, but don't touch a thing.
-  elseif (isset($_SESSION['ban']['cannot_post']))
+  else if (isset($_SESSION['ban']['cannot_post']))
   {
     $denied_permissions = array(
       'pm_send',
@@ -404,9 +404,9 @@ function checkSession($type = 'post', $from_action = '', $is_fatal = true)
 
   if ($type == 'post' && (!isset($_POST['sc']) || $_POST['sc'] != $sc))
     $error = 'smf304';
-  elseif ($type == 'get' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc))
+  else if ($type == 'get' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc))
     $error = 'smf305';
-  elseif ($type == 'request' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc) && (!isset($_POST['sc']) || $_POST['sc'] != $sc))
+  else if ($type == 'request' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc) && (!isset($_POST['sc']) || $_POST['sc'] != $sc))
     $error = 'smf305';
   if ((!isset($_SESSION['USER_AGENT']) || $_SESSION['USER_AGENT'] != $_SERVER['HTTP_USER_AGENT']) && empty($modSettings['disableCheckUA']))
     $error = 'smf305';
@@ -459,7 +459,7 @@ function checkSession($type = 'post', $from_action = '', $is_fatal = true)
   if (!isset($error))
     return '';
   // A session error occurred, show the error.
-  elseif ($is_fatal)
+  else if ($is_fatal)
     fatal_lang_error($error, isset($log_error));
   // A session error occurred, return the error to the calling function.
   else
@@ -501,24 +501,24 @@ function checkSubmitOnce($action, $is_fatal = true)
       $context['form_sequence_number'] = mt_rand(1, 16000000);
   }
   // Check whether the submitted number can be found in the session.
-  elseif ($action == 'check')
+  else if ($action == 'check')
   {
     if (!isset($_REQUEST['seqnum']))
       return true;
-    elseif (!in_array($_REQUEST['seqnum'], $_SESSION['forms']))
+    else if (!in_array($_REQUEST['seqnum'], $_SESSION['forms']))
     {
       $_SESSION['forms'][] = (int) $_REQUEST['seqnum'];
       return true;
     }
-    elseif ($is_fatal)
+    else if ($is_fatal)
       fatal_lang_error('error_form_already_submitted', false);
     else
       return false;
   }
   // Don't check, just free the stack number.
-  elseif ($action == 'free' && isset($_REQUEST['seqnum']) && in_array($_REQUEST['seqnum'], $_SESSION['forms']))
+  else if ($action == 'free' && isset($_REQUEST['seqnum']) && in_array($_REQUEST['seqnum'], $_SESSION['forms']))
     $_SESSION['forms'] = array_diff($_SESSION['forms'], array($_REQUEST['seqnum']));
-  elseif ($action != 'free')
+  else if ($action != 'free')
     trigger_error('checkSubmitOnce(): Invalid action \'' . $action . '\'', E_USER_WARNING);
 }
 
@@ -546,13 +546,13 @@ function allowedTo($permission, $boards = null)
     if (!is_array($permission) && in_array($permission, $user_info['permissions']))
       return true;
     // Search for any of a list of permissions.
-    elseif (is_array($permission) && count(array_intersect($permission, $user_info['permissions'])) != 0)
+    else if (is_array($permission) && count(array_intersect($permission, $user_info['permissions'])) != 0)
       return true;
     // You aren't allowed, by default.
     else
       return false;
   }
-  elseif (!is_array($boards))
+  else if (!is_array($boards))
     $boards = array($boards);
 
   // Determine which permission mode is still acceptable.
@@ -563,9 +563,9 @@ function allowedTo($permission, $boards = null)
 
     if (in_array('post_reply_own', $temp) || in_array('post_reply_any', $temp))
       $max_allowable_mode = 3;
-    elseif (in_array('post_new', $temp))
+    else if (in_array('post_new', $temp))
       $max_allowable_mode = 2;
-    elseif (in_array('poll_post', $temp))
+    else if (in_array('poll_post', $temp))
       $max_allowable_mode = 0;
   }
 
@@ -575,7 +575,7 @@ function allowedTo($permission, $boards = null)
       LEFT JOIN {$db_prefix}moderators AS mods ON (mods.ID_BOARD = b.ID_BOARD AND mods.ID_MEMBER = $ID_MEMBER)
     WHERE b.ID_BOARD IN (" . implode(', ', $boards) . ")" . (isset($max_allowable_mode) ? "
       AND b.permission_mode <= $max_allowable_mode" : '') . "
-      AND bp.ID_BOARD = " . (empty($modSettings['permission_enable_by_board']) ? '0' : 'IF(b.permission_mode = 1, b.ID_BOARD, 0)') . "
+      AND bp.ID_BOARD = " . (empty($modSettings['permission_enable_by_board']) ? '0' : 'if (b.permission_mode = 1, b.ID_BOARD, 0)') . "
       AND bp.ID_GROUP IN (" . implode(', ', $user_info['groups']) . ", 3)
       AND bp.permission " . (is_array($permission) ? "IN ('" . implode("', '", $permission) . "')" : " = '$permission'") . "
       AND (mods.ID_MEMBER IS NOT NULL OR bp.ID_GROUP != 3)
@@ -661,7 +661,7 @@ function boardsAllowedTo($permission)
     SELECT b.ID_BOARD, b.permission_mode, bp.addDeny
     FROM ({$db_prefix}boards AS b, {$db_prefix}board_permissions AS bp)
       LEFT JOIN {$db_prefix}moderators AS mods ON (mods.ID_BOARD = b.ID_BOARD AND mods.ID_MEMBER = $ID_MEMBER)
-    WHERE bp.ID_BOARD = " . (empty($modSettings['permission_enable_by_board']) ? '0' : 'IF(b.permission_mode = 1, b.ID_BOARD, 0)') . "
+    WHERE bp.ID_BOARD = " . (empty($modSettings['permission_enable_by_board']) ? '0' : 'if (b.permission_mode = 1, b.ID_BOARD, 0)') . "
       AND bp.ID_GROUP IN (" . implode(', ', $groups) . ", 3)
       AND bp.permission = '$permission'" . (isset($max_allowable_mode) ? "
       AND (mods.ID_MEMBER IS NOT NULL OR b.permission_mode <= $max_allowable_mode)" : '') . "

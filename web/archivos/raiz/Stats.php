@@ -12,7 +12,7 @@ function DisplayStats() {
     if ($year > 1900 && $year < 2200 && $month >= 1 && $month <= 12)
       $_SESSION['expanded_stats'][$year][] = $month;
   }
-  elseif (!empty($_REQUEST['collapse']))
+  else if (!empty($_REQUEST['collapse']))
   {
     $month = (int) substr($_REQUEST['collapse'], 4);
     $year = (int) substr($_REQUEST['collapse'], 0, 4);
@@ -119,13 +119,13 @@ function DisplayStats() {
     // Try and come up with some "sensible" default states in case of a non-mixed board.
     if ($context['gender']['males'] == $context['gender']['females'])
       $context['gender']['ratio'] = '1:1';
-    elseif ($context['gender']['males'] == 0)
+    else if ($context['gender']['males'] == 0)
       $context['gender']['ratio'] = '0:1';
-    elseif ($context['gender']['females'] == 0)
+    else if ($context['gender']['females'] == 0)
       $context['gender']['ratio'] = '1:0';
-    elseif ($context['gender']['males'] > $context['gender']['females'])
+    else if ($context['gender']['males'] > $context['gender']['females'])
       $context['gender']['ratio'] = round($context['gender']['males'] / $context['gender']['females'], 1) . ':1';
-    elseif ($context['gender']['females'] > $context['gender']['males'])
+    else if ($context['gender']['females'] > $context['gender']['males'])
       $context['gender']['ratio'] = '1:' . round($context['gender']['females'] / $context['gender']['males'], 1);
 
     cache_put_data('stats_gender', $context['gender'], 240);
@@ -267,7 +267,7 @@ LIMIT 0 , 10", __FILE__, __LINE__);
       ORDER BY moneyBank DESC
       LIMIT 10", __FILE__, __LINE__);
     // Loop through all results
-    while ($row = mysqli_fetch_array($result, MYSQL_ASSOC))
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
       // And add them to the list
       $context['shop_richest'][] = array(
         'ID_MEMBER' => $row['ID_MEMBER'],

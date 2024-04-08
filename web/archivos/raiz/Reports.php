@@ -325,7 +325,7 @@ function BoardPermissionsReport()
     WHERE $group_clause
       AND ID_GROUP != 1" . (empty($modSettings['permission_enable_postgroups']) ? "
       AND minPosts = -1" : '') . "
-    ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
+    ORDER BY minPosts, if (ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
   if (!isset($_REQUEST['groups']) || in_array(-1, $_REQUEST['groups']) || in_array(0, $_REQUEST['groups']))
     $memberGroups = array('col' => '', -1 => $txt['membergroups_guests'], 0 => $txt['membergroups_members']);
   else
@@ -417,7 +417,7 @@ function BoardPermissionsReport()
         // Now actually make the data for the group look right.
         if (empty($curData[$ID_GROUP]))
           $curData[$ID_GROUP] = '<span style="color: red;">' . $txt['board_perms_deny'] . '</span>';
-        elseif ($curData[$ID_GROUP] == 1)
+        else if ($curData[$ID_GROUP] == 1)
           $curData[$ID_GROUP] = '<span style="color: darkgreen;">' . $txt['board_perms_allow'] . '</span>';
         else
           $curData[$ID_GROUP] = 'x';
@@ -493,10 +493,10 @@ function MemberGroupsReport()
 
   // Now start cycling the membergroups!
   $request = db_query("
-    SELECT mg.ID_GROUP, mg.groupName, mg.onlineColor, mg.minPosts, mg.maxMessages, mg.stars" . (empty($modSettings['permission_enable_by_board']) ? ", IF(bp.permission IS NOT NULL OR mg.ID_GROUP = 1, 1, 0) AS can_moderate" : '') . "
+    SELECT mg.ID_GROUP, mg.groupName, mg.onlineColor, mg.minPosts, mg.maxMessages, mg.stars" . (empty($modSettings['permission_enable_by_board']) ? ", if (bp.permission IS NOT NULL OR mg.ID_GROUP = 1, 1, 0) AS can_moderate" : '') . "
     FROM {$db_prefix}membergroups AS mg" . (empty($modSettings['permission_enable_by_board']) ? "
       LEFT JOIN {$db_prefix}board_permissions AS bp ON (bp.ID_GROUP = mg.ID_GROUP AND bp.ID_BOARD = 0 AND bp.permission = 'moderate_board')" : '') . "
-    ORDER BY mg.minPosts, IF(mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
+    ORDER BY mg.minPosts, if (mg.ID_GROUP < 4, mg.ID_GROUP, 4), mg.groupName", __FILE__, __LINE__);
 
   // Cache them so we get regular members too.
   $rows = array(
@@ -566,7 +566,7 @@ function GroupPermissionsReport()
     WHERE $clause
       AND ID_GROUP != 1" . (empty($modSettings['permission_enable_postgroups']) ? "
       AND minPosts = -1" : '') . "
-    ORDER BY minPosts, IF(ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
+    ORDER BY minPosts, if (ID_GROUP < 4, ID_GROUP, 4), groupName", __FILE__, __LINE__);
   if (!isset($_REQUEST['groups']) || in_array(-1, $_REQUEST['groups']) || in_array(0, $_REQUEST['groups']))
     $groups = array('col' => '', -1 => $txt['membergroups_guests'], 0 => $txt['membergroups_members']);
   else
@@ -709,7 +709,7 @@ function StaffReport()
     // What do they moderate?
     if (in_array($row['ID_MEMBER'], $global_mods))
       $staffData['moderates'] = '<i>' . $txt['report_staff_all_boards'] . '</i>';
-    elseif (isset($moderators[$row['ID_MEMBER']]))
+    else if (isset($moderators[$row['ID_MEMBER']]))
     {
       // Get the names
       foreach ($moderators[$row['ID_MEMBER']] as $board)
@@ -773,7 +773,7 @@ function addData($inc_data, $custom_table = null)
   // Specific table?
   if ($custom_table !== null && !isset($context['tables'][$custom_table]))
     return false;
-  elseif ($custom_table !== null)
+  else if ($custom_table !== null)
     $table = $custom_table;
   else
     $table = $context['current_table'];
@@ -825,7 +825,7 @@ function addSeperator($title = '', $custom_table = null)
   // Specific table?
   if ($custom_table !== null && !isset($context['tables'][$table]))
     return false;
-  elseif ($custom_table !== null)
+  else if ($custom_table !== null)
     $table = $custom_table;
   else
     $table = $context['current_table'];
@@ -856,7 +856,7 @@ function finishTables()
     // Work out the rough width - for templates like the print template. Without this we might get funny tables.
     if ($table['shading']['left'] && $table['width']['shaded'] != 'auto' && $table['width']['normal'] != 'auto')
       $context['tables'][$id]['max_width'] = $table['width']['shaded'] + ($context['tables'][$id]['column_count'] - 1) * $table['width']['normal'];
-    elseif ($table['width']['normal'] != 'auto')
+    else if ($table['width']['normal'] != 'auto')
       $context['tables'][$id]['max_width'] = $context['tables'][$id]['column_count'] * $table['width']['normal'];
     else
       $context['tables'][$id]['max_width'] = 'auto';

@@ -152,7 +152,7 @@ function PackageInstallTest()
     if (!isset($context['base_path']))
       $context['base_path'] = '';
   }
-  elseif (is_dir($boarddir . '/web/archivos/paquetes/' . $context['filename']))
+  else if (is_dir($boarddir . '/web/archivos/paquetes/' . $context['filename']))
   {
     copytree($boarddir . '/web/archivos/paquetes/' . $context['filename'], $boarddir . '/web/archivos/paquetes/temp');
     $context['extracted_files'] = listtree($boarddir . '/web/archivos/paquetes/temp');
@@ -184,7 +184,7 @@ function PackageInstallTest()
     fatal_lang_error('package_cant_uninstall', false);
   }
   // Uninstalling?
-  elseif ($context['uninstalling'])
+  else if ($context['uninstalling'])
   {
     $actions = parsePackageInfo($packageInfo['xml'], true, 'uninstall');
 
@@ -195,7 +195,7 @@ function PackageInstallTest()
       fatal_lang_error('package_uninstall_cannot', false);
     }
   }
-  elseif (isset($old_version) && $old_version != $packageInfo['version'])
+  else if (isset($old_version) && $old_version != $packageInfo['version'])
   {
     // Look for an upgrade...
     $actions = parsePackageInfo($packageInfo['xml'], true, 'upgrade', $old_version);
@@ -204,7 +204,7 @@ function PackageInstallTest()
     if (empty($actions))
       $context['is_installed'] = true;
   }
-  elseif (isset($old_version) && $old_version == $packageInfo['version'])
+  else if (isset($old_version) && $old_version == $packageInfo['version'])
     $context['is_installed'] = true;
 
   if (!isset($old_version) || $context['is_installed'])
@@ -226,11 +226,11 @@ function PackageInstallTest()
       $chmod_files[] = $action['filename'];
       continue;
     }
-    elseif ($action['type'] == 'readme')
+    else if ($action['type'] == 'readme')
     {
       if (file_exists($boarddir . '/web/archivos/paquetes/temp/' . $context['base_path'] . $action['filename']))
         $context['package_readme'] = htmlspecialchars(trim(file_get_contents($boarddir . '/web/archivos/paquetes/temp/' . $context['base_path'] . $action['filename']), "\n\r"));
-      elseif (file_exists($action['filename']))
+      else if (file_exists($action['filename']))
         $context['package_readme'] = htmlspecialchars(trim(file_get_contents($action['filename']), "\n\r"));
 
       if (!empty($action['parse_bbc']))
@@ -241,11 +241,11 @@ function PackageInstallTest()
       continue;
     }
     // Don't show redirects.
-    elseif ($action['type'] == 'redirect')
+    else if ($action['type'] == 'redirect')
       continue;
-    elseif ($action['type'] == 'error')
+    else if ($action['type'] == 'error')
       $context['has_failure'] = true;
-    elseif ($action['type'] == 'modification')
+    else if ($action['type'] == 'modification')
     {
       if (!file_exists($boarddir . '/web/archivos/paquetes/temp/' . $context['base_path'] . $action['filename']))
       {
@@ -267,23 +267,23 @@ function PackageInstallTest()
       {
         if ($mod_action['type'] == 'opened')
           $failed = false;
-        elseif ($mod_action['type'] == 'failure')
+        else if ($mod_action['type'] == 'failure')
         {
           $context['has_failure'] = true;
           $failed = true;
         }
-        elseif ($mod_action['type'] == 'chmod')
+        else if ($mod_action['type'] == 'chmod')
         {
           $context['ftp_needed'] = true;
           $chmod_files[] = $mod_action['filename'];
         }
-        elseif ($mod_action['type'] == 'saved')
+        else if ($mod_action['type'] == 'saved')
           $context['actions'][] = array(
             'type' => $txt['package56'],
             'action' => htmlspecialchars(strtr($mod_action['filename'], array($boarddir => '.'))),
             'description' => $failed ? $txt['package_action_failure'] : $txt['package_action_success']
           );
-        elseif ($mod_action['type'] == 'skipping')
+        else if ($mod_action['type'] == 'skipping')
         {
           $context['actions'][] = array(
             'type' => $txt['package56'],
@@ -291,7 +291,7 @@ function PackageInstallTest()
             'description' => $txt['package_action_skipping']
           );
         }
-        elseif ($mod_action['type'] == 'missing')
+        else if ($mod_action['type'] == 'missing')
         {
           $context['has_failure'] = true;
           $context['actions'][] = array(
@@ -300,7 +300,7 @@ function PackageInstallTest()
             'description' => $txt['package_action_missing']
           );
         }
-        elseif ($mod_action['type'] == 'error')
+        else if ($mod_action['type'] == 'error')
           $context['actions'][] = array(
             'type' => $txt['package56'],
             'action' => htmlspecialchars(strtr($mod_action['filename'], array($boarddir => '.'))),
@@ -311,27 +311,27 @@ function PackageInstallTest()
       // Don't add anything else.
       $thisAction = array();
     }
-    elseif ($action['type'] == 'code')
+    else if ($action['type'] == 'code')
       $thisAction = array(
         'type' => $txt['package57'],
         'action' => htmlspecialchars($action['filename'])
       );
-    elseif (in_array($action['type'], array('create-dir', 'create-file')))
+    else if (in_array($action['type'], array('create-dir', 'create-file')))
       $thisAction = array(
         'type' => $txt['package50'] . ' ' . ($action['type'] == 'create-dir' ? $txt['package55'] : $txt['package54']),
         'action' => htmlspecialchars(strtr($action['destination'], array($boarddir => '.')))
       );
-    elseif (in_array($action['type'], array('require-dir', 'require-file')))
+    else if (in_array($action['type'], array('require-dir', 'require-file')))
       $thisAction = array(
         'type' => $txt['package53'] . ' ' . ($action['type'] == 'require-dir' ? $txt['package55'] : $txt['package54']),
         'action' => htmlspecialchars(strtr($action['destination'], array($boarddir => '.')))
       );
-    elseif (in_array($action['type'], array('move-dir', 'move-file')))
+    else if (in_array($action['type'], array('move-dir', 'move-file')))
       $thisAction = array(
         'type' => $txt['package51'] . ' ' . ($action['type'] == 'move-dir' ? $txt['package55'] : $txt['package54']),
         'action' => htmlspecialchars(strtr($action['source'], array($boarddir => '.'))) . ' => ' . htmlspecialchars(strtr($action['destination'], array($boarddir => '.')))
       );
-    elseif (in_array($action['type'], array('remove-dir', 'remove-file')))
+    else if (in_array($action['type'], array('remove-dir', 'remove-file')))
       $thisAction = array(
         'type' => $txt['package52'] . ' ' . ($action['type'] == 'remove-dir' ? $txt['package55'] : $txt['package54']),
         'action' => htmlspecialchars(strtr($action['filename'], array($boarddir => '.')))
@@ -412,7 +412,7 @@ function PackageInstall()
     if (!isset($context['base_path']))
       $context['base_path'] = '';
   }
-  elseif (is_dir($boarddir . '/web/archivos/paquetes/' . $context['filename']))
+  else if (is_dir($boarddir . '/web/archivos/paquetes/' . $context['filename']))
   {
     copytree($boarddir . '/web/archivos/paquetes/' . $context['filename'], $boarddir . '/web/archivos/paquetes/temp');
     $context['extracted_files'] = listtree($boarddir . '/web/archivos/paquetes/temp');
@@ -452,7 +452,7 @@ function PackageInstall()
     fatal_error('Hacker?', false);
   }
   // Uninstalling?
-  elseif ($context['uninstalling'])
+  else if ($context['uninstalling'])
   {
     $install_log = parsePackageInfo($packageInfo['xml'], false, 'uninstall');
 
@@ -460,7 +460,7 @@ function PackageInstall()
     if (empty($install_log))
       fatal_lang_error('package_uninstall_cannot', false);
   }
-  elseif (isset($old_version) && $old_version != $packageInfo['version'])
+  else if (isset($old_version) && $old_version != $packageInfo['version'])
   {
     // Look for an upgrade...
     $install_log = parsePackageInfo($packageInfo['xml'], false, 'upgrade', $old_version);
@@ -469,7 +469,7 @@ function PackageInstall()
     if (empty($install_log))
       $context['is_installed'] = true;
   }
-  elseif (isset($old_version) && $old_version == $packageInfo['version'])
+  else if (isset($old_version) && $old_version == $packageInfo['version'])
     $context['is_installed'] = true;
 
   if (!isset($old_version) || $context['is_installed'])
@@ -490,7 +490,7 @@ function PackageInstall()
         else
           parseModification(file_get_contents($boarddir . '/web/archivos/paquetes/temp/' . $context['base_path'] . $action['filename']), false, $action['reverse']);
       }
-      elseif ($action['type'] == 'code' && !empty($action['filename']))
+      else if ($action['type'] == 'code' && !empty($action['filename']))
       {
         // This is just here as reference for what is available.
         global $txt, $boarddir, $sourcedir, $modSettings, $context, $settings, $db_prefix, $forum_version;
@@ -499,7 +499,7 @@ function PackageInstall()
         require($boarddir . '/web/archivos/paquetes/temp/' . $context['base_path'] . $action['filename']);
       }
       // Handle a redirect...
-      elseif ($action['type'] == 'redirect' && !empty($action['redirect_url']))
+      else if ($action['type'] == 'redirect' && !empty($action['redirect_url']))
       {
         $context['redirect_url'] = $action['redirect_url'];
         $context['redirect_text'] = file_get_contents($boarddir . '/web/archivos/paquetes/temp/' . $context['base_path'] . $action['filename']);
@@ -572,7 +572,7 @@ function PackageList()
   // Let the unpacker do the work.
   if (is_file($boarddir . '/web/archivos/paquetes/' . $context['filename']))
     $context['files'] = read_tgz_file($boarddir . '/web/archivos/paquetes/' . $context['filename'], null);
-  elseif (is_dir($boarddir . '/web/archivos/paquetes/' . $context['filename']))
+  else if (is_dir($boarddir . '/web/archivos/paquetes/' . $context['filename']))
     $context['files'] = listtree($boarddir . '/web/archivos/paquetes/' . $context['filename']);
 }
 
@@ -600,7 +600,7 @@ function ExamineFile()
   {
     if (is_file($boarddir . '/web/archivos/paquetes/' . $_REQUEST['package']))
       echo read_tgz_file($boarddir . '/web/archivos/paquetes/' . $_REQUEST['package'], $_REQUEST['file'], true);
-    elseif (is_dir($boarddir . '/web/archivos/paquetes/' . $_REQUEST['package']))
+    else if (is_dir($boarddir . '/web/archivos/paquetes/' . $_REQUEST['package']))
       echo file_get_contents($boarddir . '/web/archivos/paquetes/' . $_REQUEST['package'] . '/' . $_REQUEST['file']);
 
     obExit(false);
@@ -624,7 +624,7 @@ function ExamineFile()
   {
     if (is_file($boarddir . '/web/archivos/paquetes/' . $_REQUEST['package']))
       $context['filedata'] = htmlspecialchars(read_tgz_file($boarddir . '/web/archivos/paquetes/' . $_REQUEST['package'], $_REQUEST['file'], true));
-    elseif (is_dir($boarddir . '/web/archivos/paquetes/' . $_REQUEST['package']))
+    else if (is_dir($boarddir . '/web/archivos/paquetes/' . $_REQUEST['package']))
       $context['filedata'] = htmlspecialchars(file_get_contents($boarddir . '/web/archivos/paquetes/' . $_REQUEST['package'] . '/' . $_REQUEST['file']));
 
     if (strtolower(strrchr($_REQUEST['file'], '.')) == '.php')
@@ -721,7 +721,7 @@ function PackageBrowse()
   {
     if ($_GET['version_emulate'] == 0 && isset($_SESSION['version_emulate']))
       unset($_SESSION['version_emulate']);
-    elseif ($_GET['version_emulate'] != 0)
+    else if ($_GET['version_emulate'] != 0)
       $_SESSION['version_emulate'] = strtr($_GET['version_emulate'], '-', ' ');
   }
   if (!empty($_SESSION['version_emulate']))
@@ -755,13 +755,13 @@ function PackageBrowse()
           continue;
         $dirs[] = $package;
       }
-      elseif (substr($package, -7) == '.tar.gz')
+      else if (substr($package, -7) == '.tar.gz')
       {
         if (in_array(substr($package, 0, -7), $dirs))
           continue;
         $dirs[] = substr($package, 0, -7);
       }
-      elseif (substr($package, -4) == '.zip' || substr($package, -4) == '.tgz')
+      else if (substr($package, -4) == '.zip' || substr($package, -4) == '.tgz')
       {
         if (in_array(substr($package, 0, -4), $dirs))
           continue;
@@ -796,7 +796,7 @@ function PackageBrowse()
         }
       }
       // An already installed, but old, package.  Can we upgrade it?
-      elseif ($packageInfo['is_installed'] && !$packageInfo['is_current'] && $packageInfo['xml']->exists('upgrade'))
+      else if ($packageInfo['is_installed'] && !$packageInfo['is_current'] && $packageInfo['xml']->exists('upgrade'))
       {
         $upgrades = $packageInfo['xml']->set('upgrade');
 
@@ -813,7 +813,7 @@ function PackageBrowse()
         }
       }
       // Note that it has to be the current version to be uninstallable.  Shucks.
-      elseif ($packageInfo['is_installed'] && $packageInfo['is_current'] && $packageInfo['xml']->exists('uninstall'))
+      else if ($packageInfo['is_installed'] && $packageInfo['is_current'] && $packageInfo['xml']->exists('uninstall'))
       {
         $uninstalls = $packageInfo['xml']->set('uninstall');
 
@@ -833,10 +833,10 @@ function PackageBrowse()
       if ($packageInfo['type'] == 'modification' || $packageInfo['type'] == 'mod')
         $context['available_mods'][] = $packageInfo;
       // Avatar package.
-      elseif ($packageInfo['type'] == 'avatar')
+      else if ($packageInfo['type'] == 'avatar')
         $context['available_avatars'][] = $packageInfo;
       // Language package.
-      elseif ($packageInfo['type'] == 'language')
+      else if ($packageInfo['type'] == 'language')
         $context['available_languages'][] = $packageInfo;
       // Other stuff.
       else

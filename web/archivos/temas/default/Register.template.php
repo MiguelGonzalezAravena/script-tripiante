@@ -6,7 +6,7 @@ function codigoalazar() {
   $dato = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
   $datoAleatorio = array_rand($dato, 4);
 
-  for ($i = 0; $i <= count($datoAleatorio); $i++){
+  for ($i = 0; $i <= count($datoAleatorio); $i++) {
     echo $dato[$datoAleatorio[$i]];
     $captchaCode = $dato[$datoAleatorio[$i]];
   }

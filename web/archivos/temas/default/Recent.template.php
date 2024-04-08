@@ -686,7 +686,7 @@ function nube_etiquetas($etiquetas) {
 
     $count++;
 
-    if($count == 9 || $count == 19 || $count == 29) {
+    if ($count == 9 || $count == 19 || $count == 29) {
       echo '<br />';
     }
   }

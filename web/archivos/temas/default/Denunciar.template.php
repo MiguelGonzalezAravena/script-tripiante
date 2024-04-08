@@ -26,13 +26,13 @@ function template_manual_intro() {
     fatal_error('Debes ingresar la identificador del post a denunciar.', false);
   } else if ($context['ID_DEL_POST'] != $id)  {
     fatal_error('El post que deseas denunciar no existe', false);
-  } else if($started == $context['user']['id']) {
+  } else if ($started == $context['user']['id']) {
     fatal_error('Disculpe, pero no puedes denunciar tus post. Si tienes alg&uacute;n problema, b&oacute;rralo o ed&iacute;talo tu mismo.', false);
   } else {
     echo '
         <script type="text/javascript">
           function errorrojos(comentario) {
-            if(comentario == \'\') {
+            if (comentario == \'\') {
               document.getElementById(\'errorss\').innerHTML = \'<br /><font class="size10" style="color: red;">Es necesario escribir un comentario sobre la denuncia.</font>\';
               return false;
             }

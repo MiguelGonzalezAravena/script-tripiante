@@ -89,7 +89,7 @@ function template_main() {
       <td', isset($column['width']) ? ' width="' . $column['width'] . '"' : '', isset($column['colspan']) ? ' colspan="' . $column['colspan'] . '"' : '', '>
         ', $column['label'], '</td>';
     // This is a selected solumn, so underline it or some such.
-    elseif ($column['selected'])
+    else if ($column['selected'])
       echo '
       <td style="width: auto;"' . (isset($column['colspan']) ? ' colspan="' . $column['colspan'] . '"' : '') . ' nowrap="nowrap">
         <a href="' . $column['href'] . '">' . $column['label'] . ' <img src="' . $settings['images_url'] . '/sort_' . $context['sort_direction'] . '.gif" alt="" /></a></td>';

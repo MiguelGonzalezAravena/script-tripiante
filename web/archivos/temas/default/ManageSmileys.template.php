@@ -178,7 +178,7 @@ function template_modifyset()
           ', $modSettings['smileys_url'], '/';
     if ($context['current_set']['id'] == 'default')
       echo '<b>default</b><input type="hidden" name="smiley_sets_path" value="default" />';
-    elseif (empty($context['smiley_set_dirs']))
+    else if (empty($context['smiley_set_dirs']))
       echo '
           <input type="text" name="smiley_sets_path" value="', $context['current_set']['path'], '" /> ';
     else

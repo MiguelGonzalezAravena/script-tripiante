@@ -212,7 +212,7 @@ function ViewPicture() {
           mg.onlineColor, mg.ID_GROUP, mg.groupName
         FROM {$db_prefix}log_online AS lo
           LEFT JOIN {$db_prefix}members AS mem ON (mem.ID_MEMBER = lo.ID_MEMBER)
-          LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = IF(mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
+          LEFT JOIN {$db_prefix}membergroups AS mg ON (mg.ID_GROUP = if (mem.ID_GROUP = 0, mem.ID_POST_GROUP, mem.ID_GROUP))
         WHERE INSTR(lo.url, 's:7:\"gallery\";s:2:\"sa\";s:4:\"view\";s:2:\"id\";s:1:\"$id\";')
         OR lo.session = '" . ($user_info['is_guest'] ? 'ip' . $user_info['ip'] : session_id()) . "'", __FILE__, __LINE__);
 

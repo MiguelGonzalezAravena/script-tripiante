@@ -191,7 +191,7 @@ function EditSearchMethod()
 
     $context['fulltext_index'] = 'body';
   }
-  elseif (!empty($_REQUEST['sa']) && $_REQUEST['sa'] == 'removefulltext' && !empty($context['fulltext_index']))
+  else if (!empty($_REQUEST['sa']) && $_REQUEST['sa'] == 'removefulltext' && !empty($context['fulltext_index']))
   {
     checkSession('get');
 
@@ -208,7 +208,7 @@ function EditSearchMethod()
         'search_index' => '',
       ));
   }
-  elseif (!empty($_REQUEST['sa']) && $_REQUEST['sa'] == 'removecustom')
+  else if (!empty($_REQUEST['sa']) && $_REQUEST['sa'] == 'removecustom')
   {
     checkSession('get');
 
@@ -225,7 +225,7 @@ function EditSearchMethod()
         'search_index' => '',
       ));
   }
-  elseif (isset($_POST['save']))
+  else if (isset($_POST['save']))
   {
     checkSession();
     updateSettings(array(
@@ -426,7 +426,7 @@ function CreateMessageIndex()
   }
 
   // Step 2: removing the words that occur too often and are of no use.
-  elseif ($context['step'] === 2)
+  else if ($context['step'] === 2)
   {
     if ($context['index_settings']['bytes_per_word'] < 4)
       $context['step'] = 3;

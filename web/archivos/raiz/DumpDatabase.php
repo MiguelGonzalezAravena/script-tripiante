@@ -26,7 +26,7 @@ function DumpDatabase2() {
     if (empty($modSettings['enableCompressedOutput']))
       @ob_start('ob_gzhandler');
     // Try to clean any data already outputted.
-    elseif (ob_get_length() != 0)
+    else if (ob_get_length() != 0)
     {
       ob_end_clean();
       @ob_start('ob_gzhandler');
@@ -50,7 +50,7 @@ function DumpDatabase2() {
     if (!empty($modSettings['enableCompressedOutput']))
       @ob_end_clean();
     // If we can, clean anything already sent from the output buffer...
-    elseif (function_exists('ob_clean') && ob_get_length() != 0)
+    else if (function_exists('ob_clean') && ob_get_length() != 0)
       ob_clean();
 
     // Tell the client to save this file, even though it's text.
@@ -176,15 +176,15 @@ function getTableContent($tableName)
 
     // Get the fields in this row...
     $field_list = array();
-    for ($j = 0; $j < mysql_num_fields($result); $j++)
+    for ($j = 0; $j < mysqli_num_fields($result); $j++)
     {
       // Try to figure out the type of each field. (NULL, number, or 'string'.)
       if (!isset($row[$j]))
         $field_list[] = 'NULL';
-      elseif (is_numeric($row[$j]))
+      else if (is_numeric($row[$j]))
         $field_list[] = $row[$j];
       else
-        $field_list[] = "'" . mysql_escape_string($row[$j]) . "'";
+        $field_list[] = "'" . mysqli_escape_string($row[$j]) . "'";
     }
 
     // 'Insert' the data.
@@ -194,7 +194,7 @@ function getTableContent($tableName)
     if ($current_row > 249 && $current_row % 250 == 0)
       $data .= ';' . $crlf . 'INSERT INTO `' . $tableName . '`' . $crlf . "\t(`" . implode('`, `', $fields) . '`)' . $crlf . 'VALUES ';
     // All done!
-    elseif ($current_row == $num_rows)
+    else if ($current_row == $num_rows)
       $data .= ';' . $crlf;
     // Otherwise, go to the next line.
     else
@@ -227,10 +227,11 @@ function getTableSQLData($tableName)
     if (isset($row['Default']))
     {
       // Make a special case of auto-timestamp.
+      // TO-DO: Verificar los 2 argumentos de mysqli_escape_string()
       if ($row['Default'] == 'CURRENT_TIMESTAMP')
         $schema_create .= ' /*!40102 NOT NULL default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP */';
       else
-        $schema_create .= ' default ' . (is_numeric($row['Default']) ? $row['Default'] : "'" . mysql_escape_string($row['Default']) . "'");
+        $schema_create .= ' default ' . (is_numeric($row['Default']) ? $row['Default'] : "'" . mysqli_escape_string($row['Default']) . "'");
     }
 
     // And now any extra information. (such as auto_increment.)

@@ -293,7 +293,7 @@ function template_items_add()
               This has moved to the Edit Items section. Please go there instead :-)';
 
   // Step 2 - Settings for the item
-  elseif ($_GET['step'] == 1)
+  else if ($_GET['step'] == 1)
   {
     // The 'adding an item' notice
     echo '
@@ -480,7 +480,7 @@ function template_items_edit()
   
   }
   // Deleting an item (or multiple items) - Ask if they're sure
-  elseif (isset($_GET['do']) && $_GET['do'] == 'del')
+  else if (isset($_GET['do']) && $_GET['do'] == 'del')
   {
     echo '
               <form action="', $scripturl, '?action=shop_items_edit;do=del2" method="post">
@@ -575,7 +575,7 @@ function template_restock()
               </form>';
   // Step 2 - Actually do it!
   // TODO: Show errors here
-  elseif ($_GET['step'] == 2)
+  else if ($_GET['step'] == 2)
     echo '
               Updated stock!';
   
@@ -629,7 +629,7 @@ function template_usergroup()
   }
   // Step 2: Tell them everything was done well
   // TODO: Show errors here
-  elseif ($_GET['step'] == 2)
+  else if ($_GET['step'] == 2)
     echo '
         Action completed!';
   

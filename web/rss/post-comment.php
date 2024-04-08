@@ -22,7 +22,7 @@ $request = db_query("
 
 $row = mysqli_fetch_assoc($request);
 
-$title = $mbname . '&nbsp;-&nbsp;Comentarios para el post: ' . htmlentities($row['subject']);
+$title = $mbname . ' - Comentarios para el post: ' . htmlentities($row['subject']);
 $description = 'Comentarios para el post ' . htmlentities($row['subject']) . ' de ' . $mbname;
 $count = 0;
 

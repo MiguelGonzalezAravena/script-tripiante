@@ -16,12 +16,9 @@ while ($row = mysqli_fetch_assoc($request)) {
   $row['realName'] = parse_bbc($row['realName'], 1, $row['posts']); 
   $row['realName'] = strtr($func['substr'](str_replace('<br />', "\n", $row['realName']), 0, 400 - 3), array("\n" => '<br />'));
 
-  censorText($row['realName']);
-  censorText($row['subject']);
-
   $context['rssuser'][] = array(
     'posts' => $row['posts'],
-    'realName' => $row['realName'],
+    'realName' => censorText($row['realName']),
   );
 }
 

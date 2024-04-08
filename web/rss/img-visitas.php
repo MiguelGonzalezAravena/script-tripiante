@@ -11,7 +11,7 @@ $request = db_query("
   ORDER BY i.views DESC
   LIMIT 0, 25", __FILE__, __LINE__);
 
-$title = $mbname . '&nbsp;-&nbsp;Im&aacute;genes m&aacute;s vistas';
+$title = $mbname . ' - Im&aacute;genes m&aacute;s vistas';
 $description = '&Uacute;ltimas 25 im&aacute;genes m&aacute;s vistas en ' . $mbname;
 
 echo '<?xml version="1.0" encoding="UTF-8" ?>

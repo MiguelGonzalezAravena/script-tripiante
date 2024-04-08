@@ -16,8 +16,8 @@ $request = db_query("
   LIMIT 0, 25", __FILE__, __LINE__);
 
 $row = mysqli_fetch_assoc($request);
-
 $memberName = censorText($row['memberName']);
+
 $title = $mbname . ' - Post creados por el usuario: ' . $memberName;
 $description = '&Uacute;ltimos 25 post creados por el usuario ' . $memberName . ' en ' . $mbname;
 

@@ -1,5 +1,8 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
+@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+
+global $db_prefix, $boardurl, $mbname;
 
 $id = (int) $_REQUEST['id'];
 $count = 1;
@@ -16,24 +19,27 @@ $request = db_query("
 
 $row = mysqli_fetch_assoc($request);
 
+$title = $mbname . ' - Comentarios para el tema: ' . censorText($row['subject']);
+$description = 'Comentarios para el tema ' . censorText($row['subject']);
+
 echo '
 <?xml version="1.0" encoding="UTF-8" ?>
   <rss version="0.92" xml:lang="spanish">
     <channel>
       <image>
         <url>' . $boardurl . '/images/rss.png</url>
-        <title>' . $mbname . ' - Comentarios para el tema: ' . $row['subject'] . '</title>
+        <title>' . $title . '</title>
         <link>' . $boardurl . '/</link>
         <width>111</width>
         <height>32</height>
-        <description>Comentarios para el tema ' . $row['subject'] . '</description>
+        <description>' . $description . '</description>
       </image>
-      <title>' . $mbname . ' - Comentarios para el tema: ' . $row['subject'] . '</title>
+      <title>' . $title . '</title>
       <link>' . $boardurl . '/</link>
-      <description>Comentarios para el tema ' . $row['subject'] . '</description>';
+      <description>' . $description . '</description>';
 
 while ($row = mysqli_fetch_assoc($request)) {
-  $link = $boardurl . '/comunidades/' . $row['friendly_url'] . '/' . $row['ID_TOPIC'] . '/' . ssi_amigable($row2['subject']) . '.html';
+  $link = $boardurl . '/comunidades/' . $row['friendly_url'] . '/' . $row['ID_TOPIC'] . '/' . ssi_amigable($row['subject']) . '.html';
 
   echo '
     <item>

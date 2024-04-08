@@ -1240,7 +1240,7 @@ function summary($memID) {
     }
   }
   
-/* En comun */
+  /* En comun */
   // For avatars: if we're always html resizing, assume it's too large.
   if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {
     $avatar_width = !empty($modSettings['avatar_max_width_external']) ? ' width="' . $modSettings['avatar_max_width_external'] . '"' : '';
@@ -1280,7 +1280,7 @@ function summary($memID) {
       }
     }
   }
-/* En comun */
+  /* En comun */
 }
 
 function post($memID) {
@@ -2181,7 +2181,7 @@ function apariencia($memID) {
   }
   
   
-/* En comun */
+  /* En comun */
   // For avatars: if we're always html resizing, assume it's too large.
   if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {
     $avatar_width = !empty($modSettings['avatar_max_width_external']) ? ' width="' . $modSettings['avatar_max_width_external'] . '"' : '';
@@ -2221,7 +2221,7 @@ function apariencia($memID) {
       }
     }
   }
-/* En comun */
+  /* En comun */
 
   $context['member'] += array(
     'estudios' => !isset($user_profile[$memID]['estudios']) ? '' : $user_profile[$memID]['estudios'],
@@ -2470,7 +2470,7 @@ function comunidades($memID) {
   }
   
   
-/* En comun */
+  /* En comun */
   // For avatars: if we're always html resizing, assume it's too large.
   if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {
     $avatar_width = !empty($modSettings['avatar_max_width_external']) ? ' width="' . $modSettings['avatar_max_width_external'] . '"' : '';
@@ -2509,8 +2509,7 @@ function comunidades($memID) {
       }
     }
   }
-/* En comun */
-
+  /* En comun */
 }
 
 function agregarimagen() {

@@ -26,7 +26,7 @@
 $mbname = 'Tripiante'; # The name of your forum.
 $slogan = 'Compartir es gratuito'; # The name of your forum.
 $language = 'english'; # The default language file set for the forum.
-$boardurl = 'http://tripiante.net'; # URL to your forum's folder. (without the trailing /!)
+$boardurl = 'http://localhost/tripiante'; # URL to your forum's folder. (without the trailing /!)
 $webmaster_email = 'staff.tripiante@gmail.com'; # Email address to send emails from. (like noreply@yourdomain.com.)
 $cookiename = 'Tripiante2010'; # Name of the cookie to set for authentication.
 $chatid = '80701498'; # Id of your Chat
@@ -39,17 +39,17 @@ $mmessage = '<b style="color:Green;font-size:11px;font-family:Verdana;">Sepa dis
 
 ########## Database Info ##########
 $db_server = 'localhost';
-$db_name = 'db_name';
-$db_user = 'db_user';
-$db_passwd = 'db_passwd';
+$db_name = 'tripiante';
+$db_user = 'root';
+$db_passwd = '';
 $db_prefix = '';
 $db_persist = 0;
 $db_error_send = 0;
 
 ########## Directories/Files ##########
 # Note: These directories do not have to be changed unless you move things.
-$boarddir = '/home/tripiant/public_html'; # The absolute path to the forum's folder. (not just '.'!)
-$sourcedir = '/home/tripiant/public_html/web/archivos/raiz'; # Path to the Sources directory.
+$boarddir = 'C:\\wamp64\\www\\tripiante'; # The absolute path to the forum's folder. (not just '.'!)
+$sourcedir = 'C:\\wamp64\\www\\tripiante\\web\\archivos\\raiz'; # Path to the Sources directory.
 
 ########## Error-Catching ##########
 # Note: You shouldn't touch these settings.
@@ -62,4 +62,7 @@ if (!file_exists($sourcedir) && file_exists($boarddir . '/web/archivos/raiz')) {
 
 $db_character_set = 'UTF8';
 
+// Agregar llamada a la conexión MySQL
+$db_connection = @mysqli_connect($db_server, $db_user, $db_passwd);
+@mysqli_select_db($db_connection, $db_name);
 ?>

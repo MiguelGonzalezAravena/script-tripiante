@@ -1,18 +1,14 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/Settings.php');
 
-// TO-DO: ¿Está bien esa conexión?
-$conexion = @mysqli_connect($db_server, $db_user, $db_passwd);
-@mysqli_select_db($conexion, $db_name);
-  
 $cat = (int) $_REQUEST['cat'];
 $tamano = (int) $_REQUEST['tamano'];
 $end = (int) $_REQUEST['cantidad'];
 $page = (int) $_GET['pag'];
 
 if (isset($page)) {
-  $start = ($page - 1) * $end;
+  $calc = ($page - 1) * $end;
+  $start = $calc > 0 ? $calc : 0;
   $actualPage = $page;
 } else {
   $start = 0;

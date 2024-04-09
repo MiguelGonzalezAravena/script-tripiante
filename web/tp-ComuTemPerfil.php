@@ -1,6 +1,6 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+@require_once(dirname(dirname(__FILE__)) . '/Settings.php');
+
 
 $user = htmlentities(addslashes($_REQUEST['user']), ENT_QUOTES, 'UTF-8');
 
@@ -8,7 +8,8 @@ $end = 10;
 $page = (int) $_GET['pag'];
 
 if (isset($page)) {
-  $start = ($page - 1) * $end;
+  $calc = ($page - 1) * $end;
+  $start = $calc > 0 ? $calc : 0;
   $actualPage = $page;
 } else {
   $start = 0;

@@ -2537,15 +2537,15 @@ function template_comunidades() {
       <div class="clearBoth"></div>';
 
   // Últimos temas creados
-  @require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuTemPerfil.php');
+  require_once(dirname(dirname(dirname(__FILE__))) . '/tp-ComuTemPerfil.php');
   echo '<div style="border: 1px solid #517BA1; background: #517BA1; height: 2px; margin-top: 10px; margin-bottom: 10px;" class="hrs"></div>';
 
   // Comunidades creadas
-  @require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuCrePerfil.php');
+  require_once(dirname(dirname(dirname(__FILE__))) . '/tp-ComuCrePerfil.php');
   echo '<div style="border: 1px solid #517BA1; background: #517BA1; height: 2px; margin-top: 10px; margin-bottom: 10px;" class="hrs"></div>';
 
   // Es miembro de las comunidades
-  @require_once($_SERVER['DOCUMENT_ROOT'] . '/web/tp-ComuMemPerfil.php');
+  require_once(dirname(dirname(dirname(__FILE__))) . '/tp-ComuMemPerfil.php');
 
   echo '
       <div class="clearBoth"></div>

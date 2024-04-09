@@ -1,6 +1,5 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+@require_once(dirname(dirname(__FILE__)) . '/Settings.php');
 
 ssi_respuestas();
 ?>

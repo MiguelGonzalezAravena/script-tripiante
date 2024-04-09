@@ -635,12 +635,12 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
   if (isset($_POST['signature'])) {
     require_once($sourcedir . '/Subs-Post.php');
 
-    if (!empty($modSettings['max_signatureLength']) && $func['strlen']($_POST['signature']) > $modSettings['max_signatureLength']) {
-      $_POST['signature'] = addslashes($func['substr'](stripslashes($_POST['signature']), 0, $modSettings['max_signatureLength']));
+    if (!empty($modSettings['max_signatureLength']) && strlen($_POST['signature']) > $modSettings['max_signatureLength']) {
+      $_POST['signature'] = addslashes(substr(stripslashes($_POST['signature']), 0, $modSettings['max_signatureLength']));
     }
 
     if (strlen($_POST['signature']) > 65534) {
-      $_POST['signature'] = addslashes($func['truncate'](stripslashes($_POST['signature']), 65534));
+      $_POST['signature'] = addslashes(truncate(stripslashes($_POST['signature']), 65534));
     }
 
     $_POST['signature'] = strtr($_POST['signature'], array('&quot;' => '\\&quot;', '&#039;' => '\\&#39;', '&#39;' => '\\&#39;'));

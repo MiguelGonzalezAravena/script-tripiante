@@ -174,7 +174,7 @@ function ultimos_comentarios() {
         <div class="windowbg" style="width: 193px; padding: 4px;">
           <span id="ult_comm">';
 
-  @require_once('web/tp-comunidadesActComc.php');
+  require_once(dirname(dirname(dirname(__FILE__))) . '/tp-comunidadesActComc.php');
 
   echo '
         </span>
@@ -1291,7 +1291,8 @@ function template_ultimospost() {
   $page = (int) $_GET['pag'];
 
   if (isset($page)) {
-    $start = ($page - 1) * $end;
+    $calc = ($page - 1) * $end;
+    $start = $calc > 0 ? $calc : 0;
     $actualPage = $page;
   } else {
     $start = 0;
@@ -1465,7 +1466,8 @@ function template_vermiembros() {
     $page = (int) $_GET['pag'];
 
     if (isset($page)) {
-      $start = ($page - 1) * $end;
+      $calc = ($page - 1) * $end;
+      $start = $calc > 0 ? $calc : 0;
       $actualPage = $page;
     } else {
       $start = 0;

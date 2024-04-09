@@ -565,7 +565,7 @@ function validatePassword($password, $username, $restrict_in = array())
   // Otherwise, perform the medium strength test - checking if password appears in the restricted string.
   if (preg_match('~\b' . preg_quote($password, '~') . '\b~', implode(' ', $restrict_in)) != 0)
     return 'restricted_words';
-  else if ($func['strpos']($password, $username) !== false)
+  else if (strpos($password, $username) !== false)
     return 'restricted_words';
 
   // !!! If pspell is available, use it on the word, and return restricted_words if it doesn't give "bad spelling"?

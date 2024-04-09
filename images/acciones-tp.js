@@ -14,7 +14,8 @@ function actualizar_comentarios() {
 }
 
 function error_avatar(obj) {
-  obj.src = '/avatar.gif';
+  // TO-DO: Cambiar según donde se encuentre el script
+  obj.src = '/tripiante/avatar.gif';
 }
 
 // Citar comentarios

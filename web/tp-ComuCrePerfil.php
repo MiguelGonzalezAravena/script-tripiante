@@ -1,5 +1,8 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
+@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+
+global $db_prefix, $settings, $boardurl, $mbname;
 
 $user = htmlentities(addslashes($_REQUEST['user']), ENT_QUOTES, 'UTF-8');
 
@@ -27,12 +30,12 @@ $request = db_query("
 $rows = mysqli_num_rows($request);
 
 if ($rows == 0) {
-  echo '<div class="noesta" style="width:541px;">Este usuario no tiene comunidades creadas.</div>';
+  echo '<div class="noesta" style="width: 541px;">Este usuario no tiene comunidades creadas.</div>';
 } else if ($rows > 0) {
   echo '
     <div id="ComuCrePerfil">
       <div class="clearBoth"></div>
-      <table class="linksList" style="width:541px;">
+      <table class="linksList" style="width: 541px;">
         <thead>
           <tr>
             <th>&nbsp;</th>
@@ -97,11 +100,11 @@ if ($rows == 0) {
   }
 
   if ($actualPage > 1) {
-    echo '<a style="cursor: pointer;" onclick="ComuCrePerfil(\''  . $user . '\', \'' . $previousPage . '\');">&#171; anterior</a>';
+    echo '<a style="cursor: pointer;" onclick="ComuCrePerfil(\'' . $user . '\', \'' . $previousPage . '\');">&#171; anterior</a>';
   }
 
   if ($actualPage < $lastPage) {
-    echo '<a style="cursor: pointer;" onclick="ComuCrePerfil(\''  . $user . '\', \'' . $nextPage . '\');">siguiente &#187;</a>';
+    echo '<a style="cursor: pointer;" onclick="ComuCrePerfil(\'' . $user . '\', \'' . $nextPage . '\');">siguiente &#187;</a>';
   }
 
   echo '

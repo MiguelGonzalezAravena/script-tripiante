@@ -1,5 +1,8 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
+@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+
+global $db_prefix, $settings, $boardurl, $mbname;
 
 $user = htmlentities(addslashes($_REQUEST['user']), ENT_QUOTES, 'UTF-8');
 
@@ -107,11 +110,11 @@ if ($rows == 0) {
   }
 
   if ($actualPage > 1) {
-    echo '<a style="cursor: pointer;" onclick="ComuMemPerfil(\''  . $user . '\', \'' . $previousPage . '\');">&#171; anterior</a>';
+    echo '<a style="cursor: pointer;" onclick="ComuMemPerfil(\'' . $user . '\', \'' . $previousPage . '\');">&#171; anterior</a>';
   }
 
   if ($actualPage < $lastPage) {
-    echo '<a style="cursor: pointer;" onclick="ComuMemPerfil(\''  . $user . '\', \'' . $nextPage . '\');">siguiente &#187;</a>';
+    echo '<a style="cursor: pointer;" onclick="ComuMemPerfil(\'' . $user . '\', \'' . $nextPage . '\');">siguiente &#187;</a>';
   }
 
   echo '

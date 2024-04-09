@@ -590,7 +590,7 @@ function comunidades_disponibles() {
 
   ssi_grupos();
 
-  echo (comunidades_restantes() - $rows);
+  return (comunidades_restantes() - $rows);
 }
 
 function template_crear() {

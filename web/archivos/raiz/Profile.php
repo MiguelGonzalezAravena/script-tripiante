@@ -918,6 +918,7 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
     if (isset($profile_vars['ICQ']) && $profile_vars['ICQ'] == '0') {
       $profile_vars['ICQ'] = '\'\'';
     }
+  }
 }
 
 // Make any theme changes that are sent with the profile..

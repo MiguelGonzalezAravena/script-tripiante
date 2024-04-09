@@ -1,4 +1,4 @@
-RewriteBase /
+RewriteBase /tripiante/
 RewriteEngine on
 Rewriterule ^accion-apariencia/paso1(.*)$ index.php?action=profile2
 Rewriterule ^accion-apariencia/paso2(.*)$ index.php?action=profile2

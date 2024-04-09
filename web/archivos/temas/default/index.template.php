@@ -262,7 +262,7 @@ function template_menu() {
       <font color="#FFFFFF">[<a href="' . $boardurl . '/salir/" onclick="if (!confirm(\'\xbfEstas seguro que desea salir de su cuenta?\')) return false;" title="Salir">X</a>]</font>
       &nbsp;
       <a class="icons his-mod" href="' . $boardurl . '/hist-mod/" title="Historial de moderaci&oacute;n">
-        <img alt="" src="' . $settings['images_url'] . '/espacio.gif" align="top" border="0" /
+        <img alt="" src="' . $settings['images_url'] . '/espacio.gif" align="top" border="0" />
       </a>';
   }
 

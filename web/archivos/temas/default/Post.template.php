@@ -104,17 +104,38 @@ function template_main() {
             <a href="' . $boardurl . '/protocolo/" target="_blank" title="Protocolo"><b>las normas</b></a> establecidas en la web.
             <hr class="divider" />
             Tambi&eacute;n debe tener en cuenta los siguientes puntos:
-          </center><br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />Contenido descriptivo.<br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />Titulo descriptivo.<br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />Agregar im&aacute;genes sobre el post.<br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />Noticias con fuente.<br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />No excederse en mayusculas.<br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />No titulo llamativo.<br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />No Spam.<br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />No gore o asqueros.<br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />No Insultos o malos tratos.<br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />No pornografia.<br /><br />
+          </center>
+          <br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
+          Contenido descriptivo.
+          <br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
+          T&iacute;tulo descriptivo.
+          <br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
+          Agregar im&aacute;genes sobre el post.
+          <br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
+          Noticias con fuente.
+          <br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
+          No excederse en mayusculas.
+          <br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
+          No t&iacute;tulo llamativo.
+          <br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />
+          No spam.
+          <br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />
+          No gore o asqueros.
+          <br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />
+          No insultos o malos tratos.
+          <br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />
+          No pornograf&iacute;a.<br />
+          <br />
           <center style="font-size:11px;">
             <img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" atl="" />
             Cumpliendo estos puntos m&aacute;s teniendo en cuenta el <a href="' . $boardurl . '/protocolo/" target="_blank" title="Protocolo">protocolo</a>,
@@ -148,13 +169,16 @@ function template_main() {
   if ($context['allow_admin'] && !empty($_REQUEST['topic'])) {
     echo '
       <b class="size11">Causa de edici&oacute;n:</b><br />
-      <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="causa" value="' . $context['causa'] . '" tabindex="' . $context['tabindex']++ . '" style="width: 415px;" maxlength="60" /><br />';
+      <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="causa" value="' . $context['causa'] . '" tabindex="' . $context['tabindex']++ . '" style="width: 415px;" maxlength="60" />
+      <br />';
   }
 
   echo '
     <b class="size11">T&iacute;tulo:</b><br />
-    <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="subject"' . $context['subject'] == '' ? '' : ' value="' . $context['subject'] . '" tabindex="' . $context['tabindex']++ . '" style="width:415px;" maxlength="60" />
-    <label id="error1"></label><br />';
+    <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="subject"' . ($context['subject'] == '' ? '' : ' value="' . $context['subject']) . '" tabindex="' . $context['tabindex']++ . '" style="width: 415px;" maxlength="60" />
+    <label id="error1"></label>
+    <br />
+    <br />';
 
   theme_postbox($context['message']);
 
@@ -212,12 +236,13 @@ function template_postbox(&$message) {
     <label id="error3"></label>';
 
   if (!empty($context['smileys']['postform'])) {
-  foreach ($context['smileys']['postform'] as $smiley_row) {
-    foreach ($smiley_row['smileys'] as $smiley)
-      echo '
-        <a href="javascript:void(0);" onclick="replaceText(\' ' . $smiley['code'] . '\', document.forms.' . $context['post_form'] . '.' . $context['post_box_name'] . '); return false;">
-          <img src="' . $settings['smileys_url'] . '/' . $smiley['filename'] . '" align="bottom" alt="" title="' . $smiley['description'] . '" />
-        </a> ';
+    foreach ($context['smileys']['postform'] as $smiley_row) {
+      foreach ($smiley_row['smileys'] as $smiley) {
+        echo '
+          <a href="javascript:void(0);" onclick="replaceText(\' ' . $smiley['code'] . '\', document.forms.' . $context['post_form'] . '.' . $context['post_box_name'] . '); return false;">
+            <img src="' . $settings['smileys_url'] . '/' . $smiley['filename'] . '" align="bottom" alt="" title="' . $smiley['description'] . '" />
+          </a> ';
+      }
     }
   }
 

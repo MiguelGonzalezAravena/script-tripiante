@@ -236,16 +236,15 @@ function addslashes__recursive($var, $level = 0)
 }
 
 // Adds html entities to the array/variable.  Uses two underscores to guard against overloading.
-function htmlspecialchars__recursive($var, $level = 0)
-{
-  global $func;
-
-  if (!is_array($var))
-    return isset($func) ? $func['htmlspecialchars']($var, ENT_QUOTES) : htmlspecialchars($var, ENT_QUOTES);
+function htmlspecialchars__recursive($var, $level = 0) {
+  if (!is_array($var)) {
+    return htmlspecialchars($var, ENT_QUOTES);
+  }
 
   // Add the htmlspecialchars to every element.
-  foreach ($var as $k => $v)
+  foreach ($var as $k => $v) {
     $var[$k] = $level > 25 ? null : htmlspecialchars__recursive($v, $level + 1);
+  }
 
   return $var;
 }
@@ -310,7 +309,7 @@ function validate_unicode__recursive($var)
   // Assuming unicode for now - won't really hurt if we're wrong.
   for ($i = 0; $i < strlen($var); $i++)
   {
-    $c = ord($var{$i});
+    $c = ord($var[$i]);
     if (in_array($c, $cleanup))
     {
       $var = substr($var, 0, $i) . substr($var, $i + 1);

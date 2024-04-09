@@ -2,6 +2,9 @@
 if (!defined('SMF'))
   die('Hacking attempt...');
 
+// require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/SSI.php');
+require_once(dirname(__FILE__) . '/Errors.php');
+
 function db_query($db_string, $file, $line) {
   global $db_cache, $db_count, $db_connection, $db_show_debug, $modSettings;
 
@@ -75,7 +78,7 @@ function db_query($db_string, $file, $line) {
     }
   }
 
-  $ret = mysqli_query($db_string, $db_connection);
+  $ret = mysqli_query($db_connection, $db_string);
   if ($ret === false && $file !== false)
     $ret = db_error($db_string, $file, $line);
 
@@ -1463,8 +1466,8 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
           }
 
           // The idea is, if we are LOOKING for a block level tag, we can close them on the way.
-          if (strlen($look_for) > 0 && isset($bbc_codes[$look_for{0}])) {
-            foreach ($bbc_codes[$look_for{0}] as $temp)
+          if (strlen($look_for) > 0 && isset($bbc_codes[$look_for[0]])) {
+            foreach ($bbc_codes[$look_for[0]] as $temp)
               if ($temp['tag'] == $look_for) {
                 $block_level = !empty($temp['block_level']);
                 break;
@@ -1487,8 +1490,8 @@ function parse_bbc($message, $smileys = true, $cache_id = '') {
         $open_tags = $to_close;
         continue;
       } else if (!empty($to_close) && $tag['tag'] != $look_for) {
-        if ($block_level === null && isset($look_for{0}, $bbc_codes[$look_for{0}])) {
-          foreach ($bbc_codes[$look_for{0}] as $temp)
+        if ($block_level === null && isset($look_for[0], $bbc_codes[$look_for[0]])) {
+          foreach ($bbc_codes[$look_for[0]] as $temp)
             if ($temp['tag'] == $look_for) {
               $block_level = !empty($temp['block_level']);
               break;
@@ -2935,7 +2938,7 @@ function text2words($text, $max_chars = 20, $encrypt = false) {
         $total = 0;
 
         for ($i = 0; $i < $max_chars; $i++)
-          $total += $possible_chars[ord($encrypted{$i})] * pow(63, $i);
+          $total += $possible_chars[ord($encrypted[$i])] * pow(63, $i);
 
         $returned_ints[] = $max_chars == 4 ? min($total, 16777215) : $total;
       }

@@ -2,6 +2,10 @@
 if (!defined('SMF'))
   die('Hacking attempt...');
 
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/Settings.php');
+require_once($sourcedir . '/Subs.php');
+require_once($sourcedir . '/Security.php');
+
 function reloadSettings()
 {
   global $modSettings, $db_prefix, $boarddir, $func, $txt, $db_character_set;
@@ -51,14 +55,19 @@ function reloadSettings()
   // Preg_replace can handle complex characters only for higher PHP versions.
   $space_chars = $utf8 ? (@version_compare(PHP_VERSION, '4.3.3') != -1 ? '\x{A0}\x{2000}-\x{200F}\x{201F}\x{202F}\x{3000}\x{FEFF}' : pack('C*', 0xC2, 0xA0, 0xE2, 0x80, 0x80) . '-' . pack('C*', 0xE2, 0x80, 0x8F, 0xE2, 0x80, 0x9F, 0xE2, 0x80, 0xAF, 0xE2, 0x80, 0x9F, 0xE3, 0x80, 0x80, 0xEF, 0xBB, 0xBF)) : '\xA0';
   
+  // TO-DO: Redefinir
+  /*
   $func = array(
-    'entity_fix' => create_function('$string', '
-      $num = substr($string, 0, 1) === \'x\' ? hexdec(substr($string, 1)) : (int) $string;
-      return $num < 0x20 || $num > 0x10FFFF || ($num >= 0xD800 && $num <= 0xDFFF) ? \'\' : \'&#\' . $num . \';\';'),
-    'substr' => create_function('$string, $start, $length = null', '
+    'entity_fix' => function($string) {
+      $num = substr($string, 0, 1) === 'x' ? hexdec(substr($string, 1)) : (int) $string;
+      return $num < 0x20 || $num > 0x10FFFF || ($num >= 0xD800 && $num <= 0xDFFF) ? '' : '&#' . $num;
+    },
+    'substr' => function($string, $start, $length = null) {
       global $func;
-      $ent_arr = preg_split(\'~(&#' . (empty($modSettings['disableEntityCheck']) ? '\d{1,7}' : '021') . ';|&quot;|&amp;|&lt;|&gt;|&nbsp;|.)~' . ($utf8 ? 'u' : '') . '\', ' . implode('$string', $ent_check) . ', -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-      return $length === null ? implode(\'\', array_slice($ent_arr, $start)) : implode(\'\', array_slice($ent_arr, $start, $length));'),
+
+      $ent_arr = preg_split('~(&#' . (empty($modSettings['disableEntityCheck']) ? '\d{1,7}' : '021') . ';|&quot;|&amp;|&lt;|&gt;|&nbsp;|.)~' . ($utf8 ? 'u' : '') . '', '' . implode('$string', $ent_check) . ', -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY');
+      return $length === null ? implode('', array_slice($ent_arr, $start)) : implode('', array_slice($ent_arr, $start, $length));
+    },
     'strlen' => create_function('$string', '
       global $func;
       return strlen(preg_replace(\'~' . $ent_list . ($utf8 ? '|.~u' : '~') . '\', \'_\', ' . implode('$string', $ent_check) . '));'),
@@ -121,6 +130,8 @@ function reloadSettings()
         $words[$i] = $func[\'ucfirst\']($words[$i]);
       return implode(\'\', $words);')) : 'ucwords',
   );
+  */
+  $func = array();
 
   // Setting the timezone is a requirement for some functions in PHP >= 5.1.
   if (isset($modSettings['default_timezone']) && function_exists('date_default_timezone_set'))
@@ -920,7 +931,7 @@ function loadMemberContext($user)
       'image_href' => ($profile['is_online'] ? 'verde' : 'rojo'),
       'label' => &$txt[$profile['is_online'] ? 'online4' : 'online5']
     ),
-    'language' => $func['ucwords'](strtr($profile['lngfile'], array('_' => ' ', '-utf8' => ''))),
+    'language' => ucwords(strtr($profile['lngfile'], array('_' => ' ', '-utf8' => ''))),
     'is_activated' => isset($profile['is_activated']) ? $profile['is_activated'] : 1,
     'is_banned' => isset($profile['is_activated']) ? $profile['is_activated'] >= 10 : 0,
     'options' => $profile['options'],

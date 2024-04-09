@@ -7,7 +7,8 @@ function template_main() {
   $page = (int) $_GET['page'];
 
   if (isset($page)) {
-    $start = ($page - 1) * $end;
+    $calc = ($page - 1) * $end;
+    $start = $calc > 0 ? $calc : 0;
     $actualPage = $page;
   } else {
     $start = 0;
@@ -26,8 +27,7 @@ function template_main() {
     AND mem.ID_MEMBER = ms.ID_MEMBER
     AND bm.TYPE = 'posts'
     AND $user_info[query_see_board]
-    ORDER BY b
-  ";
+    ORDER BY bm.ID_TOPIC DESC";
 
   $request = db_query("
     {$query}

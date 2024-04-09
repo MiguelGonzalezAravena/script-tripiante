@@ -2,6 +2,8 @@
 if (!defined('SMF'))
   die('Hacking attempt...');
 
+@require_once(dirname(__FILE__) . '/Load.php');
+
 function setLoginCookie($cookie_length, $id, $password = '') {
   global $cookiename, $boardurl, $modSettings;
 

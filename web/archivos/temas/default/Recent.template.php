@@ -23,7 +23,7 @@ function template_main() {
   $page = (int) $_GET['pag'];
 
   if (isset($page)) {
-    $start = ($page - 1) * $end;
+    $start = ($page - 1) * $end > 0 ? ($page - 1) * $end : 0;
     $actualPage = $page;
   } else {
     $start = 0;

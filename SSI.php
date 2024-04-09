@@ -10,45 +10,55 @@ global $db_server, $db_name, $db_user, $db_prefix, $db_persist, $db_error_send, 
 global $db_connection, $modSettings, $context, $sc, $user_info, $topic, $board, $txt;
 
 // TO-DO: Cambiar get_magic_quotes_runtime()
-$ssi_magic_quotes_runtime = @get_magic_quotes_runtime();
-@set_magic_quotes_runtime(0);
+if (function_exists('get_magic_quotes_runtime') && function_exists('set_magic_quotes_runtime')) {
+  $ssi_magic_quotes_runtime = @get_magic_quotes_runtime();
+  @set_magic_quotes_runtime(0);
+}
+
 $time_start = microtime();
 
 foreach (array('db_character_set') as $variable)
   if (isset($GLOBALS[$variable]))
     unset($GLOBALS[$variable]);
 
-@require_once(dirname(__FILE__) . '/Settings.php');
+require_once(dirname(__FILE__) . '/Settings.php');
 $ssi_error_reporting = error_reporting(E_ALL);
 
-if ($maintenance == 2 && (!isset($ssi_maintenance_off) || $ssi_maintenance_off !== true))
+if ($maintenance == 2 && (!isset($ssi_maintenance_off) || $ssi_maintenance_off !== true)) {
   die($mmessage);
+}
 
-if (substr($sourcedir, 0, 1) == '.' && substr($sourcedir, 1, 1) != '.')
+if (substr($sourcedir, 0, 1) == '.' && substr($sourcedir, 1, 1) != '.') {
   $sourcedir = dirname(__FILE__) . substr($sourcedir, 1);
+}
 
 
-@require_once($sourcedir . '/QueryString.php');
-@require_once($sourcedir . '/Subs.php');
-@require_once($sourcedir . '/Errors.php');
-@require_once($sourcedir . '/Load.php');
-@require_once($sourcedir . '/Security.php');
+require_once($sourcedir . '/QueryString.php');
+require_once($sourcedir . '/Subs.php');
+require_once($sourcedir . '/Errors.php');
+require_once($sourcedir . '/Load.php');
+require_once($sourcedir . '/Security.php');
 
-if (@version_compare(PHP_VERSION, '4.2.3') != 1)
-  @require_once($sourcedir . '/Subs-Compat.php');
+if (@version_compare(PHP_VERSION, '4.2.3') != 1) {
+  require_once($sourcedir . '/Subs-Compat.php');
+}
 
-if (empty($db_persist))
-  $db_connection = @mysqli_connect($db_server, $db_user, $db_passwd);
-else
+if (empty($db_persist)) {
+  $db_connection = mysqli_connect($db_server, $db_user, $db_passwd);
+} else {
   // TO-DO: Actualizar mysql_pconnect()
   $db_connection = @mysql_pconnect($db_server, $db_user, $db_passwd);
-if ($db_connection === false)
-  return false;
+}
 
-if (strpos($db_prefix, '.') === false)
+if ($db_connection === false) {
+  return false;
+}
+
+if (strpos($db_prefix, '.') === false) {
   $db_prefix = is_numeric(substr($db_prefix, 0, 1)) ? $db_name . '.' . $db_prefix : '`' . $db_name . '`.' . $db_prefix;
-else
+} else {
   @mysqli_select_db($db_connection, $db_name);
+}
 
 reloadSettings();
 cleanRequest();

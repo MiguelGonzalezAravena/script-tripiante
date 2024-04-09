@@ -110,8 +110,9 @@ function template_main() {
           <div style="margin-bottom: 2px;">
             <span style="font-size: 12px;">
               <img alt="" src="' . $settings['images_url'] . '/icons/mensaje_para.gif" border="0" />
-              &nbsp;
-              <a href="' . $boardurl . '/mensajes/a/' . $message['member']['username'] . '" title="Enviar mensaje">Enviar mensaje</a>
+              <a href="' . $boardurl . '/mensajes/a/' . $message['member']['username'] . '" title="Enviar mensaje">
+                Enviar mensaje
+              </a>
             </span>
           </div>';
       }
@@ -120,7 +121,9 @@ function template_main() {
         echo '
           <div style="margin-bottom: 4px;">
             <span class="icons fot2" style="font-size: 12px;">
-              <a href="' . $boardurl . '/imagenes/' . $message['member']['name'] . '" title="Sus im&aacute;genes">&nbsp;Sus im&aacute;genes</a>
+              <a href="' . $boardurl . '/imagenes/' . $message['member']['name'] . '" title="Sus im&aacute;genes">
+                Sus im&aacute;genes
+              </a>
             </span>
           </div>';
       }
@@ -141,17 +144,17 @@ function template_main() {
     echo '
       <br />
       <div class="fondoavatar" style="overflow: hidden; width: 130px;">
-        <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">PUNTOS:</b>&nbsp;
+        <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">PUNTOS:</b>
         <b>
           <span id="cant_pts_post">' . $message['member']['moneyBank'] . '</span>
         </b>
         <br />
-        <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">POST:</b>&nbsp;
+        <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">POST:</b>
         <b>
           <a href="' . $boardurl . '/user-post/' . $message['member']['name'] . '">' . $message['member']['topics'] . '</a>
         </b>
         <br />
-        <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">COMENTARIOS:</b>&nbsp;
+        <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">COMENTARIOS:</b>
         <b>
           <a href="' . $boardurl . '/user-comment/' . $message['member']['name'] . '">' . $context['comentuser'] . '</a>
         </b>
@@ -262,7 +265,7 @@ function template_main() {
     if ($context['Conocido'] || $context['Vecino'] || $context['Amigo'] || $context['Familiar'] || $context['Casero'] || $context['allow_admin']) {
       echo '
         <span id="span_opciones1" class="size10">
-          <b class="size11">Dar puntos:</b>';
+          <b class="size11">Dar puntos:</b>&nbsp;';
 
       $puntos = $context['user']['money'];
       $contarpuntos = 1;
@@ -274,7 +277,7 @@ function template_main() {
 
           $contarpuntos++;
 
-          if ($contarpuntos < $puntos) {
+          if ($contarpuntos <= $puntos) {
             echo ' - ';
           }
         }

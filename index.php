@@ -1,49 +1,67 @@
 <?php
+define('SMF', 1);
+
+require_once(dirname(__FILE__) . '/Settings.php');
+require_once($sourcedir . '/Errors.php');
+require_once($sourcedir . '/Load.php');
+require_once($sourcedir . '/QueryString.php');
+
 $forum_version = 'SMF 1.1.11';
 $script_version = '1.0';
 
-@set_magic_quotes_runtime(0);
+if (function_exists('set_magic_quotes_runtime')) {
+  @set_magic_quotes_runtime(0);
+}
+
 error_reporting(E_ALL);
 $time_start = microtime();
 
-foreach (array('db_character_set') as $variable)
-  if (isset($GLOBALS[$variable]))
+foreach (array('db_character_set') as $variable) {
+  if (isset($GLOBALS[$variable])) {
     unset($GLOBALS[$variable]);
+  }
+}
 
-require_once(dirname(__FILE__) . '/config.php');
-
-if (@version_compare(PHP_VERSION, '4.2.3') != 1)
+if (@version_compare(PHP_VERSION, '4.2.3') != 1) {
   require_once($sourcedir . '/Subs-Compat.php');
+}
 
-if (!empty($maintenance) && $maintenance == 2)
+if (!empty($maintenance) && $maintenance == 2) {
   db_fatal_error();
+}
 
-if (empty($db_persist))
+if (empty($db_persist)) {
   $db_connection = @mysqli_connect($db_server, $db_user, $db_passwd);
-else
+} else {
   $db_connection = @mysql_pconnect($db_server, $db_user, $db_passwd);
+}
 
-if (!$db_connection || !@mysqli_select_db($db_connection, $db_name))
+if (!$db_connection || !@mysqli_select_db($db_connection, $db_name)) {
   db_fatal_error();
+}
 
 reloadSettings();
 cleanRequest();
+
 $context = array();
 
-if (empty($modSettings['rand_seed']) || mt_rand(1, 250) == 69)
+if (empty($modSettings['rand_seed']) || mt_rand(1, 250) == 69) {
   smf_seed_generator();
-
-if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/vnd.wap.xhtml+xml') !== false)
-  $_REQUEST['wap2'] = 1;
-else if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'text/vnd.wap.wml') !== false) {
-  if (strpos($_SERVER['HTTP_USER_AGENT'], 'DoCoMo/') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'portalmmm/') !== false)
-    $_REQUEST['imode'] = 1;
-  else
-    $_REQUEST['wap'] = 1;
 }
 
-if (!defined('WIRELESS'))
+if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/vnd.wap.xhtml+xml') !== false) {
+  $_REQUEST['wap2'] = 1;
+} else if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'text/vnd.wap.wml') !== false) {
+  if (strpos($_SERVER['HTTP_USER_AGENT'], 'DoCoMo/') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'portalmmm/') !== false) {
+    $_REQUEST['imode'] = 1;
+  } else {
+    $_REQUEST['wap'] = 1;
+  }
+}
+
+if (!defined('WIRELESS')) {
   define('WIRELESS', isset($_REQUEST['wap']) || isset($_REQUEST['wap2']) || isset($_REQUEST['imode']));
+}
 
 if (WIRELESS) {
   define('WIRELESS_PROTOCOL', isset($_REQUEST['wap']) ? 'wap' : (isset($_REQUEST['wap2']) ? 'wap2' : (isset($_REQUEST['imode']) ? 'imode' : '')));
@@ -51,19 +69,22 @@ if (WIRELESS) {
   $modSettings['enableCompressedOutput'] = '0';
   $modSettings['defaultMaxMessages'] = 5;
   $modSettings['defaultMaxTopics'] = 9;
-  if (WIRELESS_PROTOCOL == 'wap')
+  if (WIRELESS_PROTOCOL == 'wap') {
     header('Content-Type: text/vnd.wap.wml');
+  }
 }
 
 if (!empty($modSettings['enableCompressedOutput']) && !headers_sent() && ob_get_length() == 0) {
-  if (@ini_get('zlib.output_compression') == '1' || @ini_get('output_handler') == 'ob_gzhandler' || @version_compare(PHP_VERSION, '4.2.0') == -1)
+  if (@ini_get('zlib.output_compression') == '1' || @ini_get('output_handler') == 'ob_gzhandler' || @version_compare(PHP_VERSION, '4.2.0') == -1) {
     $modSettings['enableCompressedOutput'] = '0';
-  else
+  } else {
     ob_start('ob_gzhandler');
+  }
 }
 
-if (empty($modSettings['enableCompressedOutput']))
+if (empty($modSettings['enableCompressedOutput'])) {
   ob_start();
+}
 
 set_error_handler('error_handler');
 loadSession();

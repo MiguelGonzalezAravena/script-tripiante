@@ -34,7 +34,8 @@ function template_main() {
   $page = (int) $_GET['pag'];
 
   if (isset($page)) {
-    $start = ($page - 1) * $end;
+    $calc = ($page - 1) * $end;
+    $start = $calc > 0 ? $calc : 0;
     $actualPage = $page;
   } else {
     $start = 0;
@@ -91,10 +92,10 @@ function template_main() {
     <div class="windowbgpag" style="width: 757px;">';
 
   if ($actualPage > 1)
-    echo '<a href="' . $boardurl . '/favoritos/post/pag-' . $previousPage . '">&#171; anterior</a>';
+    echo '<a href="' . $boardurl . '/favoritos/imagen/pag-' . $previousPage . '">&#171; anterior</a>';
 
   if ($actualPage < $lastPage)
-    echo '<a href="' . $boardurl . '/favoritos/post/pag-' . $nextPage . '">siguiente &#187;</a>';
+    echo '<a href="' . $boardurl . '/favoritos/imagen/pag-' . $nextPage . '">siguiente &#187;</a>';
 
   echo '
             </div>

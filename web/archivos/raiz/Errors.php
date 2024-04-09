@@ -64,7 +64,8 @@ function db_error($db_string, $file, $line) {
 
   // Log the error.
   if ($query_errno != 1213 && $query_errno != 1205)
-    log_error($txt[1001] . ': ' . $query_error, $file, $line);
+    // log_error($txt[1001] . ': ' . $query_error, $file, $line);
+    log_error('Error al realizar la consulta: ' . $query_error, $file, $line);
 
   // Database error auto fixing ;).
   if (!isset($modSettings['autoFixDatabase']) || $modSettings['autoFixDatabase'] == '1') {

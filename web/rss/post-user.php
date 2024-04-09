@@ -1,6 +1,12 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+define('SMF', 1);
+
+require_once(dirname(dirname(dirname(__FILE__))) . '/Settings.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/SSI.php');
+
+require_once($sourcedir . '/Load.php');
+require_once($sourcedir . '/Subs.php');
+// require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
 
 global $db_prefix, $boardurl, $mbname;
 

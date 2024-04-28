@@ -82,17 +82,16 @@ function template_main() {
             </div>
             <div style="margin: 0pt; float: left;" class="data">
               <p style="margin: 0px; padding: 0px;" align="right">
-                ' . $txt['was_created_by'] . '&nbsp;
+                ' . $txt['was_created_by'] . '
                 <a style="color: #717171;" href="' . $boardurl . '/perfil/'. $row['memberName'] . '">' . $row['realName'] . '</a>
-                &nbsp;|&nbsp;
+                |
                 pts:
-                &nbsp;
                 ' . $row['points'] . '
-                &nbsp;|&nbsp;
+                |
                 <a title="' . $txt['send_to_friend'] . '" href="' . $boardurl . '/enviar-a-amigo/' . $row['ID_TOPIC'] . '">
                   <img alt="" src="' . $settings['images_url'] . '/icons/icono-enviar-mensaje.gif" />
                 </a>
-                &nbsp;|&nbsp;
+                |
                 <input name="remove_bookmarks[]" type="checkbox" value="' . $row['ID_TOPIC'] . '" />
               </p>
             </div>

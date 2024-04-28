@@ -2,9 +2,8 @@
 // Version: 1.1.1; Admin
 
 // This contains the html for the side bar of the admin center, which is used for all admin pages.
-function template_admin_above()
-{
-  global $context, $settings, $options, $scripturl, $txt;
+function template_admin_above() {
+  global $context, $settings;
 
   // This is the main table - we need it so we can keep the content to the right of it.
   echo '
@@ -214,7 +213,7 @@ function template_manage_copyright() {
 
 // Form for stopping people using naughty words, etc.
 function template_edit_censored() {
-  global $context, $settings, $options, $scripturl, $txt, $modSettings;
+  global $context, $scripturl, $txt, $modSettings;
 
   // First section is for adding/removing words from the censored list.
   echo '
@@ -302,9 +301,8 @@ function template_edit_censored() {
 }
 
 // Template for editing post settings.
-function template_edit_post_settings()
-{
-  global $context, $settings, $options, $txt, $scripturl, $modSettings;
+function template_edit_post_settings() {
+  global $context, $txt, $scripturl, $modSettings;
 
   echo '
   <form action="', $scripturl, '?action=postsettings;sa=posts" method="post" accept-charset="', $context['character_set'], '">
@@ -394,9 +392,8 @@ function template_edit_post_settings()
 }
 
 // Template for editing bulletin board code settings.
-function template_edit_bbc_settings()
-{
-  global $context, $settings, $options, $txt, $scripturl, $modSettings;
+function template_edit_bbc_settings() {
+  global $context, $txt, $scripturl, $modSettings;
 
   echo '
   <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
@@ -470,9 +467,8 @@ function template_edit_bbc_settings()
 }
 
 // Template for editing post settings.
-function template_edit_topic_settings()
-{
-  global $context, $settings, $options, $txt, $scripturl, $modSettings;
+function template_edit_topic_settings() {
+  global $context, $txt, $scripturl, $modSettings;
 
   echo '
   <form action="', $scripturl, '?action=postsettings;sa=topics" method="post" accept-charset="', $context['character_set'], '">
@@ -561,9 +557,8 @@ function template_edit_topic_settings()
 }
 
 // Template for forum maintenance page.
-function template_maintain()
-{
-  global $context, $settings, $options, $txt, $scripturl, $modSettings;
+function template_maintain() {
+  global $context, $settings, $txt, $scripturl, $modSettings;
 
   // Starts off with general maintenance procedures.
   echo '
@@ -700,9 +695,8 @@ function template_maintain()
 }
 
 // Simple template for showing results of our optimization...
-function template_optimize()
-{
-  global $context, $settings, $options, $txt, $scripturl;
+function template_optimize() {
+  global $context, $txt, $scripturl;
 
   echo '
   <div class="tborder">
@@ -728,9 +722,8 @@ function template_optimize()
 }
 
 // Maintenance is a lovely thing, isn't it?
-function template_not_done()
-{
-  global $context, $settings, $options, $txt, $scripturl;
+function template_not_done() {
+  global $context, $txt, $scripturl;
 
   echo '
   <div class="tborder">
@@ -775,8 +768,7 @@ function template_not_done()
 }
 
 // Template for showing settings (Of any kind really!)
-function template_show_settings()
-{
+function template_show_settings() {
   global $context, $txt, $settings, $scripturl;
 
   echo '
@@ -873,9 +865,8 @@ function template_show_settings()
   </form>';
 }
 
-function template_convert_utf8()
-{
-  global $context, $txt, $settings, $scripturl;
+function template_convert_utf8() {
+  global $context, $txt, $scripturl;
 
   echo '
     <table width="100%" cellpadding="5" cellspacing="0" border="0" class="tborder">
@@ -924,9 +915,8 @@ function template_convert_utf8()
     </table>';
 }
 
-function template_convert_entities()
-{
-  global $context, $txt, $settings, $scripturl;
+function template_convert_entities() {
+  global $context, $txt, $scripturl;
 
   echo '
     <table width="100%" cellpadding="5" cellspacing="0" border="0" class="tborder">
@@ -985,6 +975,5 @@ function template_convert_entities()
   echo '
     </table>';
 }
-
 
 ?>

@@ -79,9 +79,8 @@ function ModifySettings2()
 }
 
 // Basic forum settings - database name, host, etc.
-function ModifyCoreSettings()
-{
-  global $scripturl, $context, $settings, $txt, $sc, $boarddir, $func;
+function ModifyCoreSettings() {
+  global $scripturl, $context, $settings, $txt, $sc, $boarddir;
 
   // Warn the user if the backup of Settings.php failed.
   $settings_not_writable = !is_writable($boarddir . '/Settings.php');
@@ -133,7 +132,7 @@ function ModifyCoreSettings()
     $dir = dir($language_dir);
     while ($entry = $dir->read())
       if (preg_match('~^index\.(.+)\.php$~', $entry, $matches))
-        $config_vars['language'][3][$matches[1]] = array($matches[1], $func['ucwords'](strtr($matches[1], '_', ' ')));
+        $config_vars['language'][3][$matches[1]] = array($matches[1], ucwords(strtr($matches[1], '_', ' ')));
     $dir->close();
   }
 

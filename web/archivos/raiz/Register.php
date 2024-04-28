@@ -33,7 +33,7 @@ function Captcha() {
 
 function Register() {
   global $txt, $boarddir, $context, $settings, $modSettings, $user_info;
-  global $db_prefix, $language, $scripturl, $func, $kill_proxyblocker;
+  global $language, $scripturl, $kill_proxyblocker;
 
   if (!empty($modSettings['registration_method']) && $modSettings['registration_method'] == 3)
     fatal_lang_error('registration_disabled', false);
@@ -108,7 +108,7 @@ function Register() {
           continue;
 
         $context['languages'][] = array(
-          'name' => $func['ucwords'](strtr($matches[1], array('_' => ' ', '-utf8' => ''))),
+          'name' => ucwords(strtr($matches[1], array('_' => ' ', '-utf8' => ''))),
           'selected' => $selectedLanguage == $matches[1],
           'filename' => $matches[1],
         );
@@ -146,47 +146,48 @@ function Register() {
 }
 
 // Actually register the member.
-function Register2()
-{
-  global $scripturl, $txt, $modSettings, $db_prefix, $context, $sourcedir, $captchaCode;
-  global $user_info, $options, $settings, $func;
+function Register2() {
+  global $txt, $modSettings, $context, $sourcedir;
+  global $settings;
 
   // Well, if you don't agree, you can't register.
-  if (!empty($modSettings['requireAgreement']) && (empty($_POST['regagree']) || $_POST['regagree'] == 'no'))
+  if (!empty($modSettings['requireAgreement']) && (empty($_POST['regagree']) || $_POST['regagree'] == 'no')) {
     redirectexit();
-
-  // Make sure they came from *somewhere*, have a session.
-  if (!isset($_SESSION['old_url']))
-    redirectexit('action=register');
-
-  // You can't register if it's disabled.
-  if (!empty($modSettings['registration_method']) && $modSettings['registration_method'] == 3)
-    fatal_lang_error('registration_disabled', false);
-
-  foreach ($_POST as $key => $value)
-  {
-    if (!is_array($_POST[$key]))
-      $_POST[$key] = htmltrim__recursive(str_replace(array("\n", "\r"), '', $_POST[$key]));
   }
 
-  if (!empty($modSettings['coppaAge']) && empty($modSettings['coppaType']) && !isset($_POST['skip_coppa']))
-  {
+  // Make sure they came from *somewhere*, have a session.
+  if (!isset($_SESSION['old_url'])) {
+    redirectexit('action=register');
+  }
+
+  // You can't register if it's disabled.
+  if (!empty($modSettings['registration_method']) && $modSettings['registration_method'] == 3) {
+    fatal_lang_error('registration_disabled', false);
+  }
+
+  foreach ($_POST as $key => $value) {
+    if (!is_array($_POST[$key])) {
+      $_POST[$key] = htmltrim__recursive(str_replace(array("\n", "\r"), '', $_POST[$key]));
+    }
+  }
+
+  if (!empty($modSettings['coppaAge']) && empty($modSettings['coppaType']) && !isset($_POST['skip_coppa'])) {
     // !!! This should be put in Errors, imho.
     loadLanguage('Login');
     fatal_lang_error('under_age_registration_prohibited', false, array($modSettings['coppaAge']));
   }
 
   // Check whether the visual verification code was entered correctly.
-  if (!empty($modSettings['recaptcha_enabled']) && ($modSettings['recaptcha_enabled'] == 1 && !empty($modSettings['recaptcha_public_key']) && !empty($modSettings['recaptcha_private_key'])))
-  {
-    if (!empty($_POST["recaptcha_response_field"]) && !empty($_POST["recaptcha_challenge_field"])) //Check the input if this exists, if it doesn't, then the user didn't fill it out.
+  if (!empty($modSettings['recaptcha_enabled']) && ($modSettings['recaptcha_enabled'] == 1 && !empty($modSettings['recaptcha_public_key']) && !empty($modSettings['recaptcha_private_key']))) {
+    if (!empty($_POST["recaptcha_response_field"]) && !empty($_POST["recaptcha_challenge_field"])) //Check the input if this exists, if it doesn't, then the user didn't fill it out. 
     {
       require($sourcedir . "/recaptchalib.php");
 
       $resp = recaptcha_check_answer($modSettings['recaptcha_private_key'], $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
 
-      if (!$resp->is_valid)
+      if (!$resp->is_valid) {
         fatal_lang_error('visual_verification_failed', false);
+      }
     }
     else
       fatal_lang_error('visual_verification_failed', false);
@@ -199,8 +200,9 @@ function Register2()
 
     fatal_lang_error('visual_verification_failed', false);
   }
-  else if (isset($_SESSION['visual_errors']))
+  else if (isset($_SESSION['visual_errors'])) {
     unset($_SESSION['visual_errors']);
+  }
 
   $possible_strings = array(
     'websiteUrl', 'websiteTitle',
@@ -239,7 +241,7 @@ function Register2()
   if (isset($_POST['realName']) && (!empty($modSettings['allow_editDisplayName']) || allowedTo('moderate_forum')))
   {
     $_POST['realName'] = trim(preg_replace('~[\s]~' . ($context['utf8'] ? 'u' : ''), ' ', $_POST['realName']));
-    if (trim($_POST['realName']) != '' && !isReservedName($_POST['realName']) && $func['strlen']($_POST['realName']) <= 60)
+    if (trim($_POST['realName']) != '' && !isReservedName($_POST['realName']) && strlen($_POST['realName']) <= 60)
       $possible_strings[] = 'realName';
   }
 
@@ -308,7 +310,7 @@ function Register2()
   // Include the additional options that might have been filled in.
   foreach ($possible_strings as $var)
     if (isset($_POST[$var]))
-      $regOptions['extra_register_vars'][$var] = '\'' . $func['htmlspecialchars']($_POST[$var]) . '\'';
+      $regOptions['extra_register_vars'][$var] = '\'' . htmlspecialchars($_POST[$var]) . '\'';
   foreach ($possible_ints as $var)
     if (isset($_POST[$var]))
       $regOptions['extra_register_vars'][$var] = (int) $_POST[$var];

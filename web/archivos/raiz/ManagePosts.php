@@ -234,25 +234,21 @@ function ModifyPostSettings()
 }
 
 //This is everything you need for the hide tag special in posts :)
-function ModifyHideTagSpecialSettings()
-{
-  global $txt, $scripturl, $context, $settings, $sc, $db_prefix, $modSettings;
+function ModifyHideTagSpecialSettings() {
+  global $txt, $context, $db_prefix, $modSettings;
 
   // Setup the template.
   $context['sub_template'] = 'edit_hidetagspecial_settings';
   $context['page_title'] = $txt['hidetagspecial_titel'];
 
   // Wanna save this page?
-  if (isset($_POST['save_settings']))
-  {
+  if (isset($_POST['save_settings'])) {
     checkSession();
-    
-    global $func;
     
     //Prepare Textareas :)
     
-    $_POST['hide_hiddentext'] = $func['htmlspecialchars'](stripslashes($_POST['hide_hiddentext']), ENT_QUOTES);
-    $_POST['hide_unhiddentext'] = $func['htmlspecialchars'](stripslashes($_POST['hide_unhiddentext']), ENT_QUOTES);
+    $_POST['hide_hiddentext'] = htmlspecialchars(stripslashes($_POST['hide_hiddentext']), ENT_QUOTES);
+    $_POST['hide_unhiddentext'] = htmlspecialchars(stripslashes($_POST['hide_unhiddentext']), ENT_QUOTES);
   
     //Allowed Groups ;)
     if (!empty($_POST['hide_autounhidegroups'])) {

@@ -175,7 +175,7 @@ function ViewPicture() {
     'commenttotal' => $row['commenttotal'],
     'points' => $row['points'],
     'views' => $row['views'],
-    'title' => $row['title'],
+    'title' => htmlentities($row['title'], ENT_QUOTES, 'ISO-8859-1'),
     'filename' => $row['filename'],
     'date' => $row['date'],
     'memberName' => $row['memberName'],
@@ -258,6 +258,7 @@ function ViewPicture() {
       $context['view_members'] = array();
       $context['view_members_list'] = array();
       $context['view_num_hidden'] = 0;
+
       $request = db_query("
         SELECT mem.ID_MEMBER, IFNULL(mem.realName, 0) AS realName, mem.showOnline
         FROM {$db_prefix}log_online AS lo
@@ -536,16 +537,17 @@ function DeletePicture2() {
       WHERE ID_PICTURE = $id", __FILE__, __LINE__);
 
     db_query("
-      DELETE FROM {$db_prefix}gallery_pic
-      WHERE ID_PICTURE = $id", __FILE__, __LINE__);
-
-    db_query("
       DELETE FROM {$db_prefix}points
-      WHERE ID_TOPIC = $id AND TYPE = 'imagenes'", __FILE__, __LINE__);
+      WHERE ID_TOPIC = $id
+      AND TYPE = 'imagenes'", __FILE__, __LINE__);
 
     db_query("
       DELETE FROM {$db_prefix}bookmarks
       WHERE ID_TOPIC = $id AND TYPE = 'imagen'", __FILE__, __LINE__);
+
+    db_query("
+      DELETE FROM {$db_prefix}gallery_pic
+      WHERE ID_PICTURE = $id", __FILE__, __LINE__);
 
     $ID_MODERATOR = $context['user']['id'];
     $ID_MEMBER = $memID;
@@ -553,7 +555,7 @@ function DeletePicture2() {
     $TYPE = 'Imagen';
     $ACTION = 'remove';
     $subject = $row['title'];
-    $reason = htmlentities($_POST['causa'], ENT_QUOTES, 'UTF-8');
+    $reason = htmlentities(addslashes($_POST['causa']), ENT_QUOTES, 'UTF-8');
 
     if (!empty($modSettings['modlog_enabled']) && allowedTo('modify_any')) {
       db_query("
@@ -567,7 +569,7 @@ function DeletePicture2() {
         UPDATE {$db_prefix}members
         SET money = money - " . $modSettings['gallery_shop_picadd'] . "
         WHERE ID_MEMBER = {$memID}
-        LIMIT 1 ", __FILE__, __LINE__);
+        LIMIT 1", __FILE__, __LINE__);
     }
 
     $requesti = db_query("

@@ -1,5 +1,5 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+require_once(dirname(dirname(__FILE__)) . '/SSI.php');
 
 ssi_smileys();
 ?>

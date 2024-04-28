@@ -1,5 +1,7 @@
 <?php
 // Version: 1.1.2; Errors
+global $webmaster_email;
+
 
 $txt[1] = 'No est&aacute;s autorizado para entrar a esta secci&oacute;n';
 

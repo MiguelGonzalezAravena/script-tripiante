@@ -60,7 +60,31 @@ function template_main() {
 
   if (!empty($context['bookmarks'])) {
     while ($row = mysqli_fetch_assoc($request)) {
-      echo '<div class="entryf"><div class="icon"><img alt="Imagen" title="Imagen" src="' . $settings['images_url'] . '/icons/foto.gif" /></div><div class="text_container"><div class="title"><a href="' . $boardurl . '/imagenes/ver/', $row['ID_PICTURE'], '/">', $row['title'], '</a></div><div style="margin:0pt;float:left;" class="data"><p style="margin:0px;padding:0px;" align="right">', $txt['was_created_by'], ' <a style="color:#717171;" href="' . $boardurl . '/perfil/', $row['memberName'], '">', $row['realName'], '</a> | pts: ', $row['points'], ' | <a title="', $txt['send_to_friend'], '" href="' . $boardurl . '/enviar-a-amigo/imagen-', $row['ID_PICTURE'], '"><img alt="" src="' . $settings['images_url'] . '/icons/icono-enviar-mensaje.gif" /></a> | <input name="remove_bookmarks[]" type="checkbox" value="', $row['ID_PICTURE'], '" /></p></div></div></div>';
+      echo '
+        <div class="entryf">
+          <div class="icon">
+            <img alt="Imagen" title="Imagen" src="' . $settings['images_url'] . '/icons/foto.gif" />
+          </div>
+          <div class="text_container">
+            <div class="title">
+              <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '/">' . $row['title'] . '</a>
+            </div>
+            <div style="margin: 0pt; float: left;" class="data">
+              <p style="margin: 0px; padding: 0px;" align="right">
+                ' . $txt['was_created_by'] . '
+                <a style="color: #717171;" href="' . $boardurl . '/perfil/' . $row['memberName'] . '">' . $row['realName'] . '</a>
+                |
+                pts: ' . $row['points'] . '
+                |
+                <a title="' . $txt['send_to_friend'] . '" href="' . $boardurl . '/enviar-a-amigo/imagen-' . $row['ID_PICTURE'] . '">
+                  <img alt="" src="' . $settings['images_url'] . '/icons/icono-enviar-mensaje.gif" />
+                </a>
+                |
+                <input name="remove_bookmarks[]" type="checkbox" value="' . $row['ID_PICTURE'] . '" />
+              </p>
+            </div>
+          </div>
+        </div>';
     }
 
     mysqli_free_result($request);
@@ -73,8 +97,9 @@ function template_main() {
     $lastPage = $records / $end;
     $residue = $records % $end;
 
-    if ($residue > 0)
+    if ($residue > 0) {
       $lastPage = floor($lastPage) + 1;
+    }
 
     echo '
           <div style="clear: left;"></div>
@@ -91,11 +116,13 @@ function template_main() {
     </div>
     <div class="windowbgpag" style="width: 757px;">';
 
-  if ($actualPage > 1)
+  if ($actualPage > 1) {
     echo '<a href="' . $boardurl . '/favoritos/imagen/pag-' . $previousPage . '">&#171; anterior</a>';
+  }
 
-  if ($actualPage < $lastPage)
+  if ($actualPage < $lastPage) {
     echo '<a href="' . $boardurl . '/favoritos/imagen/pag-' . $nextPage . '">siguiente &#187;</a>';
+  }
 
   echo '
             </div>

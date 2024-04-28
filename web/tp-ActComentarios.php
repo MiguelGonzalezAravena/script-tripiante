@@ -1,6 +1,5 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+@require_once(dirname(dirname(__FILE__)) . '/SSI.php');
 
 global $context, $db_prefix, $modSettings, $boardurl;
 
@@ -35,7 +34,7 @@ if ($context['user']['is_guest']) {
         <b>
           <a title="" href="' . $boardurl . '/perfil/' . $realName . '">' . $realName . '</a>
         </b>
-        &nbsp;-&nbsp;
+        -
         <a title="' . $subject . '"  href="' . $boardurl . '/post/' . $row['ID_TOPIC2'] . '/' . $description . '/' . ssi_amigable($subject) . '.html#cmt_' . $row['ID_COMMENT'] . '">' . $subject . '</a>
       </font>
       <br style="margin: 0px; padding: 0px;" />';

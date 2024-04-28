@@ -1369,7 +1369,7 @@ function nuevotema() {
 }
 
 function nuevotema2() {
-  global $context, $boardurl, $ID_MEMBER, $db_prefix, $func;
+  global $context, $boardurl, $ID_MEMBER, $db_prefix;
 
   is_not_guest();
   loadLanguage('Post');
@@ -1410,10 +1410,10 @@ function nuevotema2() {
     $ID_COMMUNITY = $row2['ID_COMMUNITY'];
     $ID_COMMUNITY2 = htmlentities($_POST['comun'], ENT_QUOTES, 'UTF-8');
     $subject = htmlentities($_POST['titulo'], ENT_QUOTES, 'UTF-8');
-    $body = $func['htmlspecialchars']($_POST['cuerpo_comment'], ENT_QUOTES, 'UTF-8');
+    $body = htmlspecialchars($_POST['cuerpo_comment'], ENT_QUOTES, 'UTF-8');
     // TO-DO: Verificar si isSticky y locked son booleanas o integer
-    $isSticky = htmlentities($_POST['sticky'], ENT_QUOTES, 'UTF-8');
-    $locked = htmlentities($_POST['nocoment'], ENT_QUOTES, 'UTF-8');
+    $isSticky = (int) $_POST['sticky'];
+    $locked = (int) $_POST['nocoment'];
     $posterName = $context['user']['name'];
     $posterIP = $_SERVER['REMOTE_ADDR'];
     $posterTime = time();
@@ -1428,8 +1428,8 @@ function nuevotema2() {
 
     if ($verify2['ID_COMMUNITY'] == $ID_COMMUNITY) {
       db_query("
-        INSERT INTO {$db_prefix}community_topic(ID_MEMBER, ID_COMMUNITY, isSticky, locked, posterTime, posterName, posterIP, subject, body, grade)
-        VALUES ($ID_MEMBER, $ID_COMMUNITY, '$isSticky', '$locked', $posterTime, '$posterName', '$posterIP', '$subject', '$body', $grade)", __FILE__, __LINE__);
+        INSERT INTO {$db_prefix}community_topic(ID_MEMBER, ID_COMMUNITY, isSticky, locked, posterTime, posterName, posterIP, subject, body, grade, tags)
+        VALUES ($ID_MEMBER, $ID_COMMUNITY, $isSticky, $locked, $posterTime, '$posterName', '$posterIP', '$subject', '$body', $grade, '')", __FILE__, __LINE__);
 
       $insertar['ID_TOPIC'] = db_insert_id();
     } else {

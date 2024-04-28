@@ -50,6 +50,7 @@ function PrintTopic() {
   while ($row = mysqli_fetch_assoc($request)) {
     // Hide the post or Not? For print results. --- XD
     $row['can_view_post'] = 1;
+
     if (!empty($modSettings['allow_hiddenPost']) && $row['hiddenOption'] > 0) {
       global $sourcedir;
 
@@ -68,13 +69,13 @@ function PrintTopic() {
     @require_once('SSI.php');
 
     $context['posts'][] = array(
-      'subject' => $row['subject'],
+      'subject' => htmlentities($row['subject'], ENT_QUOTES, 'ISO-8859-1'),
       'ID_TOPIC' => $row['ID_TOPIC'],
       'description' => $row['description'],
       'member' => $row['posterName'],
       'time' =>  timeformat($row['posterTime'], false),
       'timestamp' => forum_time(true, $row['posterTime']),
-      'body' => parse_bbc($row['body'], 'print'),
+      'body' => html_entity_decode(parse_bbc(htmlentities($row['body'], ENT_QUOTES, 'ISO-8859-1'), 'print')),
       'subject_html' => ssi_amigable($row['subject']),
     );
 

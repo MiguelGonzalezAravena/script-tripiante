@@ -504,10 +504,9 @@ $counter++;
 function MessageSearch() {}
 function MessageSearch2() {}
 // Send a new message?
-function MessagePost()
-{
+function MessagePost() {
   global $txt, $sourcedir, $db_prefix, $ID_MEMBER, $scripturl, $modSettings;
-  global $context, $options, $func, $language, $user_info;
+  global $context, $options, $language, $user_info;
 
   isAllowedTo('pm_send');
 
@@ -597,7 +596,7 @@ function MessagePost()
       cache_put_data('response_prefix', $context['response_prefix'], 600);
     }
     $form_subject = $row_quoted['subject'];
-    if ($context['reply'] && trim($context['response_prefix']) != '' && $func['strpos']($form_subject, trim($context['response_prefix'])) !== 0)
+    if ($context['reply'] && trim($context['response_prefix']) != '' && strpos($form_subject, trim($context['response_prefix'])) !== 0)
       $form_subject = $context['response_prefix'] . $form_subject;
 
     if (isset($_REQUEST['quote']))
@@ -696,10 +695,9 @@ function MessagePost()
 }
 
 // An error in the message...
-function messagePostError($error_types, $to, $bcc)
-{
+function messagePostError($error_types, $to, $bcc) {
   global $txt, $context, $scripturl, $modSettings, $db_prefix, $ID_MEMBER;
-  global $func, $user_info;
+  global $user_info;
 
   $context['show_spellchecking'] = !empty($modSettings['enableSpellChecking']) && function_exists('pspell_new');
 
@@ -714,8 +712,8 @@ function messagePostError($error_types, $to, $bcc)
   // Set everything up like before....
   $context['to'] = stripslashes($to);
   $context['bcc'] = stripslashes($bcc);
-  $context['subject'] = isset($_REQUEST['subject']) ? $func['htmlspecialchars'](stripslashes($_REQUEST['subject'])) : '';
-  $context['message'] = isset($_REQUEST['message']) ? str_replace(array('  '), array('&nbsp; '), $func['htmlspecialchars'](stripslashes($_REQUEST['message']))) : '';
+  $context['subject'] = isset($_REQUEST['subject']) ? htmlspecialchars(stripslashes($_REQUEST['subject'])) : '';
+  $context['message'] = isset($_REQUEST['message']) ? str_replace(array('  '), array('&nbsp; '), htmlspecialchars(stripslashes($_REQUEST['message']))) : '';
   $context['copy_to_outbox'] = 1;
   $context['reply'] = !empty($_REQUEST['replied_to']);
 
@@ -796,10 +794,9 @@ function messagePostError($error_types, $to, $bcc)
 }
 
 // Send it!
-function MessagePost2()
-{
+function MessagePost2() {
   global $txt, $ID_MEMBER, $context, $sourcedir;
-  global $db_prefix, $user_info, $modSettings, $scripturl, $func;
+  global $db_prefix, $user_info, $modSettings, $scripturl;
 
   isAllowedTo('pm_send');
   require_once($sourcedir . '/Subs-Auth.php');
@@ -852,7 +849,7 @@ function MessagePost2()
     $post_errors[] = 'no_subject';
   if (!isset($_REQUEST['message']) || $_REQUEST['message'] == '')
     $post_errors[] = 'no_message';
-  else if (!empty($modSettings['max_messageLength']) && $func['strlen']($_REQUEST['message']) > $modSettings['max_messageLength'])
+  else if (!empty($modSettings['max_messageLength']) && strlen($_REQUEST['message']) > $modSettings['max_messageLength'])
     $post_errors[] = 'long_message';
   if (empty($_REQUEST['to']) && empty($_REQUEST['bcc']) && empty($_REQUEST['u']))
     $post_errors[] = 'no_to';
@@ -863,14 +860,14 @@ function MessagePost2()
 
   // If they did, give a chance to make ammends.
   if (!empty($post_errors))
-    return messagePostError($post_errors, $func['htmlspecialchars']($_REQUEST['to']), $func['htmlspecialchars']($_REQUEST['bcc']));
+    return messagePostError($post_errors, htmlspecialchars($_REQUEST['to']), htmlspecialchars($_REQUEST['bcc']));
 
   // Want to take a second glance before you send?
   if (isset($_REQUEST['preview']))
   {
     // Set everything up to be displayed.
-    $context['preview_subject'] = $func['htmlspecialchars'](stripslashes($_REQUEST['subject']));
-    $context['preview_message'] = $func['htmlspecialchars'](stripslashes($_REQUEST['message']), ENT_QUOTES);
+    $context['preview_subject'] = htmlspecialchars(stripslashes($_REQUEST['subject']));
+    $context['preview_message'] = htmlspecialchars(stripslashes($_REQUEST['message']), ENT_QUOTES);
     preparsecode($context['preview_message'], true);
 
     // Parse out the BBC if it is enabled.
@@ -884,7 +881,7 @@ function MessagePost2()
     $context['page_title'] = $txt[507] . ' - ' . $context['preview_subject'];
 
     // Pretend they messed up :P.
-    return messagePostError(array(), $func['htmlspecialchars']($_REQUEST['to']), $func['htmlspecialchars']($_REQUEST['bcc']));
+    return messagePostError(array(), htmlspecialchars($_REQUEST['to']), htmlspecialchars($_REQUEST['bcc']));
   }
 
   // Protect from message spamming.
@@ -931,7 +928,7 @@ function MessagePost2()
     {
       foreach ($rec as $index => $member)
         if (strlen(trim($member)) > 0)
-          $input[$rec_type][$index] = $func['htmlspecialchars']($func['strtolower'](stripslashes(trim($member))));
+          $input[$rec_type][$index] = htmlspecialchars(strtolower(stripslashes(trim($member))));
         else
           unset($input[$rec_type][$index]);
     }
@@ -946,12 +943,12 @@ function MessagePost2()
       $member['name'] = strtr($member['name'], array('&#039;' => '\''));
 
       foreach ($input as $rec_type => $to_members)
-        if (array_intersect(array($func['strtolower']($member['username']), $func['strtolower']($member['name']), $func['strtolower']($member['email'])), $to_members))
+        if (array_intersect(array(strtolower($member['username']), strtolower($member['name']), strtolower($member['email'])), $to_members))
         {
           $recipients[$rec_type][] = $member['id'];
 
           // Get rid of this username. The ones that remain were not found.
-          $input[$rec_type] = array_diff($input[$rec_type], array($func['strtolower']($member['username']), $func['strtolower']($member['name']), $func['strtolower']($member['email'])));
+          $input[$rec_type] = array_diff($input[$rec_type], array(strtolower($member['username']), strtolower($member['name']), strtolower($member['email'])));
         }
     }
   }
@@ -1395,9 +1392,8 @@ function markMessages($personal_messages = null, $label = null, $owner = null)
 }
 
 // This function handles adding, deleting and editing labels on messages.
-function ManageLabels()
-{
-  global $txt, $context, $db_prefix, $ID_MEMBER, $scripturl, $func;
+function ManageLabels() {
+  global $txt, $context, $db_prefix, $ID_MEMBER, $scripturl;
 
   // Build the link tree elements...
   $context['linktree'][] = array(
@@ -1425,10 +1421,10 @@ function ManageLabels()
     // Adding a new label?
     if (isset($_POST['add']))
     {
-      $_POST['label'] = strtr($func['htmlspecialchars'](trim($_POST['label'])), array(',' => '&#044;'));
+      $_POST['label'] = strtr(htmlspecialchars(trim($_POST['label'])), array(',' => '&#044;'));
 
-      if ($func['strlen']($_POST['label']) > 30)
-        $_POST['label'] = $func['substr']($_POST['label'], 0, 30);
+      if (strlen($_POST['label']) > 30)
+        $_POST['label'] = substr($_POST['label'], 0, 30);
       if ($_POST['label'] != '')
         $the_labels[] = $_POST['label'];
     }
@@ -1457,10 +1453,10 @@ function ManageLabels()
           continue;
         else if (isset($_POST['label_name'][$id]))
         {
-          $_POST['label_name'][$id] = trim(strtr($func['htmlspecialchars']($_POST['label_name'][$id]), array(',' => '&#044;')));
+          $_POST['label_name'][$id] = trim(strtr(htmlspecialchars($_POST['label_name'][$id]), array(',' => '&#044;')));
 
-          if ($func['strlen']($_POST['label_name'][$id]) > 30)
-            $_POST['label_name'][$id] = $func['substr']($_POST['label_name'][$id], 0, 30);
+          if (strlen($_POST['label_name'][$id]) > 30)
+            $_POST['label_name'][$id] = substr($_POST['label_name'][$id], 0, 30);
           if ($_POST['label_name'][$id] != '')
           {
             $the_labels[(int) $id] = $_POST['label_name'][$id];
@@ -1531,10 +1527,9 @@ function ManageLabels()
 }
 
 // Allows a user to report a personal message they receive to the administrator.
-function ReportMessage()
-{
-  global $txt, $context, $scripturl, $sourcedir, $db_prefix, $ID_MEMBER;
-  global $user_info, $language, $modSettings, $func;
+function ReportMessage() {
+  global $txt, $context, $scripturl, $db_prefix, $ID_MEMBER;
+  global $user_info, $language, $modSettings;
 
   // Check that this feature is even enabled!
   if (empty($modSettings['enableReportPM']) || empty($_REQUEST['pmsg']))
@@ -1644,7 +1639,7 @@ function ReportMessage()
 
         // Plonk it in the array ;)
         $messagesToSend[$cur_language] = array(
-          'subject' => addslashes(($func['strpos']($subject, $txt['pm_report_pm_subject']) === false ? $txt['pm_report_pm_subject'] : '') . $subject),
+          'subject' => addslashes((strpos($subject, $txt['pm_report_pm_subject']) === false ? $txt['pm_report_pm_subject'] : '') . $subject),
           'body' => addslashes($report_body),
           'recipients' => array(
             'to' => array(),

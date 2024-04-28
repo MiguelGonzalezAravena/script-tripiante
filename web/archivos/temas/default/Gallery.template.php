@@ -1,7 +1,7 @@
 <?php
 
 function template_main() {
-  global $db_prefix, $txt, $context, $us;
+  global $db_prefix, $txt, $context, $us, $settings, $boardurl;
 
   // Permissions
   isAllowedTo('smfgallery_view');
@@ -26,7 +26,7 @@ function template_main() {
   }
 
   // TO-DO: ¿Esto está bien?
-  @require_once($_SERVER['DOCUMENT_ROOT'] . '/web/archivos/temas/default/Profile.template.php');
+  require_once(dirname(dirname(__FILE__)) . '/temas/default/Profile.template.php');
 
   if ($us == $context['user']['name']) {
     echo '
@@ -47,7 +47,8 @@ function template_main() {
     $page = (int) $_GET['pag'];
 
     if (isset($page)) {
-      $start = ($page - 1) * $end;
+      $calc = ($page - 1) * $end;
+      $start = $calc > 0 ? $calc : 0;
       $actualPage = (int) $page;
     } else {
       $start = 0;
@@ -152,7 +153,8 @@ function template_main() {
     $page = (int) $_GET['pag'];
 
     if (isset($page)) {
-      $start = ($page - 1) * $end;
+      $calc = ($page - 1) * $end;
+      $start = $calc > 0 ? $calc : 0;
       $actualPage = $page;
     } else {
       $start = 0;
@@ -167,7 +169,7 @@ function template_main() {
       ORDER BY g.ID_PICTURE DESC";
 
     $request2 = db_query("
-      {$query}      
+      {$query}
       LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
     echo '
@@ -446,7 +448,7 @@ function template_view_picture() {
 
   while ($row = mysqli_fetch_assoc($request)) {
     $context['al-azar'][] = array(
-      'title' => $row['title'],
+      'title' => htmlentities($row['title'], ENT_QUOTES, 'ISO-8859-1'),
       'points' => $row['points'],
       'ID_PICTURE' => $row['ID_PICTURE'],
     );
@@ -469,7 +471,7 @@ function template_view_picture() {
   }
 
   if ($context['contando'] > 5 && $context['user']['is_admin']) {
-    echo '<p align="center" style="color: #FF0000;">Verificar Imagen - Tiene ' . $context['contando'] . ' denuncias</p>';
+    echo '<p align="center" style="color: #FF0000;">Verificar imagen - tiene ' . $context['contando'] . ' denuncias</p>';
   }
 
   echo '
@@ -600,12 +602,11 @@ function template_view_picture() {
     <b style="font-size: 12px; color: #747474; text-shadow: #6A5645 0px 1px 1px;">' . (!empty($membergropu2) ? $membergropu2 : $membergropu) . '</b>
     <br />
     <span title="' . (!empty($membergropu2) ? $membergropu2 : $membergropu) . '">
-      <img  alt="" src="' . str_replace('1#rangos', $settings['images_url'] . '/rangos', $medalla) . '" />
+      <img alt="" src="' . str_replace('1#rangos', $settings['images_url'] . '/rangos', $medalla) . '" />
     </span>';
 
   if (!empty($settings['show_gender']) && $context['gender']['image'] != '') {
     echo '
-      &nbsp;
       <span title="' . ssi_sexo1($context['gender']) . '">' . ssi_sexo2(ssi_sexo3($context['gender'])) . '</span>';
   }
 
@@ -628,14 +629,12 @@ function template_view_picture() {
         <div style="margin-bottom: 2px;">
           <span style="font-size: 12px;">
             <img alt="" src="' . $settings['images_url'] . '/icons/mensaje_para.gif" border="0" />
-            &nbsp;
             <a href="' . $boardurl . '/mensajes/a/' . $context['memberName'] . '" title="Enviar mensaje">Enviar mensaje</a>
           </span>
         </div>
         <div style="margin-bottom: 4px;">
           <span class="icons fot2" style="font-size: 12px;">
             <a href="' . $boardurl . '/imagenes/' . $context['memberName'] . '" title="Sus im&aacute;genes">
-              &nbsp;
               Sus im&aacute;genes
             </a>
           </span>
@@ -659,19 +658,16 @@ function template_view_picture() {
     <br />
     <div class="fondoavatar" style="overflow: hidden; width: 130px;">
       <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">PUNTOS:</b>
-      &nbsp;
       <b>
         <span id="cant_pts_post">' . $context['money'] . '</span>
       </b>
       <br />
       <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">POST:</b>
-      &nbsp;
       <b>
         <a href="' . $boardurl . '/user-post/' . $context['memberName'] . '">' . $context['topics'] . '</a>
       </b>
       <br />
       <b style="color: #FE8F47; text-shadow: #6A5645 0px 1px 1px;">COMENTARIOS:</b>
-      &nbsp;
       <b>
         <a href="' . $boardurl . '/user-comment/' . $context['memberName'] . '">' . $context['comentuser'] . '</a>
       </b>
@@ -755,37 +751,35 @@ function template_view_picture() {
           </div>
           <div class="windowbg size11" style="width: 370px; padding: 4px;">';
 
-  if ($context['user']['is_logged']) {
+  if ($iduser == $context['user']['id'] || $context['allow_admin']) {
     echo '<form action="' . $boardurl . '/eliminar-imagen/' . $context['gallery_pic']['ID_PICTURE'] . '/" method="post" accept-charset="' . $context['character_set'] . '" style="margin: 0px; padding: 0px;" name="causa" id="causa">';
   }
 
   if ($context['allow_admin']) {
     echo '
       <input class="login" style="font-size: 11px;" value="Editar img" title="Editar img" onclick="location.href=\'' . $boardurl . '/editar-imagen/id-' . $context['gallery_pic']['ID_PICTURE']  . '\'; return errorrojo2(this.form.causa.value);" type="button" />
-      &nbsp;
       <input class="login" style="font-size: 11px;" value="Eliminar img" title="Eliminar img" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta imagen?\')) return false; return errorrojo2(this.form.causa.value);" type="submit" />
-      &nbsp;
       <input type="text" id="causa" name="causa" maxlength="50" size="30" />
       <center>
         <label id="errors"></label>
       </center>
       <div class="hrs"></div>';
-  } else if ($iduser==$context['user']['id'] || $context['allow_admin']) {
+  } else if ($iduser == $context['user']['id']) {
     echo '
       <input class="login" style="font-size: 11px;" value="Editar img" title="Editar img" onclick="location.href=\'' . $boardurl . '/editar-imagen/id-' . $context['gallery_pic']['ID_PICTURE']  . '\'" type="button" />
-      &nbsp;
       <input class="login" style="font-size: 11px;" value="Eliminar img" title="Eliminar img" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar esta imagen?\')) return false; location.href=\'' . $boardurl . '/eliminar-img/' . $context['current_topic'] . '/\'" type="button" />
       <div class="hrs"></div>';
   }
 
-  if ($iduser == $context['user']['id']) {
+  if ($iduser == $context['user']['id'] || $context['allow_admin']) {
     echo '</form>';
   }
 
   if ($context['Conocido'] || $context['Vecino'] || $context['Amigo'] || $context['Familiar'] || $context['Casero'] || $context['allow_admin']) {
     echo '
       <span id="span_opciones1" class="size10">
-        <b class="size11">Dar puntos:</b>';
+        <b class="size11">Dar puntos:</b>
+        ';
 
     $puntos = $context['user']['money'];
 
@@ -800,7 +794,6 @@ function template_view_picture() {
     }
 
     echo '
-        &nbsp;
         <i>
           <strong>de ' . $context['user']['money'] . ' disp.</strong>
         </i>
@@ -816,9 +809,9 @@ function template_view_picture() {
       <center>
         <span id="span_opciones2" style="text-align: center; display: block;">
           <a class="icons agregar_favoritos" href="#" onclick="add_favoritos_img(\'' . $context['gallery_pic']['ID_PICTURE'] . '\'); return false;">Agregar a Favoritos</a>
-          &nbsp;|&nbsp;
+          |
           <a class="icons denunciar_post" title="Denunciar Imagen" href="' . $boardurl . '/denuncia/imagen-' . $context['gallery_pic']['ID_PICTURE'] . '">Denunciar Imagen</a>
-          &nbsp;|&nbsp;
+          |
           <a class="icons recomendar_post" href="' . $boardurl . '/enviar-a-amigo/imagen-' . $context['gallery_pic']['ID_PICTURE'] . '">Enviar a un amigo</a>
         </span>
       </center>';
@@ -869,25 +862,20 @@ function template_view_picture() {
           <div class="windowbg size11" style="width: 376px; padding: 4px;">
             <center>
               <span class="icons visitas">
-                &nbsp;
                 ' . $context['gallery_pic']['views'] . '
-                &nbsp;
                 visitas
               </span>
               <span class="icons fav">
                 <span id="cant_favs_post">' . $context['fav1'] . '</span>
-                &nbsp;
                 favoritos
               </span>
               <span class="icons puntos">
                 <span id="cant_pts_post_dos">' . $context['gallery_pic']['points'] . '</span>
-                &nbsp;
                 puntos
               </span>
             </center>
             <div class="hrs"></div>
             <b>Creado el:</b>
-            &nbsp;
             <span property="dc:date" content="' . $fecha . '">' . $fecha . '</span>
             <div class="hrs"></div>
             <div style="float: left; margin-right: 4px;">
@@ -1026,18 +1014,15 @@ function template_view_picture() {
       }
 
       echo '
-        &nbsp;
         <a onclick="citar_comment(' . $pic_comment['ID_COMMENT'] . ')" href="javascript:void(0)">#' . $cantidad++ . '</a>
-        &nbsp;
         <b id="autor_cmnt_' . $pic_comment['ID_COMMENT'] . '" user_comment="' . $pic_comment['memberName'] . '" text_comment="' . $pic_comment['comment2'] . '">
           <a href="' . $boardurl . '/perfil/' . $pic_comment['memberName'] . '">' . $pic_comment['realName'] . '</a>
         </b>
-        &nbsp;|&nbsp;
-        <span class="size10">' . date("d.n.y H:i:s", $pic_comment['date']) . '</span>';
+        |
+        <span class="size10">' . date("d.m.Y H:i:s", $pic_comment['date']) . '</span>';
 
       if ($context['user']['is_logged']) {
         echo '
-          &nbsp;
           <a href="' . $boardurl . '/mensajes/a/' . $pic_comment['memberName'] . '" title="Enviar MP a: ' . $pic_comment['realName'] . '">
             <img alt="" src="' . $settings['images_url'] . '/icons/mensaje_para.gif" style="margin-top: 2px; margin-right: 2px;" align="top" border="0" />
           </a>
@@ -1065,14 +1050,13 @@ function template_view_picture() {
   if ($context['sin_coment']) {
     if ($context['allow_admin'] || $iduser == $context['user']['id']) {
       echo '
-        <span class="size10">Comentarios Seleccionados:</span>
-        &nbsp;
+        <span class="size10">Comentarios seleccionados:</span>
         <input class="login" style="font-size: 9px;" type="submit" value="Eliminar" />';
     }
   }
 
   echo '
-          <input value="' . $context['id_img'] . '" name="idimg" id="idimg" type="hidden" />
+          <input value="' . $context['gallery_pic_id'] . '" name="idimg" id="idimg" type="hidden" />
         </form>
       </div>
     </div>
@@ -1112,15 +1096,15 @@ function template_view_picture() {
                     </div>
                   </td>
                   <td valign="top">
-                    <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt=""><b>&nbsp;Se eliminan los comentarios:</b><br />
+                    <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="">&nbsp;<b>Se eliminan los comentarios:</b><br />
                     <img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="" />&nbsp;Que contenga tipograf&iacute;as muy grandes, abuso de may&uacute;sculas o con el claro efecto de llamar la atenci&oacute;n.<br />
                     <img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="" />&nbsp;Que el usuario haya comentado primero su imagen.<br />
                     <img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="" />&nbsp;Que contengan insultos, ofensas, etc. (hacia otro usuario o de forma general).<br />
                     <img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="" />&nbsp;Que sea un comentario racistas.<br />
-                    <img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="" />&nbsp;Que contenga SPAM.
+                    <img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="" />&nbsp;Que contenga spam.
                     <p style="padding: 0px; margin: 0px;" align="right">[<a href="' . $boardurl . '/protocolo/" title="Protocolo completo">Protocolo completo</a>]</p>
                     <br />
-                    <input class="login" type="button" id="button_add_comment" value="Enviar Comentario" onclick="add_comment_img(\'' . $context['gallery_pic']['ID_PICTURE'] . '\'); return false;" tabindex="2" />
+                    <input class="login" type="button" id="button_add_comment" value="Enviar comentario" onclick="add_comment_img(\'' . $context['gallery_pic']['ID_PICTURE'] . '\'); return false;" tabindex="2" />
                   </td>
                 </tr>
                 </table>
@@ -1213,8 +1197,7 @@ function printSmileys() {
         echo '
         <a href="javascript:void(0);" onclick="replaceText(\' ' . $smiley['code'] . '\', document.forms.nuevocoment.cuerpo_comment); return false;">
           <img src="' . $settings['smileys_url'] . '/' . $smiley['filename'] . '" align="bottom" alt="' . $smiley['description'] . '" title="' . $smiley['description'] . '" />
-        </a>
-        &nbsp;';
+        </a>';
     }
 
     if (!empty($context['smileys']['popup'])) {

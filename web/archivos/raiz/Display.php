@@ -268,38 +268,40 @@ function Display() {
     mysqli_free_result($request);
 
     // Verificar si hay comentarios
-    $request = db_query("
-      SELECT *
-      FROM {$db_prefix}comments
-      WHERE ID_TOPIC = " . $topic, __FILE__, __LINE__);
+    $query = "
+      SELECT c.comment, c.comment AS text_comment, c.ID_TOPIC, c.ID_MEMBER, mem.ID_MEMBER, mem.memberName, mem.realName, c.ID_COMMENT, c.posterTime
+      FROM {$db_prefix}comments AS c
+      LEFT JOIN {$db_prefix}members AS mem ON mem.ID_MEMBER = c.ID_MEMBER
+      WHERE c.ID_TOPIC = $topic
+      AND mem.ID_MEMBER IS NOT NULL
+      AND mem.memberName IS NOT NULL
+      AND mem.realName IS NOT NULL
+      ORDER BY c.ID_COMMENT ASC";
 
-    $context['numcom'] = mysqli_num_rows($request);
-    $context['haycom'] = mysqli_fetch_assoc($request);
+    $request = db_query($query, __FILE__, __LINE__);
+
+    $context['number_comments'] = mysqli_num_rows($request);
+    // $context['haycom'] = mysqli_fetch_assoc($request);
 
     // Marcar comentarios
-    $request = db_query("
-      SELECT c.comment, c.comment AS comentario2, c.ID_TOPIC, c.ID_MEMBER, mem.ID_MEMBER, mem.memberName, mem.realName, c.ID_COMMENT, c.posterTime
-      FROM ({$db_prefix}comments AS c, {$db_prefix}members AS mem)
-      WHERE c.ID_TOPIC = $topic
-      AND c.ID_MEMBER = mem.ID_MEMBER
-      ORDER BY c.ID_COMMENT ASC", __FILE__, __LINE__);
+    $request = db_query($query, __FILE__, __LINE__);
 
-    $context['comentarios'] = array();
+    $context['comments'] = array();
 
     while ($row = mysqli_fetch_assoc($request)) {
       $row['comment'] = parse_bbc($row['comment'], '1', $row['ID_MSG']);
-      $row['comentario0'] = parse_bbc($row['comentario0'], '0', $row['ID_MSG']);
-          
-      $context['comentarios'][] = array(
-        'comentario2' => censorText($row['comentario2']),
-        'comment' => censorText($row['comment']),
-        'citar' => censorText($row['comentario0']),
-        'user' => $row['ID_MEMBER'],
-        'nomuser' => censorText($row['realName']),
-        'nommem' => censorText($row['memberName']),
+      // $row['text_comment'] = parse_bbc($row['text_comment'], '0', $row['ID_MSG']);
+
+      $aux = array(
         'id' => $row['ID_COMMENT'],
-        'fecha' => $row['posterTime'],
+        'text_comment' => censorText($row['text_comment']),
+        'comment' => censorText($row['comment']),
+        'user_comment' => censorText($row['realName']),
+        'member_name' => censorText($row['memberName']),
+        'date_time' => $row['posterTime'],
       );
+
+      array_push($context['comments'], $aux);
     }
 
     mysqli_free_result($request);
@@ -425,7 +427,7 @@ function prepareDisplayContext($reset = false) {
     $message['can_view_post'] = $context['can_view_post'];
   }
 
-  $message['body'] = parse_bbc($message['body'], $message['smileysEnabled'], $message['ID_MSG']);
+  $message['body'] = html_entity_decode(parse_bbc(htmlentities($message['body'], ENT_QUOTES, 'ISO-8859-1'), $message['smileysEnabled'], $message['ID_MSG']));
 
   $output = array(
     'can_view_post' => $message['can_view_post'],

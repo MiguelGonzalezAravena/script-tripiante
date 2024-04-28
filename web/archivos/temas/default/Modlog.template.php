@@ -57,24 +57,23 @@ function template_main() {
           echo '
             <tr>
               <td>
-                <span style="color:#B97CFF;">' . $historial['TYPE'] . ':</span>
-                &nbsp;';
+                <span style="color: #B97CFF;">' . $historial['TYPE'] . ':</span>
+                ';
 
           if ($historial['ACTION'] == 'modify') {
-            echo '&nbsp;<a href="' . $boardurl . '/post/' . $historial['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($historial['subject']) . '.html">' . $historial['subject'] . '</a>';
+            echo '<a href="' . $boardurl . '/post/' . $historial['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($historial['subject']) . '.html">' . $historial['subject'] . '</a>';
           } else if ($historial['ACTION'] == 'remove') {
             echo $historial['subject'];
           }
 
           echo '
-                &nbsp;
                 (ID: ' . $historial['ID_TOPIC'] . ')
               </td>
               <td>
                 <a href="' . $boardurl . '/perfil/' . $historial['realName2'] . '" title="' . $historial['realName2'] . '" alt="' . $historial['realName2'] . '">' . $historial['realName2'] . '</a>
               </td>
               <td>
-                ' . (empty($historial['reason']) ? '&nsbp-&nbsp;' : $historial['reason']) . '
+                ' . (empty($historial['reason']) ? '&nbsp;-&nbsp;' : $historial['reason']) . '
               </td>
               <td>
                 ' . traduccion($historial['ACTION']) . '
@@ -89,7 +88,7 @@ function template_main() {
             <tr>
               <td>
                 <span style="color: #B97CFF;">' . $historial['TYPE'] . ':</span>
-                &nbsp;';
+                ';
 
           if ($historial['ACTION'] == 'modify') {
             echo '&nbsp;<a href="' . $boardurl . '/imagenes/ver/' . $historial['ID_TOPIC'] . '">' . $historial['subject'] . '</a>';
@@ -98,14 +97,13 @@ function template_main() {
           }
 
           echo '
-                &nbsp;
                 (ID: ' . $historial['ID_TOPIC'] . ')
               </td>
               <td>
                 <a href="' . $boardurl . '/perfil/' . $historial['realName2'] . '" title="' . $historial['realName2'] . '" alt="' . $historial['realName2'] . '">' . $historial['realName2'] . '</a>
               </td>
               <td>
-                ' . (empty($historial['reason']) ? '&nsbp-&nbsp;' : $historial['reason']) . '
+                ' . (empty($historial['reason']) ? '&nbsp;-&nbsp;' : $historial['reason']) . '
               </td>
               <td>
                 ' . traduccion($historial['ACTION']) . '

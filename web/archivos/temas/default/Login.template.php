@@ -173,7 +173,7 @@ function template_admin_login() {
                     <tr>
                       <td width="150px" style="text-align:right;"><b class="size11">' . $txt[36] . ':</b></td>
                       <td width="150px" style="text-align:left;">
-                        <input type="password" name="admin_pass" size="24" maxlength="64" style="font-size: 10px; width: 150px;" id="passwrd" name="passwrd" class="ilogin" onfocus="foco(this);" onblur="no_foco(this);" />
+                        <input type="password" name="admin_pass" size="24" maxlength="64" style="font-size: 10px; width: 150px;" id="passwrd" class="ilogin" onfocus="foco(this);" onblur="no_foco(this);" />
                       </td>
                     </tr>
                   </table>

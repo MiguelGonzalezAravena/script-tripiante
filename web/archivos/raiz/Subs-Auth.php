@@ -148,8 +148,7 @@ function InMaintenance()
   $context['page_title'] = &$txt[155];
 }
 
-function adminLogin()
-{
+function adminLogin() {
   global $context, $scripturl, $txt;
 
   loadLanguage('Admin');
@@ -213,8 +212,7 @@ function adminLogin()
   trigger_error('Hacking attempt...', E_USER_ERROR);
 }
 
-function adminLogin_outputPostVars($k, $v)
-{
+function adminLogin_outputPostVars($k, $v) {
   if (!is_array($v))
     return '
 <input type="hidden" name="' . htmlspecialchars($k) . '" value="' . strtr(stripslashes($v), array('"' => '&quot;', '<' => '&lt;', '>' => '&gt;')) . '" />';
@@ -229,8 +227,7 @@ function adminLogin_outputPostVars($k, $v)
 }
 
 // Show an error message for the connection problems.
-function show_db_error($loadavg = false)
-{
+function show_db_error($loadavg = false) {
   global $sourcedir, $mbname, $maintenance, $mtitle, $mmessage, $modSettings;
   global $db_connection, $webmaster_email, $db_last_error, $db_error_send;
 
@@ -301,9 +298,8 @@ function show_db_error($loadavg = false)
 }
 
 // Find members by email address, username, or real name.
-function findMembers($names, $use_wildcards = false, $buddies_only = false, $max = null)
-{
-  global $db_prefix, $scripturl, $user_info, $modSettings, $func;
+function findMembers($names, $use_wildcards = false, $buddies_only = false, $max = null) {
+  global $db_prefix, $scripturl, $user_info, $modSettings;
 
   // If it's not already an array, make it one.
   if (!is_array($names))
@@ -313,7 +309,7 @@ function findMembers($names, $use_wildcards = false, $buddies_only = false, $max
   foreach ($names as $i => $name)
   {
     // Add slashes, trim, and fix wildcards for each name.
-    $names[$i] = addslashes(trim($func['strtolower']($name)));
+    $names[$i] = addslashes(trim(strtolower($name)));
 
     $maybe_email |= strpos($name, '@') !== false;
 
@@ -365,9 +361,8 @@ function findMembers($names, $use_wildcards = false, $buddies_only = false, $max
   return $results;
 }
 
-function JSMembers()
-{
-  global $context, $scripturl, $user_info, $func;
+function JSMembers() {
+  global $context, $scripturl, $user_info;
 
   checkSession('get');
 
@@ -383,7 +378,7 @@ function JSMembers()
   }
 
   if (isset($_REQUEST['search']))
-    $context['last_search'] = $func['htmlspecialchars'](stripslashes($_REQUEST['search']), ENT_QUOTES);
+    $context['last_search'] = htmlspecialchars(stripslashes($_REQUEST['search']), ENT_QUOTES);
   else
     $_REQUEST['start'] = 0;
 
@@ -391,7 +386,7 @@ function JSMembers()
   $context['input_box_name'] = isset($_REQUEST['input']) && preg_match('~^[\w-]+$~', $_REQUEST['input']) === 1 ? $_REQUEST['input'] : 'to';
 
   // Take the delimiter over GET in case it's \n or something.
-  $context['delimiter'] = isset($_REQUEST['delim']) ? $func['htmlspecialchars'](stripslashes($_REQUEST['delim'])) : ', ';
+  $context['delimiter'] = isset($_REQUEST['delim']) ? htmlspecialchars(stripslashes($_REQUEST['delim'])) : ', ';
   $context['quote_results'] = !empty($_REQUEST['quote']);
 
   // List all the results.
@@ -404,7 +399,7 @@ function JSMembers()
   // If the user has done a search, well - search.
   if (isset($_REQUEST['search']))
   {
-    $_REQUEST['search'] = $func['htmlspecialchars'](stripslashes($_REQUEST['search']), ENT_QUOTES);
+    $_REQUEST['search'] = htmlspecialchars(stripslashes($_REQUEST['search']), ENT_QUOTES);
 
     $context['results'] = findMembers(array($_REQUEST['search']), true, $context['buddy_search']);
     $total_results = count($context['results']);
@@ -431,14 +426,13 @@ function JSMembers()
     $context['links']['up'] = $scripturl . '?action=pm;sa=send' . (empty($_REQUEST['u']) ? '' : ';u=' . $_REQUEST['u']);
 }
 
-function RequestMembers()
-{
-  global $user_info, $db_prefix, $txt, $func;
+function RequestMembers() {
+  global $user_info, $db_prefix, $txt;
 
   checkSession('get');
 
-  $_REQUEST['search'] = $func['htmlspecialchars'](stripslashes($_REQUEST['search'])) . '*';
-  $_REQUEST['search'] = addslashes(trim($func['strtolower']($_REQUEST['search'])));
+  $_REQUEST['search'] = htmlspecialchars(stripslashes($_REQUEST['search'])) . '*';
+  $_REQUEST['search'] = addslashes(trim(strtolower($_REQUEST['search'])));
   $_REQUEST['search'] = strtr($_REQUEST['search'], array('%' => '\%', '_' => '\_', '*' => '%', '?' => '_', '&#038;' => '&amp;'));
 
   if (function_exists('iconv'))
@@ -485,8 +479,7 @@ function RequestMembers()
 }
 
 // This function generates a random password for a user and emails it to them.
-function resetPassword($memID, $username = null)
-{
+function resetPassword($memID, $username = null) {
   global $db_prefix, $scripturl, $context, $txt, $sourcedir, $modSettings;
 
   // Language... and a required file.
@@ -550,9 +543,8 @@ function resetPassword($memID, $username = null)
 }
 
 // This function simply checks whether a password meets the current forum rules.
-function validatePassword($password, $username, $restrict_in = array())
-{
-  global $modSettings, $func;
+function validatePassword($password, $username, $restrict_in = array()) {
+  global $modSettings;
 
   // Perform basic requirements first.
   if (strlen($password) < (empty($modSettings['password_strength']) ? 4 : 8))
@@ -576,7 +568,7 @@ function validatePassword($password, $username, $restrict_in = array())
 
   // Otherwise, hard test next, check for numbers and letters, uppercase too.
   $good = preg_match('~(\D\d|\d\D)~', $password) != 0;
-  $good &= $func['strtolower']($password) != $password;
+  $good &= strtolower($password) != $password;
 
   return $good ? null : 'chars';
 }

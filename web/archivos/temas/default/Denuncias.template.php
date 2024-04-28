@@ -15,7 +15,8 @@ function template_main() {
   $page = (int) $_GET['pag'];
 
   if (isset($page)) {
-    $start = ($page - 1) * $end;
+    $calc = ($page - 1) * $end;
+    $start = $calc > 0 ? $calc : 0;
     $actualPage = $page;
   } else {
     $start = 0;
@@ -87,7 +88,7 @@ function template_main() {
         </td>
         <tr>
           <td width="20%">
-            <b class="size11">Post Denunciado:&nbsp;</b>
+            <b class="size11">Post denunciado:</b>
           </td>
           <td>
             <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" title="' . $row['subject'] . '">' . $row['subject'] . '</a>
@@ -95,7 +96,7 @@ function template_main() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Autor del post:&nbsp;</b>
+            <b class="size11">Autor del post:</b>
           </td>
           <td>
             <div style="margin-bottom: 2px;">
@@ -117,7 +118,7 @@ function template_main() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Informar del post:&nbsp;</b>
+            <b class="size11">Informar del post:</b>
           </td>
           <td>';
 
@@ -132,7 +133,7 @@ function template_main() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Usuario que denunci&oacute;:&oacute;</b>
+            <b class="size11">Usuario que denunci&oacute;:</b>
           </td>
           <td>
             <a href="' . $boardurl . '/perfil/' . $row['memberName1'] . '" title="' . $row['realName1'] . '">' . $row['realName1'] . '</a>
@@ -140,7 +141,7 @@ function template_main() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Raz&oacute;n: </b>
+            <b class="size11">Raz&oacute;n:</b>
           </td>
           <td>
             ' . $row['reason'] . '
@@ -148,7 +149,7 @@ function template_main() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Comentario:&nbsp;</b>
+            <b class="size11">Comentario:</b>
           </td>
           <td>' . $comentario . '</td>
         </tr>';
@@ -184,8 +185,7 @@ function template_main() {
     echo '
       </div>
       <p align="right">
-        <span class="size10">Denuncia/s Seleccionada/s:</span>
-        &nbsp;
+        <span class="size10">Denuncia/s seleccionada/s:</span>
         <input class="login" style="font-size: 9px;" type="submit" value="Eliminar" />
       </p>';
   }
@@ -210,7 +210,8 @@ function template_imagen() {
   $page = (int) $_GET['pag'];
 
   if (isset($page)) {
-    $start = ($page - 1) * $end;
+    $calc = ($page - 1) * $end;
+    $start = $calc > 0 ? $calc : 0;
     $actualPage = (int) $page;
   } else {
     $start = 0;
@@ -280,7 +281,7 @@ function template_imagen() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Post Denunciado:&nbsp;</b>
+            <b class="size11">Post denunciado:</b>
           </td>
           <td>
             <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_TOPIC'] . '" title="' . $row['title'] . '">' . $row['title'] . '</a>
@@ -288,7 +289,7 @@ function template_imagen() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Usuario que denunci&oacute;:&nbsp;</b>
+            <b class="size11">Usuario que denunci&oacute;:</b>
           </td>
           <td>
             <a href="' . $boardurl . '/perfil/' . $row['memberName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
@@ -296,13 +297,13 @@ function template_imagen() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Raz&oacute;n:&nbsp;</b>
+            <b class="size11">Raz&oacute;n:</b>
           </td>
           <td>' . $row['reason'] . '</td>
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Comentario:&nbsp;</b>
+            <b class="size11">Comentario:</b>
           </td>
           <td>' . $comentario . '</td>
         </tr>';
@@ -338,8 +339,7 @@ function template_imagen() {
     echo '
       </div>
       <p align="right">
-        <span class="size10">Denuncia/s Seleccionada/s:</span>
-        &nbsp;
+        <span class="size10">Denuncia/s seleccionada/s:</span>
         <input class="login" style="font-size: 9px;" type="submit" value="Eliminar" />
       </p>';
   }
@@ -364,7 +364,8 @@ function template_user() {
   $page = (int) $_GET['pag'];
 
   if (isset($page)) {
-    $start = ($page - 1) * $end;
+    $calc = ($page - 1) * $end;
+    $start = $calc > 0 ? $calc : 0;
     $actualPage = (int) $page;
   } else {
     $start = 0;
@@ -372,7 +373,9 @@ function template_user() {
   }
 
   $query = "
-    SELECT mem.ID_MEMBER, mem.memberName AS memberName1, mem.realName AS realName1, mem2.ID_MEMBER, mem2.memberName AS memberName2, mem2.realName AS realName2, den.ID_DENUNCIATIONS, den.ID_TOPIC, den.ID_MEMBER, den.TYPE, den.comment, den.reason
+    SELECT
+      mem.ID_MEMBER, mem.memberName AS memberName1, mem.realName AS realName1, mem2.ID_MEMBER, mem2.memberName AS memberName2,
+      mem2.realName AS realName2, den.ID_DENUNCIATIONS, den.ID_TOPIC, den.ID_MEMBER, den.TYPE, den.comment, den.reason
     FROM ({$db_prefix}members AS mem, {$db_prefix}members AS mem2, {$db_prefix}denunciations AS den)
     WHERE mem.ID_MEMBER = den.ID_MEMBER
     AND den.ID_TOPIC = mem2.ID_MEMBER
@@ -435,7 +438,7 @@ function template_user() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Usuario Denunciado:&nbsp;</b>
+            <b class="size11">Usuario denunciado:</b>
           </td>
           <td>
             <a href="' . $boardurl . '/perfil/' . $row['memberName2'] . '" title="' . $row['realName2'] . '">' . $row['realName2'] . '</a>
@@ -443,7 +446,7 @@ function template_user() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Usuario que denunci&oacute;:&nbsp;</b>
+            <b class="size11">Usuario que denunci&oacute;:</b>
           </td>
           <td>
             <a href="' . $boardurl . '/perfil/' . $row['memberName1'] . '" title="' . $row['realName1'] . '">' . $row['realName1'] . '</a>
@@ -451,13 +454,13 @@ function template_user() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Raz&oacute;n:&nbsp;</b>
+            <b class="size11">Raz&oacute;n:</b>
           </td>
           <td>' . $row['reason'] . '</td>
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Comentario:&nbsp;</b>
+            <b class="size11">Comentario:</b>
           </td>
           <td>' . $comentario . '</td>
         </tr>';
@@ -492,8 +495,8 @@ function template_user() {
   if (!$count <= 0) {
     echo '
       <p align="right">
-        <span class="size10">Denuncia/s Seleccionada/s:</span>
-        &nbsp;<input class="login" style="font-size: 9px;" type="submit" value="Eliminar" />
+        <span class="size10">Denuncia/s seleccionada/s:</span>
+        <input class="login" style="font-size: 9px;" type="submit" value="Eliminar" />
       </p>';
   }
 
@@ -517,7 +520,8 @@ function template_comunidades() {
   $page = (int) $_GET['pag'];
 
   if (isset($page)) {
-    $start = ($page-1)*$end;
+    $calc = ($page - 1) * $end;
+    $start = $calc > 0 ? $calc : 0;
     $actualPage = $page;
   } else {
     $start = 0;
@@ -588,7 +592,7 @@ function template_comunidades() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Comunidad Denunciada:&nbsp;</b>
+            <b class="size11">Comunidad denunciada:</b>
           </td>
           <td>
             <a href="' . $boardurl . '/comunidades/' . $row['friendly_url'] . '" title="' . $row['friendly_url'] . '">' . $row['title'] . '</a>
@@ -596,7 +600,7 @@ function template_comunidades() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Usuario que denunci&oacute;:&nbsp;</b>
+            <b class="size11">Usuario que denunci&oacute;:</b>
           </td>
           <td>
             <a href="' . $boardurl . '/perfil/' . $row['memberName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
@@ -604,13 +608,13 @@ function template_comunidades() {
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Raz&oacute;n:&nbsp;</b>
+            <b class="size11">Raz&oacute;n:</b>
           </td>
           <td>' . $row['reason'] . '</td>
         </tr>
         <tr>
           <td width="20%">
-            <b class="size11">Comentario:&nbsp;</b>
+            <b class="size11">Comentario:</b>
           </td>
           <td>' . $comentario . '</td>
         </tr>';
@@ -646,8 +650,7 @@ function template_comunidades() {
   if (!$count <= 0) {
     echo '
       <p align="right">
-        <span class="size10">Denuncia/s Seleccionada/s:</span>
-        &nbsp;
+        <span class="size10">Denuncia/s seleccionada/s:</span>
         <input class="login" style="font-size: 9px;" type="submit" value="Eliminar" />
       </p>';
   }

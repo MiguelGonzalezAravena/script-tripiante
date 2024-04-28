@@ -103,21 +103,21 @@ function template_eliminarc() {
 }
 
 function template_eliminarci() {
-  global $db_prefix;
+  global $db_prefix, $boardurl;
 
   $idimg = (int) $_POST['idimg'];
 
   // TO-DO: Validar permisos antes de eliminar
-  if (!empty($_POST['campos']))   {
+  if (!empty($_POST['campos'])) {
     $aLista = array_keys($_POST['campos']);
+
     db_query("
       DELETE FROM {$db_prefix}gallery_comment
       WHERE ID_COMMENT IN (" . implode(',', $aLista) . ")", __FILE__, __LINE__);
   }
 
-  header("Location: {$_SERVER['HTTP_REFERER']}");
+  header('Location: ' . $boardurl . '/imagenes/ver/' . $idimg . '/');
 }
-
 
 function template_enviardenuncia() {
   global $context, $db_prefix, $boardurl;

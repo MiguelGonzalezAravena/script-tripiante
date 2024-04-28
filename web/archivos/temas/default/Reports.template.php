@@ -304,8 +304,10 @@ function template_print() {
 
 // Footer of the print page.
 function template_print_below() {
+  global $mbname, $boardurl;
+
   echo '
-        <div align="center" style="margin-top: 2ex;" class="smalltext">', theme_copyright(), '</div>
+        <div align="center" style="margin-top: 2ex;" class="smalltext">&copy; ' . date("Y") . ' ' . $mbname . ' - '  . $boardurl . '</div>
       </body>
     </html>';
 }

@@ -43,17 +43,18 @@ function template_main() {
     echo '
       <div style="margin-bottom:8px;">
         <div class="box_140" style="float:left; margin-right:8px;">
-          <div class="box_title" style="width: 138px;"><div class="box_txt box_140-34">Publicado por:</div>
-          <div class="box_rss">
-            <div class="icon_img">
-              <a href="' . $boardurl . '/rss/post-user/' . $message['member']['username'] . '">
-                <img alt="" src="' . $settings['images_url'] . '/icons/tpbig-v1-iconos.gif?v3.2.3" style="cursor: pointer; margin-top: -352px; display: inline;" />
-              </a>
+          <div class="box_title" style="width: 138px;">
+            <div class="box_txt box_140-34">Publicado por:</div>
+            <div class="box_rss">
+              <div class="icon_img">
+                <a href="' . $boardurl . '/rss/post-user/' . $message['member']['username'] . '">
+                  <img alt="" src="' . $settings['images_url'] . '/icons/tpbig-v1-iconos.gif?v3.2.3" style="cursor: pointer; margin-top: -352px; display: inline;" />
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="windowbg" style="width: 130px; padding: 4px;">
-          <center>';
+          <div class="windowbg" style="width: 130px; padding: 4px;">
+            <center>';
 
     if (!empty($settings['show_user_images']) && empty($options['show_no_avatars']) && !empty($message['member']['avatar']['name'])) {
       echo '
@@ -179,7 +180,7 @@ function template_main() {
       <div class="box_780" style="float: left;">
         <div class="box_title" style="width: 772px;">
           <div class="box_txt box_780-34">
-            <center>' . $context['subject'] . '</center>
+            <center>' . htmlentities($context['subject'], ENT_QUOTES, 'ISO-8859-1') . '</center>
           </div>
           <div class="box_rss">
             <div class="icon_img">
@@ -242,7 +243,6 @@ function template_main() {
     if ($context['allow_admin'] || $iduser == $context['user']['id']) {
       echo '
         <input class="login" style="font-size: 11px;" value="Editar post" title="Editar post" onclick="location.href=\'' . $boardurl . '/editar-post/id-', $context['current_topic'], '\'" type="button"> <input class="login" style="font-size: 11px;" value="Eliminar post" title="Eliminar post" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este post?\')) return false; return errorrojo2(this.form.causa.value);" type="submit" />
-        &nbsp;
         <input type="text" id="causa" name="causa" maxlength="50" size="30" />
           <center>
             <label id="errors"></label>
@@ -283,7 +283,6 @@ function template_main() {
         }
 
         echo '
-            &nbsp;
             <i>
               <strong>de&nbsp;' . $context['user']['money'] . '&nbsp;disp.</strong>
             </i>
@@ -302,9 +301,9 @@ function template_main() {
         <center>
           <span id="span_opciones2" style="text-align: center; display: block;">
             <a class="icons agregar_favoritos"  href="#" onclick="add_favoritos(\'' . $context['current_topic'] . '\'); return false;">Agregar a Favoritos</a>
-            &nbsp;|&nbsp;
+            |
             <a class="icons denunciar_post" title="Denunciar post" href="' . $boardurl . '/denuncia/post-' . $context['current_topic'] . '"/>Denunciar post</a>
-            &nbsp;|&nbsp;
+            |
             <a class="icons recomendar_post" href="' . $boardurl . '/enviar-a-amigo/' . $context['current_topic'] . '">Enviar a un amigo</a>
           </span>
         </center>';
@@ -318,14 +317,18 @@ function template_main() {
       <br />';
 
     if (!empty($context['posts10'])) {
-      foreach ($context['posts10'] as $posts10) {
+      foreach ($context['posts10'] as $posts10) {    
+        $posts10['subject'] = censorText($posts10['subject']);
+        $short_title = htmlentities(ssi_reducir($posts10['subject']), ENT_QUOTES, 'ISO-8859-1');
+        $full_title = htmlentities($posts10['subject'], ENT_QUOTES, 'ISO-8859-1');
+
         echo '
           <div class="entry_item">
             <div class="icon">
               <img alt="" title="' . $posts10['bname'] . '" src="' . $settings['images_url'] . '/post/icono_' . $posts10['idb'] . '.gif" />
             </div>
             <div class="text_container">
-              <a rel="dc:relation" href="' . $boardurl . '/post/' . $posts10['id'] . '/' . $posts10['description'] . '/' . ssi_amigable($posts10['subject']) . '.html" title="' . $posts10['subject'] . '" target="_self">' . $posts10['subject'] . '</a>
+              <a rel="dc:relation" href="' . $boardurl . '/post/' . $posts10['id'] . '/' . $posts10['description'] . '/' . ssi_amigable($full_title) . '.html" title="' . $full_title . '" target="_self">' . $full_title . '</a>
             </div>
           </div>
           <div style="clear: left;"></div>';
@@ -350,29 +353,27 @@ function template_main() {
             <span class="size11">
               <center>
                 <span class="icons visitas">
-                  &nbsp;
                   ' . $context['num_views'] . '
-                  &nbsp;
-                  visitas</span>
+                  visitas
+                </span>
                 <span class="icons fav">
                   <span id="cant_favs_post">' . $context['fav1'] . '</span>
-                  &nbsp;
                   favoritos
                 </span>
                 <span class="icons puntos">
                   <span id="cant_pts_post_dos">' . $context['points-post'] . '</span>
-                  &nbsp;
                   puntos
                 </span>
               </center>
               <div class="hrs"></div>
               <b>Creado el:</b>
-              &nbsp;
               <span property="dc:date" content="' . $message['time'] . '">' . $message['time'] . '</span>
               <div class="hrs"></div>
-              <b>Categor&iacute;a:</b>&nbsp;<a href="' . $boardurl . '/categoria/' . $message['board']['description'] . '" title="' . $message['board']['name'] . '">' . $message['board']['name'] . '</a>
+              <b>Categor&iacute;a:</b>
+              <a href="' . $boardurl . '/categoria/' . $message['board']['description'] . '" title="' . $message['board']['name'] . '">' . $message['board']['name'] . '</a>
               <div class="hrs"></div>
               <b>Tags:</b>&nbsp;';
+
     if ($context['topic_tags']) {
       $contar = 0;
 
@@ -382,8 +383,9 @@ function template_main() {
         $count = count($context['topic_tags']);
         $contar++;
 
-        if ($contar < $count)
+        if ($contar < $count) {
           echo ' - ';
+        }
       }
     } else {
       echo 'Este post no tiene tags';
@@ -466,33 +468,30 @@ function template_main() {
       </div>
       <div class="windowbg" style="width: 764px; padding: 4px;">';
 
-    if ($context['haycom']) {
-      foreach ($context['comentarios'] as $coment) {
+    if ($context['number_comments']) {
+      foreach ($context['comments'] as $comment) {
         echo '
-          <div id="cmt_' . $coment['id'] . '">
+          <div id="cmt_' . $comment['id'] . '">
             <span class="size12">';
 
         if ($message['can_remove'] || $context['allow_admin']) {
-          echo '<input type="checkbox" name="campos[' . $coment['id'] . ']">';
+          echo '<input type="checkbox" name="campos[' . $comment['id'] . ']">';
         }
 
         echo '
-          &nbsp;
-          <a onclick="citar_comment(' . $coment['id'] . ')" href="javascript:void(0)">#' . $cantidad++ . '</a>
-          &nbsp;
-          <b id="autor_cmnt_' . $coment['id'] . '" user_comment="' . $coment['nomuser'] . '" text_comment="' . $coment['comentario2'] . '">
-            <a href="' . $boardurl . '/perfil/' . $coment['nommem'] . '">' . $coment['nomuser'] . '</a>
+          <a onclick="citar_comment(' . $comment['id'] . ')" href="javascript:void(0)">#' . $cantidad++ . '</a>
+          <b id="autor_cmnt_' . $comment['id'] . '" user_comment="' . $comment['user_comment'] . '" text_comment="' . $comment['text_comment'] . '">
+            <a href="' . $boardurl . '/perfil/' . $comment['member_name'] . '">' . $comment['user_comment'] . '</a>
           </b>
-          &nbsp;|&nbsp;
-          <span class="size10">' . date("d.n.y H:i:s", $coment['fecha']) . '</span>';
+          |
+          <span class="size10">' . date("d.m.Y H:i:s", $comment['date_time']) . '</span>';
 
         if ($context['user']['is_logged']) {
           echo '
-            &nbsp;
-            <a href="' . $boardurl . '/mensajes/a/' . $coment['nommem'] . '" title="Enviar MP a: ' . $coment['nomuser'] . '">
+            <a href="' . $boardurl . '/mensajes/a/' . $comment['member_name'] . '" title="Enviar MP a: ' . $comment['user_comment'] . '">
               <img alt="" src="' . $settings['images_url'] . '/icons/mensaje_para.gif" style="margin-top: 2px; margin-rigth: 2px;" align="top" border="0" />
             </a>
-            <a class="icons citar" onclick="citar_comment(' . $coment['id'] . ')" href="javascript:void(0)" title="Citar comentario">
+            <a class="icons citar" onclick="citar_comment(' . $comment['id'] . ')" href="javascript:void(0)" title="Citar comentario">
               <img alt="" src="' . $settings['images_url'] . '/espacio.gif" align="top" border="0" />
             </a>';
         }
@@ -500,7 +499,7 @@ function template_main() {
         echo '
               dijo:
               <br />
-              <div style="overflow: hidden;">'. $coment['comment'] .'</div>
+              <div style="overflow: hidden;">'. $comment['comment'] .'</div>
             </span>
           </div>
           <div class="hrs"></div>';
@@ -512,11 +511,11 @@ function template_main() {
     echo '<div id="return_agregar_comentario" style="display: none;"></div>
       </div>';
 
-    if ($context['haycom']) {
+    if ($context['number_comments']) {
       if ($message['can_remove']) {
         echo '
-          <span class="size10">Comentarios Seleccionados:</span>
-          <input class="login" style="font-size: 9px;" value="Eliminar" type="submit">
+          <span class="size10">Comentarios seleccionados:</span>
+          <input class="login" style="font-size: 9px;" value="Eliminar" type="submit" />
           <input name="topic" value="' . $context['current_topic'] . '" type="hidden">
           <input name="userid" value="' . $context['user']['id'] . '" type="hidden">
           <input name="memberid" value="' . $message['member']['id'] . '" type="hidden">';
@@ -609,7 +608,7 @@ function template_quickreply_box() {
         echo '
           <a href="javascript:void(0);" onclick="replaceText(\' ' . $smiley['code'] . '\', document.forms.nuevocoment.cuerpo_comment); return false;">
             <img src="' . $settings['smileys_url'] . '/' . $smiley['filename'] . '" align="bottom" alt="' . $smiley['description'] . '" title="' . $smiley['description'] . '" />
-          </a>&nbsp;';
+          </a>';
       }
     }
 

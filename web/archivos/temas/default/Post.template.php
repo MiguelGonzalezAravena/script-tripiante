@@ -279,7 +279,7 @@ function template_postbox(&$message) {
     $contar = 0;
 
     while ($row = mysqli_fetch_assoc($request)) {
-      echo $row['tag'];
+      echo trim(htmlentities($row['tag'], ENT_QUOTES, 'ISO-8859-1'));
 
       $contar++;
 

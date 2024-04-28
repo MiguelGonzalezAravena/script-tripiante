@@ -4,45 +4,22 @@ function template_main() {
   global $context, $settings, $txt, $scripturl, $modSettings, $db_prefix, $boardurl;
 
   if ($context['user']['is_guest']) {
-    header('Location: /ingresar/');
+    header('Location: ' . $boardurl . '/ingresar/');
   } else {
     // Contadores
-    $contador1 = 0;
-    $contador2 = 0;
-    $contador3 = 0;
-    $contador4 = 0;
-    $contador5 = 0;
-    $contador6 = 0;
-    $contador7 = 0;
-    $contador8 = 0;
-    $contador9 = 0;
-    $contador10 = 0;
-    $contador11 = 0;
+    $contador1 = 1;
+    $contador2 = 1;
+    $contador3 = 1;
+    $contador4 = 1;
+    $contador5 = 1;
+    $contador6 = 1;
+    $contador7 = 1;
+    $contador8 = 1;
+    $contador9 = 1;
+    $contador10 = 1;
+    $contador11 = 1;
 
     // 10 Posts más comentados
-    $request = db_query("
-      SELECT t.ID_TOPIC, COUNT(c.ID_TOPIC) as Cuenta, t.subject, t.ID_BOARD, b.name AS bname, b.description
-      FROM ({$db_prefix}comments as c, {$db_prefix}messages as t, {$db_prefix}boards AS b)
-      WHERE t.ID_TOPIC = c.ID_TOPIC
-      AND t.ID_BOARD = b.ID_BOARD
-      GROUP BY c.ID_TOPIC
-      ORDER BY Cuenta DESC
-      LIMIT 10", __FILE__, __LINE__);
-
-    $context['tcomentados'] = array();
-
-    while ($row = mysqli_fetch_assoc($request)) {
-      $context['tcomentados'][] = array(
-        'subject' => ssi_reducir($row['subject']),
-        'cuenta' => $row['Cuenta'],
-        'ID_TOPIC' => $row['ID_TOPIC'],
-        'description' => $row['description'],
-        'bname' => $row['bname'],
-      );
-    }
-
-    mysqli_free_result($request);
-
     echo '
       <table align="center">
         <tr align="center">
@@ -61,14 +38,12 @@ function template_main() {
             </div>
             <div class="windowbg" style="width: 292px; padding: 4px;">';
 
-    foreach ($context['tcomentados'] as $total) {
+    foreach ($context['tcomentados'] as $row) {
       echo '
         <span class="size11">
-          <b>' . $contador1++ . '&nbsp;-&nbsp;</b>
-          &nbsp;
-          <a title="' . censorText($total['subject']) . '" href="' . $boardurl . '/post/' . $total['ID_TOPIC'] . '/' . $total['description'] . '/' . ssi_amigable($total['subject']) . '.html">' . $total['subject'] . '</a>
-          &nbsp;
-          (' . $total['cuenta'] . ' com)
+          <b>' . $contador1++ . '&nbsp;-</b>
+          <a title="' . $row['full_title'] . '" alt="' . $row['full_title'] . '" href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['full_title']) . '.html">' . $row['short_title'] . '</a>
+          (' . $row['cuenta'] . ' com)
         </span>
         <br />';
     }
@@ -92,13 +67,12 @@ function template_main() {
         </div>
         <div class="windowbg" style="width: 292px; padding: 4px;">';
 
-    foreach ($context['top_topics_views'] as $topic) {
+    foreach ($context['top_topics_views'] as $row) {
       echo '
         <span class="size11">
-          <b>'. $contador2++ .'&nbsp;-&nbsp;</b>
-          <a title="' . censorText($topic['subject']) . '" href="' . $boardurl . '/post/' . $topic['id'] . '/' . $topic['board']['description'] . '/' . ssi_amigable($topic['subject']).'.html">' . ssi_reducir($topic['subject']) . '</a>
-          &nbsp;
-          (' . $topic['num_views'] . ' vis)
+          <b>'. $contador2++ . '&nbsp;-</b>
+          <a title="' . $row['full_title'] . '" alt="' . $row['full_title'] . '" href="' . $boardurl . '/post/' . $row['id'] . '/' . $row['board']['description'] . '/' . ssi_amigable($row['full_title']).'.html">' . $row['short_title'] . '</a>
+          (' . $row['num_views'] . ' vis)
         </span>
         <br />';
     }
@@ -107,21 +81,11 @@ function template_main() {
         </div>
       </div>';
 
-    // 10 Post con más puntos
-    $request = db_query("
-      SELECT m.subject, m.ID_TOPIC, t.ID_TOPIC, t.ID_BOARD, t.points, b.name AS bname
-      FROM ({$db_prefix}topics AS t, {$db_prefix}messages AS m, {$db_prefix}boards AS b)
-      WHERE t.ID_TOPIC = m.ID_TOPIC
-      AND t.ID_BOARD = b.ID_BOARD
-      ORDER BY t.points DESC
-      LIMIT 10 ", __FILE__, __LINE__);
-
-    $context['postpuntos'] = mysqli_num_rows($request);
-
+    // 10 Posts con más puntos
     echo '
       <div class="box_300" align="left" style="float: left;">
         <div class="box_title" style="width: 300px;">
-          <div class="box_txt box_300-34">10 Post con m&aacute;s puntos</div>
+          <div class="box_txt box_300-34">10 Posts con m&aacute;s puntos</div>
           <div class="box_rss">
             <div class="icon_img">
               <a href="' . $boardurl . '/rss/post-puntos/">
@@ -132,12 +96,11 @@ function template_main() {
         </div>
         <div class="windowbg" style="width: 292px; padding: 4px;">';
 
-    while ($row = mysqli_fetch_array($request)) {
+    foreach ($context['postpuntos'] as $row) {
       echo '
         <span class="size11">
-          <b>' . $contador3++ . '&nbsp;-&nbsp;</b>
-          <a title="' . censorText($row['titulo']) . '" href="' . $boardurl . '/post/' . $row['bname'] . '/' . $row['id'] . '/' . $row['subject'] . '.html">' . ssi_reducir($row['subject']) . '</a>
-          &nbsp;
+          <b>' . $contador3++ . '&nbsp;-</b>
+          <a title="' . $row['full_title'] . '" alt="' . $row['full_title'] . '" href="' . $boardurl . '/post/' . $row['id'] . '/' . $row['cat'] . '/' . ssi_amigable($row['full_title']) . '.html">' . $row['short_title'] . '</a>
           (' . $row['points'] . ' pts)
         </span>
         <br />';
@@ -172,14 +135,14 @@ function template_main() {
     foreach ($context['top_starters'] as $poster) {
       echo '
         <span class="size11">
-          <b>' . $contador4++ . '&nbsp;-&nbsp;</b>
+          <b>' . $contador4++ . '&nbsp;-</b>
           <a title="' . censorText($poster['name']) . '" href="' . $boardurl . '/perfil/' . $poster['name'] . '">' . censorText($poster['name']) . '</a>
-          &nbsp;
           (' . $poster['num_topics'] . ' posts)
         </span>
         <br />';
     }
 
+    // 10 Usuarios con más puntos
     echo '
         </div>
       </div>
@@ -199,10 +162,8 @@ function template_main() {
     foreach ($context['shop_richest'] as $row) {
       echo '
         <span class="size11">
-          <b>' . $contador5++ . '&nbsp;-&nbsp;</b>
-          &nbsp;
-          <a title="' . censorText($row['realName']) . '" href="' . $boardurl . '/perfil/' . censorText($row['realName']) . '">' . censorText($row['realName']) . '</a>
-          &nbsp;
+          <b>' . $contador5++ . '&nbsp;-</b>
+          <a title="' . $row['realName'] . '" href="' . $boardurl . '/perfil/' . $row['realName'] . '">' . $row['realName'] . '</a>
           (' . $row['money'] . ' pts)
         </span>
         <br />';
@@ -213,28 +174,6 @@ function template_main() {
       </div>';
 
     // 10 Usuarios que más comentan
-    $request = db_query("
-      SELECT COUNT(g.ID_MEMBER + c.ID_MEMBER) AS total, mem.ID_MEMBER, mem.realName, mem.memberName
-      FROM ({$db_prefix}members AS mem, {$db_prefix}comments AS c, {$db_prefix}gallery_comment AS g)
-      WHERE mem.ID_MEMBER = g.ID_MEMBER
-      AND mem.ID_MEMBER = c.ID_MEMBER
-      AND c.ID_MEMBER = g.ID_MEMBER
-      GROUP BY g.ID_MEMBER
-      ORDER BY total DESC
-      LIMIT 10", __FILE__, __LINE__);
-
-    $context['mascomentan'] = array();
-
-    while ($row = mysqli_fetch_assoc($request)) {
-      $context['mascomentan'][] = array(
-        'realName' => $row['realName'],
-        'memberName' => $row['memberName'],
-        'total' => $row['total'],
-      );
-    }
-
-    mysqli_free_result($request);
-
     echo '
       <div class="box_300" align="left" style="float:left;">
         <div class="box_title" style="width: 300px;">
@@ -252,9 +191,8 @@ function template_main() {
     foreach ($context['mascomentan'] as $row) {
       echo '
       <span class="size11">
-        <b>' . $contador6++ . '</b>&nbsp;-&nbsp;
-        <a href="' . $boardurl . '/perfil/' . censorText($row['memberName']) . '" title="' . censorText($row['realName']) . '">' . censorText($row['realName']) . '</a>
-        &nbsp;
+        <b>' . $contador6++ . '</b>&nbsp;-
+        <a href="' . $boardurl . '/perfil/' . $row['memberName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
         (' . $row['total'] . ' com)
       </span>
       <br />';
@@ -265,26 +203,6 @@ function template_main() {
       </div>';
 
     // 10 Imágenes más comentadas
-    $request = db_query("
-      SELECT COUNT(c.ID_PICTURE) AS cuenta, p.ID_PICTURE, c.ID_PICTURE, p.title
-      FROM ({$db_prefix}gallery_pic AS p, {$db_prefix}gallery_comment AS c)
-      WHERE c.ID_PICTURE = p.ID_PICTURE
-      GROUP BY p.ID_PICTURE DESC
-      ORDER BY cuenta DESC
-      LIMIT 10", __FILE__, __LINE__);
-
-    $context['topimagenescom'] = array();
-
-    while ($row = mysqli_fetch_assoc($request)) {
-      $context['topimagenescom'][] = array(
-        'title' => ssi_reducir($row['title']),
-        'cuenta' => $row['cuenta'],
-        'ID_PICTURE' => $row['ID_PICTURE'],
-      );
-    }
-
-    mysqli_free_result($request);
-
     echo '
       <div>
         <div style="clear: left;"></div>
@@ -305,14 +223,14 @@ function template_main() {
     foreach ($context['topimagenescom'] as $row) {
       echo '
         <span class="size11">
-          <b>' . $contador7++ . '&nbsp;-&nbsp;</b>
-          <a title="' . $row['title'] . '" href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '">' . $row['title'] . '</a>
-          &nbsp;
+          <b>' . $contador7++ . '&nbsp;-</b>
+          <a title="' . $row['full_title'] . '" alt="' . $row['full_title'] . '" href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '">' . $row['short_title'] . '</a>
           (' . $row['cuenta'] . ' com)
         </span>
         <br />';
     }
 
+    // 10 Imágenes más vistas
     echo '
         </div>
       </div>
@@ -329,17 +247,17 @@ function template_main() {
         </div>
         <div class="windowbg" style="width: 292px; padding: 4px;">';
 
-    foreach ($context['imgv'] as $imgv) {
+    foreach ($context['imgv'] as $row) {
       echo '
         <span class="size11">
-          <b>' . $contador8++ . '&nbsp;-&nbsp;</b>
-          <a title="' . censorText($imgv['titulo']) . '" href="' . $boardurl . '/imagenes/ver/' . $imgv['id'] . '">' . ssi_reducir($imgv['titulo']) . '</a>
-          &nbsp;
-          (' . $imgv['v'] . ' vis)
+          <b>' . $contador8++ . '&nbsp;-</b>
+          <a title="' . $row['full_title'] . '" alt="' . $row['full_title'] . '" href="' . $boardurl . '/imagenes/ver/' . $row['id'] . '">' . $row['short_title'] . '</a>
+          (' . $row['v'] . ' vis)
         </span>
         <br />';
     }
 
+    // 10 Imágenes con más puntos
     echo '
         </div>
       </div>
@@ -356,31 +274,11 @@ function template_main() {
         </div>
         <div class="windowbg" style="width: 292px; padding: 4px;">';
 
-    $request = db_query("
-      SELECT points, ID_PICTURE, title
-      FROM {$db_prefix}gallery_pic
-      GROUP BY ID_PICTURE, title DESC
-      ORDER BY points DESC
-      LIMIT 10", __FILE__, __LINE__);
-
-    $context['comment-img3'] = array();
-
-    while ($row = mysqli_fetch_assoc($request)) {
-      $context['comment-img3'][] = array(
-        'title' => $row['title'],
-        'points' => $row['points'],
-        'ID_PICTURE' => $row['ID_PICTURE']
-      );
-    }
-
-    mysqli_free_result($request);
-
     foreach ($context['comment-img3'] as $row) {
       echo '
         <span class="size11">
-          <b>' . $contador9++ . '&nbsp;-&nbsp;</b>
-          <a title="' . censorText($row['title']) . '" href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '">' . ssi_reducir($row['title']) . '</a>
-          &nbsp;
+          <b>' . $contador9++ . '&nbsp;-</b>
+          <a title="' . $row['full_title'] . '" alt="' . $row['full_title'] . '" href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '">' . $row['short_title'] . '</a>
           (' . $row['points'] . ' pts)
         </span>
         <br />';
@@ -391,26 +289,6 @@ function template_main() {
       </div>';
 
     // 10 Muros más comentados
-    $request = db_query("
-      SELECT COUNT(c.COMMENT_MEMBER_ID) AS cuenta, c.COMMENT_MEMBER_ID, mem.ID_MEMBER, mem.memberName, mem.realName
-      FROM ({$db_prefix}members AS mem, {$db_prefix}profile_comments AS c)
-      WHERE c.COMMENT_MEMBER_ID = mem.ID_MEMBER
-      GROUP BY mem.ID_MEMBER DESC
-      ORDER BY cuenta DESC
-      LIMIT 10", __FILE__, __LINE__);
-
-    $context['muroscomentados'] = array();
-
-    while ($row = mysqli_fetch_assoc($request)) {
-      $context['muroscomentados'][] = array(
-        'realName' => $row['realName'],
-        'memberName' => $row['memberName'],
-        'cuenta' => $row['cuenta'],
-      );
-    }
-
-    mysqli_free_result($request);
-
     echo '
       </div>
       <div style="clear: left;"></div>
@@ -431,9 +309,8 @@ function template_main() {
     foreach ($context['muroscomentados'] as $row) {
       echo '
         <span class="size11">
-          <b>' . $contador10++ . '&nbsp;-&nbsp;</b>
+          <b>' . $contador10++ . '&nbsp;-</b>
           <a title="' . $row['realName'] . '" href="' . $boardurl . '/perfil/' . $row['memberName'] . '">' . $row['realName'] . '</a>
-          &nbsp;
           (' . $row['cuenta'] . ' msj)
         </span>
         <br />';
@@ -444,26 +321,6 @@ function template_main() {
       </div>';
 
     // 10 Usuarios con más imágenes
-    $request = db_query("
-      SELECT COUNT(p.ID_MEMBER) AS cuenta, p.ID_PICTURE, mem.ID_MEMBER, mem.memberName, mem.realName, p.ID_MEMBER
-      FROM ({$db_prefix}gallery_pic AS p, {$db_prefix}members AS mem)
-      WHERE p.ID_MEMBER = mem.ID_MEMBER
-      GROUP BY mem.ID_MEMBER DESC
-      ORDER BY cuenta DESC
-      LIMIT 10", __FILE__, __LINE__);
-
-    $context['imagenuser'] = array();
-
-    while ($row = mysqli_fetch_assoc($request)) {
-      $context['imagenuser'][] = array(
-        'realName' => $row['realName'],
-        'memberName' => $row['memberName'],
-        'cuenta' => $row['cuenta'],
-      );
-    }
-
-    mysqli_free_result($request);
-
     echo '
       <div class="box_300" align="left" style="float: left; margin-right: 8px;">
         <div class="box_title" style="width: 300px;">
@@ -478,13 +335,12 @@ function template_main() {
           </div>
           <div class="windowbg" style="width: 292px; padding: 4px;">';
 
-    foreach ($context['imagenuser'] as $imagenuser) {
+    foreach ($context['imagenuser'] as $row) {
       echo '
         <span class="size11">
-          <b>'. $contador11++ .'&nbsp;-&nbsp;</b>
-          <a href="' . $boardurl . '/perfil/', $imagenuser['memberName'], '" title="', $imagenuser['realName'], '">', $imagenuser['realName'], '</a>
-          &nbsp;
-          (', $imagenuser['cuenta'], ' img)
+          <b>'. $contador11++ .'&nbsp;-</b>
+          <a href="' . $boardurl . '/perfil/' . $row['memberName'] . '" title="' . $row['realName'] . '">' . $row['realName'] . '</a>
+          (' . $row['cuenta'] . ' img)
         </span>
         <br />';
     }
@@ -516,6 +372,7 @@ function template_main() {
 
     if ($context['allow_admin']) {
       echo '
+        <br />
         <table border="0" width="100%" cellspacing="1" cellpadding="4" class="bordercolor">
           <tr class="titlebg">
             <td align="center" colspan="4">', $context['page_title'], '</td>

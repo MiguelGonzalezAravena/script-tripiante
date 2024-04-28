@@ -263,61 +263,67 @@ function fix_possible_url($val)
   return $val;
 }
 
-function cdata_parse($data, $ns = '')
-{
-  global $func;
-
+function cdata_parse($data, $ns = '') {
   $cdata = '<![CDATA[';
 
-  for ($pos = 0, $n = $func['strlen']($data); $pos < $n; null)
-  {
+  for ($pos = 0, $n = strlen($data); $pos < $n; null) {
     $positions = array(
-      $func['strpos']($data, '&', $pos),
-      $func['strpos']($data, ']', $pos),
+      strpos($data, '&', $pos),
+      strpos($data, ']', $pos),
     );
-    if ($ns != '')
-      $positions[] = $func['strpos']($data, '<', $pos);
-    foreach ($positions as $k => $dummy)
-    {
-      if ($dummy === false)
+
+    if ($ns != '') {
+      $positions[] = strpos($data, '<', $pos);
+    }
+
+    foreach ($positions as $k => $dummy) {
+      if ($dummy === false) {
         unset($positions[$k]);
+      }
     }
 
     $old = $pos;
     $pos = empty($positions) ? $n : min($positions);
 
-    if ($pos - $old > 0)
-      $cdata .= $func['substr']($data, $old, $pos - $old);
-    if ($pos >= $n)
-      break;
-
-    if ($func['substr']($data, $pos, 1) == '<')
-    {
-      $pos2 = $func['strpos']($data, '>', $pos);
-      if ($pos2 === false)
-        $pos2 = $n;
-      if ($func['substr']($data, $pos + 1, 1) == '/')
-        $cdata .= ']]></' . $ns . ':' . $func['substr']($data, $pos + 2, $pos2 - $pos - 1) . '<![CDATA[';
-      else
-        $cdata .= ']]><' . $ns . ':' . $func['substr']($data, $pos + 1, $pos2 - $pos) . '<![CDATA[';
-      $pos = $pos2 + 1;
+    if ($pos - $old > 0) {
+      $cdata .= substr($data, $old, $pos - $old);
     }
-    else if ($func['substr']($data, $pos, 1) == ']')
-    {
+
+    if ($pos >= $n) {
+      break;
+    }
+
+    if (substr($data, $pos, 1) == '<') {
+      $pos2 = strpos($data, '>', $pos);
+
+      if ($pos2 === false) {
+        $pos2 = $n;
+      }
+
+      if (substr($data, $pos + 1, 1) == '/') {
+        $cdata .= ']]></' . $ns . ':' . substr($data, $pos + 2, $pos2 - $pos - 1) . '<![CDATA[';
+      } else {
+        $cdata .= ']]><' . $ns . ':' . substr($data, $pos + 1, $pos2 - $pos) . '<![CDATA[';
+      }
+
+      $pos = $pos2 + 1;
+    } else if (substr($data, $pos, 1) == ']') {
       $cdata .= ']]>&#093;<![CDATA[';
       $pos++;
-    }
-    else if ($func['substr']($data, $pos, 1) == '&')
-    {
-      $pos2 = $func['strpos']($data, ';', $pos);
-      if ($pos2 === false)
-        $pos2 = $n;
-      $ent = $func['substr']($data, $pos + 1, $pos2 - $pos - 1);
+    } else if (substr($data, $pos, 1) == '&') {
+      $pos2 = strpos($data, ';', $pos);
 
-      if ($func['substr']($data, $pos + 1, 1) == '#')
-        $cdata .= ']]>' . $func['substr']($data, $pos, $pos2 - $pos + 1) . '<![CDATA[';
-      else if (in_array($ent, array('amp', 'lt', 'gt', 'quot')))
-        $cdata .= ']]>' . $func['substr']($data, $pos, $pos2 - $pos + 1) . '<![CDATA[';
+      if ($pos2 === false) {
+        $pos2 = $n;
+      }
+
+      $ent = substr($data, $pos + 1, $pos2 - $pos - 1);
+
+      if (substr($data, $pos + 1, 1) == '#') {
+        $cdata .= ']]>' . substr($data, $pos, $pos2 - $pos + 1) . '<![CDATA[';
+      } else if (in_array($ent, array('amp', 'lt', 'gt', 'quot'))) {
+        $cdata .= ']]>' . substr($data, $pos, $pos2 - $pos + 1) . '<![CDATA[';
+      }
       // !!! ??
 
       $pos = $pos2 + 1;
@@ -329,8 +335,7 @@ function cdata_parse($data, $ns = '')
   return strtr($cdata, array('<![CDATA[]]>' => ''));
 }
 
-function dumpTags($data, $i, $tag = null, $xml_format = '')
-{
+function dumpTags($data, $i, $tag = null, $xml_format = '') {
   global $modSettings, $context, $scripturl;
 
   // For every array in the data...
@@ -436,10 +441,9 @@ function getXmlMembers($xml_format)
   return $data;
 }
 
-function getXmlNews($xml_format)
-{
+function getXmlNews($xml_format) {
   global $db_prefix, $user_info, $scripturl, $modSettings, $board;
-  global $query_this_board, $func;
+  global $query_this_board;
 
   /* Find the latest posts that:
     - are the first post in their topic.
@@ -463,8 +467,8 @@ function getXmlNews($xml_format)
   while ($row = mysqli_fetch_assoc($request))
   {
     // Limit the length of the message, if the option is set.
-    if (!empty($modSettings['xmlnews_maxlen']) && $func['strlen'](str_replace('<br />', "\n", $row['body'])) > $modSettings['xmlnews_maxlen'])
-      $row['body'] = strtr($func['substr'](str_replace('<br />', "\n", $row['body']), 0, $modSettings['xmlnews_maxlen'] - 3), array("\n" => '<br />')) . '...';
+    if (!empty($modSettings['xmlnews_maxlen']) && strlen(str_replace('<br />', "\n", $row['body'])) > $modSettings['xmlnews_maxlen'])
+      $row['body'] = strtr(substr(str_replace('<br />', "\n", $row['body']), 0, $modSettings['xmlnews_maxlen'] - 3), array("\n" => '<br />')) . '...';
 
     $row['body'] = parse_bbc($row['body'], $row['smileysEnabled'], $row['ID_MSG']);
 
@@ -526,10 +530,9 @@ function getXmlNews($xml_format)
   return $data;
 }
 
-function getXmlRecent($xml_format)
-{
+function getXmlRecent($xml_format) {
   global $db_prefix, $user_info, $scripturl, $modSettings, $board;
-  global $query_this_board, $func;
+  global $query_this_board;
 
   $request = db_query("
     SELECT m.ID_MSG
@@ -569,8 +572,8 @@ function getXmlRecent($xml_format)
   while ($row = mysqli_fetch_assoc($request))
   {
     // Limit the length of the message, if the option is set.
-    if (!empty($modSettings['xmlnews_maxlen']) && $func['strlen'](str_replace('<br />', "\n", $row['body'])) > $modSettings['xmlnews_maxlen'])
-      $row['body'] = strtr($func['substr'](str_replace('<br />', "\n", $row['body']), 0, $modSettings['xmlnews_maxlen'] - 3), array("\n" => '<br />')) . '...';
+    if (!empty($modSettings['xmlnews_maxlen']) && strlen(str_replace('<br />', "\n", $row['body'])) > $modSettings['xmlnews_maxlen'])
+      $row['body'] = strtr(substr(str_replace('<br />', "\n", $row['body']), 0, $modSettings['xmlnews_maxlen'] - 3), array("\n" => '<br />')) . '...';
 
     $row['body'] = parse_bbc($row['body'], $row['smileysEnabled'], $row['ID_MSG']);
 

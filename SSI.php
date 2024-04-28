@@ -10,10 +10,12 @@ global $db_server, $db_name, $db_user, $db_prefix, $db_persist, $db_error_send, 
 global $db_connection, $modSettings, $context, $sc, $user_info, $topic, $board, $txt;
 
 // TO-DO: Cambiar get_magic_quotes_runtime()
+/*
 if (function_exists('get_magic_quotes_runtime') && function_exists('set_magic_quotes_runtime')) {
   $ssi_magic_quotes_runtime = @get_magic_quotes_runtime();
   @set_magic_quotes_runtime(0);
 }
+*/
 
 $time_start = microtime();
 
@@ -122,14 +124,17 @@ if (isset($ssi_layers)) {
 else
   setupThemeContext();
 
-if (isset($_SERVER['REMOTE_ADDR']) && !isset($_SERVER['is_cli']) && session_id() == '')
+/*
+// TO-DO: Evaluar si se saca esto
+if (isset($_SERVER['REMOTE_ADDR']) && !isset($_SERVER['is_cli']) && session_id() == '') {
   trigger_error($txt['ssi_session_broken'], E_USER_NOTICE);
-
-else if (basename($_SERVER['PHP_SELF']) == 'SSI.php')
+} else if (basename($_SERVER['PHP_SELF']) == 'SSI.php') {
   die(sprintf('Hacking attempt...', $user_info['is_admin'] ? '\'' . addslashes(__FILE__) . '\'' : '\'SSI.php\''));
+}
+*/
 
 error_reporting($ssi_error_reporting);
-@set_magic_quotes_runtime($ssi_magic_quotes_runtime);
+// @set_magic_quotes_runtime($ssi_magic_quotes_runtime);
 
 return true;
 
@@ -222,13 +227,14 @@ function ssi_ultimas_respuestas() {
 
   $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
   $request = db_query("
-    SELECT cc.ID_COMMUNITY, cc.ID_TOPIC, cc.posterName, cc.ID_COMMENT, c.ID_COMMUNITY, c.friendly_url, ct.ID_COMMUNITY, ct.ID_TOPIC, ct.subject
-    FROM ({$db_prefix}community_comments AS cc, {$db_prefix}communities AS c, {$db_prefix}community_topic AS ct)
-    WHERE cc.ID_COMMUNITY = c.ID_COMMUNITY
-    AND cc.ID_COMMUNITY = ct.ID_COMMUNITY
-    AND c.ID_COMMUNITY = ct.ID_COMMUNITY
+    SELECT c.ID_COMMUNITY, cc.ID_COMMUNITY, cc.ID_TOPIC, cc.ID_MEMBER, ct.ID_TOPIC, ct.ID_COMMUNITY, cc.posterName, c.friendly_url, ct.subject, cc.ID_COMMENT
+    FROM {$db_prefix}community_comments AS cc
+    INNER JOIN {$db_prefix}communities AS c ON c.ID_COMMUNITY = cc.ID_COMMUNITY
+    INNER JOIN {$db_prefix}community_topic AS ct ON ct.ID_TOPIC = cc.ID_TOPIC
+    INNER JOIN {$db_prefix}members AS mem ON mem.ID_MEMBER = cc.ID_MEMBER
     AND cc.ID_TOPIC = ct.ID_TOPIC
-    AND c.friendly_url = '$id'
+    AND c.friendly_url = '{$id}'
+    AND c.friendly_url IS NOT NULL
     ORDER BY cc.ID_COMMENT DESC
     LIMIT " . $modSettings['community_comments'], __FILE__, __LINE__);
 
@@ -253,7 +259,7 @@ function ssi_ultimas_respuestas() {
           <b>
             <a href="' . $boardurl . '/perfil/' . $ult['posterName'] . '" title="' . $ult['posterName'] . '" alt="' . $ult['posterName'] . '">' . $ult['posterName'] . '</a>
           </b>
-          &nbsp;-&nbsp;
+          -
           <a title="' . $ult['subject'] . '" href="' . $boardurl . '/comunidades/' . $ult['friendly_url'] . '/' . $ult['ID_TOPIC'] . '/' . ssi_amigable($ult['subject']) . '.html#comentarios">' . ssi_reducir2($ult['subject']) . '</a>
         </font>
         <br style="margin: 0px; padding: 0px;">';
@@ -273,7 +279,8 @@ function ssi_respuestas_temas() {
     $page = (int) $_GET['pag'];
 
     if (isset($page)) {
-      $start = ($page - 1) * $end;
+      $calc = ($page - 1) * $end;
+      $start = $calc > 0 ? $calc : 0;
       $actualPage = $page;
     } else {
       $start = 0;
@@ -319,9 +326,8 @@ function ssi_respuestas_temas() {
               <b id="autor_cmnt_' . $row['ID_COMMENT'] . '" user_comment="' . $row['posterName'] . '" text_comment="' . $row['comentario2'] . '">
                 <a href="' . $boardurl . '/perfil/' . $row['posterName'] . '" title="' . $row['posterName'] . '">' . $row['posterName'] . '</a>
               </b>
-              &nbsp;|&nbsp;
-              <span class="size10">' . date("d.n.y H:i:s", $row['posterTime']) . '</span>
-              &nbsp;
+              |
+              <span class="size10">' . date("d.m.Y H:i:s", $row['posterTime']) . '</span>
               dijo:
             </div>
             <div style="float: right;">
@@ -582,12 +588,12 @@ function ssi_respuestas() {
   global $db_prefix, $modSettings, $boardurl;
 
   $request = db_query("
-    SELECT c.ID_COMMUNITY, cc.ID_COMMUNITY, cc.ID_TOPIC, ct.ID_TOPIC, ct.ID_COMMUNITY, cc.posterName, c.friendly_url, ct.subject, cc.ID_COMMENT
-    FROM ({$db_prefix}communities AS c, {$db_prefix}community_comments AS cc, {$db_prefix}community_topic AS ct)
-    WHERE c.ID_COMMUNITY = cc.ID_COMMUNITY
+    SELECT c.ID_COMMUNITY, cc.ID_COMMUNITY, cc.ID_TOPIC, cc.ID_MEMBER, ct.ID_TOPIC, ct.ID_COMMUNITY, cc.posterName, c.friendly_url, ct.subject, cc.ID_COMMENT
+    FROM {$db_prefix}community_comments AS cc
+    LEFT JOIN {$db_prefix}communities AS c ON c.ID_COMMUNITY = cc.ID_COMMUNITY
+    LEFT JOIN {$db_prefix}community_topic AS ct ON ct.ID_TOPIC = cc.ID_TOPIC
+    LEFT JOIN {$db_prefix}members AS mem ON mem.ID_MEMBER = cc.ID_MEMBER
     AND cc.ID_TOPIC = ct.ID_TOPIC
-    AND ct.ID_COMMUNITY = c.ID_COMMUNITY
-    AND ct.ID_COMMUNITY = cc.ID_COMMUNITY
     ORDER BY cc.ID_COMMENT DESC
     LIMIT " . $modSettings['community_comments_general'], __FILE__, __LINE__);
 
@@ -597,7 +603,7 @@ function ssi_respuestas() {
         <b>
           <a href="' . $boardurl . '/perfil/' . $row['posterName'] . '" target="_self" title="' . $row['posterName'] . '" alt="' . $row['posterName'] . '">' . $row['posterName'] . '</a>
         </b>
-        &nbsp;-&nbsp;
+        -
         <a href="' . $boardurl . '/comunidades/' . $row['friendly_url'] . '/' . $row['ID_TOPIC'] . '/' . ssi_amigable($row['subject']) . '.html" target="_self" title="' . $row['subject'] . '" alt="' . $row['subject'] . '">' . ssi_reducir($row['subject']) . '</a>
       </font>
       <br style="margin: 0px; padding: 0px;">';
@@ -619,16 +625,13 @@ function ssi_responder_tema() {
   } else if (strlen($_POST['comentario']) > $modSettings['characters_limit_comments']) {
     echo '0: El comentario es demasiado extenso, abr&eacute;vialo.-';
   } else {
-    // TO-DO: ¿Devolver información importante o sólo ejecución?
-    db_query("
-      INSERT INTO {$db_prefix}community_comments (ID_TOPIC, ID_MEMBER, posterName, posterTime, comment)
-      VALUES ($tema, $ID_MEMBER, '$posterName', $posterTime, '$comentario')", __FILE__, __LINE__);
-
     $result = db_query("
       SELECT cm.ID_MEMBER, cm.ID_COMMUNITY, cm.grade, c.friendly_url, c.ID_COMMUNITY
       FROM ({$db_prefix}community_members AS cm, {$db_prefix}communities AS c)
+      INNER JOIN {$db_prefix}community_topic AS t ON t.ID_COMMUNITY = c.ID_COMMUNITY
       WHERE cm.ID_COMMUNITY = c.ID_COMMUNITY
       AND cm.ID_MEMBER = $ID_MEMBER
+      AND t.ID_TOPIC = $tema
       LIMIT 1", __FILE__, __LINE__);
 
     $context['usercomunidad'] = mysqli_num_rows($result);
@@ -637,7 +640,14 @@ function ssi_responder_tema() {
       'grade' => $row['grade'],
     );
 
+    $ID_COMMUNITY = $row['ID_COMMUNITY'];
+
     mysqli_free_result($result);
+
+    db_query("
+      INSERT INTO {$db_prefix}community_comments (ID_TOPIC, ID_MEMBER, ID_COMMUNITY, posterName, posterTime, comment)
+      VALUES ($tema, $ID_MEMBER, $ID_COMMUNITY, '$posterName', $posterTime, '$comentario')", __FILE__, __LINE__);
+
 
     echo '1: ';
   }
@@ -710,31 +720,26 @@ function ssi_enviar_quehago() {
   } else if ($subtract < $modSettings['time_profile_comment']) {
     echo '0: No es posible comentar muros con tan poca diferencia de tiempo.-';
   } else {
-    // TO-DO: Devolver identificador de estado "¿Qué hago?"
-    /*
+    // Insertar registro
     db_query("
       INSERT INTO {$db_prefix}profile_comments(ID_MEMBER, subject, date, COMMENT_MEMBER_ID)
       VALUES ($ID_MEMBER, '$quehago', $commentDate, $user)", __FILE__, __LINE__);
 
-    $request = db_query("
-      SELECT ID_COMMENT
-      FROM {$db_prefix}profile_comments
-      ORDER BY ID_COMMENT DESC", __FILE__, __LINE__);
-
-    $obj = mysqli_fetch_object($request);
-    */
     $ultimo_id_coment = db_insert_id();
 
+    // Consulta para obtener avatar del usuario
+    /*
     $avatar = db_query("
       SELECT avatar
       FROM {$db_prefix}members
       WHERE ID_MEMBER = {$ID_MEMBER}", __FILE__, __LINE__);
 
     $row = mysqli_fetch_array($avatar);
+    */
 
     echo '1: ';
 
-    if ($context['member']['id'] == $ID_MEMBER || $context['allow_admin'])  {
+    if (isset($context['member']) && $context['member']['id'] == $ID_MEMBER || isset($context['allow_admin']) && $context['allow_admin'])  {
       echo '
         <a onclick="if (!confirm(\'\xbfEstas seguro que deseas borrar este mensaje?\')) return false;" href="' . $boardurl . '/eliminar-muro/' . $ultimo_id_coment . '/" title="Eliminar mnsaje">
           <img alt="Eliminar mensaje" src="' . $settings['images_url'] . '/eliminar.gif" width="8px" height="8px" />
@@ -742,8 +747,8 @@ function ssi_enviar_quehago() {
     }
 
     echo '
-      <span style="margin-left:8px;">
-        <img alt="" src="' . $row['avatar'] . '" />
+      <span style="margin-left: 8px;">
+        <img alt="" src="' . $settings['images_url'] . '/user.gif" />
         <b class="size13">' . parse_bbc2($quehago) . '</b>
         <center>
           <span style="color: grey; font-size: 11px;">(' . timeformat($commentDate) . ')</span>
@@ -877,7 +882,7 @@ function ssi_comunidades_nooficial() {
 }
 
 function ssi_comunidades_oficial() {
-  global $context, $db_prefix, $ID_MEMBER;
+  global $context, $db_prefix, $boardurl, $ID_MEMBER;
 
   $id = htmlentities(addslashes($_REQUEST['id']), ENT_QUOTES, 'UTF-8');
   $request = db_query("
@@ -918,38 +923,41 @@ function ssi_comunidades_oficial() {
       WHERE friendly_url = '$id'
       LIMIT 1", __FILE__, __LINE__);
 
-    header('Location: /comunidades/' . $id . '/');
+    header('Location: ' . $boardurl . '/comunidades/' . $id . '/');
   } else {
     echo '0: No tienes el rango necesario para realizar esta acci&oacute;n;.';
   }
 }
 
 function ssi_eliminar_muro() {
-  global $context, $db_prefix;
+  global $context, $db_prefix, $boardurl, $ID_MEMBER;
 
   $id = (int) $_REQUEST['id'];
 
+  $request = db_query("
+    SELECT p.ID_COMMENT, p.ID_MEMBER, p.COMMENT_MEMBER_ID
+    FROM {$db_prefix}profile_comments as p
+    WHERE p.ID_COMMENT = {$id}", __FILE__, __LINE__);
+
+  $row = mysqli_fetch_assoc($request);
+  $owners = ($row['ID_MEMBER'] == $ID_MEMBER || $row['COMMENT_MEMBER_ID'] == $ID_MEMBER);
+
+  mysqli_free_result($request);
+
   if ($context['user']['is_guest']) {
-    header("Location: / ");
+    header('Location: ' . $boardurl . '/');
   } else if (empty($id)) {
     echo '0: Debes seleccionar la id del comentario que deseas borrar.-';
+  } else if(!$owners || !$context['allow_admin']) {
+    echo '0: S&oacute;lo el due&ntilde;o del muro o del comentario pueden borrar el mismo.-';
   } else {
-    $request = db_query("
-      SELECT p.ID_COMMENT, p.ID_MEMBER, p.COMMENT_MEMBER_ID
-      FROM {$db_prefix}profile_comments as p
-      WHERE p.ID_COMMENT = {$id}", __FILE__, __LINE__);
-
-    $row = mysqli_fetch_assoc($request);
-
-    mysqli_free_result($request);
-
     $result = db_query("
       DELETE FROM {$db_prefix}profile_comments
       WHERE ID_COMMENT = {$id}
       LIMIT 1", __FILE__, __LINE__);
 
     if ($result) {
-      header("Location: {$_SERVER['HTTP_REFERER']} ");
+      header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
   }
 }
@@ -980,21 +988,12 @@ function ssi_enviar_muro() {
   } else if ($subtract < $modSettings['time_profile_comment']) {
     echo '0: No es posible comentar muros con tan poca diferencia de tiempo.-';
   } else if (empty($user)) {
-    // TO-DO: Cambiar a mensaje?
-    header("Location: / ");
+    echo '0: Debes especificar el usuario al cual le deseas comentar el muro.-';
   } else {
-    // TO-DO: Devolver identificador insertado
     db_query("
-      INSERT INTO {$db_prefix}profile_comments (ID_MEMBER, comment, date, COMMENT_MEMBER_ID)
-      VALUES ($ID_MEMBER, '$comentario', $commentDate, $user)", __FILE__, __LINE__);
-    /*
-    $query = db_query("
-      SELECT ID_COMMENT
-      FROM {$db_prefix}profile_comments
-      ORDER BY ID_COMMENT DESC", __FILE__, __LINE__);
+      INSERT INTO {$db_prefix}profile_comments (ID_MEMBER, subject, comment, date, COMMENT_MEMBER_ID)
+      VALUES ($ID_MEMBER, '', '$comentario', $commentDate, $user)", __FILE__, __LINE__);
 
-    $obj = mysqli_fetch_object($query);
-    */
     $ultimo_id_coment = db_insert_id();
 
     $avatar = db_query("
@@ -1006,7 +1005,8 @@ function ssi_enviar_muro() {
 
     echo '1: ';
 
-    if ($context['member']['id'] == $context['user']['id'] || $context['allow_admin']) {
+    // TO-DO: ¿Cómo valido que puedo eliminar el comentario?
+    if ($ID_MEMBER == $context['user']['id'] || $context['allow_admin']) {
       echo '
         <a onclick="if (!confirm(\'\xbfEstas seguro que deseas borrar este mensaje?\')) return false;" href="' . $boardurl . '/eliminar-muro/' . $ultimo_id_coment . '/" title="Eliminar mensaje">
           <img alt="Eliminar mensaje" src="' . $settings['images_url'] . '/eliminar.gif" width="8px" height="8px" />
@@ -1018,7 +1018,8 @@ function ssi_enviar_muro() {
       <b>
         <span style="font-size: 12px;">
           <a href="' . $boardurl . '/perfil/' . $username . '" title="' . $username . '">' . $username . '</a>
-        </span> escribi&oacute;
+        </span>
+        escribi&oacute;
       </b>
       <span style="color: grey; font-size: 10px;">(' . timeformat($commentDate) . ')</span>
       <table>
@@ -1027,8 +1028,9 @@ function ssi_enviar_muro() {
             <img style="width: 50px; height: 50px;" alt="" src="' . $row['avatar'] . '" onerror="error_avatar(this)" />
           </td>
           <td valign="top" style="margin: 0px; padding: 4px;">
-            ' . parse_bbc2($comentario) . '<br /><br />
-            <a href="' . $boardurl . '/perfil/' . $username . '/muro/" title="Escribe en el muro de ' . $username . '">Escribe en el muro de ' . $username . '</a>
+            ' . parse_bbc2($comentario) . '
+            <br /><br /><br />
+            <a href="' . $boardurl . '/perfil/' . $username . '/muro/" title="Escribe en el Muro de ' . $username . '">Escribe en el Muro de ' . $username . '</a>
           </td>
         </tr>
       </table>
@@ -1037,7 +1039,7 @@ function ssi_enviar_muro() {
 }
 
 function ssi_editar_estado() {
-  global $context, $db_prefix, $ID_MEMBER;
+  global $boardurl, $context, $db_prefix, $ID_MEMBER;
 
   $estado = htmlentities(addslashes($_REQUEST['estado']));
 
@@ -1051,13 +1053,13 @@ function ssi_editar_estado() {
       WHERE ID_MEMBER = $ID_MEMBER
       LIMIT 1", __FILE__, __LINE__);
 
-    header("Location: /perfil");
+    header('Location: ' . $boardurl . '/perfil');
   } else if (!empty($context['user']['name'])) {
-    header("Location: /perfil");
+    header('Location: ' . $boardurl . '/perfil');
   } else if (empty($context['user']['name'])) {
-    header("Location: / ");
+    header('Location: ' . $boardurl . '/');
   } else {
-    header("Location: /perfil");
+    header('Location: ' . $boardurl . '/perfil');
   }
 }
 
@@ -1077,28 +1079,28 @@ function ssi_agregar_favoritos() {
       LIMIT 1", __FILE__, __LINE__);
 
     $verificar = db_query("
-      SELECT *
+      SELECT ID_MEMBER_STARTED
       FROM {$db_prefix}topics
       WHERE ID_TOPIC = {$post}
       LIMIT 1", __FILE__, __LINE__);
 
     $verificar2 = db_query("
-      SELECT *
+      SELECT ID_MEMBER
       FROM {$db_prefix}gallery_pic
       WHERE ID_PICTURE = {$post}
       LIMIT 1", __FILE__, __LINE__);
 
     $row = mysqli_fetch_assoc($verificar);
     $row2 = mysqli_fetch_assoc($verificar2);
-    $alreadyAdded = mysqli_num_rows($result) != 0 ? true : false;
+    $alreadyAdded = mysqli_num_rows($result) != 0;
 
     mysqli_free_result($result);
 
     if ($alreadyAdded) {
       echo '0: Este post ya est&aacute; en tus favoritos.-';
-    } else if ($ID_MEMBER == $row['ID_MEMBER_STARTED']) {
+    } else if (isset($row['ID_MEMBER_STARTED']) && $ID_MEMBER == $row['ID_MEMBER_STARTED']) {
       echo '0: No puedes agregar a favoritos tus posts.-';
-    } else if ($ID_MEMBER == $row2['ID_MEMBER']) {
+    } else if (isset($row2['ID_MEMBER']) && $ID_MEMBER == $row2['ID_MEMBER']) {
       echo '0: No puedes agregar a favoritos tus im&aacute;genes.-';
     } else {
       $result = db_query("
@@ -1153,7 +1155,7 @@ function ssi_comentar_img() {
 
     echo '1: <div id="cmt_' . $ultimo_id_coment . '"><span class="size12">';
 
-    if ($context['can_remove']) {
+    if ($context['allow_admin']) {
       echo '<input type="checkbox" name="campos['. $ultimo_id_coment . ']">';
     }
 
@@ -1162,8 +1164,8 @@ function ssi_comentar_img() {
           <b id="' . $ultimo_id_coment . '" user_comment="' . $username . '" text_comment="' . $cuerpo_comment . '">
             <a href="' . $boardurl . '/perfil/' . $username . '">' . $username . '</a>
           </b>
-          &nbsp;|&nbsp;
-          <span class="size10">' . date("d.n.y H:i:s", $posterTime) . '</span>
+          |
+          <span class="size10">' . date("d.m.Y H:i:s", $posterTime) . '</span>
           <a href="' . $boardurl . '/mensajes/a/' . $username . '" title="Enviar MP a: ' . $username . '">
             <img alt="" src="' . $settings['images_url'] . '/icons/mensaje_para.gif" style="margin-top: 2px; margin-rigth: 2px;" align="top" border="0" />
           </a>
@@ -1175,7 +1177,7 @@ function ssi_comentar_img() {
           <div style="overflow: hidden;">' . $cuerpo_comment_bbc . '</div>
         </span>
       </div>
-      <hr class="divider" />';
+      <div class="hrs"></div>';
   }
 }
 
@@ -1218,18 +1220,17 @@ function ssi_comentar_post() {
     echo '1: ';
     echo '<div id="cmt_' . $ultimo_id_coment . '"><span class="size12">';
 
-    if ($message['can_remove']) {
+    if ($context['allow_admin']) {
       echo '<input type="checkbox" name="campos[' . $ultimo_id_coment . ']">';
     }
 
     echo '
           <a onclick="citar_comment(' . $ultimo_id_coment . ')" href="javascript:void(0)">#' . $cantidad++ . '</a>
-          &nbsp;
           <b id="' . $ultimo_id_coment . '" user_comment="' . $context['user']['name'] . '" text_comment="' . $cuerpo_comment . '">
             <a href="' . $boardurl . '/perfil/' . $context['user']['name'] . '">' . $context['user']['name'] . '</a>
           </b>
-          &nbsp;|&nbsp;
-          <span class="size10">' . date("d.n.y H:i:s", $posterTime) . '</span>
+          |
+          <span class="size10">' . date("d.m.Y H:i:s", $posterTime) . '</span>
           <a  href="' . $boardurl . '/mensajes/a/' . $context['user']['name'] . '" title="Enviar MP a: ' . $context['user']['name'] . '">
             <img alt="" src="' . $settings['images_url'] . '/icons/mensaje_para.gif" style="margin-top: 2px; margin-rigth: 2px;" align="top" border="0" />
           </a>
@@ -1241,7 +1242,7 @@ function ssi_comentar_post() {
           <div style="overflow: hidden;">' . $cuerpo_comment_bbc . '</div>
         </span>
       </div>
-      <hr class="divider" />';
+      <div class="hrs"></div>';
   }
 }
 
@@ -1465,7 +1466,8 @@ function ssi_friendlyurl_verificar() {
 function ssi_smileys() {
   global $context, $db_prefix, $settings;
 
-  echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  echo '
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" >
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -1475,8 +1477,12 @@ function ssi_smileys() {
         <table width="190px">
           <tbody>
             <tr align="center">
-              <td width="40"><strong>Emotic&oacute;n:</strong></td>
-              <td width="80"><strong>C&oacute;digo:</strong></td>
+              <td width="40">
+                <strong>Emotic&oacute;n:</strong>
+              </td>
+              <td width="80">
+                <strong>C&oacute;digo:</strong>
+              </td>
             </tr>';
 
   $existe = db_query("
@@ -1486,17 +1492,22 @@ function ssi_smileys() {
     ORDER BY smileyOrder ASC", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($existe)) {
-    echo '<tr align="center">
+    echo '
+      <tr align="center">
         <td>
           <img alt="' . $row['description'] . '" style="border: medium none;" src="' . $settings['images_url'] . '/emoticones/' . $row['filename'] . '" title="' . $row['description'] . '" />
         </td>
         <td>' . $row['code'] . '</td>
-        </tr>';
+      </tr>';
   }
 
   mysqli_free_result($existe);
 
-  echo '</tbody></table></body></html>';
+  echo '
+          </tbody>
+        </table>
+      </body>
+    </html>';
 }
 
 function ssi_nick_verificar() {

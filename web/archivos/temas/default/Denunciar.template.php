@@ -51,10 +51,14 @@ function template_manual_intro() {
                 <td align="center">
                   <form action="' . $boardurl . '/denuncia/enviar/" method="post">
                     <p align="center" class="size11">
-                      <b>Denunciar el post:</b>&nbsp;<br />
+                      <b>Denunciar el post:</b>
+                      <br />
                       ' . $id  . ' / ' . $titulo . '
-                      <b>Creado por:</b>&nbsp;<br />
-                      ' . $usuario . '<br /><br />
+                      <br /><br />
+                      <b>Creado por:</b>
+                      <br />
+                      ' . $usuario . '
+                      <br /><br />
                       <font class="size11"><b>Raz&oacute;n de la denuncia:</b></font><br />
                       <select name="razon" style="color: black; background-color: rgb(250, 250, 250); font-size: 12px;">
                         <option value="Re-post">Re-post</option>

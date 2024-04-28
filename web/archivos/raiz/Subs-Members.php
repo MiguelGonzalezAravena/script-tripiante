@@ -437,10 +437,9 @@ function addMembersToGroup($members, $group, $type = 'auto')
   return true;
 }
 
-function registerMember(&$regOptions)
-{
+function registerMember(&$regOptions) {
   global $scripturl, $txt, $modSettings, $db_prefix, $context, $sourcedir;
-  global $user_info, $options, $settings, $func;
+  global $user_info;
 
   loadLanguage('Login');
 
@@ -476,8 +475,8 @@ function registerMember(&$regOptions)
   $regOptions['username'] = preg_replace('~[\t\n\r\x0B\0' . ($context['utf8'] ? ($context['server']['complex_preg_chars'] ? '\x{A0}' : pack('C*', 0xC2, 0xA0)) : '\xA0') . ']+~' . ($context['utf8'] ? 'u' : ''), ' ', $regOptions['username']);
 
   // Don't use too long a name.
-  if ($func['strlen']($regOptions['username']) > 25)
-    $regOptions['username'] = $func['htmltrim']($func['substr']($regOptions['username'], 0, 25));
+  if (strlen($regOptions['username']) > 25)
+    $regOptions['username'] = trim(substr($regOptions['username'], 0, 25));
 
   // Only these characters are permitted.
   if (preg_match('~[<>&"\'=\\\]~', $regOptions['username']) != 0 || $regOptions['username'] == '_' || $regOptions['username'] == '|' || strpos($regOptions['username'], '[code') !== false || strpos($regOptions['username'], '[/code') !== false)
@@ -727,11 +726,10 @@ function registerMember(&$regOptions)
 }
 
 // Check if a name is in the reserved words list. (name, current member id, name/username?.)
-function isReservedName($name, $current_ID_MEMBER = 0, $is_name = true, $fatal = true)
-{
-  global $user_info, $modSettings, $db_prefix, $func;
+function isReservedName($name, $current_ID_MEMBER = 0, $is_name = true, $fatal = true) {
+  global $user_info, $modSettings, $db_prefix;
 
-  $checkName = $func['strtolower']($name);
+  $checkName = strtolower($name);
 
   // Administrators are never restricted ;).
   if (!allowedTo('moderate_forum') && ((!empty($modSettings['reserveName']) && $is_name) || !empty($modSettings['reserveUser']) && !$is_name))
@@ -747,9 +745,9 @@ function isReservedName($name, $current_ID_MEMBER = 0, $is_name = true, $fatal =
         continue;
 
       // Case sensitive name?
-      $reservedCheck = empty($modSettings['reserveCase']) ? $func['strtolower']($reserved) : $reserved;
+      $reservedCheck = empty($modSettings['reserveCase']) ? strtolower($reserved) : $reserved;
       // If it's not just entire word, check for it in there somewhere...
-      if ($checkMe == $reservedCheck || ($func['strpos']($checkMe, $reservedCheck) !== false && empty($modSettings['reserveWord'])))
+      if ($checkMe == $reservedCheck || (strpos($checkMe, $reservedCheck) !== false && empty($modSettings['reserveWord'])))
       {
         if ($fatal)
           fatal_lang_error(244, true, array($reserved));

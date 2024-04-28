@@ -96,10 +96,9 @@ function Memberlist() {
 }
 
 // List all members, page by page.
-function MLAll()
-{
+function MLAll() {
   global $txt, $scripturl, $db_prefix, $user_info;
-  global $modSettings, $context, $func;
+  global $modSettings, $context;
 
   // The chunk size for the cached index.
   $cache_step_size = 500;
@@ -164,7 +163,7 @@ function MLAll()
 
   if (!is_numeric($_REQUEST['start']))
   {
-    if (preg_match('~^[^\'\\\\/]~' . ($context['utf8'] ? 'u' : ''), $func['strtolower']($_REQUEST['start']), $match) === 0)
+    if (preg_match('~^[^\'\\\\/]~' . ($context['utf8'] ? 'u' : ''), strtolower($_REQUEST['start']), $match) === 0)
       fatal_error('Hacker?', false);
 
     $_REQUEST['start'] = $match[0];
@@ -304,7 +303,7 @@ function MLAll()
     $last_letter = '';
     foreach ($context['members'] as $i => $dummy)
     {
-      $this_letter = $func['strtolower']($func['substr']($context['members'][$i]['name'], 0, 1));
+      $this_letter = strtolower(substr($context['members'][$i]['name'], 0, 1));
 
       if ($this_letter != $last_letter && preg_match('~[a-z]~', $this_letter) === 1)
       {

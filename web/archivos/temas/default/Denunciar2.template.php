@@ -25,14 +25,14 @@ function template_manual_intro() {
   mysqli_free_result($request);
 
   
-   if ($context['user']['is_guest']) {
+  if ($context['user']['is_guest']) {
     fatal_error('Para denunciar una imagen debes autentificarte.', false);
   } else if (empty($_GET['id'])) {
     fatal_error('Debes ingresar el ID de la imagen a denunciar.', false);
   } else if ($context['ID_PICTURE'] != $id) {
-    fatal_error('La imagen que deseas denunciar no existe', false);
+    fatal_error('La imagen que deseas denunciar no existe.', false);
   } else if ($started == $context['user']['id']) {
-    fatal_error('No puedes denunciar tus im&aacute;genes, si tienes alg&uacute;n problema, b&oacute;rrala o ed&iacute;tala t&uacute;.', false);
+    fatal_error('No puedes denunciar tus im&aacute;genes. Si tienes alg&uacute;n problema, b&oacute;rrala o ed&iacute;tala t&uacute;.', false);
   } else {
     echo '
         <script type="text/javascript">
@@ -59,11 +59,10 @@ function template_manual_intro() {
                   <form action="' . $boardurl . '/denuncia/enviar/" method="post">
                     <p align="center" class="size11">
                       <b>Denunciar la imagen:</b>
-                      &nbsp;
                       <br />
                       ' . $id  . ' / ' . $titulo . '
+                      <br /><br />
                       <b>Creada por:</b>
-                      &nbsp;
                       <br />
                       ' . $usuario . '
                       <br /><br />
@@ -73,10 +72,9 @@ function template_manual_intro() {
                       <br />
                       <select name="razon" style="color: black; background-color: rgb(250, 250, 250); font-size: 12px;">
                         <option value="Imagen ya agregada">Imagen ya agregada</option>
-                        <option value="Se hace Spam">Se hace Spam</option>
-                        <option value="Contiene Pornografia">Contiene Pornografia</option>
-                        <option value="Es Gore o asqueroso">Es Gore o asqueroso</option>
-
+                        <option value="Se hace spam">Se hace spam</option>
+                        <option value="Contiene pornografia">Contiene pornograf&iacute;a</option>
+                        <option value="Es gore o asqueroso">Es gore o asqueroso</option>
                         <option value="No cumple con el protocolo">No cumple con el protocolo</option>
                         <option value="Otra razon (especificar)">Otra raz&oacute;n (especificar)</option>
                       </select>
@@ -88,7 +86,7 @@ function template_manual_intro() {
                       <textarea name="comentario" cols="40" rows="5" wrap="hard" tabindex="6"></textarea>
                       <label id="errorss"></label>
                       <br />
-                      <font size="1">En el caso de ser una Imagen ya agregada, se debe indicar el enlace de la imagen original.</font>
+                      <font size="1">En el caso de ser una imagen ya agregada, se debe indicar el enlace de la imagen original.</font>
                       <br /><br />
                       <input onclick="return errorrojos(this.form.comentario.value);" class="login" type="submit" value="Denunciar Imagen" />
                       <br />

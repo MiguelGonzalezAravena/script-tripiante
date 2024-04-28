@@ -95,13 +95,13 @@ function template_main() {
 }
 
 function template_print_below() {
-  global $context, $settings, $options;
+  global $mbname, $boardurl;
 
   echo '
               </center>
               <br /><br />
               <hr />
-              <font size="1">' . theme_copyright() . '</font>
+              <font size="1">&copy; ' . date("Y") . ' ' . $mbname . ' - '  . $boardurl . '</font>
             </center>
           </div>
         </div>

@@ -79,6 +79,10 @@ function template_main() {
       $index_color = 0;
     }
 
+    $row['subject'] = censorText($row['subject']);
+    $short_title = htmlentities(ssi_reducir($row['subject']), ENT_QUOTES, 'ISO-8859-1');
+    $full_title = htmlentities($row['subject'], ENT_QUOTES, 'ISO-8859-1');
+
     echo '
       <div class="entry_sticky" style="background-color: ' . $colors[$index_color] . ';">
         <div class="icon_img" style="float: left; margin-right: 2px;">
@@ -99,8 +103,8 @@ function template_main() {
     }
 
     echo '
-          <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" target="_self" title="' . htmlentities(censorText($row['subject']), ENT_QUOTES, 'UTF-8') . '" alt="' . htmlentities(censorText($row['subject']), ENT_QUOTES, "UTF-8") . '">
-            ' . ssi_reducir(htmlentities(censorText($row['subject']), ENT_QUOTES, 'UTF-8')) . '
+          <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($full_title) . '.html" target="_self" title="' . $full_title . '" alt="' . $full_title . '">
+            ' . $short_title . '
           </a>
         </div>
       </div>
@@ -118,6 +122,9 @@ function template_main() {
       </div>';
   } else {
     while ($row = mysqli_fetch_assoc($request2)) {
+      $row['subject'] = htmlentities($row['subject'], ENT_QUOTES, 'ISO-8859-1');
+      $title = censorText($row['subject']);
+
       echo '
         <div class="entry_item">
           <div class="icon">
@@ -135,8 +142,8 @@ function template_main() {
       }
 
       echo '
-            <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" target="_self" title="' . htmlentities($row['subject'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlentities($row['subject'], ENT_QUOTES, 'UTF-8') . '">
-              ' . ssi_reducir(htmlentities($row['subject'], ENT_QUOTES, 'UTF-8')) . '
+            <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" target="_self" title="' . $title . '" alt="' . $title . '">
+              ' . ssi_reducir($title) . '
             </a>
           </div>
         </div>
@@ -167,6 +174,8 @@ function template_main() {
   $nextPage = $actualPage + 1;
   $lastPage = $records / $end;
   $residue = $records % $end;
+  $factor = $page == 0 || $page == 1 ? 1 : $page;
+  $nextCondition = ($rows * $factor) < $records;
 
   if ($residue > 0) {
     $lastPage = floor($lastPage) + 1; 
@@ -185,7 +194,7 @@ function template_main() {
         echo '<a href="' . $boardurl . '/pag-' . $previousPage   . '">&#171; anterior</a>';
       }
 
-      if ($actualPage < $lastPage) {
+      if ($actualPage < $lastPage && $nextCondition) {
         echo ' <a href="' . $boardurl . '/pag-' . $nextPage   . '">siguiente &#187;</a>';
       }
     } else {
@@ -193,7 +202,7 @@ function template_main() {
         echo ' <a href="' . $boardurl . '/categoria/' . $categoria . '/pag-' . $previousPage   . '">&#171; anterior</a>';
       }
 
-      if ($actualPage < $lastPage) {
+      if ($actualPage < $lastPage && $nextCondition) {
         echo ' <a href="' . $boardurl . '/categoria/' . $categoria . '/pag-' . $nextPage   . '">siguiente &#187;</a>';
       }
     }
@@ -301,7 +310,7 @@ function template_main() {
   echo '
     <div class="act_comments">
       <div class="box_title" style="width: 361px;">
-        <div class="box_txt ultimos_comments">Tops posts de la semana</div>
+        <div class="box_txt ultimos_comments">TOPs posts de la semana</div>
         <div class="box_rss">
           <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" />
         </div>
@@ -310,7 +319,7 @@ function template_main() {
 
   $starttime = mktime(0, 0, 0, date("n"), date("j"), date("Y")) - (date("N") * 3600 * 24);
   $starttime = forum_time(false, $starttime);
-  $tops_posts_de_la_semana = 0;
+  $tops_posts_de_la_semana = 1;
 
   $request = db_query("
     SELECT t.ID_TOPIC, m.ID_TOPIC, m.subject, m.ID_BOARD, b.ID_BOARD, b.description, p.ID_TOPIC, p.TYPE, SUM(p.POINTS) as POINTS, p.time
@@ -325,10 +334,13 @@ function template_main() {
     LIMIT " . $modSettings['number_tops'], __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request)) {
+    $row['subject'] = censorText($row['subject']);
+    $short_title = htmlentities(ssi_reducir($row['subject']), ENT_QUOTES, 'ISO-8859-1');
+    $full_title = htmlentities($row['subject'], ENT_QUOTES, 'ISO-8859-1');
+
     echo '
-      <b>' . $tops_posts_de_la_semana++ . '&nbsp;-&nbsp;</b>
-      <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable(censorText($row['subject'])) . '.html" title="' . censorText($row['subject']) . '">' . ssi_reducir(censorText($row['subject'])) . '</a>
-      &nbsp;
+      <b>' . $tops_posts_de_la_semana++ . '&nbsp;-</b>
+      <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" title="' . $full_title . '" alt="' . $full_title . '">' . $short_title . '</a>
       (<span title="' . $row['points'] . ' pts">' . $row['POINTS'] . ' pts</span>)
     <br />';
   }
@@ -398,9 +410,12 @@ function template_main() {
     LIMIT 1", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request)) {
+    $row['title'] = censorText($row['title']);
+    $title = htmlentities($row['title'], ENT_QUOTES, 'ISO-8859-1');
+
     echo '
-        <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" title="' . censorText($row['title']) . '" alt="' . censorText($row['title']) . '">
-          <img src="' . $row['filename'] . '" title="' . censorText($row['title']) . '" alt="' . censorText($row['title']) . '" width="151px" height="151px" />
+        <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" title="' . $title . '" alt="' . $title . '">
+          <img src="' . $row['filename'] . '" title="' . $title . '" alt="' . $title . '" width="151px" height="151px" onerror="error_avatar(this)" />
         </a>
       </div>';
   }
@@ -429,10 +444,13 @@ function template_main() {
   $context['ultimas_imagenes'] = array();
 
   while ($row = mysqli_fetch_assoc($request)) {
+    $row['title'] = censorText($row['title']);
+    $title = htmlentities(ssi_reducir2(censorText($row['title'])), ENT_QUOTES, 'ISO-8859-1');
+
     echo '
       <div style="-moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 2px; margin-bottom: 1px; background-color: #F4F4FF; border: 1px solid #C2D2E4;">
-        <img src="' . $settings['images_url'] . '/icons/foto.gif" alt="' . censorText($row['title']) . '" title="' . censorText($row['title']) . '"/>&nbsp;
-        <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" title="' . censorText($row['title']) . '" alt="' . censorText($row['title']) . '">' . ssi_reducir2(censorText($row['title'])) . '</a>
+        <img src="' . $settings['images_url'] . '/icons/foto.gif" alt="' . $row['title'] . '" title="' . $row['title'] . '"/>
+        <a href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" title="' . $row['title'] . '" alt="' . $row['title'] . '">' . $title . '</a>
       </div>';
   }
 
@@ -463,7 +481,7 @@ function template_main() {
 
   $starttime = mktime(0, 0, 0, date("n"), date("j"), date("Y")) - (date("N") * 3600 * 24);
   $starttime = forum_time(false, $starttime);
-  $user_de_la_semana = 0;
+  $user_de_la_semana = 1;
     
   $request = db_query("
     SELECT me.ID_MEMBER, me.memberName, me.realName, COUNT(*) as count_posts
@@ -475,28 +493,34 @@ function template_main() {
     ORDER BY count_posts DESC
     LIMIT 10", __FILE__, __LINE__);
 
+  $rows = mysqli_num_rows($request);
+
   $max_num_posts = 1;
-  $user_de_la_semana++;
 
-  while ($row = mysqli_fetch_assoc($request)) {
-    echo '
-      <font style="font-size: 11px">
-        <b>' . $user_de_la_semana++ . '&nbsp;-&nbsp;</b>
-        <a href="' . $boardurl . '/perfil/' . censorText($row['realName']) . '">' . censorText($row['realName']) . '</a>
-        &nbsp;
-        (' . $row['count_posts']. ')
-      </font>
-      <br />';
-
-    if ($max_num_posts < $row['count_posts']) {
-      $max_num_posts = $row['count_posts'];
+  if ($rows == 0) {
+    echo '<div class="noesta">Nada por ac&aacute;...</div>';
+  } else {
+    while ($row = mysqli_fetch_assoc($request)) {
+      $realName = censorText($row['realName']);
+  
+      echo '
+        <font style="font-size: 11px">
+          <b>' . $user_de_la_semana++ . '&nbsp;-</b>
+          <a href="' . $boardurl . '/perfil/' . $realName . '">' . $realName . '</a>
+          (' . $row['count_posts']. ')
+        </font>
+        <br />';
+  
+      if ($max_num_posts < $row['count_posts']) {
+        $max_num_posts = $row['count_posts'];
+      }
+  
+      foreach ($context['user_de_la_semana'] as $i => $j) {
+        $context['user_de_la_semana'][$i]['post_percent'] = round(($j['num_posts'] * 100) / $max_num_posts);
+      }
+  
+      unset($max_num_posts, $row, $j, $i);
     }
-
-    foreach ($context['user_de_la_semana'] as $i => $j) {
-      $context['user_de_la_semana'][$i]['post_percent'] = round(($j['num_posts'] * 100) / $max_num_posts);
-    }
-
-    unset($max_num_posts, $row, $j, $i);
   }
 
   mysqli_free_result($request);
@@ -528,14 +552,13 @@ function template_main() {
     LIMIT 10", __FILE__, __LINE__);
 
   $max_num_topics = 1;
-  $user_con_mas_post = 0;
+  $user_con_mas_post = 1;
 
   while ($row = mysqli_fetch_assoc($request)) {
     echo '
       <font style="font-size: 11px">
-        <b>' . $user_con_mas_post++ . '&nbsp;-&nbsp;</b>
+        <b>' . $user_con_mas_post++ . '&nbsp;-</b>
         <a href="' . $boardurl . '/perfil/' . censorText($row['realName']) . '" title="' . censorText($row['realName']) . '">' . censorText($row['realName']) . '</a>
-        &nbsp;
         (' . $row['topics'] . ')</font>
       <br/>';
 
@@ -565,7 +588,10 @@ function template_main() {
   echo '
     <div align="left" style="margin-bottom: 4px;">
       <span class="iconse anuncio">
-        <a title="Anunciate ac&aacute;" href="' . $boardurl . '/contactanos/" target="_blank" rel="nofollow">Anunciate ac&aacute;</a>
+        <a title="Anunciate ac&aacute;" href="' . $boardurl . '/contactanos/" target="_blank" rel="nofollow">
+          &nbsp;
+          Anunciate ac&aacute;
+        </a>
       </span>
     </div>';
 
@@ -587,10 +613,10 @@ function template_main() {
             </div>
           </div>
           <div class="windowbg" align="center" style="padding: 4px; font-size: 11px; width: 153px; margin-bottom: 8px;">
-              ' . $context['common_stats']['total_topics'] . ' posts<br />
-              ' . $context['total_comments'] . ' comentarios<br />
-              ' . $context['common_stats']['total_members'] . ' usuarios<br />
-              ' . $context['common_stats']['latest_member']['link'] . ' &uacute;ltimo usuario
+            ' . $context['common_stats']['total_topics'] . ' posts<br />
+            ' . $context['total_comments'] . ' comentarios<br />
+            ' . $context['common_stats']['total_members'] . ' usuarios<br />
+            ' . $context['common_stats']['latest_member']['link'] . ' &uacute;ltimo usuario
           </div>
         </div>
       </div>
@@ -619,14 +645,14 @@ function comentarios() {
     $ID_MEMBER = $row['ID_MEMBER2'];
     $realName = censorText($row['realName']);
     $description = $row['description'];
-    $subject = ssi_reducir(censorText($row['subject']));
+    $subject = htmlentities(censorText(ssi_reducir($row['subject'])), ENT_QUOTES, 'ISO-8859-1');
 
     echo '
       <font class="size11">
         <b>
           <a title="" href="' . $boardurl . '/perfil/' . $realName . '">' . $realName . '</a>
         </b>
-        &nbsp;-&nbsp;
+        -
         <a title="' . $subject . '"  href="' . $boardurl . '/post/' . $ID_TOPIC . '/' . $description . '/' . ssi_amigable($subject) . '.html#cmt_' . $ID_COMMENT . '">' . $subject . '</a>
       </font>
       <br style="margin: 0px; padding: 0px;" />';

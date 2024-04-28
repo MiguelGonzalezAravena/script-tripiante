@@ -754,10 +754,8 @@ function QuickModeration2()
 }
 
 // Modify the settings and position of a board.
-function modifyBoard($board_id, &$boardOptions)
-{
-  global $sourcedir, $cat_tree, $boards, $boardList, $modSettings, $db_prefix;
-  global $func;
+function modifyBoard($board_id, &$boardOptions) {
+  global $cat_tree, $boards, $modSettings, $db_prefix;
 
   // Get some basic information about all boards and categories.
   getBoardTree();
@@ -910,7 +908,7 @@ function modifyBoard($board_id, &$boardOptions)
     if (isset($boardOptions['moderator_string']) && trim($boardOptions['moderator_string']) != '')
     {
       // Divvy out the usernames, remove extra space.
-      $moderator_string = strtr(addslashes($func['htmlspecialchars'](stripslashes($boardOptions['moderator_string']), ENT_QUOTES)), array('&quot;' => '"'));
+      $moderator_string = strtr(addslashes(htmlspecialchars(stripslashes($boardOptions['moderator_string']), ENT_QUOTES)), array('&quot;' => '"'));
       preg_match_all('~"([^"]+)"~', $moderator_string, $matches);
       $moderators = array_merge($matches[1], explode(',', preg_replace('~"([^"]+)"~', '', $moderator_string)));
       for ($k = 0, $n = count($moderators); $k < $n; $k++)

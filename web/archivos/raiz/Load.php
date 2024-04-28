@@ -33,7 +33,6 @@ function reloadSettings()
       $modSettings[$row[0]] = $row[1];
     mysqli_free_result($request);
 
-
     // Do a few things to protect against missing settings or settings with invalid values...
     if (empty($modSettings['defaultMaxTopics']) || $modSettings['defaultMaxTopics'] <= 0 || $modSettings['defaultMaxTopics'] > 999)
       $modSettings['defaultMaxTopics'] = 20;
@@ -50,87 +49,12 @@ function reloadSettings()
 
   // Set a list of common functions.
   $ent_list = empty($modSettings['disableEntityCheck']) ? '&(#\d{1,7}|quot|amp|lt|gt|nbsp);' : '&(#021|quot|amp|lt|gt|nbsp);';
-  $ent_check = empty($modSettings['disableEntityCheck']) ? array('preg_replace(\'~(&#(\d{1,7}|x[0-9a-fA-F]{1,6});)~e\', \'$func[\\\'entity_fix\\\'](\\\'\\2\\\')\', ', ')') : array('', '');
+  $ent_check = empty($modSettings['disableEntityCheck']) ? array('preg_replace(\'~(&#(\d{1,7}|x[0-9a-fA-F]{1,6});)~e\', \'\\entity_fix\\(\\\'\\2\\\')\', ', ')') : array('', '');
 
   // Preg_replace can handle complex characters only for higher PHP versions.
   $space_chars = $utf8 ? (@version_compare(PHP_VERSION, '4.3.3') != -1 ? '\x{A0}\x{2000}-\x{200F}\x{201F}\x{202F}\x{3000}\x{FEFF}' : pack('C*', 0xC2, 0xA0, 0xE2, 0x80, 0x80) . '-' . pack('C*', 0xE2, 0x80, 0x8F, 0xE2, 0x80, 0x9F, 0xE2, 0x80, 0xAF, 0xE2, 0x80, 0x9F, 0xE3, 0x80, 0x80, 0xEF, 0xBB, 0xBF)) : '\xA0';
   
   // TO-DO: Redefinir
-  /*
-  $func = array(
-    'entity_fix' => function($string) {
-      $num = substr($string, 0, 1) === 'x' ? hexdec(substr($string, 1)) : (int) $string;
-      return $num < 0x20 || $num > 0x10FFFF || ($num >= 0xD800 && $num <= 0xDFFF) ? '' : '&#' . $num;
-    },
-    'substr' => function($string, $start, $length = null) {
-      global $func;
-
-      $ent_arr = preg_split('~(&#' . (empty($modSettings['disableEntityCheck']) ? '\d{1,7}' : '021') . ';|&quot;|&amp;|&lt;|&gt;|&nbsp;|.)~' . ($utf8 ? 'u' : '') . '', '' . implode('$string', $ent_check) . ', -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY');
-      return $length === null ? implode('', array_slice($ent_arr, $start)) : implode('', array_slice($ent_arr, $start, $length));
-    },
-    'strlen' => create_function('$string', '
-      global $func;
-      return strlen(preg_replace(\'~' . $ent_list . ($utf8 ? '|.~u' : '~') . '\', \'_\', ' . implode('$string', $ent_check) . '));'),
-    'strpos' => create_function('$haystack, $needle, $offset = 0', '
-      global $func;
-      $haystack_arr = preg_split(\'~(&#' . (empty($modSettings['disableEntityCheck']) ? '\d{1,7}' : '021') . ';|&quot;|&amp;|&lt;|&gt;|&nbsp;|.)~' . ($utf8 ? 'u' : '') . '\', ' . implode('$haystack', $ent_check) . ', -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-      $haystack_size = count($haystack_arr);
-      if (strlen($needle) === 1)
-      {
-        $result = array_search($needle, array_slice($haystack_arr, $offset));
-        return is_int($result) ? $result + $offset : false;
-      }
-      else
-      {
-        $needle_arr = preg_split(\'~(&#' . (empty($modSettings['disableEntityCheck']) ? '\d{1,7}' : '021') . ';|&quot;|&amp;|&lt;|&gt;|&nbsp;|.)~' . ($utf8 ? 'u' : '') . '\',  ' . implode('$needle', $ent_check) . ', -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        $needle_size = count($needle_arr);
-
-        $result = array_search($needle_arr[0], array_slice($haystack_arr, $offset));
-        while (is_int($result))
-        {
-          $offset += $result;
-          if (array_slice($haystack_arr, $offset, $needle_size) === $needle_arr)
-            return $offset;
-          $result = array_search($needle_arr[0], array_slice($haystack_arr, ++$offset));
-        }
-        return false;
-      }'),
-    'htmlspecialchars' => create_function('$string, $quote_style = ENT_COMPAT, $charset = \'ISO-8859-1\'', '
-      global $func;
-      return ' . strtr($ent_check[0], array('&' => '&amp;'))  . 'htmlspecialchars($string, $quote_style, ' . ($utf8 ? '\'UTF-8\'' : '$charset') . ')' . $ent_check[1] . ';'),
-    'htmltrim' => create_function('$string', '
-      global $func;
-      return preg_replace(\'~^([ \t\n\r\x0B\x00' . $space_chars . ']|&nbsp;)+|([ \t\n\r\x0B\x00' . $space_chars . ']|&nbsp;)+$~' . ($utf8 ? 'u' : '') . '\', \'\', ' . implode('$string', $ent_check) . ');'),
-    'truncate' => create_function('$string, $length', (empty($modSettings['disableEntityCheck']) ? '
-      global $func;
-      $string = ' . implode('$string', $ent_check) . ';' : '') . '
-      preg_match(\'~^(' . $ent_list . '|.) {\' . $func[\'strlen\'](substr($string, 0, $length)) . \'}~'.  ($utf8 ? 'u' : '') . '\', $string, $matches);
-      $string = $matches[0];
-      while (strlen($string) > $length)
-        $string = preg_replace(\'~(' . $ent_list . '|.)$~'.  ($utf8 ? 'u' : '') . '\', \'\', $string);
-      return $string;'),
-    'strtolower' => $utf8 ? (function_exists('mb_strtolower') ? create_function('$string', '
-      return mb_strtolower($string, \'UTF-8\');') : create_function('$string', '
-      global $sourcedir;
-      require_once($sourcedir . \'/Subs-Charset.php\');
-      return utf8_strtolower($string);')) : 'strtolower',
-    'strtoupper' => $utf8 ? (function_exists('mb_strtoupper') ? create_function('$string', '
-      return mb_strtoupper($string, \'UTF-8\');') : create_function('$string', '
-      global $sourcedir;
-      require_once($sourcedir . \'/Subs-Charset.php\');
-      return utf8_strtoupper($string);')) : 'strtoupper',
-    'ucfirst' => $utf8 ? create_function('$string', '
-      global $func;
-      return $func[\'strtoupper\']($func[\'substr\']($string, 0, 1)) . $func[\'substr\']($string, 1);') : 'ucfirst',
-    'ucwords' => $utf8 ? (function_exists('mb_convert_case') ? create_function('$string', '
-      return mb_convert_case($string, MB_CASE_TITLE, \'UTF-8\');') : create_function('$string', '
-      global $func;
-      $words = preg_split(\'~([\s\r\n\t]+)~\', $string, -1, PREG_SPLIT_DELIM_CAPTURE);
-      for ($i = 0, $n = count($words); $i < $n; $i += 2)
-        $words[$i] = $func[\'ucfirst\']($words[$i]);
-      return implode(\'\', $words);')) : 'ucwords',
-  );
-  */
   $func = array();
 
   // Setting the timezone is a requirement for some functions in PHP >= 5.1.
@@ -818,11 +742,10 @@ function loadMemberData($users, $is_name = false, $set = 'normal')
 }
 
 // Loads the user's basic values... meant for template/theme usage.
-function loadMemberContext($user)
-{
+function loadMemberContext($user) {
   global $memberContext, $user_profile, $txt, $scripturl, $user_info;
-  global $context, $modSettings, $ID_MEMBER, $board_info, $settings;
-  global $db_prefix, $func, $boardurl;
+  global $context, $modSettings, $ID_MEMBER, $settings;
+  global $boardurl;
   static $dataLoaded = array();
 
   // If this person's data is already loaded, skip it.
@@ -859,13 +782,10 @@ function loadMemberContext($user)
   $buddy_list = !empty($profile['buddy_list']) ? explode(',', $profile['buddy_list']) : array();
 
   // If we're always html resizing, assume it's too large.
-  if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize')
-  {
+  if ($modSettings['avatar_action_too_large'] == 'option_html_resize' || $modSettings['avatar_action_too_large'] == 'option_js_resize') {
     $avatar_width = !empty($modSettings['avatar_max_width_external']) ? ' width="' . $modSettings['avatar_max_width_external'] . '"' : '';
     $avatar_height = !empty($modSettings['avatar_max_height_external']) ? ' height="' . $modSettings['avatar_max_height_external'] . '"' : '';
-  }
-  else
-  {
+  } else {
     $avatar_width = '';
     $avatar_height = '';
   }
@@ -1333,10 +1253,13 @@ function loadTemplate($template_name, $fatal = true)
     if (!empty($context['user']['is_admin']) && !isset($_GET['th']))
     {
       loadLanguage('Errors');
+      // TO-DO: ¿Será necesario mostrar este mensaje?
+      /*
       echo '
-<div style="color: red; padding: 2ex; background-color: white; border: 2px dashed;">
-  <a href="', $scripturl . '?action=theme;sa=settings;th=1;sesc=' . $context['session_id'], '" style="color: red;">', $txt['theme_dir_wrong'], '</a>
-</div>';
+        <div style="color: red; padding: 2ex; background-color: white; border: 2px dashed;">
+          <a href="', $scripturl . '?action=theme;sa=settings;th=1;sesc=' . $context['session_id'], '" style="color: red;">', $txt['theme_dir_wrong'], '</a>
+        </div>';
+      */
     }
 
     loadTemplate($template_name);
@@ -1489,37 +1412,34 @@ function getBoardParents($id_parent)
 }
 
 // Replace all vulgar words with respective proper words. (substring or whole words..)
-function &censorText(&$text)
-{
-  global $modSettings, $options, $settings, $txt;
-  static $censor_vulgar = null, $censor_proper;
+function &censorText(&$text, $force = false) {
+	global $modSettings, $options, $settings, $txt;
+	static $censor_vulgar = null, $censor_proper = null;
 
-  if ((!empty($options['show_no_censored']) && $settings['allow_no_censored']) || empty($modSettings['censor_vulgar']))
-    return $text;
-
-  // If they haven't yet been loaded, load them.
-  if ($censor_vulgar == null)
-  {
-    $censor_vulgar = explode("\n", $modSettings['censor_vulgar']);
-    $censor_proper = explode("\n", $modSettings['censor_proper']);
-
-    // Quote them for use in regular expressions.
-    for ($i = 0, $n = count($censor_vulgar); $i < $n; $i++)
-    {
-      $censor_vulgar[$i] = strtr(preg_quote($censor_vulgar[$i], '/'), array('\\\\\\*' => '[*]', '\\*' => '[^\s]*?', '&' => '&amp;'));
-      $censor_vulgar[$i] = (empty($modSettings['censorWholeWord']) ? '/' . $censor_vulgar[$i] . '/' : '/(?<=^|\W)' . $censor_vulgar[$i] . '(?=$|\W)/') . (empty($modSettings['censorIgnoreCase']) ? '' : 'i') . ((empty($modSettings['global_character_set']) ? $txt['lang_character_set'] : $modSettings['global_character_set']) === 'UTF-8' ? 'u' : '');
-
-      if (strpos($censor_vulgar[$i], '\'') !== false)
-      {
-        $censor_proper[count($censor_vulgar)] = $censor_proper[$i];
-        $censor_vulgar[count($censor_vulgar)] = strtr($censor_vulgar[$i], array('\'' => '&#039;'));
-      }
-    }
+	if ((!empty($options['show_no_censored']) && $settings['allow_no_censored'] && !$force) || empty($modSettings['censor_vulgar'])) {
+		return $text;
   }
 
-  // Censoring isn't so very complicated :P.
-  $text = preg_replace($censor_vulgar, $censor_proper, $text);
-  return $text;
+	// If they haven't yet been loaded, load them.
+	if ($censor_vulgar == null) {
+		$censor_vulgar = explode("\n", $modSettings['censor_vulgar']);
+		$censor_proper = explode("\n", $modSettings['censor_proper']);
+
+		// Quote them for use in regular expressions.
+		for ($i = 0, $n = count($censor_vulgar); $i < $n; $i++) {
+			$censor_vulgar[$i] = strtr(preg_quote($censor_vulgar[$i], '/'), array('\\\\\\*' => '[*]', '\\*' => '[^\s]*?', '&' => '&amp;'));
+			$censor_vulgar[$i] = (empty($modSettings['censorWholeWord']) ? '/' . $censor_vulgar[$i] . '/' : '/(?<=^|\W)' . $censor_vulgar[$i] . '(?=$|\W)/') . (empty($modSettings['censorIgnoreCase']) ? '' : 'i') . ((empty($modSettings['global_character_set']) ? $txt['lang_character_set'] : $modSettings['global_character_set']) === 'UTF-8' ? 'u' : '');
+
+			if (strpos($censor_vulgar[$i], '\'') !== false) {
+				$censor_proper[count($censor_vulgar)] = $censor_proper[$i];
+				$censor_vulgar[count($censor_vulgar)] = strtr($censor_vulgar[$i], array('\'' => '&#039;'));
+			}
+		}
+	}
+
+	// Censoring isn't so very complicated :P.
+	$text = preg_replace($censor_vulgar, $censor_proper, $text);
+	return $text;
 }
 
 // Create a little jumpto box.
@@ -1577,23 +1497,20 @@ function template_include($filename, $once = false)
     $templates[] = $filename;
 
   // Are we going to use eval?
-  if (empty($modSettings['disableTemplateEval']))
-  {
+  if (empty($modSettings['disableTemplateEval'])) {
     $file_found = file_exists($filename) && eval('?' . '>' . rtrim(file_get_contents($filename))) !== false;
     $settings['current_include_filename'] = $filename;
-  }
-  else
-  {
+  } else {
     $file_found = file_exists($filename);
 
-    if ($once && $file_found)
+    if ($once && $file_found) {
       require_once($filename);
-    else if ($file_found)
+    } else if ($file_found) {
       require($filename);
+    }
   }
 
-  if ($file_found !== true)
-  {
+  if ($file_found !== true) {
     ob_end_clean();
     if (!empty($modSettings['enableCompressedOutput']))
       @ob_start('ob_gzhandler');
@@ -1791,19 +1708,21 @@ function loadSession()
       session_set_save_handler('sessionOpen', 'sessionClose', 'sessionRead', 'sessionWrite', 'sessionDestroy', 'sessionGC');
       @ini_set('session.gc_probability', '1');
     }
-    else if (@ini_get('session.gc_maxlifetime') <= 1440 && !empty($modSettings['databaseSession_lifetime']))
+    else if (@ini_get('session.gc_maxlifetime') <= 1440 && !empty($modSettings['databaseSession_lifetime'])) {
       @ini_set('session.gc_maxlifetime', max($modSettings['databaseSession_lifetime'], 60));
-
-    // Use cache setting sessions?
-    if (empty($modSettings['databaseSession_enable']) && !empty($modSettings['cache_enable']) && php_sapi_name() != 'cli')
-    {
-      if (function_exists('mmcache_set_session_handlers'))
-        mmcache_set_session_handlers();
-      else if (function_exists('eaccelerator_set_session_handlers'))
-        eaccelerator_set_session_handlers();
     }
 
-    session_start();
+    // Use cache setting sessions?
+    if (empty($modSettings['databaseSession_enable']) && !empty($modSettings['cache_enable']) && php_sapi_name() != 'cli') {
+      if (function_exists('mmcache_set_session_handlers')) {
+        mmcache_set_session_handlers();
+      } else if (function_exists('eaccelerator_set_session_handlers')) {
+        eaccelerator_set_session_handlers();
+      }
+    }
+
+    // TO-DO: Eliminar o dejar?
+    // session_start();
 
     // Change it so the cache settings are a little looser than default.
     if (!empty($modSettings['databaseSession_loose']))

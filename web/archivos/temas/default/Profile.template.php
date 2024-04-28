@@ -140,7 +140,6 @@ function menu() {
         <div class="hrs"></div>
         <span class="size10" style="font-family: arial;">
           <img src="' . $settings['images_url'] . '/user.gif" alt="" />
-          &nbsp;
           <b>Editar mi apariencia:</b>
           <br />
           <ul style="margin: 0px; padding-left: 15px;">
@@ -172,7 +171,6 @@ function menu() {
         <div align="left" style="margin-bottom: 4px;">
           <span style="padding-left: 2px;">
             <img alt="" src="' . $settings['images_url'] . '/icons/notas.gif" />
-            &nbsp;
             <a href="' . $boardurl . '/mis-notas/">Mis notas</a>
           </span>
         </div>
@@ -318,12 +316,12 @@ function menu2() {
         <br /><br />
         <p class="datosp">Sexo:</p>
         ' . $context['member']['gender']['name'] . '
-        &nbsp;-&nbsp;
+        -
         ' . $context['member']['gender']['image'] . '
         <br /><br />
         <p class="datosp">Pa&iacute;s:</p>
         ' . ssi_pais($context['member']['title']) . '
-        &nbsp;-&nbsp;
+        -
         <img alt="" title="' . ssi_pais($context['member']['title']) . '" src="' . $settings['images_url'] . '/icons/banderas/' . $context['member']['title'] . '.gif" />';
 
   if (!empty($context['member']['msn']['name'])) {
@@ -349,7 +347,7 @@ function menu2() {
     <br /><br />
     <p class="datosp">Rango:</p>
     ' . (!empty($context['member']['group']) ? $context['member']['group'] : $context['member']['post_group']) . '
-    &nbsp;-&nbsp;
+    -
     ' . $context['member']['group_stars'];
 
   if (!empty($context['member']['estado_icon'])) {
@@ -357,7 +355,7 @@ function menu2() {
       <br /><br />
       <p class="datosp">Estado:</p>
       ' . ssi_estado_icon($context['member']['estado_icon']) . '
-      &nbsp;-&nbsp;
+      -
       <img title="' . ssi_estado_icon($context['member']['estado_icon']) . '" src="' . $settings['images_url'] . '/icons/estado/'. $context['member']['estado_icon'], '.gif" alt="" />';
   }
 
@@ -631,11 +629,14 @@ function menu4() {
         'ID_BOARD' => $row['ID_BOARD'],
         'ID_TOPIC' => $row['ID_TOPIC'],
         'description' => $row['description'],
-        'subject' => $row['subject'],
+        'subject' => censorText($row['subject']),
       );
     }
 
     foreach ($context['posts'] as $post) {
+      $short_title = htmlentities(ssi_reducir2($post['subject']), ENT_QUOTES, 'ISO-8859-1');
+      $full_title = htmlentities($post['subject'], ENT_QUOTES, 'ISO-8859-1');
+
       echo '
         <table width="100%">
           <tr>
@@ -643,7 +644,7 @@ function menu4() {
               <div class="box_icono4">
                 <img alt="" title="' . $post['name'] . '" src="' . $settings['images_url'] . '/post/icono_' . $post['ID_BOARD'] . '.gif" />
               </div>
-              <a href="' . $boardurl . '/post/' . $post['ID_TOPIC'] . '/' . $post['description'] . '/' . ssi_amigable($post['subject']) . '.html">' . ssi_reducir2(htmlentities($post['subject'], ENT_QUOTES, 'UTF-8')) . '</a>
+              <a href="' . $boardurl . '/post/' . $post['ID_TOPIC'] . '/' . $post['description'] . '/' . ssi_amigable($post['subject']) . '.html" alt="' . $full_title . '" title="' . $full_title . '">' . $short_title . '</a>
             </td>
           </tr>
         </table>';
@@ -720,7 +721,6 @@ function menu5() {
         <div class="smalltext">
           <center>
             Comentarios:
-            &nbsp;
             (<a href="' . $boardurl . '/imagenes/ver/' . $img['ID_PICTURE'] . '#comentarios">' . $total2['total'] . '</a>)
           </center>
         </div>';
@@ -841,18 +841,18 @@ function template_perfil() {
   }
 
   // Obtener primera key del arreglo de meses
-  $key = key($txt['months']);
+  // $key = key($txt['months']);
 
   // Generar el arreglo de meses con posición corrida - 1 valores;
-  $months = $txt['months'][$key];
+  $months = $txt['months'];
 
   echo '
     </select>
     <select tabindex="2" name="bday1" id="bday1" autocomplete="off">
       <option value="' . $context['member']['birth_date']['month'] . '">Mes:</option>';
       
-  for ($i = 1; $i < 13; $i++) {
-    echo '<option value="' . $i . '"' . ($context['member']['birth_date']['month'] == $i ? ' selected="selected"' : '') . '>' . strtolower($months[$i - 1]) . '</option>';
+  for ($i = 1; $i <= count($months); $i++) {
+    echo '<option value="' . $i . '"' . ($context['member']['birth_date']['month'] == $i ? ' selected="selected"' : '') . '>' . strtolower($months[$i]) . '</option>';
   }
 
   echo '
@@ -2169,21 +2169,18 @@ function template_summary() {
             <li>
               <a href="' . $boardurl . '/perfil/' . $memberName . '/muro/" title="Muro" alt="Muro">
                 <img src="' . $settings['images_url'] . '/icons/muro.gif" alt="Muro" title="Muro" />
-                &nbsp;
                 Muro
               </a>
             </li>
             <li>
               <a href="' . $boardurl . '/perfil/' . $memberName . '/apariencia/" title="Apariencia" alt="Apariencia">
                 <img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia"/>
-                &nbsp;
                 Apariencia
               </a>
             </li>
             <li>
               <a href="' . $boardurl . '/perfil/' . $memberName . '/comunidades/" title="Comunidades" alt="Comunidades">
                 <img src="' . $settings['images_url'] . '/comunidades/comunidad.png" alt="Comunidades" title="Comunidades" />
-                &nbsp;
                 Comunidades
               </a>
             </li>
@@ -2309,111 +2306,83 @@ function ver_apariencia() {
 
   echo '
     <p class="datosp">Mide:</p>
-    &nbsp;
     ' . (empty($context['member']['altura']) ? 'Sin datos' : $context['member']['altura']) . '
-    &nbsp;
     cent&iacute;metros
     <br /><br />
     <p class="datosp">Pesa:</p>
-    &nbsp;
     ' . (empty($context['member']['peso']) ? 'Sin datos' : $context['member']['peso']) . '
-    &nbsp;
     kilos
     <br /><br />
     <p class="datosp">Su color de pelo:</p>
-    &nbsp;
     ' . (empty($context['member']['pelo_color']) ? 'Sin datos' : pelo_color($context['member']['pelo_color'])) . '
     <br /><br />
     <p class="datosp">Su color de ojos:</p>
-    &nbsp;
     ' . (empty($context['member']['ojos_color']) ? 'Sin datos' : ojos_color($context['member']['ojos_color'])) . '
     <br /><br />
     <p class="datosp">Su f&iacute;sico:</p>
-    &nbsp;
     ' . (empty($context['member']['fisico']) ? 'Sin datos' : fisico($context['member']['fisico'])) . '
     <br /><br />
     <p class="datosp">Su dieta es:</p>
-    &nbsp;
     ' . (empty($context['member']['dieta']) ? 'Sin datos' : dieta($context['member']['dieta'])) . '
     <br /><br />
     <p class="datosp">Fuma:</p>
-    &nbsp;
     ' . (empty($context['member']['fumo']) ? 'Sin datos' : fumo($context['member']['fumo'])) . '
     <br /><br />
     <p class="datosp">Toma alcohol:</p>
-    &nbsp;
     ' . (empty($context['member']['tomo_alcohol']) ? 'Sin datos' : fumo($context['member']['tomo_alcohol'])) . '
     <br /><br />
     <p class="datosp">Le gustar&iacute;a:</p>
-    &nbsp;
     ' . (empty($context['member']['me_gustaria']) ? 'Sin datos' : me_gustaria($context['member']['me_gustaria'])) . '
     <br /><br />
     <p class="datosp">En el amor est&aacute;:</p>
-    &nbsp;
     ' . (empty($context['member']['estado']) ? 'Sin datos' : estado($context['member']['estado'])) . '
     <br /><br />
     <p class="datosp">Hijos:</p>
-    &nbsp;
     ' . (empty($context['member']['hijos']) ? 'Sin datos' : hijos($context['member']['hijos'])) . '
     <br /><br />
     <p class="datosp">Sus estudios:</p>
-    &nbsp;
     ' . (empty($context['member']['estudios']) ? 'Sin datos' : estudios($context['member']['estudios'])) . '
     <br /><br />
     <p class="datosp">Profesi&oacute;n:</p>
-    &nbsp;
     ' . (empty($context['member']['profesion']) ? 'Sin datos' : $context['member']['profesion']) . '
     <br /><br />
     <p class="datosp">Empresa:</p>
-    &nbsp;
     ' . (empty($context['member']['empresa']) ? 'Sin datos' : $context['member']['empresa']) . '
     <br /><br />
     <p class="datosp">Su nivel de ingresos:</p>
-    &nbsp;
     ' . (empty($context['member']['ingresos']) ? 'Sin datos' : ingresos($context['member']['ingresos'])) . '
     <br /><br />
     <p class="datosp">Intereses profesionales:</p>
-    &nbsp;
     ' . (empty($context['member']['intereses_profesionales']) ? 'Sin datos' : $context['member']['intereses_profesionales']) . '
     <br /><br />
     <p class="datosp">Habilidades profesionales:</p>
-    &nbsp;
     ' . (empty($context['member']['habilidades_profesionales']) ? 'Sin datos' : $context['member']['habilidades_profesionales']) . '
     <br /><br />
     <p class="datosp">Intereses:</p>
-    &nbsp;
     ' . (empty($context['member']['mis_intereses']) ? 'Sin datos' : $context['member']['mis_intereses']) . '
     <br /><br />
     <p class="datosp">Hobbies:</p>
-    &nbsp;
     ' . (empty($context['member']['hobbies']) ? 'Sin datos' : $context['member']['hobbies']) . '
     <br /><br />
     <p class="datosp">Series de Tv favoritas:</p>
-    &nbsp;
     ' . (empty($context['member']['series_tv_favoritas']) ? 'Sin datos' : $context['member']['series_tv_favoritas']) . '
     <br /><br />
     <p class="datosp">M&uacute;sica favorita:</p>
-    &nbsp;
     ' . (empty($context['member']['musica_favorita']) ? 'Sin datos' : $context['member']['musica_favorita']) . '
     <br /><br />
     <p class="datosp">Deportes y equipos:</p>
-    &nbsp;
     ' . (empty($context['member']['deportes_y_equipos_favoritos']) ? 'Sin datos' : $context['member']['deportes_y_equipos_favoritos']) . '
     <br /><br />
     <p class="datosp">Libros favoritos:</p>
-    &nbsp;
     ' . (empty($context['member']['libros_favoritos']) ? 'Sin datos' : $context['member']['libros_favoritos']) . '
     <br /><br />
     <p class="datosp">Pel&iacute;culas favoritas:</p>
-    &nbsp;
     ' . (empty($context['member']['peliculas_favoritas']) ? 'Sin datos' : $context['member']['peliculas_favoritas']) . '
     <br /><br />
     <p class="datosp">Comida favorita:</p>
-    &nbsp;
     ' . (empty($context['member']['comida_favorita']) ? 'Sin datos' : $context['member']['comida_favorita']) . '
     <br /><br />
     <p class="datosp">Sus h&eacute;roes son:</p>
-    &nbsp;
     ' . (empty($context['member']['mis_heroes_son']) ? 'Sin datos' : $context['member']['mis_heroes_son']) . '
     <br /><br />';
 }
@@ -2435,21 +2404,18 @@ function template_apariencia() {
             <li>
               <a href="' . $boardurl . '/perfil/' . $memberName . '/muro/" title="Muro" alt="Muro">
                 <img src="' . $settings['images_url'] . '/icons/muro.gif" alt="Muro" title="Muro" />
-                &nbsp;
                 Muro
               </a>
             </li>
             <li>
               <a href="' . $boardurl . '/perfil/' . $memberName . '/apariencia/" title="Apariencia" alt="Apariencia">
-                <img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia"/>
-                &nbsp;
+                <img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia" />
                 Apariencia
               </a>
             </li>
             <li>
               <a href="' . $boardurl . '/perfil/' . $memberName . '/comunidades/" title="Comunidades" alt="Comunidades">
                 <img src="' . $settings['images_url'] . '/comunidades/comunidad.png" alt="Comunidades" title="Comunidades" />
-                &nbsp;
                 Comunidades
               </a>
             </li>
@@ -2513,20 +2479,18 @@ function template_comunidades() {
             <li>
               <a href="' . $boardurl . '/perfil/' . $memberName . '/muro/" title="Muro" alt="Muro">
                 <img src="' . $settings['images_url'] . '/icons/muro.gif" alt="Muro" title="Muro" />
-                &nbsp;
-                Muro</a>
+                Muro
+              </a>
               </li>
             <li>
               <a href="' . $boardurl . '/perfil/' . $memberName . '/apariencia/" title="Apariencia" alt="Apariencia">
-                <img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia"/>
-                &nbsp;
+                <img src="' . $settings['images_url'] . '/user.gif" alt="Apariencia" title="Apariencia" />
                 Apariencia
               </a>
             </li>
             <li>
               <a href="' . $boardurl . '/perfil/' . $memberName . '/comunidades/" title="Comunidades" alt="Comunidades">
                 <img src="' . $settings['images_url'] . '/comunidades/comunidad.png" alt="Comunidades" title="Comunidades" />
-                &nbsp;
                 Comunidades
               </a>
             </li>
@@ -3661,8 +3625,9 @@ function template_post() {
   $page = (int) $_GET['pag'];
 
   if (isset($page)) {
-    $start = ($page - 1) * $end;
-    $actualPage = (int) $page;
+    $calc = ($page - 1) * $end;
+    $start = $calc > 0 ? $calc : 0;
+    $actualPage = $page;
   } else {
     $start = 0;
     $actualPage = 1;
@@ -3705,13 +3670,16 @@ function template_post() {
         <tbody>';
 
     while ($row = mysqli_fetch_assoc($request2)) {
+      $row['subject'] = censorText($row['subject']);
+      $full_title = htmlentities($row['subject'], ENT_QUOTES, 'ISO-8859-1');
+
       echo '
         <tr>
           <td>
             <img alt="" title="' . $row['name'] . '" src="' . $settings['images_url'] . '/post/icono_' . $row['ID_BOARD'] . '.gif" />
           </td>
           <td style="text-align: left;">
-            <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" alt="" title="' . $row['subject'] . '">' . $row['subject'] . '</a>
+            <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($full_title) . '.html" alt="" title="' . $full_title . '" alt="' . $full_title . '">' . $full_title . '</a>
           </td>
           <td title="' . timeformat($row['posterTime']) . '">' . timeformat($row['posterTime']) . '</td>
           <td style="color: green;" title="' . $row['points'] . '">' . $row['points'] . '</td>
@@ -3827,11 +3795,13 @@ function template_comentarios() {
   if ($count_c <= 0) {
     echo '<div class="noesta">' . $memberName . ' no tiene comentarios en posts hechos.</div>';
   } else {
+    // $end = $modSettings['user_comments_posts'] > 0 ? $modSettings['user_comments_posts'] : 1;
     $end = $modSettings['user_comments_posts'];
     $page = (int) $_GET['pag'];
 
     if (isset($page)) {
-      $start = ($page-1)*$end;
+      $calc = ($page - 1) * $end;
+      $start = $calc > 0 ? $calc : 0;
       $actualPage = $page;
     } else {
       $start = 0;
@@ -3858,6 +3828,9 @@ function template_comentarios() {
       LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
     while ($row = mysqli_fetch_assoc($request3)) {
+      $row['subject'] = censorText($row['subject']);
+      $full_title = htmlentities($row['subject'], ENT_QUOTES, 'ISO-8859-1');
+
       echo '
         <table width="100%">
           <tr>
@@ -3866,11 +3839,10 @@ function template_comentarios() {
             </td>
             <td>
               <b class="size11">
-                <a title="' . $row['subject'] . '" href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html" >' . $row['subject'] . '</a>
+                <a title="' . $full_title . '" alt="' . $full_title . '" href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($full_title) . '.html" >' . $full_title . '</a>
               </b>
               <div class="size11">
                 ' . timeformat($row['posterTime']) . ':
-                &nbsp;
                 <a href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html#cmt_' . $row['ID_COMMENT'] . '" >' . $row['comment'] . '</a>
               </div>
             </td>
@@ -3984,7 +3956,8 @@ function template_comentariosimg() {
     $page = (int) $_GET['pag'];
   
     if (isset($page)) {
-      $start = ($page-1)*$end;
+      $calc = ($page - 1) * $end;
+      $start = $calc > 0 ? $calc : 0;
       $actualPage = (int) $page;
     } else {
       $start = 0;
@@ -4004,6 +3977,9 @@ function template_comentariosimg() {
       LIMIT {$start}, {$end}", __FILE__, __LINE__);
 
     while ($row = mysqli_fetch_assoc($request3)) {
+      $row['title'] = censorText($row['title']);
+      $full_title = htmlentities($row['title'], ENT_QUOTES, 'ISO-8859-1');
+
       echo '
         <table width="100%">
           <tr>
@@ -4012,7 +3988,7 @@ function template_comentariosimg() {
             </td>
             <td>
               <b class="size11">
-                <a title="' . $row['title'] . '" href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '" >' . $row['title'] . '</a>
+                <a title="' . $full_title . '" alt="' . $full_title . '" href="' . $boardurl . '/imagenes/ver/' . $row['ID_PICTURE'] . '">' . $full_title . '</a>
               </b>
               <div class="size11">
                 ' . timeformat($row['date']) . ':
@@ -4087,8 +4063,9 @@ function template_buddies() {
   $page = (int) $_GET['pag'];
 
   if (isset($page)) {
-    $start = ($page-1)*$end;
-    $actualPage = (int) $page;
+    $calc = ($page - 1) * $end;
+    $start = $calc > 0 ? $calc : 0;
+    $actualPage = $page;
   } else {
     $start = 0;
     $actualPage = 1;
@@ -4166,7 +4143,6 @@ function template_buddies() {
                 <br />
                 <span style="color: green; font-size: 10px;">
                   <b>Es amigo desde:</b>
-                  &nbsp;
                   ' . timeformat($row['time_updated']) . '
                 </span>
               </td>
@@ -4226,8 +4202,9 @@ function template_buddies2() {
   $page = (int) $_GET['pag'];
 
   if (isset($page)) {
-    $start = ($page-1)*$end;
-    $actualPage = (int) $page;
+    $calc = ($page - 1) * $end;
+    $start = $calc > 0 ? $calc : 0;
+    $actualPage = $page;
   } else {
     $start = 0;
     $actualPage = 1;

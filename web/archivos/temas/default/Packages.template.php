@@ -829,7 +829,7 @@ function template_package_list()
         // Show the mod type?
         if ($package['type'] != '')
           echo '
-            ', $txt['package24'], ':&nbsp; ', $func['ucwords']($func['strtolower']($package['type'])), '<br />';
+            ', $txt['package24'], ':&nbsp; ', ucwords(strtolower($package['type'])), '<br />';
         // Show the version number?
         if ($package['version'] != '')
           echo '

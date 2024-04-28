@@ -12,13 +12,13 @@ function template_init() {
 }
 
 function template_main_above() {
-  global $context, $settings, $txt, $slogan, $boardurl;
+  global $context, $settings, $txt, $slogan, $boardurl, $mbname;
 
   $action = $_REQUEST['action'];
 
   echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" >
-    <!--' . date("Y", time()) . ' ' . $boardurl . '/por Miguelithox-->
+    <!-- ' . date("Y", time()) . ' ' . $mbname . ' por Miguelithox -->
     <head profile="http://purl.org/NET/erdf/profile">
       <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
       <link rel="schema.foaf" href="http://xmlns.com/foaf/0.1/" />
@@ -43,7 +43,7 @@ function template_main_above() {
       <link rel="search" type="application/opensearchdescription+xml" title="' . $context['forum_name'] . '" href="' . $settings['images_url'] . '/buscador-cw.xml" />
       <link rel="up" href="#top" title="Volver al principio de esta pagina" />
     </head>
-    <body id="top" >
+    <body id="top">
       <b class="rtop">
         <b class="rtop1">
           <b></b>
@@ -106,39 +106,26 @@ function template_main_below() {
               </td>
             </tr>
           </table>
-          <div style="margin: 0px; padding: 0px; background: #FFFFFF; height: 6px!important; vertical-align: bottom;">
+          <div style="margin: 0px; padding: 0px; background: #FFFFFF; height: 6px !important; vertical-align: bottom;">
             <div style="margin: 0px; padding: 0px; width: 50%; float: left; height: 6px !important; vertical-align: bottom; background: #FFFFFF url(' . $settings['images_url'] . '/abajo-left.png) no-repeat top left;"></div>
-            <div style="margin: 0px; padding: 0px; width:50%; float: right; height: 6px !important; vertical-align: bottom; background: #FFFFFF url(' . $settings['images_url'] . '/abajo-right.png) no-repeat top right;"></div>
+            <div style="margin: 0px; padding: 0px; width: 50%; float: right; height: 6px !important; vertical-align: bottom; background: #FFFFFF url(' . $settings['images_url'] . '/abajo-right.png) no-repeat top right;"></div>
           </div>
           <div id="pie" style="margin:0px;">
             &copy; ' . date("Y", time()) . ' 
             <a href="' . $boardurl . '/" title="' . $context['forum_name'] . '">' . $context['forum_name'] . '</a>
-            &nbsp;|&nbsp;
+            |
             <a href="' . $boardurl . '/protocolo/" title="Protocolo">Protocolo</a>
-            &nbsp;|&nbsp;
+            |
             <a href="' . $boardurl . '/enlazanos/" title="Enl&aacute;zanos">Enl&aacute;zanos</a>
-            &nbsp;|&nbsp;
+            |
             <a href="' . $boardurl . '/widget/" title="Widget">Widget</a>
-            &nbsp;|&nbsp;
+            |
             <a href="' . $boardurl . '/contactanos/" title="Contacto">Contacto</a>
-            &nbsp;|&nbsp;
+            |
             <a href="' . $boardurl . '/recomendar/" title="Recomendar ' . $context['forum_name'] . '">Recomendar ' . $context['forum_name'] . '</a>
-            &nbsp;|&nbsp;
+            |
             <a href="' . $boardurl . '/mapa-del-sitio/" title="Mapa del sitio">Mapa del sitio</a>
             <br />
-            <a href=http://www.ademails.com/estadisticas1059994843.htm>
-              <script type="text/javascript" language="JavaScript">
-                <!--
-                document.write("<img src=\"http://www.ademails.com/cgi-bin/contador.cgi?ID=1059994843");
-                document.write("&referer=");
-                document.write(escape(document.referrer));
-                document.write("\" border=0 alt=\"Estadisticas\">");
-                // -->
-              </script>
-              <noscript>
-                <img src=http://www.ademails.com/cgi-bin/contador.cgi?ID=1059994843 border=0 alt="Estadisticas">
-              </noscript>
-            </a>
           </div>
         </div>
       </div>
@@ -156,9 +143,11 @@ function template_main_below() {
       </body>
     </html>';
 
-  if ($context['show_load_time'])
+  if (!$context['show_load_time'])
     echo '
-    <span class="smalltext">' . $txt['smf301'] . $context['load_time'] . $txt['smf302'] . $context['load_queries'] . $txt['smf302b'] . '</span>';
+      <center style="margin-top: 5px">
+        <span class="smalltext">' . $txt['smf301'] . $context['load_time'] . $txt['smf302'] . $context['load_queries'] . $txt['smf302b'] . '</span>
+      </center>';
 }
 
 function template_menu() {
@@ -169,46 +158,32 @@ function template_menu() {
       <div id="menu-top" style="margin: 0px; padding: 0px;">
         <span class="menu_izq">
           <a href="' . $boardurl . '/" title="Inicio">Inicio</a>
-          &nbsp;
           <font color="#FFFFFF">-</font>
-          &nbsp;
           <a href="' . $boardurl . '/buscar/" title="Buscador">Buscador</a>
-          &nbsp;
           <font color="#FFFFFF">-</font>
-          &nbsp;
           <a href="' . $boardurl . '/ayuda/" title="Ayuda">Ayuda</a>
-          &nbsp;
           <font color="#FFFFFF">-</font>
-          &nbsp;
           <a href="' . $boardurl . '/chat/" title="Chat">Chat</a>
-          &nbsp;
-          <font color="#FFFFFF">-</font>
-          &nbsp;';
+          <font color="#FFFFFF">-</font>';
 
   if ($context['user']['is_guest']) {
     echo '
       <a href="' . $boardurl . '/ingresar/" title="Ingresar">Ingresar</a>
-      &nbsp;
       <font color="#FFFFFF">-</font>
-      &nbsp;
-      <a href="' . $boardurl . '/registrarse/" title="Registrate!">
-        <b>Registrate!</b>
+      <a href="' . $boardurl . '/registrarse/" title="&iexcl;Reg&iacute;strate!">
+        <b>&iexcl;Reg&iacute;strate!</b>
       </a>';
   } else {
     echo '
       <a href="' . $boardurl . '/tops/" title="TOPs">TOPs</a>
-      &nbsp;
       <font color="#FFFFFF">-</font>
-      &nbsp;
       <a valign="middle" href="' . $boardurl . '/agregar/" title="Publicar">
         <b>Publicar</b>
       </a>';
 
     if ($context['allow_admin']) {
       echo '
-      &nbsp;
       <font color="#FFFFFF">-</font>
-      &nbsp;
       <a valign="middle" href="' . $boardurl . '/admin/" title="ADM">
         <b>ADM</b>
       </a>';
@@ -220,7 +195,7 @@ function template_menu() {
   if ($context['user']['is_guest']) {
     echo '
       <span class="menu_centro">
-        <a href="' . $boardurl . '/ingresar/">Iniciar Sesi&oacute;n</a>';
+        <a href="' . $boardurl . '/ingresar/">Iniciar sesi&oacute;n</a>';
   } else {
     echo '<span class="menu_centro" style="#margin-top: 4px; _margin-top: 4px;">';
 
@@ -258,9 +233,7 @@ function template_menu() {
       </a>
       <font color="#FFFFFF">|</font>
       <a href="' . $boardurl . '/perfil/' . $context['user']['name'] . '" title="Mi Perfil">' . $context['user']['name'] . '</a>
-      &nbsp;
       <font color="#FFFFFF">[<a href="' . $boardurl . '/salir/" onclick="if (!confirm(\'\xbfEstas seguro que desea salir de su cuenta?\')) return false;" title="Salir">X</a>]</font>
-      &nbsp;
       <a class="icons his-mod" href="' . $boardurl . '/hist-mod/" title="Historial de moderaci&oacute;n">
         <img alt="" src="' . $settings['images_url'] . '/espacio.gif" align="top" border="0" />
       </a>';

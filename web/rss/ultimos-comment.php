@@ -14,7 +14,7 @@ $context['comment'] = array();
 
 while ($row = mysqli_fetch_assoc($request)) {
   $row['comment'] = parse_bbc($row['comment'], 1, $row['ID_TOPIC']);
-  $row['comment'] = strtr($func['substr'](str_replace('<br />', "\n", $row['comment']), 0, 400 - 3), array("\n" => '<br />'));
+  $row['comment'] = strtr(substr(str_replace('<br />', "\n", $row['comment']), 0, 400 - 3), array("\n" => '<br />'));
 
   $context['comments'][] = array(
     'comment' => censorText($row['comment']),

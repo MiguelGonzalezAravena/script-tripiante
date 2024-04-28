@@ -462,7 +462,6 @@ function ModifyProfile2() {
 function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
   global $db_prefix, $user_info, $txt, $modSettings, $user_profile;
   global $newpassemail, $validationCode, $context, $settings, $sourcedir;
-  global $func;
 
   // These make life easier....
   $old_profile = &$user_profile[$memID];
@@ -572,7 +571,7 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
       $_POST['pm_ignore_list'] = $_POST['im_ignore_list'];
     }
 
-    $_POST['pm_ignore_list'] = strtr($func['htmltrim']($_POST['pm_ignore_list']), array('\\\'' => '&#039;', "\n" => "', '", "\r" => '', '&quot;' => ''));
+    $_POST['pm_ignore_list'] = strtr(trim($_POST['pm_ignore_list']), array('\\\'' => '&#039;', "\n" => "', '", "\r" => '', '&quot;' => ''));
 
     if (preg_match('~(\A|,)\*(\Z|,)~s', $_POST['pm_ignore_list']) == 0) {
       $result = db_query("
@@ -640,7 +639,7 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
     }
 
     if (strlen($_POST['signature']) > 65534) {
-      $_POST['signature'] = addslashes(truncate(stripslashes($_POST['signature']), 65534));
+      $_POST['signature'] = addslashes(substr(stripslashes($_POST['signature']), 0, 65534));
     }
 
     $_POST['signature'] = strtr($_POST['signature'], array('&quot;' => '\\&quot;', '&#039;' => '\\&#39;', '&#39;' => '\\&#39;'));
@@ -656,7 +655,7 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
 
       if (trim($_POST['realName']) == '') {
         $post_errors[] = 'no_name';
-      } else if ($func['strlen']($_POST['realName']) > 60) {
+      } else if (strlen($_POST['realName']) > 60) {
         $post_errors[] = 'name_too_long';
       } else {
         require_once($sourcedir . '/Subs-Members.php');
@@ -1308,7 +1307,7 @@ function comentariosimg($memID) {
 // Show all the users buddies, as well as a add/delete interface.
 function editBuddies($memID) {
   global $modSettings, $db_prefix;
-  global $context, $user_profile, $memberContext, $func;
+  global $context, $user_profile, $memberContext;
 
   // Do a quick check to ensure people aren't getting here illegally!
   if (!$context['user']['is_owner'] || empty($modSettings['enable_buddylist'])) {
@@ -1344,7 +1343,7 @@ function editBuddies($memID) {
   }
   else if (isset($_POST['new_buddy'])) {
     // Prepare the string for extraction...
-    $_POST['new_buddy'] = strtr(addslashes($func['htmlspecialchars'](stripslashes($_POST['new_buddy']), ENT_QUOTES)), array('&quot;' => '"'));
+    $_POST['new_buddy'] = strtr(addslashes(htmlspecialchars(stripslashes($_POST['new_buddy']), ENT_QUOTES)), array('&quot;' => '"'));
     preg_match_all('~"([^"]+)"~', $_POST['new_buddy'], $matches);
     $new_buddies = array_unique(array_merge($matches[1], explode(',', preg_replace('~"([^"]+)"~', '', $_POST['new_buddy']))));
 
@@ -2825,7 +2824,7 @@ function avatar($memID) {
 
 function account($memID) {
   global $context, $settings, $user_profile, $txt, $db_prefix;
-  global $modSettings, $language, $func;
+  global $modSettings, $language;
 
   // Allow an administrator to edit the username?
   $context['allow_edit_username'] = isset($_GET['changeusername']) && allowedTo('admin_forum');
@@ -2914,7 +2913,7 @@ function account($memID) {
           continue;
 
         $context['languages'][$matches[1]] = array(
-          'name' => $func['ucwords'](strtr($matches[1], array('_' => ' ', '-utf8' => ''))),
+          'name' => ucwords(strtr($matches[1], array('_' => ' ', '-utf8' => ''))),
           'selected' => $selectedLanguage == $matches[1],
           'filename' => $matches[1],
         );

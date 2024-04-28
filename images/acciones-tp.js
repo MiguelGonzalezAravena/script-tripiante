@@ -1,11 +1,12 @@
 var clientPC = navigator.userAgent.toLowerCase();var clientVer = parseInt(navigator.appVersion);var is_ie = ((clientPC.indexOf("msie") != -1) && (clientPC.indexOf("opera") == -1));var is_nav = ((clientPC.indexOf('mozilla')!=-1) && (clientPC.indexOf('spoofer')==-1) && (clientPC.indexOf('compatible') == -1) && (clientPC.indexOf('opera')==-1) && (clientPC.indexOf('webtv')==-1) && (clientPC.indexOf('hotjava')==-1));var is_win = ((clientPC.indexOf("win")!=-1) || (clientPC.indexOf("16bit") != -1));var is_mac = (clientPC.indexOf("mac")!=-1);var is_moz = 0;function el(id){if (document.getElementById)return document.getElementById(id);else if (window[id])return window[id];return null;}function selectycopy(field){field.focus();field.select();}
+var boardurl = 'http://localhost/tripiante';
 
 // Actualizar comentarios
 function actualizar_comentarios() {
   $('#ult_comm').slideUp(1);
   $.ajax({
     type: 'POST',
-    url: '/web/tp-ActComentarios.php',
+    url: boardurl + '/web/tp-ActComentarios.php',
     success: function(h) {
       $('#ult_comm').html(h);
       $('#ult_comm').slideDown({duration: 1000, easing: 'easeOutBounce'});
@@ -15,7 +16,7 @@ function actualizar_comentarios() {
 
 function error_avatar(obj) {
   // TO-DO: Cambiar según donde se encuentre el script
-  obj.src = '/tripiante/avatar.gif';
+  obj.src = boardurl + '/avatar.gif';
 }
 
 // Citar comentarios
@@ -33,12 +34,13 @@ function citar_comment(id) {
 // Categorias
 function ir_a_categoria() {
   if ($('#categoria').val() != 'root') {
-    document.location.href = '/categoria/' + $('#categoria').val() + '/';
+    document.location.href = boardurl + '/categoria/' + $('#categoria').val() + '/';
   }
 }
+
 function ir_a_categoria_com() {
   if ($('#categoria').val()!='root') {
-    document.location.href = '/comunidades/categoria/' + $('#categoria').val() + '/';
+    document.location.href = boardurl + '/comunidades/categoria/' + $('#categoria').val() + '/';
   }
 }
 
@@ -329,7 +331,7 @@ function votar_post(id, puntos) {
 
   $.ajax({
     type: 'GET',
-    url: '/votar-post/',
+    url: boardurl + '/votar-post/',
     data: 'post=' + id + '&puntos=' + puntos,
     success: function(h) {
       $('#cargando_opciones').css('display', 'none');
@@ -364,7 +366,7 @@ function votar_img(id, puntos) {
   $('#cargando_opciones2').css('display', 'none');
   $.ajax({
     type: 'GET',
-    url: '/votar-img/',
+    url: boardurl + '/votar-img/',
     data: 'imagen=' + id + '&puntos=' + puntos,
     success: function(h) {
       $('#cargando_opciones').css('display', 'none');
@@ -400,7 +402,7 @@ function add_favoritos(id) {
   $('#cargando_opciones2').css('display', 'none');
   $.ajax({
     type: 'GET',
-    url: '/favs-agregar.php',
+    url: boardurl + '/favs-agregar.php',
     data: 'tipo=posts&post=' + id,
     success: function(h) {
       var original = $('#span_opciones2').html();
@@ -442,7 +444,7 @@ function add_favoritos_img(id) {
   $('#cargando_opciones2').css('display', 'none');
   $.ajax({
     type: 'GET',
-    url: '/favs-agregar.php',
+    url: boardurl + '/favs-agregar.php',
     data: 'tipo=imagen&post=' + id,
     success: function(h) {
       var original = $('#span_opciones2').html();
@@ -479,7 +481,7 @@ function add_favoritos_img(id) {
   });
 }
 
-/*agregar comentario post*/
+// Agregar comentario post
 function add_comment(id) {
   if ($('#cuerpo_comment').val() == '') {
     $('#cuerpo_comment').focus();
@@ -492,7 +494,7 @@ function add_comment(id) {
   $('#gif_cargando_add_comment2').css('display', 'none');
   $.ajax({
     type: 'POST',
-    url: '/comentario/enviar/',
+    url: boardurl + '/comentario/enviar/',
     data: 'cuerpo_comment=' + encodeURIComponent($('#cuerpo_comment').val()) + '&id=' + id,
     success: function(h) {
       $('#gif_cargando_add_comment').css('display', 'none');
@@ -524,8 +526,8 @@ function add_comment(id) {
   });
 }
 
-/* Agregar comentario imagen */
-function add_comment_img(id){
+// Agregar comentario imagen
+function add_comment_img(id) {
   if ($('#cuerpo_comment').val() == '') {
     $('#cuerpo_comment').focus();
     return;
@@ -538,7 +540,7 @@ function add_comment_img(id){
 
   $.ajax({
     type: 'POST',
-    url: '/comentario-img/enviar/',
+    url: boardurl + '/comentario-img/enviar/',
     data: 'cuerpo_comment=' + encodeURIComponent($('#cuerpo_comment').val()) + '&id=' + id,
     success: function(h) {
       $('#gif_cargando_add_comment').css('display', 'none');
@@ -575,7 +577,7 @@ function ignorar(id) {
 
   $.ajax({
     type: 'GET',
-    url: '/permitir-mp/',
+    url: boardurl + '/permitir-mp/',
     data: 'action=eliminar&user=' + id,
     success: function(h) {
       $('#gif_cargando_ign').hide();
@@ -600,7 +602,7 @@ function ignorar2(id) {
 
   $.ajax({
     type: 'GET',
-    url: '/permitir-mp/',
+    url: boardurl + '/permitir-mp/',
     data: 'action=agregar&user=' + id,
     success: function(h) {
       $('#gif_cargando_ign').hide();
@@ -633,7 +635,7 @@ function add_muro(id) {
 
   $.ajax({
     type: 'POST',
-    url: '/enviar-muro/',
+    url: boardurl + '/enviar-muro/',
     data: 'muro=' + encodeURIComponent($('#muro').val()) + '&user=' + id,
     success: function(h) {
       $('#gif_cargando_add_muro').css('display', 'none');
@@ -676,7 +678,7 @@ function add_quehago(id) {
 
   $.ajax({
     type: 'POST',
-    url: '/enviar-quehago/',
+    url: boardurl + '/enviar-quehago/',
     data: 'quehago=' + encodeURIComponent($('#quehago').val()),
     success: function(h) {
       $('#gif_cargando_add_muro').css('display', 'none');
@@ -731,7 +733,7 @@ function comentarioscom(tema, nropagina) {
   divContenido = document.getElementById('comentarios');
   divContenido2 = document.getElementById('carando');
   ajax = objetoAjax();
-  ajax.open("GET", "/web/tp-comunidadesComenCar.php?tema=" + tema + "&pag=" + nropagina);
+  ajax.open("GET", boardurl + "/web/tp-comunidadesComenCar.php?tema=" + tema + "&pag=" + nropagina);
   divContenido2.style.display = 'block';
   ajax.onreadystatechange = function() {
     if (ajax.readyState == 4) {
@@ -746,7 +748,7 @@ function comentarioscom(tema, nropagina) {
 function ComuMemPerfil(user, pag) {
   divContenido = document.getElementById('ComuMemPerfil');
   ajax = objetoAjax();
-  ajax.open("GET", "/web/tp-ComuMemPerfil.php?user=" + user + "&pag=" + pag);
+  ajax.open("GET", boardurl + "/web/tp-ComuMemPerfil.php?user=" + user + "&pag=" + pag);
   ajax.onreadystatechange = function() {
     if (ajax.readyState == 4) {
       divContenido.innerHTML = ajax.responseText;
@@ -759,7 +761,7 @@ function ComuMemPerfil(user, pag) {
 function ComuTemPerfil(user, pag) {
   divContenido = document.getElementById('ComuTemPerfil');
   ajax = objetoAjax();
-  ajax.open("GET", "/web/tp-ComuTemPerfil.php?user=" + user + "&pag=" + pag);
+  ajax.open("GET", boardurl + "/web/tp-ComuTemPerfil.php?user=" + user + "&pag=" + pag);
   ajax.onreadystatechange = function() {
     if (ajax.readyState == 4) {
       divContenido.innerHTML = ajax.responseText;
@@ -772,7 +774,7 @@ function ComuTemPerfil(user, pag) {
 function ComuCrePerfil(user, pag) {
   divContenido = document.getElementById('ComuCrePerfil');
   ajax = objetoAjax();
-  ajax.open("GET", "/web/tp-ComuCrePerfil.php?user=" + user + "&pag=" + pag);
+  ajax.open("GET", boardurl + "/web/tp-ComuCrePerfil.php?user=" + user + "&pag=" + pag);
   ajax.onreadystatechange = function() {
     if (ajax.readyState == 4) {
       divContenido.innerHTML = ajax.responseText;
@@ -824,7 +826,7 @@ var com = {
 
     $.ajax({
       type: 'POST',
-      url: '/web/tp-comunidadesChekLink.php',
+      url: boardurl + '/web/tp-comunidadesChekLink.php',
       data: 'shortname='+encodeURIComponent(val),
       success: function(h){
         com.crear_shortname_check_cache[com.crear_shortname_check_cache.length] = new Array(val, h.charAt(0), h.substring(3)); //Guardo los datos de verificacion
@@ -851,7 +853,7 @@ var com = {
   tema_votar: function(voto, tema) {
     $.ajax({
       type: 'POST',
-      url: '/web/tp-comunidadesVotarTema.php',
+      url: boardurl + '/web/tp-comunidadesVotarTema.php',
       data: 'voto=' + voto + '&tema=' + tema,
       success: function(h) {
         switch(h.charAt(0)) {
@@ -875,7 +877,7 @@ function actualizar_comentarios_com() {
 
   $.ajax({
     type: 'POST',
-    url: '/web/tp-comunidadesActCom.php',
+    url: boardurl + '/web/tp-comunidadesActCom.php',
     success: function(h) {
       $('#ult_comm').html(h);
       $('#ult_comm').slideDown({ duration: 1000, easing: 'easeOutBounce' });
@@ -888,7 +890,7 @@ function actualizar_comentarios_com_id(id) {
 
   $.ajax({
     type: 'POST',
-    url: '/web/tp-comunidadesActComc.php?id=' + id,
+    url: boardurl + '/web/tp-comunidadesActComc.php?id=' + id,
     success: function(h) {
       $('#ult_comm').html(h);
       $('#ult_comm').slideDown({ duration: 1000, easing: 'easeOutBounce' });
@@ -907,7 +909,7 @@ function ComComentar(tema, psr) {
 
   $.ajax({
     type: 'POST',
-    url: '/web/tp-comunidadesComentar.php',
+    url: boardurl + '/web/tp-comunidadesComentar.php',
     data: 'comentario=' + encodeURIComponent($('#cuerpo_comment').val()) + '&tema=' + tema,
     success: function(h) {
       $('#gif_cargando_comentar').css('display', 'none');

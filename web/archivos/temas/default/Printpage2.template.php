@@ -37,10 +37,10 @@ echo '<img alt="" onload="if (this.width > 750) {this.width=750}" src="', $post[
 
 function template_main() {}
 
-function template_print_below()
-{
-  global $context, $settings, $options;
+function template_print_below() {
+  global $mbname, $boardurl;
 
-echo '</center><center><hr />', theme_copyright(), '</center></body></html>';
+  echo '</center><center><hr />&copy; ' . date("Y") . ' ' . $mbname . ' - '  . $boardurl . '</center></body></html>';
 }
+
 ?>

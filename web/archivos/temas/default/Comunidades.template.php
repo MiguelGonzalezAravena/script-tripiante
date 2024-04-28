@@ -91,7 +91,6 @@ function panel() {
       <br /><br />
       <div class="hrs"></div>
       <img src="' . $boardurl . '/images/comunidades/' . rango_img($context['rango']['grade']) . '.png" alt="' . rango($context['rango']['grade']) . '" title="' . rango($context['rango']['grade']) . '" />
-      &nbsp;
       ' . rango($context['rango']['grade']);
   } else {
     echo '
@@ -125,7 +124,7 @@ function ultimos_miembros() {
 
   while ($row = mysqli_fetch_assoc($request)) {
     $context['ultimos_miembros'][] = array(
-      'name' => $row['name'],
+      'name' => censorText($row['name']),
       'date' => timeformat($row['date']),
     );
   }
@@ -144,9 +143,9 @@ function ultimos_miembros() {
     echo '
       <font class="size11">
         <b>
-          <a href="' . $boardurl . '/perfil/' . censorText($ultm['name']) . '" title="' . censorText($ultm['name']) . '" alt="' . censorText($ultm['name']) . '">' . censorText($ultm['name']) . '</a>
+          <a href="' . $boardurl . '/perfil/' . $ultm['name'] . '" title="' . $ultm['name'] . '" alt="' . $ultm['name'] . '">' . $ultm['name'] . '</a>
         </b>
-        &nbsp;-&nbsp;
+        -
         ' . $ultm['date'] . '
       </font>
       <br style="margin: 0px; padding: 0px;">';
@@ -287,7 +286,7 @@ function template_main() {
 
   if (isset($page)) {
     $calc = ($page - 1) * $end;
-    $start = $calc >= 0 ? $calc : 0;
+    $start = $calc > 0 ? $calc : 0;
     $actualPage = $page;
   } else {
     $start = 0;
@@ -332,7 +331,7 @@ function template_main() {
           </div>
           <div class="size10">
             En <a href="' . $boardurl . '/comunidades/' . $row['friendly_url'] . '/" target="_self" title="' . censorText($row['title']) . '" alt="' . censorText($row['title']) . '">' . censorText($row['title']) . '</a>
-            &nbsp;por&nbsp;
+            por
             <a href="' . $boardurl . '/perfil/' . censorText($row['posterName']) . '" target="_self" title="' . censorText($row['posterName']) . '">' . censorText($row['posterName']) . '</a>
           </div>
         </div>
@@ -341,7 +340,8 @@ function template_main() {
   }
 
   // Registros totales
-  $records = db_query($query, __FILE__, __LINE__);
+  $request = db_query($query, __FILE__, __LINE__);
+  $records = mysqli_num_rows($request);
 
   $previousPage = $actualPage - 1;
   $nextPage = $actualPage + 1;
@@ -352,6 +352,9 @@ function template_main() {
     $lastPage = floor($lastPage) + 1;
   }
 
+  $factor = $page == 0 || $page == 1 ? 1 : $page;
+  $nextCondition = ($rows * $factor) < $records;
+
   echo '
     </div>
     <div class="windowbgpag" style="width: 378px;">';
@@ -361,7 +364,7 @@ function template_main() {
       echo '<a href="' . $boardurl . '/comunidades/pag-' . $previousPage . '">&#171; anterior</a>';
     }
 
-    if ($actualPage<$lastPage) {
+    if ($actualPage < $lastPage && $nextCondition) {
       echo '<a href="' . $boardurl . '/comunidades/pag-' . $nextPage . '">siguiente &#187;</a>';
     }
   } else {
@@ -369,7 +372,7 @@ function template_main() {
       echo '<a href="' . $boardurl . '/comunidades/' . $categoria . '/pag-' . $previousPage . '">&#171; anterior</a>';
     }
 
-    if ($actualPage < $lastPage) {
+    if ($actualPage < $lastPage && $nextCondition) {
       echo '<a href="' . $boardurl . '/comunidades/' . $categoria . '/pag-' . $nextPage . '">siguiente &#187;</a>';
     }
   }
@@ -397,7 +400,6 @@ function template_main() {
           </div>
           <div>
             <a style="color: #89601A; font-weight: bold; font-size: 13px;" href="' . $boardurl . '/comunidades/' . $tops['friendly_url'] . '/" target="_self" title="' . $tops['title'] . '" alt="' . $tops['title'] . '">' . ssi_reducir($tops['title']) . '</a>
-            &nbsp;
             (' . $tops['cuenta'] . ' miembros)
           </div>
         </div>
@@ -430,9 +432,8 @@ function template_main() {
         </div>
         <div class="size10">
           Comunidad creada por
-          &nbsp;
           <a href="' . $boardurl . '/perfil/' . censorText($ultimas_comunidades['realName']) . '" target="_self" title="' . censorText($ultimas_comunidades['realName']) . '" alt="' . censorText($ultimas_comunidades['realName']) . '">' . censorText($ultimas_comunidades['realName']) . '</a>
-            &nbsp;|&nbsp;
+            |
             ' . $ultimas_comunidades['date'] . '
           </a>
         </div>
@@ -684,12 +685,15 @@ function template_crear() {
   }
 
   echo '
-              </select>
-            </div>
-            <div class="clearBoth"></div>
-            <div class="data">
-              <label for="uname">Descripci&oacute;n</label>
-              <textarea onfocus="foco(this);" onblur="no_foco(this);" class="c_input_desc autogrow" style="display: block; width: 540px;" name="descripcion" tabindex="7" datatype="text" dataname="Descripcion"></textarea></div></div><hr style="clear: both; margin-bottom: 15px; margin-top: 20px;" class="divider" />
+                  </select>
+                </div>
+                <div class="clearBoth"></div>
+                <div class="data">
+                  <label for="uname">Descripci&oacute;n</label>
+                  <textarea onfocus="foco(this);" onblur="no_foco(this);" class="c_input_desc autogrow" style="display: block; width: 540px;" name="descripcion" tabindex="7" datatype="text" dataname="Descripcion"></textarea>
+                </div>
+              </div>
+              <hr style="clear: both; margin-bottom: 15px; margin-top: 20px;" class="divider" />
               <div class="dataL dataRadio">
                 <label for="lname"><b>Acceso</b></label>
                 <div class="postLabel">
@@ -794,7 +798,7 @@ function template_crear() {
         </form>
       </div>
     </div>
-    <div style="clear:both"></div>';
+    <div style="clear: both"></div>';
 }
 
 function template_crear2() {}
@@ -1109,15 +1113,12 @@ function template_comunidad() {
               <b style="color: red;">Tu cuenta en esta comunidad se encuentra baneada.</b>
               <br />
               <b>Raz&oacute;n:</b>
-              &nbsp;
               ' . $row['reason'] . '
               <br />
               <b>Por:</b>
-              &nbsp;
               ' . $row['modName'] . '
               <br /> 
               <b>Expira:</b>
-              &nbsp;
               ' . $row['day'] . '
               &nbsp;d&iacute;a(s)
             </center>
@@ -1154,9 +1155,7 @@ function template_comunidad() {
               <td valign="top" style="padding: 4px; font-size: 13px;">
                 <b>Descripci&oacute;n:</b>
               </td>
-              <td style="padding: 4px; width: 360px; white-space: pre-wrap; overflow: hidden; display: block; height: 100%; background-color: #FFF; border: solid 1px #BDCFE1;">
-                ' . $context['comunidad']['description'] . '
-              </td>
+              <td style="padding: 4px; width: 360px; white-space: pre-wrap; overflow: hidden; display: block; height: 100%; background-color: #FFF; border: solid 1px #BDCFE1;">' . $context['comunidad']['description'] . '</td>
             </tr>
             <tr>
               <td valign="top" style="padding: 4px; font-size: 13px;">
@@ -1174,9 +1173,7 @@ function template_comunidad() {
               <td valign="top" style="padding: 4px; font-size: 13px;">
                 <b>Due&ntilde;o:</b>
               </td>
-              <td style="padding: 4px;">
-                ' . $context['comunidad']['creator'] . '
-              </td>
+              <td style="padding: 4px;">' . $context['comunidad']['creator'] . '</td>
             </tr>
           </table>
         </div>';
@@ -1194,7 +1191,7 @@ function template_comunidad() {
 
     echo '
       <div class="box_title" style="width: 539px; margin-top: 8px;">
-        <div class="box_txt">Temas Fijados</div>
+        <div class="box_txt">Temas fijados</div>
           <div class="box_rss">
             <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0">
           </div>
@@ -1229,7 +1226,6 @@ function template_comunidad() {
             </div>
             <div class="size10">
               Por
-              &nbsp;
               <a href="' . $boardurl . '/perfil/' . $posterName . '" target="_self" title="' . $posterName . '" alt="' . $posterName . '">' . $posterName . '</a>
             </div>
           </div>
@@ -1242,7 +1238,7 @@ function template_comunidad() {
     if ($context['user']['is_logged'] && $context['rango']['grade'] == 1 || $context['rango']['grade'] == 2 || $context['rango']['grade'] == 3 || $context['allow_admin'] ) {
       echo '
         <p align="right" style="padding: 0px; margin: 0px;">
-          <input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/' . $context['comunidad']['friendly_url'] . '/crear-tema\'" alt="" class="comCrearTema" title="" value=" " type="submit" align="top" />
+          <input onclick="javascript:window.location.href=\'' . $boardurl . '/comunidades/' . $context['comunidad']['friendly_url'] . '/crear-tema\'" alt="" class="comCrearTema" title="" value="" type="submit" align="top" />
         </p>';
     }
 
@@ -1328,7 +1324,6 @@ function template_ultimospost() {
         </div>
         <div class="size10">
           Por
-          &nbsp;
           <a href="' . $boardurl . '/perfil/' . $posterName . '" target="_self" title="' . $posterName . '" alt="' . $posterName . '">' . $posterName . '</a>
         </div>
       </div>
@@ -1423,13 +1418,10 @@ function template_vermiembros() {
             <center>
               <b style="color:red;">Tu cuenta en esta comunidad se encuentra baneada.</b><br />
               <b>Raz&oacute;n:</b>
-              &nbsp;
               ' . $row['reason'] . '<br />
               <b>Por:</b>
-              &nbsp;
               ' . $row['modName'] . '<br />
               <b>Expira:</b>
-              &nbsp;
               ' . $row['day'] . '
               &nbsp;d&iacute;a(s)
             </center>
@@ -1492,10 +1484,10 @@ function template_vermiembros() {
         <ul style="padding: 0px; margin: 0px; background: #000;">
           <li class="miem-com-den">
             <h4>
-              <a href="' . $boardurl . '/perfil/' . $members['name'] . '/" title="Perfil de ' . $members['name'] . '">' . $members['name'] . '</a>
+              <a href="' . $boardurl . '/perfil/' . $members['name'] . '" title="Perfil de ' . $members['name'] . '">' . $members['name'] . '</a>
             </h4>
             <div style="float: left;">
-              <a href="' . $boardurl . '/perfil/' . $members['name'] . '/" title="Perfil de ' . $members['name'] . '">
+              <a href="' . $boardurl . '/perfil/' . $members['name'] . '" title="Perfil de ' . $members['name'] . '">
                 <img src="' . (empty($members['avatar']) ? $boardurl . '/avatar.gif' : $members['avatar']) . '" onerror="error_avatar(this)" width="75px" height="75px">
               </a>
             </div>
@@ -1503,17 +1495,14 @@ function template_vermiembros() {
               <ul class="miem-com-denDos">
                 <li style="border-top: #90B6DC solid 1px;">
                   <b>Rango:</b>
-                  &nbsp;
                   ' . rango($members['grade']) . '
                 </li>
                 <li>
                   <b>Pa&iacute;s:</b>
-                  &nbsp;
                   ' . ssi_pais($members['usertitle']) . '
                 </li>
                 <li>
                   <b>Sexo:</b>
-                  &nbsp;
                   ' . ssi_sexo1($members['gender']) . '
                 </li>
                 <li>
@@ -1658,10 +1647,9 @@ function template_adminmiembro() {
           vicent48
           <br/>
           Raz&oacute;n:
-          &nbsp;
           Probando
           <br/>
-          Expira:&nbsp;
+          Expira:
           1&nbsp;d&iacute;a(s)
         </div>
         <table>
@@ -1782,9 +1770,15 @@ function template_denunciar() {
             <center>
               <b style="color: red;">Tu cuenta en esta comunidad se encuentra baneada.</b>
               <br/> 
-              <b>Raz&oacute;n:</b> ' . $row['reason'] . '<br/> 
-              <b>Por:</b> ' . $row['modName'] . '<br/> 
-              <b>Expira:</b> ' . $row['day'] . '&nbsp;d&iacute;a(s)
+              <b>Raz&oacute;n:</b>
+              ' . $row['reason'] . '
+              <br /> 
+              <b>Por:</b>
+              ' . $row['modName'] . '
+              <br /> 
+              <b>Expira:</b>
+              ' . $row['day'] . '
+              &nbsp;d&iacute;a(s)
             </center>
             <br /><br />
             <input class="login" style="font-size: 11px;" type="submit" title="Ir a la P&aacute;gina principal" value="Ir a la P&aacute;gina principal" onclick="location.href=\'' . $boardurl . '/\'" />
@@ -1938,17 +1932,13 @@ function template_nuevotema() {
                 <b style="color:red;">Tu cuenta en esta comunidad se encuentra baneada.</b>
                 <br/> 
                 <b>Raz&oacute;n:</b>
-                &nbsp;
                 ' . $row['reason'] . '
                 <br />
                 <b>Por:</b>
-                &nbsp;
                 ' . $row['modName'] . '
                 <br />
                 <b>Expira:</b>
-                &nbsp;
                 ' . $row['day'] . '
-                &nbsp;
                 d&iacute;a(s)
               </center>
               <br /><br />
@@ -2144,15 +2134,12 @@ function template_vertema() {
               <b style="color:red;">Tu cuenta en esta comunidad se encuentra baneada.</b>
               <br/> 
               <b>Raz&oacute;n:</b>
-              &nbsp;
               ' . $row['reason'] . '
               <br />
               <b>Por:</b>
-              &nbsp;
               ' . $row['modName'] . '
               <br />
               <b>Expira:</b>
-              &nbsp;
               ' . $row['day'] . '
               &nbsp;
               d&iacute;a(s)
@@ -2194,20 +2181,16 @@ function template_vertema() {
                     </b>
                     <br />
                     <img src="' . $settings['images_url'] . '/comunidades/' . rango_img($context['tema']['grade']) . '.png" title="' . rango($context['tema']['grade']) . '" alt="' . rango($context['tema']['grade']) . '" />
-                    &nbsp;
                     ' . rango($context['tema']['grade']) . '
                     <br />
                     <img alt="' . ssi_pais($context['tema']['usertitle']) . '" title="' . ssi_pais($context['tema']['usertitle']) . '" src="' . $settings['images_url'] . '/icons/banderas/' . $context['tema']['usertitle'] . '.gif" />
-                    &nbsp;
                     ' . ssi_pais($context['tema']['usertitle']) . '
                     <br />
                     ' . ssi_sexo2(ssi_sexo3($context['tema']['gender'])) . '
-                    &nbsp;
                     ' . ssi_sexo1($context['tema']['gender']) . '
                     <br />
                     <a href="' . $boardurl . '/mensajes/a/' . $context['tema']['posterName'] . '" title="Enviar mensaje privado">
                       <img src="' . $settings['images_url'] . '/icons/mensaje_para.gif" alt="Enviar mensaje privado" />
-                      &nbsp;
                       Enviar mensaje privado
                     </a>
                     <br />
@@ -2313,7 +2296,6 @@ function template_vertema() {
       echo '
         <p align="right" style="margin: 0px; padding: 0px;">
           <input class="login" style="font-size: 11px;" value="Editar tema" title="Editar tema" onclick="location.href=\'' . $boardurl . '/comunidades/editar-tema/' . $context['tema']['ID_TOPIC'] . '\'" type="button" />
-          &nbsp;
           <input class="login" style="font-size: 11px;" value="Eliminar tema" title="Eliminar tema" onclick="if (!confirm(\'\xbfEstas seguro que desea eliminar este tema?\')) return false;location.href=\'' . $boardurl . '/web/tp-comunidadesEliTem.php?id=' . $context['tema']['ID_TOPIC'] . '\'" type="button" />
         </p>';
     }
@@ -2331,14 +2313,13 @@ function template_vertema() {
         <div>
           <b style="font-size: 14px;">
             Comentarios
-            &nbsp;
             (<span id="nrocoment">' . $contarcomentarios . '</span>)
           </b>
         </div>
       </div>
       <div id="comentarios">';
 
-    include($_SERVER['DOCUMENT_ROOT'] . '/web/tp-comunidadesComenCar.php');
+    require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/web/tp-comunidadesComenCar.php');
 
     if (!empty($options['display_quick_reply']) && !$context['tema']['locked'] == 1 && $context['user']['is_logged']) {
       if (
@@ -2371,7 +2352,7 @@ function template_vertema() {
 
         echo '
                       <br />
-                      <input class="login" type="button" id="button_comentar" value="Enviar Comentario" onclick="ComComentar(' . $context['tema']['ID_TOPIC'] . ', ' . $lastPage . '); return false;" tabindex="2" />
+                      <input class="login" type="button" id="button_comentar" value="Enviar comentario" onclick="ComComentar(' . $context['tema']['ID_TOPIC'] . ', ' . $lastPage . '); return false;" tabindex="2" />
                     </p>
                   </form>
                 </div>
@@ -2397,8 +2378,7 @@ function template_quickreply_box() {
         echo '
           <a href="javascript:void(0);" onclick="replaceText(\' ' . $smiley['code'] . '\', document.forms.nuevocoment.cuerpo_comment); return false;">
             <img src="' . $settings['smileys_url'] . '/' . $smiley['filename'] . '" align="bottom" alt="' . $smiley['description'] . '" title="' . $smiley['description'] . '" />
-          </a>
-          &nbsp;';
+          </a> ';
       }
     }
 
@@ -2532,14 +2512,12 @@ function template_editartema() {
               <b style="color: red;">Tu cuenta en esta comunidad se encuentra baneada.</b>
               <br/> 
               <b>Raz&oacute;n:</b>
-              &nbsp;' . $row['reason'] . '
+              ' . $row['reason'] . '
               <br /> 
               <b>Por:</b>
-              &nbsp;
               ' . $row['modName'] . '
               <br />
               <b>Expira:</b>
-              &nbsp;
               ' . $row['day'] . '
               &nbsp;
               d&iacute;a(s)
@@ -2639,8 +2617,7 @@ function template_quickreply_box2() {
         echo '
           <a href="javascript:void(0);" onclick="replaceText(\' ' . $smiley['code'] . '\', document.forms.nuevocoment.cuerpo_comment); return false;">
             <img src="' . $settings['smileys_url'] . '/' . $smiley['filename'] . '" align="bottom" alt="' . $smiley['description'] . '" title="' . $smiley['description'] . '" />
-          </a>
-          &nbsp;';
+          </a>';
       }
     }
 

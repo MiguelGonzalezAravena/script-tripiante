@@ -1,20 +1,17 @@
 <?php
 
 function codigoalazar() {
-  global $id;
-
   $dato = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
   $datoAleatorio = array_rand($dato, 4);
 
   for ($i = 0; $i <= count($datoAleatorio); $i++) {
-    echo $dato[$datoAleatorio[$i]];
-    $captchaCode = $dato[$datoAleatorio[$i]];
+    return $dato[$datoAleatorio[$i]];
   }
 }
 
 function template_main() {
   global $context, $settings, $txt, $modSettings, $boardurl;
-  
+
   echo '
     <script language="JavaScript" type="text/javascript">
       function showr_email(comment) {
@@ -70,12 +67,12 @@ function template_main() {
               <textarea onfocus="foco(this);" onblur="no_foco(this);" cols="70" rows="8" wrap="hard" tabindex="6" name="comment">' . $txt['sendtopic_comment'] . '</textarea>
               <br /><br />
               <font class="size11">
-                <b>C&oacute;digo de la im&aacute;gen:</b>
+                <b>C&oacute;digo de la imagen:</b>
               </font>
               <br />
               <script type="text/javascript">
                 var RecaptchaOptions = {
-                  theme : \'' . empty($modSettings['recaptcha_theme']) ? 'clean' : $modSettings['recaptcha_theme']  . '\',
+                  theme : \'' . (empty($modSettings['recaptcha_theme']) ? 'clean' : $modSettings['recaptcha_theme'])  . '\',
                 };
               </script>
               <script type="text/javascript" src="http://api.recaptcha.net/challenge?k=' . $modSettings['recaptcha_public_key'] . '"></script>

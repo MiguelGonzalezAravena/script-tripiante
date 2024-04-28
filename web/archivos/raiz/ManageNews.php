@@ -62,10 +62,8 @@ function ManageNews() {
 }
 
 // Let the administrator(s) edit the news.
-function EditNews()
-{
-  global $txt, $modSettings, $context, $db_prefix, $sourcedir, $user_info;
-  global $func;
+function EditNews() {
+  global $txt, $modSettings, $context, $sourcedir;
 
   require_once($sourcedir . '/Subs-Post.php');
 
@@ -106,7 +104,7 @@ function EditNews()
   foreach (explode("\n", $modSettings['news']) as $id => $line)
     $context['admin_current_news'][$id] = array(
       'id' => $id,
-      'unparsed' => $func['htmlspecialchars'](un_preparsecode($line)),
+      'unparsed' => htmlspecialchars(un_preparsecode($line)),
       'parsed' => preg_replace('~<([/]?)form[^>]*?[>]*>~i', '<em class="smalltext">&lt;$1form&gt;</em>', parse_bbc($line)),
     );
 

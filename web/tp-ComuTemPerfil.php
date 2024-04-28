@@ -1,7 +1,6 @@
 <?php
 @require_once(dirname(dirname(__FILE__)) . '/Settings.php');
 
-
 $user = htmlentities(addslashes($_REQUEST['user']), ENT_QUOTES, 'UTF-8');
 
 $end = 10;
@@ -46,7 +45,7 @@ if ($rows == 0) {
             <th>Calificaci&oacute;n</th>
           </tr>
         </thead>
-      <tbody>';
+        <tbody>';
 
   while ($row = mysqli_fetch_assoc($request)) {
     echo '

@@ -15,7 +15,6 @@ function template_pm_above() {
     echo '
         <div class="box_txt img_aletat">
           ' . $section['title'] . '
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="box_rss">
           <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0">
@@ -214,14 +213,12 @@ function template_send() {
               <td>
                 <font class="size11">
                   <b>De:</b>
-                  &nbsp;
                 </font>
                 <br />
                 <input style="background-color: #EBEBE4; color: #B0B1B3;" disabled="disabled" type="text" onfocus="foco(this);" onblur="no_foco(this);" value="' . $context['user']['name'] . '" size="40" />
                 <br />
                 <font class="size11">
                   <b>' . $txt[150] . ':</b>
-                  &nbsp;
                 </font>
                 <br />
                 <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="to" id="to" value="' . $context['to'] . '" tabindex="' . $context['tabindex']++ . '" size="40" />
@@ -231,7 +228,6 @@ function template_send() {
                 <br />
                 <font class="size11">
                   <b>' . $txt[70] . ':</b>
-                  &nbsp;
                 </font>
                 <br />
                 <input type="text" onfocus="foco(this);" onblur="no_foco(this);" name="subject" value="' . $context['subject'] . '" tabindex="' . $context['tabindex']++ . '" size="40" maxlength="50" />
@@ -282,7 +278,7 @@ function template_send() {
       <a href="javascript:void(0);" onclick="replaceText(\'Hola!\n\nLe informamos que usted esta corrumpiendo el protocolo escribiendo un texto entero en MAYUSCULA\n\nPara acceder al protocolo, presiona [url=' . $boardurl . '/protocolo/]este enlace[/url].\n\nMuchas gracias por entender!\', document.forms.postmodify.message); return false;">
         <img src="', $settings['images_url'], '/edicion.gif" align="bottom" alt="Mayusculas" title="Mayusculas" />
       </a>
-      &nbsp;|&nbsp;
+      |
       <a href="javascript:void(0);" onclick="replaceText(\'Hola!\nLamento contarte que tu post titulado [b]TITULO DEL POST[/b] ha sido eliminado.\n Causa: [b]CAUSA[/b], ideas aca: ' . $boardurl . '/contactanos/\nPara acceder al protocolo, presiona este [url=' . $boardurl . '/protocolo/]enlace[/url].\nMuchas gracias por entender!\', document.forms.postmodify.message); return false;">
         <img src="', $settings['images_url'], '/eliminar.gif" align="bottom" alt="Post eliminado" title="Post eliminado" />
       </a>';
@@ -459,8 +455,7 @@ function template_quickreply_box() {
     echo "El " . $fecha2 . ", " . $nombre . " Escribi&oacute;:\n>\n" . str_replace("\n", "\n> ", $comentario);
   }
 
-  echo '
-    </textarea>
+  echo '</textarea>
     <label id="errors6"></label>';
 
   if (!empty($context['smileys']['postform'])) {
@@ -469,8 +464,7 @@ function template_quickreply_box() {
         echo '
           <a href="javascript:void(0);" onclick="replaceText(\' ' . $smiley['code'] . '\', document.forms.postmodify.message); return false;">
             <img src="' . $settings['smileys_url'] . '/' . $smiley['filename'] . '" align="bottom" alt="' . $smiley['description'] . '" title="' . $smiley['description'] . '" />
-          </a>
-          &nbsp;';
+          </a>';
       }
     }
 

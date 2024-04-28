@@ -1,5 +1,3 @@
 <?php
-
-$txt['enlazanos'] = 'Enlazanos'; 
-
+$txt['enlazanos'] = 'Enl&aacute;zanos'; 
 ?>

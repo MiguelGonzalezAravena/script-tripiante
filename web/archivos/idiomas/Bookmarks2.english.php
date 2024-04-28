@@ -1,12 +1,12 @@
 <?php
-$txt['bookmarks'] = 'Mis im&aacute;genes favoritos';
-$txt['bookmark_list'] = 'Mis im&aacute;genes favoritos';
-$txt['bookmark_list_empty'] = 'No tienes ning&uacute;na imagen favorita';
+$txt['bookmarks'] = 'Mis im&aacute;genes favoritas';
+$txt['bookmark_list'] = 'Mis im&aacute;genes favoritas';
+$txt['bookmark_list_empty'] = 'No tienes ninguna imagen favorita';
 $txt['bookmark_open_window'] = 'Abrir en ventana nueva';
-$txt['bookmark_delete'] = 'Eliminar Seleccionados';
-$txt['bookmark_delete_success'] = '%1$s Favoritos fueron borrads exitosamente!';
+$txt['bookmark_delete'] = 'Eliminar seleccionados';
+$txt['bookmark_delete_success'] = '%1$s favoritos fueron borrados exitosamente!';
 $txt['bookmark_delete_failure'] = 'No todos los favoritos pudieron borrarse.';
-$txt['bookmark_add'] = 'Agregar Favorito';
+$txt['bookmark_add'] = 'Agregar favorito';
 $txt['bookmark_add_success'] = 'El mensaje fue agregado exitosamente a tus favoritos!';
 $txt['bookmark_add_exists'] = 'Este mensaje ya ha sido agregado a tus favoritos!';
 $txt['bookmark_add_failed'] = 'Error al intentar agregar el mensaje a tus favoritos.';

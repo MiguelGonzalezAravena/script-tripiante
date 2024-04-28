@@ -237,10 +237,8 @@ function getBanEntry($reset = false)
   return $output;
 }
 
-function BanEdit()
-{
-  global $txt, $db_prefix, $modSettings, $context, $ban_request, $scripturl;
-  global $func;
+function BanEdit() {
+  global $txt, $db_prefix, $modSettings, $context, $scripturl;
 
   $_REQUEST['bg'] = empty($_REQUEST['bg']) ? 0 : (int) $_REQUEST['bg'];
 
@@ -339,7 +337,7 @@ function BanEdit()
     }
     else if ($_POST['bantype'] == 'user_ban')
     {
-      $_POST['user'] = $func['htmlspecialchars']($_POST['user'], ENT_QUOTES);
+      $_POST['user'] = htmlspecialchars($_POST['user'], ENT_QUOTES);
 
       $request = db_query("
         SELECT ID_MEMBER, (ID_GROUP = 1 OR FIND_IN_SET(1, additionalGroups)) AS isAdmin
@@ -481,7 +479,7 @@ function BanEdit()
           // We got a username, let's find its ID.
           if (empty($_POST['bannedUser']))
           {
-            $_POST['user'] = $func['htmlspecialchars']($_POST['user'], ENT_QUOTES);
+            $_POST['user'] = htmlspecialchars($_POST['user'], ENT_QUOTES);
 
             $request = db_query("
               SELECT ID_MEMBER, (ID_GROUP = 1 OR FIND_IN_SET(1, additionalGroups)) AS isAdmin

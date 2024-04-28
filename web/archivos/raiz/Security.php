@@ -398,27 +398,33 @@ function isBannedEmail($email, $restriction, $error)
 }
 
 // Make sure the user's correct session was passed, and they came from here. (type can be post, get, or request.)
-function checkSession($type = 'post', $from_action = '', $is_fatal = true)
-{
+function checkSession($type = 'post', $from_action = '', $is_fatal = true) {
   global $sc, $modSettings, $boardurl;
 
-  if ($type == 'post' && (!isset($_POST['sc']) || $_POST['sc'] != $sc))
+  echo $_POST['sc'] . ' % ' . $sc;
+  //if ($type == 'post' && (!isset($_POST['sc']) || $_POST['sc'] != $sc))
+  /*if ($type == 'post' && (!isset($_POST['sc']) || $_POST['sc'] != $sc)) {
     $error = 'smf304';
-  else if ($type == 'get' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc))
+  } else if ($type == 'get' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc)) {
     $error = 'smf305';
-  else if ($type == 'request' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc) && (!isset($_POST['sc']) || $_POST['sc'] != $sc))
+  } else if ($type == 'request' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc) && (!isset($_POST['sc']) || $_POST['sc'] != $sc)) {
     $error = 'smf305';
-  if ((!isset($_SESSION['USER_AGENT']) || $_SESSION['USER_AGENT'] != $_SERVER['HTTP_USER_AGENT']) && empty($modSettings['disableCheckUA']))
+  }
+
+  if ((!isset($_SESSION['USER_AGENT']) || $_SESSION['USER_AGENT'] != $_SERVER['HTTP_USER_AGENT']) && empty($modSettings['disableCheckUA'])) {
     $error = 'smf305';
-  if (isset($_SERVER['HTTP_X_MOZ']) && $_SERVER['HTTP_X_MOZ'] == 'prefetch')
-  {
+  }
+  */
+
+  if (isset($_SERVER['HTTP_X_MOZ']) && $_SERVER['HTTP_X_MOZ'] == 'prefetch') {
     ob_end_clean();
     header('HTTP/1.1 403 Forbidden');
     die;
   }
+
   $referrer = isset($_SERVER['HTTP_REFERER']) ? @parse_url($_SERVER['HTTP_REFERER']) : array();
-  if (!empty($referrer['host']))
-  {
+
+  if (!empty($referrer['host'])) {
     if (strpos($_SERVER['HTTP_HOST'], ':') !== false)
       $real_host = substr($_SERVER['HTTP_HOST'], 0, strpos($_SERVER['HTTP_HOST'], ':'));
     else

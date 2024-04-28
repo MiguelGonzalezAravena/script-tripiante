@@ -128,28 +128,28 @@ function preparsecode(&$message, $previewing = false) {
 // This is very simple, and just removes things done by preparsecode.
 function un_preparsecode($message)
 {
-  $parts = preg_split('~(\[/code\]|\[code(?:=[^\]]+)?\])~i', $message, -1, PREG_SPLIT_DELIM_CAPTURE);
+	global $smcFunc;
 
-  // We're going to unparse only the stuff outside [code]...
-  for ($i = 0, $n = count($parts); $i < $n; $i++)
-  {
-    // If $i is a multiple of four (0, 4, 8, ...) then it's not a code section...
-    if ($i % 4 == 0)
-    {
-      $parts[$i] = preg_replace('~\[html\](.+?)\[/html\]~ie', '\'[html]\' . strtr(htmlspecialchars(stripslashes(\'$1\'), ENT_QUOTES), array(\'&amp;#13;\' => \'<br />\', \'&amp;#32;\' => \' \')) . \'[/html]\'', $parts[$i]);
+	$parts = preg_split('~(\[/code\]|\[code(?:=[^\]]+)?\])~i', $message, -1, PREG_SPLIT_DELIM_CAPTURE);
 
-      // Attempt to un-parse the time to something less awful.
-      $parts[$i] = preg_replace('~\[time\](\d{0,10})\[/time\]~ie', '\'[time]\' . strftime(\'%c\', \'$1\') . \'[/time]\'', $parts[$i]);
-    }
-  }
+	// We're going to unparse only the stuff outside [code]...
+	for ($i = 0, $n = count($parts); $i < $n; $i++) {
+		// If $i is a multiple of four (0, 4, 8, ...) then it's not a code section...
+		if ($i % 4 == 0) {
+			$parts[$i] = preg_replace_callback('~\[html\](.+?)\[/html\]~i', 'htmlspecial_html__preg_callback', $parts[$i]);
+			// $parts[$i] = preg_replace('~\[html\](.+?)\[/html\]~ie', '\'[html]\' . strtr(htmlspecialchars(\'$1\', ENT_QUOTES), array(\'\\&quot;\' => \'&quot;\', \'&amp;#13;\' => \'<br />\', \'&amp;#32;\' => \' \', \'&amp;#38;\' => \'&#38;\', \'&amp;#91;\' => \'[\', \'&amp;#93;\' => \']\')) . \'[/html]\'', $parts[$i]);
 
-  // Change breaks back to \n's and &nsbp; back to spaces.
-  return preg_replace('~<br( /)?' . '>~', "\n", str_replace('&nbsp;', ' ', implode('', $parts)));
+			// Attempt to un-parse the time to something less awful.
+			$parts[$i] = preg_replace_callback('~\[time\](\d{0,10})\[/time\]~i', 'time_format__preg_callback', $parts[$i]);
+		}
+	}
+
+	// Change breaks back to \n's and &nsbp; back to spaces.
+	return preg_replace('~<br( /)?' . '>~', "\n", str_replace('&nbsp;', ' ', implode('', $parts)));
 }
 
 // Fix any URLs posted - ie. remove 'javascript:'.
-function fixTags(&$message)
-{
+function fixTags(&$message) {
   global $modSettings;
 
   // WARNING: Editing the below can cause large security holes in your forum.
@@ -518,7 +518,7 @@ function sendmail($to, $subject, $message, $from = null, $message_id = null, $se
 // Send off a personal message.
 function sendpm($recipients, $subject, $message, $store_outbox = false, $from = null)
 {
-  global $db_prefix, $ID_MEMBER, $scripturl, $txt, $user_info, $language, $func, $modSettings;
+  global $db_prefix, $ID_MEMBER, $scripturl, $txt, $user_info, $language, $modSettings;
 
   // Initialize log array.
   $log = array(
@@ -537,8 +537,9 @@ function sendpm($recipients, $subject, $message, $store_outbox = false, $from = 
     $user_info['name'] = $from['name'];
 
   // This is the one that will go in their inbox.
-  $htmlmessage = $func['htmlspecialchars']($message, ENT_QUOTES);
-  $htmlsubject = $func['htmlspecialchars']($subject);
+  $htmlmessage = htmlspecialchars($message, ENT_QUOTES);
+  $htmlsubject = htmlspecialchars($subject);
+
   preparsecode($htmlmessage);
 
   // Integrated PMs
@@ -553,7 +554,7 @@ function sendpm($recipients, $subject, $message, $store_outbox = false, $from = 
     {
       if (!is_numeric($recipients[$rec_type][$id]))
       {
-        $recipients[$rec_type][$id] = $func['strtolower'](trim(preg_replace('/[<>&"\'=\\\]/', '', $recipients[$rec_type][$id])));
+        $recipients[$rec_type][$id] = strtolower(trim(preg_replace('/[<>&"\'=\\\]/', '', $recipients[$rec_type][$id])));
         $usernames[$recipients[$rec_type][$id]] = 0;
       }
     }
@@ -565,8 +566,8 @@ function sendpm($recipients, $subject, $message, $store_outbox = false, $from = 
       FROM {$db_prefix}members
       WHERE memberName IN ('" . implode("', '", array_keys($usernames)) . "')", __FILE__, __LINE__);
     while ($row = mysqli_fetch_assoc($request))
-      if (isset($usernames[$func['strtolower']($row['memberName'])]))
-        $usernames[$func['strtolower']($row['memberName'])] = $row['ID_MEMBER'];
+      if (isset($usernames[strtolower($row['memberName'])]))
+        $usernames[strtolower($row['memberName'])] = $row['ID_MEMBER'];
     mysqli_free_result($request);
 
     // Replace the usernames with IDs. Drop usernames that couldn't be found.
@@ -1060,9 +1061,8 @@ function theme_postbox($msg)
   }
 }
 
-function SpellCheck()
-{
-  global $txt, $context, $func;
+function SpellCheck() {
+  global $txt, $context;
 
   // A list of "words" we know about but pspell doesn't.
   $known_words = array('smf', 'php', 'mysql', 'www', 'gif', 'jpeg', 'png', 'http', 'smfisawesome', 'grandia', 'terranigma', 'rpgs');
@@ -1105,7 +1105,7 @@ function SpellCheck()
     $check_word = explode('|', $alphas[$i]);
 
     // If the word is a known word, or spelled right...
-    if (in_array($func['strtolower']($check_word[0]), $known_words) || pspell_check($pspell_link, $check_word[0]) || !isset($check_word[2]))
+    if (in_array(strtolower($check_word[0]), $known_words) || pspell_check($pspell_link, $check_word[0]) || !isset($check_word[2]))
       continue;
 
     // Find the word, and move up the "last occurance" to here.

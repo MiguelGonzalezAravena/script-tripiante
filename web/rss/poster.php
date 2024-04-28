@@ -14,7 +14,7 @@ $context['rssuser'] = array();
 
 while ($row = mysqli_fetch_assoc($request)) {
   $row['realName'] = parse_bbc($row['realName'], 1, $row['posts']); 
-  $row['realName'] = strtr($func['substr'](str_replace('<br />', "\n", $row['realName']), 0, 400 - 3), array("\n" => '<br />'));
+  $row['realName'] = strtr(substr(str_replace('<br />', "\n", $row['realName']), 0, 400 - 3), array("\n" => '<br />'));
 
   $context['rssuser'][] = array(
     'posts' => $row['posts'],

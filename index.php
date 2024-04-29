@@ -9,10 +9,6 @@ require_once($sourcedir . '/QueryString.php');
 $forum_version = 'SMF 1.1.11';
 $script_version = '1.0';
 
-if (function_exists('set_magic_quotes_runtime')) {
-  @set_magic_quotes_runtime(0);
-}
-
 error_reporting(E_ALL);
 $time_start = microtime();
 
@@ -33,7 +29,7 @@ if (!empty($maintenance) && $maintenance == 2) {
 if (empty($db_persist)) {
   $db_connection = @mysqli_connect($db_server, $db_user, $db_passwd);
 } else {
-  $db_connection = @mysql_pconnect($db_server, $db_user, $db_passwd);
+  $db_connection = @mysqli_connect($db_server, $db_user, $db_passwd, null, null, null, MYSQLI_CLIENT_PERSISTENT);
 }
 
 if (!$db_connection || !@mysqli_select_db($db_connection, $db_name)) {

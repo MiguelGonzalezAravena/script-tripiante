@@ -65,7 +65,7 @@ function DumpDatabase2() {
   $scripturl = '';
 
   // Send the proper headers to let them download this file.
-  header('Content-Disposition: filename="' . $db_name . '-' . (empty($_GET['struct']) ? 'data' : (empty($_GET['data']) ? 'structure' : 'complete')) . '_' . strftime('%Y-%m-%d') . $extension . '"');
+  header('Content-Disposition: filename="' . $db_name . '-' . (empty($_GET['struct']) ? 'data' : (empty($_GET['data']) ? 'structure' : 'complete')) . '_' . date('Y-m-d') . $extension . '"');
   header('Cache-Control: private');
   header('Connection: close');
 

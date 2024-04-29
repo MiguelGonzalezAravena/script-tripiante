@@ -402,8 +402,10 @@ function checkSession($type = 'post', $from_action = '', $is_fatal = true) {
   global $sc, $modSettings, $boardurl;
 
   echo $_POST['sc'] . ' % ' . $sc;
-  //if ($type == 'post' && (!isset($_POST['sc']) || $_POST['sc'] != $sc))
-  /*if ($type == 'post' && (!isset($_POST['sc']) || $_POST['sc'] != $sc)) {
+  // $_SESSION['admin_time'] = time();
+
+  /*
+  if ($type == 'post' && (!isset($_POST['sc']) || $_POST['sc'] != $sc)) {
     $error = 'smf304';
   } else if ($type == 'get' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc)) {
     $error = 'smf305';
@@ -414,7 +416,7 @@ function checkSession($type = 'post', $from_action = '', $is_fatal = true) {
   if ((!isset($_SESSION['USER_AGENT']) || $_SESSION['USER_AGENT'] != $_SERVER['HTTP_USER_AGENT']) && empty($modSettings['disableCheckUA'])) {
     $error = 'smf305';
   }
-  */
+  /**/
 
   if (isset($_SERVER['HTTP_X_MOZ']) && $_SERVER['HTTP_X_MOZ'] == 'prefetch') {
     ob_end_clean();

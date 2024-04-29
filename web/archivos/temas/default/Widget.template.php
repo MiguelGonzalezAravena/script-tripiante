@@ -1,15 +1,12 @@
 <?php
-// Version: 1.1; WidGet
+// Version: 1.1; Widget
 
 
-function template_manual_above()
-{
-}
-function template_manual_below()
-{
-}
-function template_manual_intro()
-{
+function template_manual_above() {}
+
+function template_manual_below() {}
+
+function template_manual_intro() { 
   global $context, $settings, $boardurl;
 
   $switch = true;
@@ -61,7 +58,7 @@ function template_manual_intro()
         return;
       }
 
-      code = \'<div style="border: 1px solid rgb(213, 213, 213); padding: 2px 5px 5px; background: #D7D7D7 url(' . $boardurl . '/wget/fondo2.gif) repeat-x scroll center top; width: \' + ancho[document.getElementById("tamano").value] +\'px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; text-align: left;"><a href="' . $boardurl . '/"><img src="' . $boardurl . '/wget/logo.gif" alt="' . $context['forum_name'] . '" style="border: 0pt none ; margin: 0px 0px 5px 5px;" /></a><iframe src="' . $boardurl . '/wget/\' + document.getElementById("cat").value + \'-\' + document.getElementById("cantidad").value + \'-\' + ancho[document.getElementById("tamano").value] + \'/" style="border: 1px solid rgb(213, 213, 213); margin: 0pt; padding: 0pt; width: \'+ancho[document.getElementById("tamano").value]+\'px; height: \'+alto[document.getElementById("tamano").value]+\'px;" frameborder="0"></iframe></div>\';
+      code = \'<div style="border: 1px solid rgb(213, 213, 213); padding: 2px 5px 5px; background: #D7D7D7 url(' . $settings['images_url'] . '/fondo2-widget.png) repeat-x scroll center top; width: \' + ancho[document.getElementById("tamano").value] +\'px; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; text-align: left;"><a href="' . $boardurl . '/"><img src="' . $settings['images_url'] . '/widget-logo.png" alt="' . $context['forum_name'] . '" style="border: 0pt none ; margin: 0px 0px 5px 5px;" /></a><iframe src="' . $boardurl . '/wget/\' + document.getElementById("cat").value + \'-\' + document.getElementById("cantidad").value + \'-\' + ancho[document.getElementById("tamano").value] + \'/" style="border: 1px solid rgb(213, 213, 213); margin: 0pt; padding: 0pt; width: \'+ancho[document.getElementById("tamano").value]+\'px; height: \'+alto[document.getElementById("tamano").value]+\'px;" frameborder="0"></iframe></div>\';
 
       document.getElementById("widget-preview").innerHTML=code;
       document.getElementById("codigo").value = code;
@@ -81,26 +78,30 @@ function template_manual_intro()
     <div class="box_buscador">
       <div class="box_title" style="width: 919px;">
         <div class="box_txt box_buscadort">
-          <center>WidGet</center>
+          <center>Widget</center>
         </div>
         <div class="box_rss">
           <img  src="' . $settings['images_url'] . '/blank.gif" style="width: 14px; height: 12px;" border="0">
         </div>
       </div>
       <div style="width: 911px; padding: 4px; margin-bottom: 8px;" class="windowbg">
-        Integra los &uacute;ltimos posts de ' . $context['forum_name'] . ' en tu Web y estate siempre actualizado.<br />
+        Integra los &uacute;ltimos posts de <strong>' . $context['forum_name'] . '</strong> en tu web y estate siempre actualizado.
+        <br /><br />
 
         En solo segundos podr&aacute;s tener un listado que estar&aacute; siempre 
-        actualizado con los &uacute;ltimos posts publicados en ' . $context['forum_name'] . '.<br />
+        actualizado con los &uacute;ltimos posts publicados en <strong>' . $context['forum_name'] . '</strong>.
+        <br /><br />
 
-        Puedes personalizar el listado para que se adapte al estilo de tu sitio, puedes cambiar su tama&ntilde;o, color, cantidad de posts a listar y hasta puedes filtrar por categor&iacute;as.<br /><br />
+        Puedes personalizar el listado para que se adapte al estilo de tu sitio, puedes cambiar su tama&ntilde;o, color, cantidad de posts a listar y hasta puedes filtrar por categor&iacute;as.
+        <br /><br />
 
-        <b>¿C&oacute;mo implementarlo?:</b><br />
+        <b>&iquest;C&oacute;mo implementarlo?:</b><br />
         <b>1.</b> Personal&iacute;zalo a tu gusto. C&aacute;mbiale color, y elige el tama&ntilde;o.<br />
 
         <b>2.</b> Copia el c&oacute;digo generado y p&eacute;galo en tu p&aacute;gina.<br />
 
-        <b>3.</b> Listo. Ya puedes disfrutar de ' . $context['forum_name'] . ' Widget<br />
+        <b>3.</b> Listo. Ya puedes disfrutar de <strong>' . $context['forum_name'] . '</strong> Widget.
+        <br />
       </div>
     </div>
     <table style="width: 921px; margin: 0px;">

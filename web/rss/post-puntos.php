@@ -1,11 +1,10 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/SSI.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/SSI.php');
 
 global $db_prefix, $boardurl, $mbname;
 
 $request = db_query("
-  SELECT m.subject, m.ID_TOPIC, t.ID_TOPIC, t.ID_BOARD, t.points, b.name AS bname
+  SELECT m.subject, m.ID_TOPIC, t.ID_TOPIC, t.ID_BOARD, t.points, b.name AS bname, b.description
   FROM ({$db_prefix}topics AS t, {$db_prefix}messages AS m, {$db_prefix}boards AS b)
   WHERE t.ID_TOPIC = m.ID_TOPIC
   AND t.ID_BOARD = b.ID_BOARD

@@ -509,14 +509,15 @@ function comma_format($number, $override_decimal_count = false) {
 
 // Format a time to make it look purdy.
 function timeformat($logTime, $show_today = true) {
-  global $user_info, $txt, $modSettings, $func;
+  global $user_info, $txt, $modSettings;
 
   // Offset the time.
   $time = $logTime + ($user_info['time_offset'] + $modSettings['time_offset']) * 3600;
 
   // We can't have a negative date (on Windows, at least.)
-  if ($time < 0)
+  if ($time < 0) {
     $time = 0;
+  }
 
   $str = !is_bool($show_today) ? $show_today : $user_info['time_format'];
 
@@ -2621,7 +2622,7 @@ function trackStats($stats = array()) {
       $cache_stats[$field] = 1;
   }
 
-  $date = strftime('%Y-%m-%d', forum_time(false));
+  $date = date('Y-m-d', forum_time(false));
 
   db_query("
     UPDATE {$db_prefix}log_activity

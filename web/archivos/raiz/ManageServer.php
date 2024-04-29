@@ -338,6 +338,8 @@ function ModifyCacheSettings()
   $context['settings_title'] = $txt['caching_settings'];
   $context['settings_message'] = $txt['caching_information'];
 
+  // TO-DO: Librerías deprecadas
+  /*
   // Detect an optimizer?
   if (function_exists('eaccelerator_put'))
     $detected = 'eAccelerator';
@@ -351,6 +353,8 @@ function ModifyCacheSettings()
     $detected = 'Memcached';
   else
     $detected = 'no_caching';
+  */
+  $detected = 'no_caching';
 
   $context['settings_message'] = sprintf($context['settings_message'], $txt['detected_' . $detected]);
 

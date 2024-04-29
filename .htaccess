@@ -220,6 +220,7 @@ Rewriterule ^votar-post/(.*)$ web/tp-votar-post.php
 Rewriterule ^votar-img(.*)$ web/tp-votar-img.php
 Rewriterule ^web/enlazanos/(.*)\.gif$ images/enlazanos/$1\.gif
 Rewriterule ^widget(.*)$ index.php?action=widget
+Rewriterule ^wget/(.*)-(.*)-(.*)/$ web/widget/index.php?cat=$1&cantidad=$2&tamano=$3
 Rewriterule ^wget/(.*)$ web/widget/$1
 Rewriterule ^wget/$ web/widget/
 Rewriterule ^wget(.*)$ web/widget/$1

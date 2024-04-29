@@ -9,14 +9,6 @@ global $boardurl, $boarddir, $sourcedir, $webmaster_email, $cookiename;
 global $db_server, $db_name, $db_user, $db_prefix, $db_persist, $db_error_send, $db_last_error;
 global $db_connection, $modSettings, $context, $sc, $user_info, $topic, $board, $txt;
 
-// TO-DO: Cambiar get_magic_quotes_runtime()
-/*
-if (function_exists('get_magic_quotes_runtime') && function_exists('set_magic_quotes_runtime')) {
-  $ssi_magic_quotes_runtime = @get_magic_quotes_runtime();
-  @set_magic_quotes_runtime(0);
-}
-*/
-
 $time_start = microtime();
 
 foreach (array('db_character_set') as $variable)
@@ -48,8 +40,7 @@ if (@version_compare(PHP_VERSION, '4.2.3') != 1) {
 if (empty($db_persist)) {
   $db_connection = mysqli_connect($db_server, $db_user, $db_passwd);
 } else {
-  // TO-DO: Actualizar mysql_pconnect()
-  $db_connection = @mysql_pconnect($db_server, $db_user, $db_passwd);
+  $db_connection = mysqli_connect($db_server, $db_user, $db_passwd, null, null, null, MYSQLI_CLIENT_PERSISTENT);
 }
 
 if ($db_connection === false) {
@@ -1448,11 +1439,10 @@ function ssi_friendlyurl_verificar() {
 
     $total = mysqli_num_rows($request);
 
-    // TO-DO: Cambiar ereg()
-    if (!ereg("^[A-Za-z0-9]{5,32}$", $shortname)) {
+    if (!preg_match('/^[A-Za-z0-9]{5,32}$/', $shortname)) {
       echo '0: S&oacute;lo se permiten letras, n&uacute;meros y guiones medios (-)';
     } else if ($total > 0) {
-      echo '0: El nick no est&aacute; disp';
+      echo '0: El nick no est&aacute; disponible';
     } else if (strlen($shortname) < 5 || strlen($shortname) > 32) {
       echo '0: El nombre debe tener entre 5 y 32 caracteres';
     } else {

@@ -139,7 +139,7 @@ function DisplayStats() {
     cache_put_data('stats_gender', $context['gender'], 240);
   }
 
-  $date = strftime('%Y%m%d', forum_time(false));
+  $date = date('Ymd', forum_time(false));
 
   // Members online so far today.
   $result = db_query("

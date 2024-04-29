@@ -1,5 +1,5 @@
 <?php
-@require_once('SSI.php');
+require_once('SSI.php');
 
 function rango($valor) {
   $valor = str_replace('1', 'Administrador', $valor);

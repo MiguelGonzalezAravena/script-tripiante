@@ -6,9 +6,8 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/Settings.php');
 require_once($sourcedir . '/Subs.php');
 require_once($sourcedir . '/Security.php');
 
-function reloadSettings()
-{
-  global $modSettings, $db_prefix, $boarddir, $func, $txt, $db_character_set;
+function reloadSettings() {
+  global $modSettings, $db_prefix, $boarddir, $txt, $db_character_set;
   global $mysql_set_mode;
 
   // This makes it possible to have SMF automatically change the sql_mode and autocommit if needed.
@@ -53,9 +52,6 @@ function reloadSettings()
 
   // Preg_replace can handle complex characters only for higher PHP versions.
   $space_chars = $utf8 ? (@version_compare(PHP_VERSION, '4.3.3') != -1 ? '\x{A0}\x{2000}-\x{200F}\x{201F}\x{202F}\x{3000}\x{FEFF}' : pack('C*', 0xC2, 0xA0, 0xE2, 0x80, 0x80) . '-' . pack('C*', 0xE2, 0x80, 0x8F, 0xE2, 0x80, 0x9F, 0xE2, 0x80, 0xAF, 0xE2, 0x80, 0x9F, 0xE3, 0x80, 0x80, 0xEF, 0xBB, 0xBF)) : '\xA0';
-  
-  // TO-DO: Redefinir
-  $func = array();
 
   // Setting the timezone is a requirement for some functions in PHP >= 5.1.
   if (isset($modSettings['default_timezone']) && function_exists('date_default_timezone_set'))
@@ -1712,6 +1708,8 @@ function loadSession()
       @ini_set('session.gc_maxlifetime', max($modSettings['databaseSession_lifetime'], 60));
     }
 
+    // TO-DO: Librerías deprecadas
+    /*
     // Use cache setting sessions?
     if (empty($modSettings['databaseSession_enable']) && !empty($modSettings['cache_enable']) && php_sapi_name() != 'cli') {
       if (function_exists('mmcache_set_session_handlers')) {
@@ -1720,9 +1718,10 @@ function loadSession()
         eaccelerator_set_session_handlers();
       }
     }
+    */
 
     // TO-DO: Eliminar o dejar?
-    // session_start();
+    session_start();
 
     // Change it so the cache settings are a little looser than default.
     if (!empty($modSettings['databaseSession_loose']))
@@ -1834,9 +1833,8 @@ function sessionGC($max_lifetime)
     LIMIT 1", __FILE__, __LINE__);
 }
 
-function cache_put_data($key, $value, $ttl = 120)
-{
-  global $boardurl, $sourcedir, $modSettings, $memcached;
+function cache_put_data($key, $value, $ttl = 120) {
+  global $boardurl, $sourcedir, $modSettings;
   global $cache_hits, $cache_count, $db_show_debug;
 
   if (empty($modSettings['cache_enable']) && !empty($modSettings))
@@ -1850,17 +1848,17 @@ function cache_put_data($key, $value, $ttl = 120)
   }
   $key = md5($boardurl . filemtime($sourcedir . '/Load.php')) . '-SMF-' . $key;
   $value = $value === null ? null : serialize($value);
-  if (function_exists('memcache_set') && isset($modSettings['cache_memcached']) && trim($modSettings['cache_memcached']) != '')
-  {
+
+  // TO-DO: Librerías deprecadas
+  /*
+  if (function_exists('memcache_set') && isset($modSettings['cache_memcached']) && trim($modSettings['cache_memcached']) != '') {
     if (empty($memcached))
       get_memcached_server();
     if (!$memcached)
       return;
 
     memcache_set($memcached, $key, $value, 0, $ttl);
-  }
-  else if (function_exists('eaccelerator_put'))
-  {
+  } else if (function_exists('eaccelerator_put')) {
     if (mt_rand(0, 10) == 1)
       eaccelerator_gc();
 
@@ -1868,9 +1866,7 @@ function cache_put_data($key, $value, $ttl = 120)
       @eaccelerator_rm($key);
     else
       eaccelerator_put($key, $value, $ttl);
-  }
-  else if (function_exists('mmcache_put'))
-  {
+  } else if (function_exists('mmcache_put')) {
     if (mt_rand(0, 10) == 1)
       mmcache_gc();
 
@@ -1878,22 +1874,22 @@ function cache_put_data($key, $value, $ttl = 120)
       @mmcache_rm($key);
     else
       mmcache_put($key, $value, $ttl);
-  }
-  else if (function_exists('apc_store'))
-  {
+  } else if (function_exists('apc_store')) {
     if ($value === null)
       apc_delete($key . 'smf');
     else
       apc_store($key . 'smf', $value, $ttl);
-  }
-  else if (function_exists('output_cache_put'))
+  } else if (function_exists('output_cache_put')) {
     output_cache_put($key, $value);
-  if (isset($db_show_debug) && $db_show_debug === true)
+  }
+  */
+
+  if (isset($db_show_debug) && $db_show_debug === true) {
     $cache_hits[$cache_count]['t'] = array_sum(explode(' ', microtime())) - array_sum(explode(' ', $st));
+  }
 }
 
-function cache_get_data($key, $ttl = 120)
-{
+function cache_get_data($key, $ttl = 120) {
   global $boardurl, $sourcedir, $modSettings, $memcached;
   global $cache_hits, $cache_count, $db_show_debug;
 
@@ -1909,9 +1905,10 @@ function cache_get_data($key, $ttl = 120)
 
   $key = md5($boardurl . filemtime($sourcedir . '/Load.php')) . '-SMF-' . $key;
 
+  // TO-DO: Librerías deprecadas
+  /*
   // Okay, let's go for it memcached!
-  if (function_exists('memcache_get') && isset($modSettings['cache_memcached']) && trim($modSettings['cache_memcached']) != '')
-  {
+  if (function_exists('memcache_get') && isset($modSettings['cache_memcached']) && trim($modSettings['cache_memcached']) != '') {
     // Not connected yet?
     if (empty($memcached))
       get_memcached_server();
@@ -1932,6 +1929,7 @@ function cache_get_data($key, $ttl = 120)
   // Zend's pricey stuff.
   else if (function_exists('output_cache_get'))
     $value = output_cache_get($key, $ttl);
+  */
 
   if (isset($db_show_debug) && $db_show_debug === true)
   {

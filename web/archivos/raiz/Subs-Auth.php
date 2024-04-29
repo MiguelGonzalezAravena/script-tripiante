@@ -442,13 +442,12 @@ function RequestMembers() {
     SELECT realName
     FROM {$db_prefix}members
     WHERE realName LIKE '$_REQUEST[search]'" . (isset($_REQUEST['buddies']) ? '
-      AND ID_MEMBER IN (' . implode(', ', $user_info['buddies']) . ')' : '') . "
-      AND is_activated IN (1, 11)
+    AND ID_MEMBER IN (' . implode(', ', $user_info['buddies']) . ')' : '') . "
+    AND is_activated IN (1, 11)
     LIMIT " . (strlen($_REQUEST['search']) <= 2 ? '100' : '800'), __FILE__, __LINE__);
-  while ($row = mysqli_fetch_assoc($request))
-  {
-    if (function_exists('iconv'))
-    {
+
+  while ($row = mysqli_fetch_assoc($request)) {
+    if (function_exists('iconv')) {
       $utf8 = iconv($txt['lang_character_set'], 'UTF-8', $row['realName']);
       if ($utf8)
         $row['realName'] = $utf8;
@@ -456,23 +455,25 @@ function RequestMembers() {
 
     $row['realName'] = strtr($row['realName'], array('&amp;' => '&#038;', '&lt;' => '&#060;', '&gt;' => '&#062;', '&quot;' => '&#034;'));
 
-    if (preg_match('~&#\d+;~', $row['realName']) != 0)
-    {
-      $fixchar = create_function('$n', '
-        if ($n < 128)
-          return chr($n);
-        else if ($n < 2048)
-          return chr(192 | $n >> 6) . chr(128 | $n & 63);
-        else if ($n < 65536)
-          return chr(224 | $n >> 12) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
-        else
-          return chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);');
+    if (preg_match('~&#\d+;~', $row['realName']) != 0) {
+      $fixchar = function($n) {
+        if ($n < 128) {
+            return chr($n);
+        } elseif ($n < 2048) {
+            return chr(192 | $n >> 6) . chr(128 | $n & 63);
+        } elseif ($n < 65536) {
+            return chr(224 | $n >> 12) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
+        } else {
+            return chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
+        }
+      };
 
       $row['realName'] = preg_replace('~&#(\d+);~e', '$fixchar(\'$1\')', $row['realName']);
     }
 
     echo $row['realName'], "\n";
   }
+
   mysqli_free_result($request);
 
   obExit(false);

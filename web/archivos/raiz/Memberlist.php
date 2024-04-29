@@ -438,7 +438,7 @@ function printMemberListRows($request)
     $context['members'][$member] = $memberContext[$member];
     $context['members'][$member]['post_percent'] = round(($context['members'][$member]['real_posts'] * 100) / $MOST_POSTS);
     $context['members'][$member]['topic_percent'] = round(($context['members'][$member]['real_topics'] * 100) / $MOST_TOPICS);
-    $context['members'][$member]['registered_date'] = strftime('%Y-%m-%d', $context['members'][$member]['registered_timestamp']);
+    $context['members'][$member]['registered_date'] = date('Y-m-d', $context['members'][$member]['registered_timestamp']);
   }
 }
 

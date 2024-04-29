@@ -1,5 +1,5 @@
 <?php
-@require_once(dirname(dirname(__FILE__)) . '/SSI.php');
+require_once(dirname(dirname(__FILE__)) . '/SSI.php');
 
 global $context, $db_prefix, $modSettings, $boardurl;
 
@@ -27,7 +27,7 @@ if ($context['user']['is_guest']) {
   while ($row = mysqli_fetch_assoc($request)) {
     $realName = censorText($row['realName']);
     $description = $row['description'];
-    $subject = ssi_reducir(htmlentities($row['subject'], ENT_QUOTES, 'UTF-8'));
+    $subject = htmlentities(ssi_reducir($row['subject']), ENT_QUOTES, 'UTF-8');
 
     echo '
       <font class="size11">
@@ -35,7 +35,7 @@ if ($context['user']['is_guest']) {
           <a title="" href="' . $boardurl . '/perfil/' . $realName . '">' . $realName . '</a>
         </b>
         -
-        <a title="' . $subject . '"  href="' . $boardurl . '/post/' . $row['ID_TOPIC2'] . '/' . $description . '/' . ssi_amigable($subject) . '.html#cmt_' . $row['ID_COMMENT'] . '">' . $subject . '</a>
+        <a title="' . $subject . '" alt="' . $subject . '" href="' . $boardurl . '/post/' . $row['ID_TOPIC2'] . '/' . $description . '/' . ssi_amigable($subject) . '.html#cmt_' . $row['ID_COMMENT'] . '">' . $subject . '</a>
       </font>
       <br style="margin: 0px; padding: 0px;" />';
   }

@@ -1,5 +1,5 @@
 <?php
-@require_once($_SERVER['DOCUMENT_ROOT'] . '/Settings.php');
+require_once(dirname(dirname(__FILE__)) . '/Settings.php');
 
 $search = htmlentities(addslashes($_GET['search']), ENT_QUOTES, 'UTF-8');
 $buscador_tipo = htmlentities(addslashes($_GET['buscador_tipo']), ENT_QUOTES, 'UTF-8');

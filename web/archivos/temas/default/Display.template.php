@@ -372,12 +372,15 @@ function template_main() {
               <b>Categor&iacute;a:</b>
               <a href="' . $boardurl . '/categoria/' . $message['board']['description'] . '" title="' . $message['board']['name'] . '">' . $message['board']['name'] . '</a>
               <div class="hrs"></div>
-              <b>Tags:</b>&nbsp;';
+              <b>Tags:</b>
+              ';
 
     if ($context['topic_tags']) {
       $contar = 0;
 
       foreach ($context['topic_tags'] as $i => $tags) {
+        $tags['tag'] = htmlentities(trim($tags['tag']), ENT_QUOTES, 'ISO-8859-1');
+
         echo '<a href="' . $boardurl . '/tags/' . $tags['tag'] . '" title="' . $tags['tag'] . '">' . $tags['tag'] . '</a>';
 
         $count = count($context['topic_tags']);

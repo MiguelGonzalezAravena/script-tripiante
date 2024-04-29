@@ -140,7 +140,7 @@ function db_error($db_string, $file, $line) {
         if (empty($db_persist))
           $db_connection = @mysqli_connect($db_server, $db_user, $db_passwd);
         else
-          $db_connection = @mysql_pconnect($db_server, $db_user, $db_passwd);
+          $db_connection = @mysqli_connect($db_server, $db_user, $db_passwd, null, null, null, MYSQLI_CLIENT_PERSISTENT);
 
         if (!$db_connection || !@mysqli_select_db($db_connection, $db_name))
           $db_connection = false;

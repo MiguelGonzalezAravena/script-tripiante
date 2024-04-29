@@ -173,7 +173,7 @@ function ModifyProfile($post_errors = array()) {
 
   $context['member'] = array(
     'id' => $memID,
-    'nombre' => $user_profile[$memID]['name'],
+    'nombre' => htmlentities($user_profile[$memID]['name'], ENT_QUOTES, 'ISO-8859-1'),
     'moneyBank' => $user_profile[$memID]['moneyBank'],
     'estudios' => $user_profile[$memID]['estudios'],
     'profesion' => $user_profile[$memID]['profesion'],
@@ -208,7 +208,7 @@ function ModifyProfile($post_errors = array()) {
     'topics' => empty($user_profile[$memID]['topics']) ? 0: (int) $user_profile[$memID]['topics'],
     'hide_email' => empty($user_profile[$memID]['hideEmail']) ? 0 : $user_profile[$memID]['hideEmail'],
     'show_online' => empty($user_profile[$memID]['showOnline']) ? 0 : $user_profile[$memID]['showOnline'],
-    'registered' => empty($user_profile[$memID]['dateRegistered']) ? $txt[470] : strftime('%Y-%m-%d', $user_profile[$memID]['dateRegistered'] + ($user_info['time_offset'] + $modSettings['time_offset']) * 3600),
+    'registered' => empty($user_profile[$memID]['dateRegistered']) ? $txt[470] : date('Y-m-d', $user_profile[$memID]['dateRegistered'] + ($user_info['time_offset'] + $modSettings['time_offset']) * 3600),
     'group' => $user_profile[$memID]['ID_GROUP'],
     'gender' => array('name' => empty($user_profile[$memID]['gender']) ? '' : ($user_profile[$memID]['gender'] == 2 ? 'f' : 'm')),
     'karma' => array(
@@ -677,7 +677,7 @@ function saveProfileChanges(&$profile_vars, &$post_errors, $memID) {
         fatal_error($txt['smf233'] . ' ' . strftime('%d %b %Y ' . (strpos($user_info['time_format'], '%H') !== false ? '%I:%M:%S %p' : '%H:%M:%S'), forum_time(false)), false);
       }
       // As long as it doesn't equal 'N/A'...
-      else if ($_POST['dateRegistered'] != $txt[470] && $_POST['dateRegistered'] != strtotime(strftime('%Y-%m-%d', $user_profile[$memID]['dateRegistered'] + ($user_info['time_offset'] + $modSettings['time_offset']) * 3600))) {
+      else if ($_POST['dateRegistered'] != $txt[470] && $_POST['dateRegistered'] != strtotime(date('Y-m-d', $user_profile[$memID]['dateRegistered'] + ($user_info['time_offset'] + $modSettings['time_offset']) * 3600))) {
         $profile_vars['dateRegistered'] = $_POST['dateRegistered'] - ($user_info['time_offset'] + $modSettings['time_offset']) * 3600;
       }
     }
@@ -1838,7 +1838,7 @@ function perfil($memID) {
   $context['member'] += array(
     'name' => !isset($user_profile[$memID]['name']) || $user_profile[$memID]['name'] == '' ? '' : $user_profile[$memID]['name'],
     'birth_date' => empty($user_profile[$memID]['birthdate']) || $user_profile[$memID]['birthdate'] === '0001-01-01' ? '0000-00-00' : (substr($user_profile[$memID]['birthdate'], 0, 4) === '0004' ? '0000' . substr($user_profile[$memID]['birthdate'], 4) : $user_profile[$memID]['birthdate']),
-    'location' => !isset($user_profile[$memID]['location']) ? '' : $user_profile[$memID]['location'],
+    'location' => !isset($user_profile[$memID]['location']) ? '' : htmlentities($user_profile[$memID]['location'], ENT_QUOTES, 'ISO-8859-1'),
     'title' => !isset($user_profile[$memID]['usertitle']) || $user_profile[$memID]['usertitle'] == '' ? '' : $user_profile[$memID]['usertitle'],
     'blurb' => !isset($user_profile[$memID]['personalText']) ? '' : str_replace(array('<', '>', '&amp;#039;'), array('&lt;', '&gt;', '&#039;'), $user_profile[$memID]['personalText']),
     'signature' => !isset($user_profile[$memID]['signature']) ? '' : str_replace(array('<br />', '<', '>', '"', '\''), array("\n", '&lt;', '&gt;', '&quot;', '&#039;'), $user_profile[$memID]['signature']),
@@ -2533,7 +2533,7 @@ function editarimagen() {
 }
 
 function misnotas() {
-  global $db_prefix, $context, $txt, $notes, $boardurl, $ID_MEMBER, $modSettings, $smcFunc;
+  global $db_prefix, $context, $txt, $notes, $boardurl, $ID_MEMBER, $modSettings;
 
   $context['page_title'] = $txt[18];
 
@@ -2611,75 +2611,31 @@ function misnotas() {
 
     // Lets add it to the database now.
     if ($_POST['sa'] == 'add' && !isset($error['no_body']) && !isset($error['change_body'])) {
-      if (isset($smcFunc)) {
-        $smcFunc['db_insert']('',
-          '{db_prefix}member_notes',
-          array(
-            'id_member' => 'int', 'subject' => 'string', 'body' => 'string', 'posterTime' => 'int',
-          ),
-          array(
-            $id_member, $_POST['titulo'], $_POST['contenido'], $time,
-          ),
-          array()
-        );
-        $id = $smcFunc['db_insert_id']('{db_prefix}member_notes', 'id_note');
-      } else {
-        db_query("
-          INSERT INTO {$db_prefix}member_notes (id_member, subject, body, posterTime) 
-          VALUES ($id_member, '$_POST[titulo]', '$_POST[contenido]', '$time')", __FILE__, __LINE__);
+      db_query("
+        INSERT INTO {$db_prefix}member_notes (id_member, subject, body, posterTime) 
+        VALUES ($id_member, '$_POST[titulo]', '$_POST[contenido]', '$time')", __FILE__, __LINE__);
 
         $id = db_insert_id();
         header('Location: ' . $boardurl . '/mis-notas/');
-      }
     } else if ($_POST['sa'] == 'edit' && !empty($id) && !isset($error['no_body'])) {
-      if (isset($smcFunc)) {
-        $smcFunc['db_query']('', '
-          UPDATE {db_prefix}member_notes
-          SET body = {string:contenido}, subject = {string:titulo}
-          WHERE id_note = {int:note}
-          AND id_member = {int:member}',
-          array(
-            'body' => $_POST['contenido'],
-            'subject' => $_POST['titulo'],
-            'note' => $id,
-            'member' => $id_member,
-          )
-        );
+      db_query("
+        UPDATE {$db_prefix}member_notes
+        SET body = '$_POST[contenido]', subject = '$_POST[titulo]'
+        WHERE id_note = $id 
+        AND id_member = $id_member
+        LIMIT 1", __FILE__, __LINE__);
 
-        header('Location: ' . $boardurl . '/mis-notas/');
-      } else {
-        db_query("
-          UPDATE {$db_prefix}member_notes
-          SET body = '$_POST[contenido]', subject = '$_POST[titulo]'
-          WHERE id_note = $id 
-          AND id_member = $id_member
-          LIMIT 1", __FILE__, __LINE__);
-
-        header('Location: ' . $boardurl . '/mis-notas/');
-      }
+      header('Location: ' . $boardurl . '/mis-notas/');
     }
   }
     
   // Is someone deleting a note?
   if (isset($_GET['sa']) && $_GET['sa'] == 'delete' && !empty($id)) {
-    if (isset($smcFunc)) {
-      $smcFunc['db_query']('', '
-        DELETE FROM {db_prefix}member_notes
-        WHERE id_note = {int:note} AND id_member = {int:member}
-        LIMIT 1',
-        array(
-          'note' => $id,
-          'member' => $id_member,
-        )
-      );
-    }
-    else
-    {
-      db_query("
-        DELETE FROM {$db_prefix}member_notes
-        WHERE id_note = $id AND id_member = $id_member
-        LIMIT 1", __FILE__, __LINE__);
-    }
+    db_query("
+      DELETE FROM {$db_prefix}member_notes
+      WHERE id_note = $id AND id_member = $id_member
+      LIMIT 1", __FILE__, __LINE__);
+
     // Delete the cookie so we get taken to the default note.
     setcookie('Notes', '', time() - 3600);
     $id = 0;
@@ -2690,52 +2646,25 @@ function misnotas() {
   $context['sub_template'] = 'misnotas';
     
   // Query the database for all notes by this member.
-  if (isset($smcFunc)) {
-    $result = $smcFunc['db_query']('', '
-      SELECT id_note, subject, body, posterTime
-      FROM {db_prefix}member_notes
-      WHERE id_member = {int:member}
-      ORDER BY id_nota DESC',
-      array(
-        'member' => $id_member,
-      )
+  $result = db_query("
+    SELECT id_note, subject, body
+    FROM {$db_prefix}member_notes
+    WHERE ID_MEMBER = $ID_MEMBER
+    ORDER BY subject ASC", __FILE__, __LINE__);
+  
+  $cnt = 1;
+  $notes = array();
+
+  while ($row = mysqli_fetch_assoc($result)) {
+    $notes[] = array(
+      'pos' => $cnt++,
+      'id' => $row['id_note'],
+      'subject' => $row['subject'],
+      'body' => $row['body'],
     );
-
-    $cnt = 1;
-    $notes = array();
-
-    while ($row = $smcFunc['db_fetch_assoc']($result)) {
-      $notes[] = array(
-        'pos' => $cnt++,
-        'id' => $row['id_note'],
-        'subject' => html_entity_decode($row['subject']),
-        'body' => html_entity_decode($row['body']),
-        'posterTime' => $row['posterTime'],
-      );
-    }
-
-    $smcFunc['db_free_result']($result);
-  } else {
-    $result = db_query("
-      SELECT id_note, subject, body
-      FROM {$db_prefix}member_notes
-      WHERE ID_MEMBER = $ID_MEMBER
-      ORDER BY subject ASC", __FILE__, __LINE__);
-    
-    $cnt = 1;
-    $notes = array();
-
-    while ($row = mysqli_fetch_assoc($result)) {
-      $notes[] = array(
-        'pos' => $cnt++,
-        'id' => $row['id_note'],
-        'subject' => $row['subject'],
-        'body' => $row['body'],
-      );
-    }
-
-    mysqli_free_result($result);
   }
+
+  mysqli_free_result($result);
 
   $context['total_notes'] = count($notes);
 
@@ -3145,7 +3074,7 @@ function rememberPostData() {
     'email' => isset($_POST['emailAddress']) ? $_POST['emailAddress'] : '',
     'hide_email' => empty($_POST['hideEmail']) ? 0 : 1,
     'show_online' => empty($_POST['showOnline']) ? 0 : 1,
-    'registered' => empty($_POST['dateRegistered']) || $_POST['dateRegistered'] == '0001-01-01' ? $txt[470] : strftime('%Y-%m-%d', $_POST['dateRegistered']),
+    'registered' => empty($_POST['dateRegistered']) || $_POST['dateRegistered'] == '0001-01-01' ? $txt[470] : date('Y-m-d', $_POST['dateRegistered']),
     'blurb' => !isset($_POST['personalText']) ? '' : str_replace(array('<', '>', '&amp;#039;'), array('&lt;', '&gt;', '&#039;'), stripslashes($_POST['personalText'])),
     'gender' => array(
       'name' => empty($_POST['gender']) ? '' : ($_POST['gender'] == 2 ? 'f' : 'm')

@@ -109,11 +109,14 @@ function Admin() {
     get_memcached_server();
 
   // Check to see if we have any accelerators installed...
+  // TO-DO: Librerías deprecadas
+  /*
   if (defined('MMCACHE_VERSION'))
     $context['current_versions']['mmcache'] = array('title' => 'Turck MMCache', 'version' => MMCACHE_VERSION);
 
   if (defined('EACCELERATOR_VERSION'))
     $context['current_versions']['eaccelerator'] = array('title' => 'eAccelerator', 'version' => EACCELERATOR_VERSION);
+  */
 
   if (isset($_PHPA))
     $context['current_versions']['phpa'] = array('title' => 'ionCube PHP-Accelerator', 'version' => $_PHPA['VERSION']);
@@ -121,8 +124,11 @@ function Admin() {
   if (extension_loaded('apc'))
     $context['current_versions']['apc'] = array('title' => 'Alternative PHP Cache', 'version' => phpversion('apc'));
 
+  // TO-DO: Librerías deprecadas
+  /*
   if (function_exists('memcache_set'))
     $context['current_versions']['memcache'] = array('title' => 'Memcached', 'version' => empty($memcached) ? '???' : memcache_get_version($memcached));
+  */
 
   $context['can_admin'] = allowedTo('admin_forum');
 
@@ -1284,9 +1290,25 @@ function ConvertEntities() {
   $context['num_tables'] = count($tables);
 
   // This function will do the conversion later on.
-  $entity_replace = create_function('$string', '
-    $num = substr($string, 0, 1) === \'x\' ? hexdec(substr($string, 1)) : (int) $string;
-    return $num < 0x20 || $num > 0x10FFFF || ($num >= 0xD800 && $num <= 0xDFFF) ? \'\' : ($num < 0x80 ? \'&#\' . $num . \';\' : ($num < 0x800 ? chr(192 | $num >> 6) . chr(128 | $num & 63) : ($num < 0x10000 ? chr(224 | $num >> 12) . chr(128 | $num >> 6 & 63) . chr(128 | $num & 63) : chr(240 | $num >> 18) . chr(128 | $num >> 12 & 63) . chr(128 | $num >> 6 & 63) . chr(128 | $num & 63))));');
+	// This function will do the conversion later on.
+	$entity_replace = function($string) {
+    $num = substr($string, 0, 1) === 'x' ? hexdec(substr($string, 1)) : (int) $string;
+    return $num < 0x20 || $num > 0x10FFFF || ($num >= 0xD800 && $num <= 0xDFFF)
+        ? ''
+        : (
+            $num < 0x80
+            ? '&#' . $num . ';'
+            : (
+                $num < 0x800
+                ? chr(192 | $num >> 6) . chr(128 | $num & 63)
+                : (
+                    $num < 0x10000
+                    ? chr(224 | $num >> 12) . chr(128 | $num >> 6 & 63) . chr(128 | $num & 63)
+                    : chr(240 | $num >> 18) . chr(128 | $num >> 12 & 63) . chr(128 | $num >> 6 & 63) . chr(128 | $num & 63)
+                )
+            )
+        );
+	};
 
   // Loop through all tables that need converting.
   for (; $context['table'] < $context['num_tables']; $context['table']++) {

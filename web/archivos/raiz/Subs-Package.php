@@ -1818,7 +1818,7 @@ function package_create_backup($id = 'backup')
     mktree($boarddir . '\\web\\archivos/paquetes/backups', 0777);
   if (!is_writable($boarddir . '\\web\\archivos/paquetes/backups'))
     package_chmod($boarddir . '\\web\\archivos/paquetes/backups');
-  $output_file = $boarddir . '\\web\\archivos/paquetes/backups/' . strftime('%Y-%m-%d_') . preg_replace('~[$\\\\/:<>|?*"\']~', '', $id);
+  $output_file = $boarddir . '\\web\\archivos/paquetes/backups/' . date('Y-m-d_') . preg_replace('~[$\\\\/:<>|?*"\']~', '', $id);
   $output_ext = '.tar' . (function_exists('gzopen') ? '.gz' : '');
 
   if (file_exists($output_file . $output_ext))

@@ -1,10 +1,11 @@
 <?php
-require_once(dirname(dirname(dirname(__FILE__))) . '/Settings.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/SSI.php');
 
 $cat = (int) $_REQUEST['cat'];
 $tamano = (int) $_REQUEST['tamano'];
 $end = (int) $_REQUEST['cantidad'];
-$page = (int) $_GET['pag'];
+// $page = (int) $_REQUEST['pag'];
+$page = 0;
 
 if (isset($page)) {
   $calc = ($page - 1) * $end;
@@ -15,51 +16,55 @@ if (isset($page)) {
   $actualPage = 1;
 }
 
-echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" ><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>' . $mbname . ' - Widget</title>
-<style type="text/css">
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  margin: 0px;
-  padding: 0px;
-  background: #AAC0D8 url(' . $boardurl . '/wget/fondo-blanco.gif) repeat-x;
-}
+echo '
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" >
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>' . $mbname . ' - Widget</title>
+  <style type="text/css">
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      margin: 0px;
+      padding: 0px;
+      background: #AAC0D8 url(' . $settings['images_url'] . '/blank.gif) repeat-x;
+    }
 
-a {
-  color: #000;
-  text-decoration: none
-}
+    a {
+      color: #000;
+      text-decoration: none
+    }
 
-a:hover {
-  color:#936D14;
-}
+    a:hover {
+      color:#936D14;
+    }
 
-*:focus {
-  outline:0px;
-}
+    *:focus {
+      outline:0px;
+    }
 
-.nsfw{
-  color: #FFbbBB
-}
+    .nsfw{
+      color: #FFbbBB
+    }
 
-.item {
-  width: ' . ($tamano != '' ? $tamano - 17 : 183) . 'px;
-  overflow: hidden;
-  height: 16px;
-  margin: 2px 0px 0px 0px;
-  padding: 0px;
-  border-bottom: 1px solid #F4F4F4;
-}
+    .item {
+      width: ' . ($tamano != '' ? $tamano - 17 : 183) . 'px;
+      overflow: hidden;
+      height: 16px;
+      margin: 2px 0px 0px 0px;
+      padding: 0px;
+      border-bottom: 1px solid #F4F4F4;
+    }
 
-.exterior {
-  width: ' . ($tamano != '' ? $tamano - 17 : 183) . 'px;
-}
-</style>
+    .exterior {
+      width: ' . ($tamano != '' ? $tamano - 17 : 183) . 'px;
+    }
+  </style>
 </head>
-<body><div class="exterior">
-';
+<body>
+  <div class="exterior">';
+
+$add = '';
 
 if (!empty($cat)) {
   $add = "AND t.ID_BOARD = $cat";
@@ -77,7 +82,7 @@ $request = db_query("
 
 $count = mysqli_num_rows($request);
 
-if ($count <= 0) {
+if ($count == 0) {
   echo '
     <div class="noesta">
       <br /><br/ ><br /><br />
@@ -86,12 +91,16 @@ if ($count <= 0) {
     </div>';
 } else {
   while ($row = mysqli_fetch_assoc($request)) {
+    $row['subject'] = censorText($row['subject']);
+    $full_title = htmlentities($row['subject'], ENT_QUOTES, 'UTF-8');
+    $short_title = htmlentities(ssi_reducir($row['subject']), ENT_QUOTES, 'UTF-8');
+
     echo '
       <div class="item">
         <div class="icon_img" style="float: left; margin: 0px 5px 0px 0px; width: 17px; height: 17px">
-          <img alt="" title="' . $row['name'] . '" src="' . $boardurl . '/wget/icono-cat-' . $row['ID_BOARD2'] . '.gif" style="margin-top:-0px;" />
+          <img alt="' . $row['name'] . '" title="' . $row['name'] . '" src="' . $settings['images_url'] . '/post/icono_' . $row['ID_BOARD2'] . '.gif" style="margin-top:-0px;" />
         </div>
-        <a target="_blank" title="' . $row['subject'] . '" href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($row['subject']) . '.html">' . htmlentities(ssi_reducir2($row['subject'])) . '</a>
+        <a target="_blank" title="' . $full_title . '" alt="' . $full_title . '" href="' . $boardurl . '/post/' . $row['ID_TOPIC'] . '/' . $row['description'] . '/' . ssi_amigable($full_title) . '.html">' . $short_title . '</a>
       </div>';
   }
 }

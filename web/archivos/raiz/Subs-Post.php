@@ -720,15 +720,15 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
       if (!$context['utf8'] && function_exists('iconv'))
         $string = @iconv($context['character_set'], 'UTF-8', $string);
 
-      $fixchar = create_function('$n', '
-        if ($n < 128)
-          return chr($n);
-        else if ($n < 2048)
-          return chr(192 | $n >> 6) . chr(128 | $n & 63);
-        else if ($n < 65536)
-          return chr(224 | $n >> 12) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);
-        else
-          return chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63);');
+        $fixchar = fn($n) => $n < 128
+        ? chr($n)
+        : ($n < 2048
+            ? chr(192 | $n >> 6) . chr(128 | $n & 63)
+            : ($n < 65536
+                ? chr(224 | $n >> 12) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63)
+                : chr(240 | $n >> 18) . chr(128 | $n >> 12 & 63) . chr(128 | $n >> 6 & 63) . chr(128 | $n & 63)
+            )
+        );
 
       $string = preg_replace('~&#(\d{3,8});~e', '$fixchar(\'$1\')', $string);
 
@@ -738,22 +738,23 @@ function mimespecialchars($string, $with_charset = true, $hotmail_fix = false, $
   }
 
   // Convert all special characters to HTML entities...just for Hotmail :-\
-  if ($hotmail_fix && ($context['utf8'] || function_exists('iconv') || $context['character_set'] === 'ISO-8859-1'))
-  {
-    if (!$context['utf8'] && function_exists('iconv'))
+  if ($hotmail_fix && ($context['utf8'] || function_exists('iconv') || $context['character_set'] === 'ISO-8859-1')) {
+    if (!$context['utf8'] && function_exists('iconv')) {
       $string = @iconv($context['character_set'], 'UTF-8', $string);
+    }
 
-    $entityConvert = create_function('$c', '
-      if (strlen($c) === 1 && ord($c{0}) <= 0x7F)
-        return $c;
-      else if (strlen($c) === 2 && ord($c{0}) >= 0xC0 && ord($c{0}) <= 0xDF)
-        return "&#" . (((ord($c{0}) ^ 0xC0) << 6) + (ord($c{1}) ^ 0x80)) . ";";
-      else if (strlen($c) === 3 && ord($c{0}) >= 0xE0 && ord($c{0}) <= 0xEF)
-        return "&#" . (((ord($c{0}) ^ 0xE0) << 12) + ((ord($c{1}) ^ 0x80) << 6) + (ord($c{2}) ^ 0x80)) . ";";
-      else if (strlen($c) === 4 && ord($c{0}) >= 0xF0 && ord($c{0}) <= 0xF7)
-        return "&#" . (((ord($c{0}) ^ 0xF0) << 18) + ((ord($c{1}) ^ 0x80) << 12) + ((ord($c{2}) ^ 0x80) << 6) + (ord($c{3}) ^ 0x80)) . ";";
-      else
-        return "";');
+    $entityConvert = fn($c) => strlen($c) === 1 && ord($c[0]) <= 0x7F
+    ? $c
+    : (strlen($c) === 2 && ord($c[0]) >= 0xC0 && ord($c[0]) <= 0xDF
+        ? "&#" . (((ord($c[0]) ^ 0xC0) << 6) + (ord($c[1]) ^ 0x80)) . ";"
+        : (strlen($c) === 3 && ord($c[0]) >= 0xE0 && ord($c[0]) <= 0xEF
+            ? "&#" . (((ord($c[0]) ^ 0xE0) << 12) + ((ord($c[1]) ^ 0x80) << 6) + (ord($c[2]) ^ 0x80)) . ";"
+            : (strlen($c) === 4 && ord($c[0]) >= 0xF0 && ord($c[0]) <= 0xF7
+                ? "&#" . (((ord($c[0]) ^ 0xF0) << 18) + ((ord($c[1]) ^ 0x80) << 12) + ((ord($c[2]) ^ 0x80) << 6) + (ord($c[3]) ^ 0x80)) . ";"
+                : ""
+            )
+        )
+    );
 
     // Convert all 'special' characters to HTML entities.
     return array($charset, preg_replace('~([\x80-' . ($context['server']['complex_preg_chars'] ? '\x{10FFFF}' : pack('C*', 0xF7, 0xBF, 0xBF, 0xBF)) . '])~eu', '$entityConvert(\'\1\')', $string), '7bit');

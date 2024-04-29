@@ -192,7 +192,7 @@ function ShowXmlFeed() {
   <title>', $feed_title, '</title>
   <link rel="alternate" type="text/html" href="', $scripturl, '" />
 
-  <modified>', gmstrftime('%Y-%m-%dT%H:%M:%SZ'), '</modified>
+  <modified>', gmdate('Y-m-d\TH:i:s\Z', time()), '</modified>
   <tagline><![CDATA[', strip_tags($txt['xml_rss_desc']), ']]></tagline>
   <generator>SMF</generator>
   <author>
@@ -422,9 +422,10 @@ function getXmlMembers($xml_format)
       $data[] = array(
         'title' => cdata_parse($row['realName']),
         'link' => $scripturl . '?action=profile;u=' . $row['ID_MEMBER'],
-        'created' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', $row['dateRegistered']),
-        'issued' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', $row['dateRegistered']),
-        'modified' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', $row['lastLogin']),
+        gmdate('Y-m-d\TH:i:s\Z', time())
+        'created' => gmdate('Y-m-d\TH:i:s\Z', $row['dateRegistered']),
+        'issued' => gmdate('Y-m-d\TH:i:s\Z', $row['dateRegistered']),
+        'modified' => gmdate('Y-m-d\TH:i:s\Z', $row['lastLogin']),
         'id' => $scripturl . '?action=profile;u=' . $row['ID_MEMBER'],
       );
     // More logical format for the data, but harder to apply.
@@ -499,9 +500,9 @@ function getXmlNews($xml_format) {
         'link' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.0',
         'summary' => cdata_parse($row['body']),
         'author' => array('name' => $row['posterName']),
-        'created' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', $row['posterTime']),
-        'issued' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', $row['posterTime']),
-        'modified' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', empty($row['modifiedTime']) ? $row['posterTime'] : $row['modifiedTime']),
+        'created' => gmdate('Y-m-d\TH:i:s\Z', $row['posterTime']),
+        'issued' => gmdate('Y-m-d\TH:i:s\Z', $row['posterTime']),
+        'modified' => gmdate('Y-m-d\TH:i:s\Z', empty($row['modifiedTime']) ? $row['posterTime'] : $row['modifiedTime']),
         'id' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.msg' . $row['ID_MSG'] . '#msg' . $row['ID_MSG']
       );
     // The biggest difference here is more information.
@@ -604,9 +605,9 @@ function getXmlRecent($xml_format) {
         'link' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.msg' . $row['ID_MSG'] . '#msg' . $row['ID_MSG'],
         'summary' => cdata_parse($row['body']),
         'author' => array('name' => $row['posterName']),
-        'created' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', $row['posterTime']),
-        'issued' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', $row['posterTime']),
-        'modified' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', empty($row['modifiedTime']) ? $row['posterTime'] : $row['modifiedTime']),
+        'created' => gmdate('Y-m-d\TH:i:s\Z', $row['posterTime']),
+        'issued' => gmdate('Y-m-d\TH:i:s\Z', $row['posterTime']),
+        'modified' => gmdate('Y-m-d\TH:i:s\Z', empty($row['modifiedTime']) ? $row['posterTime'] : $row['modifiedTime']),
         'id' => $scripturl . '?topic=' . $row['ID_TOPIC'] . '.msg' . $row['ID_MSG'] . '#msg' . $row['ID_MSG']
       );
     // A lot of information here.  Should be enough to please the rss-ers.
@@ -682,9 +683,9 @@ function getXmlProfile($xml_format)
       'title' => cdata_parse($profile['name']),
       'link' => $scripturl  . '?action=profile;u=' . $profile['id'],
       'summary' => cdata_parse(isset($profile['group']) ? $profile['group'] : $profile['post_group']),
-      'created' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', $user_profile[$profile['id']]['dateRegistered']),
-      'issued' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', $user_profile[$profile['id']]['dateRegistered']),
-      'modified' => gmstrftime('%Y-%m-%dT%H:%M:%SZ', $user_profile[$profile['id']]['lastLogin']),
+      'created' => gmdate('Y-m-d\TH:i:s\Z', $user_profile[$profile['id']]['dateRegistered']),
+      'issued' => gmdate('Y-m-d\TH:i:s\Z', $user_profile[$profile['id']]['dateRegistered']),
+      'modified' => gmdate('Y-m-d\TH:i:s\Z', $user_profile[$profile['id']]['lastLogin']),
       'id' => $scripturl  . '?action=profile;u=' . $profile['id']
     );
   else

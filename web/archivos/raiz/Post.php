@@ -623,7 +623,6 @@ function Post2() {
     }
   }
 
-
   if (!empty($modSettings['minWordLen']) && ((int)$modSettings['minWordLen'] != 0)) {
     $Temp = trim(preg_replace('~[^a-z0-9 ]~si', '', $_POST['message']));
     $Temp = preg_replace('~(( )+)~si', ' ', $Temp);

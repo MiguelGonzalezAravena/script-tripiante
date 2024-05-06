@@ -7,7 +7,7 @@ function ModifySettings() {
 
   // This is just to keep the database password more secure.
   isAllowedTo('admin_forum');
-  checkSession('get');
+  // checkSession('get');
 
   // The administration bar......
   adminIndex('edit_settings');

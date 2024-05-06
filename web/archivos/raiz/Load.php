@@ -1003,20 +1003,24 @@ function loadTheme($ID_THEME = 0, $initialize = true)
         redirectexit('www');
       else
       {
-        list ($k, $v) = each($_GET);
+        // list ($k, $v) = each($_GET);
+        reset($_GET);
+        $k = key($_GET);
+        $v = current($_GET);
 
-        if ($k != 'www')
+        if ($k != 'www') {
           redirectexit('www;' . $k . '=' . $v);
+        }
       }
     }
 
     // #3 is just a check for SSL...
-    if (strtr($detected_url, array('https://' => 'http://')) == $boardurl)
+    if (strtr($detected_url, array('https://' => 'http://')) == $boardurl) {
       $do_fix = true;
+    }
 
     // Okay, #4 - perhaps it's an IP address?  We're gonna want to use that one, then. (assuming it's the IP or something...)
-    if (!empty($do_fix) || preg_match('~^http[s]://[\d\.:]+($|/)~', $detected_url) == 1)
-    {
+    if (!empty($do_fix) || preg_match('~^http[s]://[\d\.:]+($|/)~', $detected_url) == 1) {
       // Caching is good ;).
       $oldurl = $boardurl;
 
@@ -1076,6 +1080,11 @@ function loadTheme($ID_THEME = 0, $initialize = true)
     $context['html_headers'] = '';
   $context['menu_separator'] = !empty($settings['use_image_buttons']) ? ' ' : ' | ';
   $context['session_id'] = &$sc;
+  // TO-DO: session_id y $sc si son iguales
+  /*
+  echo 'Context: ' . $context['session_id'] . '<br />';
+  echo '$sc: ' . $sc;
+  */
   $context['forum_name'] = &$mbname;
   $context['current_action'] = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
   $context['current_subaction'] = isset($_REQUEST['sa']) ? $_REQUEST['sa'] : null;
@@ -1721,7 +1730,7 @@ function loadSession()
     */
 
     // TO-DO: Eliminar o dejar?
-    session_start();
+    // session_start();
 
     // Change it so the cache settings are a little looser than default.
     if (!empty($modSettings['databaseSession_loose']))

@@ -61,8 +61,8 @@ function ViewMembers()
     'description' => $txt[11],
     'tabs' => array(),
   );
-  if (allowedTo('moderate_forum'))
-  {
+
+  if (allowedTo('moderate_forum')) {
     $context['admin_tabs']['tabs'] = array(
       'viewmembers' => array(
         'title' => $txt[303],
@@ -83,7 +83,7 @@ function ViewMembers()
         'is_selected' => false,
       ),
       'activate' => array(
-        'title' => sprintf($txt['admin_browse_awaiting_activate'], $context['awaiting_activation']),
+        'title' => sprintf($txt['admin_browse_w_approve_require_activate'], $context['awaiting_activation']),
         'description' => $txt['admin_browse_activate_desc'],
         'href' => $scripturl . '?action=viewmembers;sa=browse;type=activate',
         'is_selected' => false,

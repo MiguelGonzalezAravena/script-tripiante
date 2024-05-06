@@ -962,7 +962,7 @@ function parse_bbc($message, $smileys = true, $cache_id = '', $parse_tags = arra
 			array(
 				'tag' => 'hr',
 				'type' => 'closed',
-				'content' => '<hr />',
+				'content' => '<div class="hrs"></div>',
 				'block_level' => true,
 			),
 			array(
@@ -3335,7 +3335,7 @@ function ssi_vistaprevia() {
   $message = htmlentities(addslashes($_POST['message']), ENT_QUOTES, 'UTF-8');
   $message = parse_bbc($message);
   $user_id = $context['user']['id'];
-  $reason = htmlentities(addslashes($_POST['causa']), ENT_QUOTES, 'UTF-8');
+  $reason = isset($_POST['causa']) ? htmlentities(addslashes($_POST['causa']), ENT_QUOTES, 'UTF-8') : '';
 
   if ($context['user']['is_guest']) {
     echo '<div class="noesta" style="width: 922px; margin-bottom: 4px;">Debes estar logueado para estar ac&aacute;.-</div>';
@@ -3454,7 +3454,7 @@ function ssi_vistaprevia() {
       <span title="', (!empty($membergropu2) ? $membergropu2 : $membergropu), '">
         <img alt="" src="' . str_replace('1#rangos', $settings['images_url'] . '/rangos', $medalla) . '">
       </span>';
-    echo '<span title="' . ssi_sexo1($context['gender']) . '">' . ssi_sexo2(ssi_sexo3($context['gender'])) . '</span>&nbsp;';
+    echo '<span title="' . ssi_sexo1($context['gender']) . '">' . ssi_sexo2(ssi_sexo3($context['gender'])) . '</span>';
 
     if ($context['usertitle']) {
       echo '<img alt="" title="'. ssi_pais($context['usertitle'])  . '" src="' . $settings['images_url'] . '/icons/banderas/' . $context['usertitle'] . '.gif"> ';
@@ -3471,20 +3471,18 @@ function ssi_vistaprevia() {
       <div style="margin-bottom: 2px;">
         <span style="font-size: 12px;">
           <img alt="" src="' . $settings['images_url'] . '/icons/mensaje_para.gif" border="0">
-          &nbsp;
           <a href="' . $boardurl . '/mensajes/a/' . $context['memberName'] . '" title="Enviar mensaje">Enviar mensaje</a>
         </span>
       </div>
       <div style="margin-bottom: 4px;">
         <span class="icons fot2" style="font-size: 12px;">
           <a href="' . $boardurl . '/imagenes/' . $context['memberName'] . '" title="Sus im&aacute;genes">
-            &nbsp;
             Sus im&aacute;genes
           </a>
         </span>
       </div>
       <br />
-      <hr class="divider">';
+      <div class="hrs"></div>';
 
     // Contar los comentarios del usuario
     $request = db_query("
@@ -3498,19 +3496,16 @@ function ssi_vistaprevia() {
           <br />
           <div class="fondoavatar" style="overflow: hidden; width: 130px;">
             <b style="color: rgb(254, 143, 71); text-shadow: 0px 1px 1px rgb(106, 86, 69);">PUNTOS:</b>
-            &nbsp;
             <b>
               <span id="cant_pts_post">' . $context['moneyBank'] . '</span>
             </b>
             <br />
             <b style="color: rgb(254, 143, 71); text-shadow: 0px 1px 1px rgb(106, 86, 69);">POST:</b>
-            &nbsp;
             <b>
               <a href="' . $boardurl . '/user-post/' . $context['memberName'] . '">' . $context['topics'] . '</a>
             </b>
             <br />
             <b style="color: rgb(254, 143, 71); text-shadow: 0px 1px 1px rgb(106, 86, 69);">COMENTARIOS:</b>
-            &nbsp;
             <b>
               <a href="' . $boardurl . '/user-comment/' . $context['memberName'] . '">' . $context['comentuser'] . '</a>
             </b>
@@ -3532,7 +3527,6 @@ function ssi_vistaprevia() {
           <div class="windowbg" style="padding: 4px; width: 764px;" id="vista_previa">' . $message . '</div>
           <div style="margin-top: 4px; margin-bottom: 4px;" align="center">
             <input onclick="cerrar_vprevia()" class="button" style="font-size: 13px;" value="Cerrar la previsualizaci&oacute;n" title="Cerrar la previsualizaci&oacute;n" type="button" />
-            &nbsp;
             <input onclick="return oblig(this.form.subject.value, this.form.message.value, this.form.tags.value, this.form);" class="button" style="font-size: 13px;" value="Ok, est&aacute; perfecto!" title="Ok, est&aacute; perfecto!" type="submit" />
           </div>
         </div>

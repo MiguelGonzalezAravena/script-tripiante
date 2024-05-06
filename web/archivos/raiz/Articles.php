@@ -122,7 +122,7 @@ function MainView() {
     mysqli_free_result($dbresult);
 
     $context['articles_cat_id'] = $cat;
-    $context['articles_cat_title'] = $row['title'];
+    $context['articles_cat_title'] = htmlentities($row['title'], ENT_QUOTES, 'ISO-8859-1');
 
     // Load the sub template
     $context['sub_template']  = 'articlelisting';
@@ -797,7 +797,7 @@ function DeleteArticle() {
 
   $context['sub_template']  = 'deletearticle';
   $context['article_id'] = $id;
-  $context['article_title'] = $row['title'];
+  $context['article_title'] = htmlentities($row['title'], ENT_QUOTES, 'ISO-8859-1');
 
   // Set the page title
   $context['page_title'] = $mbname  . ' - ' . $txt['smfarticles_title'] . ' - ' . $txt['smfarticles_delarticle'];

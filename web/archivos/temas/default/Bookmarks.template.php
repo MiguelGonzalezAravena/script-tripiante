@@ -140,7 +140,7 @@ function template_main() {
               <img src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" alt="" />
             </div>
           </div>
-          <div class="windowbg" style="width: 150px; padding: 4px;">
+          <div class="windowbg" style="width: 152px; padding: 4px;">
             <center>' . $modSettings['vertical'] . '</center>
           </div>
         </div>

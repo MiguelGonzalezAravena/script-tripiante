@@ -745,7 +745,7 @@ function ssi_enviar_quehago() {
           <span style="color: grey; font-size: 11px;">(' . timeformat($commentDate) . ')</span>
         </center>
       </span>
-      <hr />';
+      <div class="hrs"></div>';
   }
 }
 
@@ -1025,7 +1025,7 @@ function ssi_enviar_muro() {
           </td>
         </tr>
       </table>
-      <hr />';
+      <div class="hrs"></div>';
   }
 }
 

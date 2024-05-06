@@ -113,7 +113,7 @@ function ShowUserBox($memCommID, $onlineColor = '') {
         if ($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
         echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas borrar este mensaje?\')) return false;" href="' . $boardurl . '/eliminar-muro/', $muro['ID_COMMENT'], '/" title="Eliminar Mensaje"><img alt="Eliminar Mensaje" src="' . $settings['images_url'] . '/eliminar.gif" width="8px" height="8px" /></a>&#32;-&#32;';
         } 
-        echo '<span style="margin-left:8px;"><img alt="" src="' . $settings['images_url'] . '/user.gif" /><b class="size13">' . parse_bbc2($muro['subject']) . '</b><center><span style="color:grey;font-size:11px;">(' . timeformat($muro['date']) . ')</span></center></span><hr />';
+        echo '<span style="margin-left:8px;"><img alt="" src="' . $settings['images_url'] . '/user.gif" /><b class="size13">' . parse_bbc2($muro['subject']) . '</b><center><span style="color:grey;font-size:11px;">(' . timeformat($muro['date']) . ')</span></center></span><div class="hrs"></div>';
       } else if (!empty($muro['comment'])) {
         if ($context['member']['name'] == $context['user']['name'] || $context['allow_admin']) {
           echo '<a onclick="if (!confirm(\'\xbfEstas seguro que deseas borrar este mensaje?\')) return false;" href="' . $boardurl . '/eliminar-muro/', $muro['ID_COMMENT'], '/" title="Eliminar Mensaje"><img alt="Eliminar Mensaje" src="' . $settings['images_url'] . '/eliminar.gif" width="8px" height="8px" /></a>&#32;-&#32;';
@@ -125,7 +125,7 @@ function ShowUserBox($memCommID, $onlineColor = '') {
           echo '<br /><br /><a href="' . $boardurl . '/perfil/', $muro['memberName'], '/muro/" title="Escribe en el Muro de ', $muro['realName'], '">Escribe en el Muro de ', $muro['realName'], '</a>';
         }
 
-        echo '</td></tr></table><hr />';
+        echo '</td></tr></table><div class="hrs"></div>';
       }
     }
 

@@ -401,10 +401,11 @@ function isBannedEmail($email, $restriction, $error)
 function checkSession($type = 'post', $from_action = '', $is_fatal = true) {
   global $sc, $modSettings, $boardurl;
 
-  echo $_POST['sc'] . ' % ' . $sc;
+  
+  echo '<br />$_POST["sc"]: ' . $_POST['sc'] . '<br />';
+  echo '$sc: ' . $sc;
   // $_SESSION['admin_time'] = time();
 
-  /*
   if ($type == 'post' && (!isset($_POST['sc']) || $_POST['sc'] != $sc)) {
     $error = 'smf304';
   } else if ($type == 'get' && (!isset($_GET['sesc']) || $_GET['sesc'] != $sc)) {
@@ -427,58 +428,61 @@ function checkSession($type = 'post', $from_action = '', $is_fatal = true) {
   $referrer = isset($_SERVER['HTTP_REFERER']) ? @parse_url($_SERVER['HTTP_REFERER']) : array();
 
   if (!empty($referrer['host'])) {
-    if (strpos($_SERVER['HTTP_HOST'], ':') !== false)
+    if (strpos($_SERVER['HTTP_HOST'], ':') !== false) {
       $real_host = substr($_SERVER['HTTP_HOST'], 0, strpos($_SERVER['HTTP_HOST'], ':'));
-    else
+    } else {
       $real_host = $_SERVER['HTTP_HOST'];
+    }
 
     $parsed_url = parse_url($boardurl);
 
-    if (!empty($modSettings['globalCookies']))
-    {
-      if (preg_match('~(?:[^\.]+\.)?([^\.]{3,}\..+)\z~i', $parsed_url['host'], $parts) == 1)
+    if (!empty($modSettings['globalCookies'])) {
+      if (preg_match('~(?:[^\.]+\.)?([^\.]{3,}\..+)\z~i', $parsed_url['host'], $parts) == 1) {
         $parsed_url['host'] = $parts[1];
+      }
 
-      if (preg_match('~(?:[^\.]+\.)?([^\.]{3,}\..+)\z~i', $referrer['host'], $parts) == 1)
+      if (preg_match('~(?:[^\.]+\.)?([^\.]{3,}\..+)\z~i', $referrer['host'], $parts) == 1) {
         $referrer['host'] = $parts[1];
+      }
 
-      if (preg_match('~(?:[^\.]+\.)?([^\.]{3,}\..+)\z~i', $real_host, $parts) == 1)
+      if (preg_match('~(?:[^\.]+\.)?([^\.]{3,}\..+)\z~i', $real_host, $parts) == 1) {
         $real_host = $parts[1];
+      }
     }
 
-    if (isset($parsed_url['host']) && strtolower($referrer['host']) != strtolower($parsed_url['host']) && strtolower($referrer['host']) != strtolower($real_host))
-    {
+    if (isset($parsed_url['host']) && strtolower($referrer['host']) != strtolower($parsed_url['host']) && strtolower($referrer['host']) != strtolower($real_host)) {
       $error = 'smf306';
       $log_error = true;
     }
   }
 
   // Well, first of all, if a from_action is specified you'd better have an old_url.
-  if (!empty($from_action) && (!isset($_SESSION['old_url']) || preg_match('~[?;&]action=' . $from_action . '([;&]|$)~', $_SESSION['old_url']) == 0))
-  {
+  if (!empty($from_action) && (!isset($_SESSION['old_url']) || preg_match('~[?;&]action=' . $from_action . '([;&]|$)~', $_SESSION['old_url']) == 0)) {
     $error = 'smf306';
     $log_error = true;
   }
 
-  if (strtolower($_SERVER['HTTP_USER_AGENT']) == 'hacker')
+  if (strtolower($_SERVER['HTTP_USER_AGENT']) == 'hacker') {
     fatal_error('Sound the alarm!  It\'s a hacker!  Close the castle gates!!', false);
+  }
 
   // Everything is ok, return an empty string.
-  if (!isset($error))
+  if (!isset($error)) {
     return '';
+  }
   // A session error occurred, show the error.
-  else if ($is_fatal)
+  else if ($is_fatal) {
     fatal_lang_error($error, isset($log_error));
   // A session error occurred, return the error to the calling function.
-  else
+  } else {
     return $error;
+  }
 
   // We really should never fall through here, for very important reasons.  Let's make sure.
   trigger_error('Hacking attempt...', E_USER_ERROR);
 }
 
-function checkConfirm($action)
-{
+function checkConfirm($action) {
   global $modSettings;
   
   if (isset($_GET['confirm']) && isset($_SESSION['confirm_' . $action]) && md5($_GET['confirm'] . $_SERVER['HTTP_USER_AGENT']) == $_SESSION['confirm_' . $action])

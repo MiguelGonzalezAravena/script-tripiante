@@ -831,30 +831,32 @@ function smtp_mail($mail_to_array, $subject, $message, $headers)
   if (!server_parse(null, $socket, '220'))
     return false;
 
-  if ($modSettings['mail_type'] == 1 && $modSettings['smtp_username'] != '' && $modSettings['smtp_password'] != '')
-  {
+  if ($modSettings['mail_type'] == 1 && $modSettings['smtp_username'] != '' && $modSettings['smtp_password'] != '') {
     // !!! These should send the CURRENT server's name, not the mail server's!
 
     // EHLO could be understood to mean encrypted hello...
-    if (server_parse('EHLO ' . $modSettings['smtp_host'], $socket, null) == '250')
-    {
-      if (!server_parse('AUTH LOGIN', $socket, '334'))
+    if (server_parse('EHLO ' . $modSettings['smtp_host'], $socket, null) == '250') {
+      if (!server_parse('AUTH LOGIN', $socket, '334')) {
         return false;
+      }
+
       // Send the username and password, encoded.
-      if (!server_parse(base64_encode($modSettings['smtp_username']), $socket, '334'))
+      if (!server_parse(base64_encode($modSettings['smtp_username']), $socket, '334')) {
         return false;
+      }
+
       // The password is already encoded ;)
-      if (!server_parse($modSettings['smtp_password'], $socket, '235'))
+      if (!server_parse($modSettings['smtp_password'], $socket, '235')) {
         return false;
+      }
+    } else if (!server_parse('HELO ' . $modSettings['smtp_host'], $socket, '250')) {
+      return false;
     }
-    else if (!server_parse('HELO ' . $modSettings['smtp_host'], $socket, '250'))
-      return false;
-  }
-  else
-  {
+  } else {
     // Just say "helo".
-    if (!server_parse('HELO ' . $modSettings['smtp_host'], $socket, '250'))
+    if (!server_parse('HELO ' . $modSettings['smtp_host'], $socket, '250')) {
       return false;
+    }
   }
 
   // Fix the message for any lines beginning with a period! (the first is ignored, you see.)
@@ -862,36 +864,48 @@ function smtp_mail($mail_to_array, $subject, $message, $headers)
 
   // !! Theoretically, we should be able to just loop the RCPT TO.
   $mail_to_array = array_values($mail_to_array);
-  foreach ($mail_to_array as $i => $mail_to)
-  {
+
+  foreach ($mail_to_array as $i => $mail_to) {
     // Reset the connection to send another email.
-    if ($i != 0)
-    {
-      if (!server_parse('RSET', $socket, '250'))
+    if ($i != 0) {
+      if (!server_parse('RSET', $socket, '250')) {
         return false;
+      }
     }
 
     // From, to, and then start the data...
-    if (!server_parse('MAIL FROM: <' . (empty($modSettings['mail_from']) ? $webmaster_email : $modSettings['mail_from']) . '>', $socket, '250'))
+    if (!server_parse('MAIL FROM: <' . (empty($modSettings['mail_from']) ? $webmaster_email : $modSettings['mail_from']) . '>', $socket, '250')) {
       return false;
-    if (!server_parse('RCPT TO: <' . $mail_to . '>', $socket, '250'))
+    }
+
+    if (!server_parse('RCPT TO: <' . $mail_to . '>', $socket, '250')) {
       return false;
-    if (!server_parse('DATA', $socket, '354'))
+    }
+
+    if (!server_parse('DATA', $socket, '354')) {
       return false;
+    }
+
     fputs($socket, 'Subject: ' . $subject . "\r\n");
-    if (strlen($mail_to) > 0)
+
+    if (strlen($mail_to) > 0) {
       fputs($socket, 'To: <' . $mail_to . ">\r\n");
+    }
+
     fputs($socket, $headers . "\r\n\r\n");
     fputs($socket, $message . "\r\n");
 
     // Send a ., or in other words "end of data".
-    if (!server_parse('.', $socket, '250'))
+    if (!server_parse('.', $socket, '250')) {
       return false;
+    }
 
     // Almost done, almost done... don't stop me just yet!
     @set_time_limit(300);
-    if (function_exists('apache_reset_timeout'))
+
+    if (function_exists('apache_reset_timeout')) {
       apache_reset_timeout();
+    }
   }
   fputs($socket, "QUIT\r\n");
   fclose($socket);
@@ -900,8 +914,7 @@ function smtp_mail($mail_to_array, $subject, $message, $headers)
 }
 
 // Parse a message to the SMTP server.
-function server_parse($message, $socket, $response)
-{
+function server_parse($message, $socket, $response) {
   global $txt;
 
   if ($message !== null)
@@ -934,8 +947,7 @@ function server_parse($message, $socket, $response)
 function calendarValidatePost() {}
 
 // Prints a post box.  Used everywhere you post or send.
-function theme_postbox($msg)
-{
+function theme_postbox($msg) {
   global $txt, $modSettings, $db_prefix;
   global $context, $settings, $user_info;
 
@@ -963,7 +975,7 @@ function theme_postbox($msg)
   );
 
   // Load smileys - don't bother to run a query if we're not using the database's ones anyhow.
-  if (empty($modSettings['smiley_enable']) && $user_info['smiley_set'] != 'none')
+  if (empty($modSettings['smiley_enable']) && $user_info['smiley_set'] != 'none') {
     $context['smileys']['postform'][] = array(
       'smileys' => array(
         array('code' => ':)', 'filename' => 'smiley.gif', 'description' => $txt[287]),
@@ -985,77 +997,83 @@ function theme_postbox($msg)
       ),
       'last' => true,
     );
-  else if ($user_info['smiley_set'] != 'none')
-  {
-    if (($temp = cache_get_data('posting_smileys', 480)) == null)
-    {
+  } else if ($user_info['smiley_set'] != 'none') {
+    if (($temp = cache_get_data('posting_smileys', 480)) == null) {
       $request = db_query("
         SELECT code, filename, description, smileyRow, hidden
         FROM {$db_prefix}smileys
         WHERE hidden IN (0, 2)
         ORDER BY smileyRow, smileyOrder", __FILE__, __LINE__);
-      while ($row = mysqli_fetch_assoc($request))
-      {
+
+      while ($row = mysqli_fetch_assoc($request)) {
         $row['code'] = htmlspecialchars($row['code']);
         $row['filename'] = htmlspecialchars($row['filename']);
         $row['description'] = htmlspecialchars($row['description']);
-
         $context['smileys'][empty($row['hidden']) ? 'postform' : 'popup'][$row['smileyRow']]['smileys'][] = $row;
       }
+
       mysqli_free_result($request);
 
       cache_put_data('posting_smileys', $context['smileys'], 480);
-    }
-    else
+    } else {
       $context['smileys'] = $temp;
+    }
   }
 
   // Clean house... add slashes to the code for javascript.
-  foreach (array_keys($context['smileys']) as $location)
-  {
-    foreach ($context['smileys'][$location] as $j => $row)
-    {
+  foreach (array_keys($context['smileys']) as $location) {
+    foreach ($context['smileys'][$location] as $j => $row) {
       $n = count($context['smileys'][$location][$j]['smileys']);
-      for ($i = 0; $i < $n; $i++)
-      {
+
+      for ($i = 0; $i < $n; $i++) {
         $context['smileys'][$location][$j]['smileys'][$i]['code'] = addslashes($context['smileys'][$location][$j]['smileys'][$i]['code']);
         $context['smileys'][$location][$j]['smileys'][$i]['js_description'] = addslashes($context['smileys'][$location][$j]['smileys'][$i]['description']);
       }
 
       $context['smileys'][$location][$j]['smileys'][$n - 1]['last'] = true;
     }
-    if (!empty($context['smileys'][$location]))
+
+    if (!empty($context['smileys'][$location])) {
       $context['smileys'][$location][count($context['smileys'][$location]) - 1]['last'] = true;
+    }
   }
+
   $settings['smileys_url'] = $modSettings['smileys_url'] . '/' . $user_info['smiley_set'];
 
   // Allow for things to be overridden.
-  if (!isset($context['post_box_columns']))
+  if (!isset($context['post_box_columns'])) {
     $context['post_box_columns'] = 60;
-  if (!isset($context['post_box_rows']))
+  }
+
+  if (!isset($context['post_box_rows'])) {
     $context['post_box_rows'] = 12;
-  if (!isset($context['post_box_name']))
+  }
+
+  if (!isset($context['post_box_name'])) {
     $context['post_box_name'] = 'message';
-  if (!isset($context['post_form']))
+  }
+
+  if (!isset($context['post_form'])) {
     $context['post_form'] = 'postmodify';
+  }
 
   // Set a flag so the sub template knows what to do...
   $context['show_bbc'] = !empty($modSettings['enableBBC']) && !empty($settings['show_bbc']);
 
   // Generate a list of buttons that shouldn't be shown - this should be the fastest way to do this.
-  if (!empty($modSettings['disabledBBC']))
-  {
+  if (!empty($modSettings['disabledBBC'])) {
     $disabled_tags = explode(',', $modSettings['disabledBBC']);
-    foreach ($disabled_tags as $tag)
+
+    foreach ($disabled_tags as $tag) {
       $context['disabled_tags'][trim($tag)] = true;
+    }
   }
 
   // Go!  Supa-sub-template-smash!
   template_postbox($msg);
 
   // Switch the URLs back... now we're back to whatever the main sub template is.  (like folder in PersonalMessage.)
-  if (isset($settings['use_default_images']) && $settings['use_default_images'] == 'defaults' && isset($settings['default_template']))
-  {
+  if (isset($settings['use_default_images']) && $settings['use_default_images'] == 'defaults' && isset($settings['default_template'])) {
     $settings['theme_url'] = $temp1;
     $settings['images_url'] = $temp2;
     $settings['theme_dir'] = $temp3;

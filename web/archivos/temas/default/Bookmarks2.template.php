@@ -19,7 +19,7 @@ function template_main() {
       </div>
       <div class="clearBoth"></div>
       <div class="box_757">
-        <div class="box_title" style="width: 757px;">
+        <div class="box_title" style="width: 755px;">
           <div class="box_txt box_757-34">
             <center>' . $txt['bookmark_list'] . '</center>
           </div>
@@ -139,7 +139,7 @@ function template_main() {
               <img src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0" alt="" />
             </div>
           </div>
-          <div class="windowbg" style="width: 150px; padding: 4px;">
+          <div class="windowbg" style="width: 152px; padding: 4px;">
             <center>' . $modSettings['vertical'] . '</center>
           </div>
         </div>

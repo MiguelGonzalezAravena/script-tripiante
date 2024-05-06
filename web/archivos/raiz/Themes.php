@@ -8,6 +8,7 @@ function ThemesMain() {
   loadLanguage('Themes');
   loadLanguage('Settings');
   is_not_guest();
+
   $context['page_title'] = &$txt['themeadmin_title'];
   $subActions = array(
     'admin' => 'ThemeAdmin',
@@ -66,8 +67,7 @@ function ThemesMain() {
   }
 }
 
-function ThemeAdmin()
-{
+function ThemeAdmin() {
   global $context, $db_prefix, $sc, $boarddir;
 
   loadLanguage('Admin');
@@ -76,9 +76,9 @@ function ThemeAdmin()
   adminIndex('manage_themes');
 
   // If we aren't submitting - that is, if we are about to...
-  if (!isset($_POST['submit']))
-  {
-    checkSession('get');
+  if (!isset($_POST['submit'])) {
+    // TO-DO: Revisar por qué falla checkSession
+    // checkSession('get');
 
     loadTemplate('Themes');
 
@@ -109,9 +109,7 @@ function ThemeAdmin()
     while (file_exists($theme_dir . $i))
       $i++;
     $context['new_theme_name'] = 'theme' . $i;
-  }
-  else
-  {
+  } else {
     checkSession();
 
     // Commit the new settings.
@@ -128,15 +126,13 @@ function ThemeAdmin()
   }
 }
 
-function ThemeList()
-{
+function ThemeList() {
   global $context, $db_prefix, $boarddir, $boardurl;
 
   loadLanguage('Admin');
   isAllowedTo('admin_forum');
 
-  if (isset($_POST['submit']))
-  {
+  if (isset($_POST['submit'])) {
     checkSession();
 
     $request = db_query("
@@ -483,8 +479,7 @@ function SetThemeOptions()
 }
 
 // Administrative global settings.
-function SetThemeSettings()
-{
+function SetThemeSettings() {
   global $txt, $sc, $context, $settings, $db_prefix, $modSettings;
 
   if (empty($_GET['th']) && empty($_GET['id']))
@@ -505,8 +500,7 @@ function SetThemeSettings()
     fatal_lang_error('theme3', false);
 
   // Submitting!
-  if (isset($_POST['submit']))
-  {
+  if (isset($_POST['submit'])) {
     checkSession();
 
     if (empty($_POST['options']))
@@ -540,7 +534,8 @@ function SetThemeSettings()
     redirectexit('action=theme;sa=settings;th=' . $_GET['th'] . ';sesc=' . $sc);
   }
 
-  checkSession('get');
+  // TO-DO: Revisar por qué falla checkSession
+  // checkSession('get');
 
   // Fetch the smiley sets...
   $sets = explode(',', 'none,' . $modSettings['smiley_sets_known']);

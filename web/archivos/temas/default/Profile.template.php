@@ -409,7 +409,7 @@ function sidebar() {
                     <a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos/" title="Ver todos">Ver todos</a>
                   </p>
                 </div>
-                <hr />
+                <div class="hrs"></div>
                 <center>
                   <table>
                     <tr>';
@@ -481,7 +481,7 @@ function sidebar() {
                   <a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos/" title="Ver todos">Ver todos</a>
                 </p>
               </div>
-              <hr />
+              <div class="hrs"></div>
               <center>
                 <table>
                   <tr>';
@@ -501,7 +501,7 @@ function sidebar() {
 
           $count4++;
 
-          if ($count4 == 3) {
+          if ($count4%3 == 0) {
             echo '
               </tr>
               <tr>';
@@ -1182,7 +1182,7 @@ function template_avatar() {
               </tr>
               <tr>
                 <td colspan="3" align="center">
-                  <hr />
+                  <div class="hrs"></div>
                   <b class="size11" style="color: red;">* Si el avatar contiene pornograf&iacute;a, es morboso. Se borrar&aacute;.</b>
                   <br />
                   <input onclick="return errorrojos(this.form.avatar.value); this.form.submit()" type="submit" class="button" style="font-size: 15px" value="Modificar mi perfil" title="Modificar mi perfil" />
@@ -1314,7 +1314,7 @@ function template_paso1() {
               </tr>
               <tr>
                 <td colspan="3" align="center">
-                  <hr />
+                  <div class="hrs"></div>
                   Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.
                 </td>
               </tr>
@@ -1503,7 +1503,7 @@ function template_paso2() {
               </tr>
               <tr>
                 <td colspan="3" align="center">
-                  <hr />
+                  <div class="hrs"></div>
                   Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.
                 </td>
               </tr>
@@ -1723,7 +1723,7 @@ function template_paso3() {
               </tr>
               <tr>
                 <td colspan="3" align="center">
-                  <hr />
+                  <div class="hrs"></div>
                   Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.
                 </td>
               </tr>
@@ -1836,7 +1836,7 @@ function template_paso4() {
               </tr>
               <tr>
                 <td colspan="3" align="center">
-                  <hr />
+                  <div class="hrs"></div>
                   Al modificar mi apariencia tambi&eacute;n acepto los <a href="' . $boardurl . '/terminos-y-condiciones/" target="_blank">T&eacute;rminos de uso</a>.
                 </td>
               </tr>
@@ -1897,7 +1897,7 @@ function template_agregarimagen() {
             &nbsp;
             <br />
             <input type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="" />
-            <hr />
+            <div class="hrs"></div>
             <b class="size11" style="color: red;">* Si la imagen contiene pornografia, es morboso. Se borrar&aacute;.</b>
             <br />
             <input type="submit" class="button" style="font-size: 15px;" onclick="return requerido(this.form.title.value, this.form.filename.value);" tabindex="3" value="Agregar imagen" name="submit" />
@@ -1970,7 +1970,7 @@ function template_editarimagen() {
             &nbsp;
             <br />
             <input type="text" onfocus="foco(this);" onblur="no_foco(this);" tabindex="2" size="60" name="filename" value="' . $row['filename'] . '" />
-            <hr />
+            <div class="hrs"></div>
             <b class="size11" style="color: red;">* Si la imagen contiene pornograf&iacute;a, es morboso. Se borrar&aacute;.</b>
             <br />
             <input type="submit" tabindex="3" class="button" style="font-size: 15px;" onclick="return requerido(this.form.title.value, this.form.filename.value);" value="Editar imagen" name="submit" />
@@ -4099,7 +4099,7 @@ function template_buddies() {
       <p align="right" style="margin: 0px; padding: 0px;">
         <a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos/">' . mysqli_num_rows($count) . ' amigos</a>
       </p>
-      <hr />';
+      <div class="hrs"></div>';
 
     while ($row = mysqli_fetch_assoc($request2)) {
       echo '
@@ -4149,7 +4149,7 @@ function template_buddies() {
             </tr>
           </tbody>
         </table>
-        <hr />';
+        <div class="hrs"></div>';
     }
 
     $request = db_query($query, __FILE__, __LINE__);
@@ -4241,7 +4241,7 @@ function template_buddies2() {
   if ($count <= 0) {
     echo '<div class="noesta">' . $memberName . ' no tiene ning&uacute;n amigo a&ntilde;adido.</div>';
   } else if ($memberName == $context['user']['name']) {
-    echo '<b class="size11">Acci&oacute;n no reconocida.-</b><hr />';
+    echo '<b class="size11">Acci&oacute;n no reconocida.-</b><div class="hrs"></div>';
   } else {
     echo '
       <p style="margin: 0px; padding: 0px; float: left; width: 250px;">
@@ -4250,7 +4250,7 @@ function template_buddies2() {
       <p align="right" style="margin: 0px; padding: 0px;">
         <a href="' . $boardurl . '/perfil/' . $memberName . '/lista-de-amigos/">' . $contartotal . ' amigos</a>
       </p>
-      <hr />';
+      <div class="hrs"></div>';
 
     while ($row = mysqli_fetch_assoc($request2)) {
       echo '
@@ -4300,7 +4300,7 @@ function template_buddies2() {
             </tr>
           </tbody>
         </table>
-        <hr />';
+        <div class="hrs"></div>';
     }
 
     $request = db_query($query, __FILE__, __LINE__);

@@ -21,8 +21,6 @@ function template_admin_above() {
           <div class="box_title" style="width: 158px;">
             <div class="box_txt img_aletat">
               ' . $section['title'] . '
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="box_rss">
               <img alt="" src="' . $settings['images_url'] . '/blank.gif" style="width: 16px; height: 16px;" border="0">
@@ -166,7 +164,7 @@ function template_admin() {
       <div style="width: 737px; padding: 4px;" class="windowbg">
         <div align="center">
           <img src="' . $settings['images_url'] . '/logos/logo.png" />
-          <hr style="width: 50%;" />
+          <div class="hrs"></div>
           <b>Administradores:</b>&nbsp;' . implode(', ', $context['administrators']);
 
   if (!empty($context['more_admins_link'])) {

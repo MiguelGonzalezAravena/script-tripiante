@@ -48,39 +48,41 @@ function template_main() {
         }
 
         var separar_tags = tags.split(",");
+
         if (separar_tags.length -1 >= 2) {
-        for (x in separar_tags) {
-          if (separar_tags[x].length <3) {
-            alert("El Tag \"" + separar_tags[x] + "\" tiene menos de 3 caracteres");
-            return;
-          } else {
-            for (y in separar_tags) {
-              if (separar_tags[x]==separar_tags[y] & x != y) {
-                alert("El Tag \"" + separar_tags[x] + "\" se encuentra repetido");
-                return;
+          for (x in separar_tags) {
+            if (separar_tags[x].length <3) {
+              alert("El Tag \"" + separar_tags[x] + "\" tiene menos de 3 caracteres");
+              return;
+            } else {
+              for (y in separar_tags) {
+                if (separar_tags[x]==separar_tags[y] & x != y) {
+                  alert("El Tag \"" + separar_tags[x] + "\" se encuentra repetido");
+                  return;
+                }
               }
             }
           }
         }
-      }
 
-      if (separar_tags.length < 4) {
-        document.getElementById(\'tagserrordos\').innerHTML = \'<br />Es necesario que ingreses por lo menos 4 tags separados por coma.\';
-        return false;
-      }
-
-      var params = \'subject=\' + encodeURIComponent(subject) + \'&message=\' + encodeURIComponent(message) + \'&accion=\' + encodeURIComponent(2);
-
-      $.ajax({
-        type: "POST",
-        url: \'/vista-previa/\',
-        data: params,
-        success: function(h) {
-          scrollUp();
-          $(\'#preview\').html(h);
-          $(\'#preview\').css(\'display\', \'inline\');
+        if (separar_tags.length < 4) {
+          document.getElementById(\'tagserrordos\').innerHTML = \'<br />Es necesario que ingreses por lo menos 4 tags separados por coma.\';
+          return false;
         }
-      });
+
+        var params = \'subject=\' + encodeURIComponent(subject) + \'&message=\' + encodeURIComponent(message) + \'&accion=\' + encodeURIComponent(2);
+
+        $.ajax({
+          type: "POST",
+          url: \'' . $boardurl . '/vista-previa/\',
+          data: params,
+          success: function(h) {
+            scrollUp();
+            $(\'#preview\').html(h);
+            $(\'#preview\').css(\'display\', \'inline\');
+          }
+        });
+      }
     </script>';
 
   echo '
@@ -99,10 +101,10 @@ function template_main() {
         <div class="windowbg" border="0" style="width: 225px; padding: 4px; font-family: arial;">
           <center class="size12">
             En esta secci&oacute;n puedes agregar una publicacion para compartirla con nuestra comunidad.
-            <hr class="divider" />
+            <div class="hrs"></div>
             Para que esta publicaci&oacute;n no sea borrada por el staff de la web, debe estar de acuerdo con
             <a href="' . $boardurl . '/protocolo/" target="_blank" title="Protocolo"><b>las normas</b></a> establecidas en la web.
-            <hr class="divider" />
+            <div class="hrs"></div>
             Tambi&eacute;n debe tener en cuenta los siguientes puntos:
           </center>
           <br />
@@ -119,25 +121,25 @@ function template_main() {
           Noticias con fuente.
           <br />
           <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
-          No excederse en mayusculas.
+          No excederse en may&uacute;sculas.
           <br />
           <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
           No t&iacute;tulo llamativo.
           <br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
           No spam.
           <br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />
-          No gore o asqueros.
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
+          No gore o asqueroso.
           <br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
           No insultos o malos tratos.
           <br />
-          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" atl="" />
-          No pornograf&iacute;a.<br />
+          <img src="' . $settings['images_url'] . '/icons/bullet-verde.gif" alt="" />
+          No pornograf&iacute;a.
           <br />
-          <center style="font-size:11px;">
-            <img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" atl="" />
+          <center style="font-size: 11px;">
+            <img src="' . $settings['images_url'] . '/icons/bullet-rojo.gif" alt="" />
             Cumpliendo estos puntos m&aacute;s teniendo en cuenta el <a href="' . $boardurl . '/protocolo/" target="_blank" title="Protocolo">protocolo</a>,
             es probable que su post no sea eliminado ni editado.
           </center>
@@ -198,11 +200,12 @@ function template_main() {
     </div>';
 
   // A hidden form to post data to the spell checking window.
-  if ($context['show_spellchecking'])
+  if ($context['show_spellchecking']) {
     echo '
       <form action="' . $scripturl . '?action=spellcheck" method="post" accept-charset="' . $context['character_set'] . '" name="spell_form" id="spell_form" target="spellWindow">
         <input type="hidden" name="spellstring" value="" />
       </form>';
+  }
 }
 
 // This function displays all the stuff you'd expect to see with a message box, the box, BBC buttons and of course smileys.
@@ -231,7 +234,7 @@ function template_postbox(&$message) {
   echo '<b class="size11">Mensaje del post:</b><br />';
 
   echo '
-    <textarea style="height: 300px; width: 615px;" onfocus="foco(this);" onblur="no_foco(this);" id="markItUp" name="' . $context['post_box_name'] . '" class="markItUpEditor" tabindex="3">' . $message . '</textarea>
+    <textarea style="height: 300px; width: 615px;" onfocus="foco(this);" onblur="no_foco(this);" id="markItUp" name="' . $context['post_box_name'] . '" class="markItUpEditor" tabindex="' . $context['tabindex']++ . '">' . $message . '</textarea>
     <label id="error2"></label>
     <label id="error3"></label>';
 
@@ -267,7 +270,7 @@ function template_postbox(&$message) {
       <label id="tagserrordos" class="size10" style="color: red;"></label>
       <br />';
   } else {
-    echo '<input style="width:415px;" maxlength="128" value="';
+    echo '<input style="width: 415px;" maxlength="128" value="';
 
     $request = db_query("
       SELECT *
@@ -304,8 +307,9 @@ function template_postbox(&$message) {
       <option value="-1"' . (empty($context['ID_BOARD']) ? ' selected="selected"' : '' ) . '>Elegir categor&iacute;a</option>';
 
   foreach ($context['boards'] as $board) {
+    $name = htmlentities($board['name'], ENT_QUOTES, 'ISO-8859-1');
     echo '
-      <option value="' . $board['id'] . '"' . ($context['ID_BOARD'] == $board['id'] ? ' selected="selected"' : '') . '>' . $board['name'] . '</option>';
+      <option value="' . $board['id'] . '"' . ($context['ID_BOARD'] == $board['id'] ? ' selected="selected"' : '') . '>' . $name . '</option>';
   }
 
   echo '

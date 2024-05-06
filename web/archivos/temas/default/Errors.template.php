@@ -151,7 +151,7 @@ function template_error_log() {
           </td>
         </tr>';
   else
-    echo 'xD
+    echo '
         <tr>
           <td colspan="2" class="windowbg2">', $txt[151], '</td>
         </tr>';

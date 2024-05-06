@@ -27,18 +27,14 @@ function template_articlesmain() {
         <tr>
           <td style="padding-right: 150px;">
             <img alt="" src="' . $settings['images_url'] . '/ayuda/carpeta.png" title="' . $row['title'] . '" />
-            &nbsp;
             <a href="' . $boardurl . '/ayuda/categoria/' . $row['seotitle'] . '">' . $row['title'] . '</a>
-            &nbsp;
             (' . $totalarticles . ')
           </td>';
     } else {
       echo '
         <td style="padding-right: 150px;">
           <img alt="" src="' . $settings['images_url'] . '/ayuda/carpeta.png" title="' . $row['title'] . '" />
-          &nbsp;
           <a href="' . $boardurl . '/ayuda/categoria/' . $row['seotitle'] . '">' . $row['title'] . '</a>
-          &nbsp;
           (' . $totalarticles . ')
         </td>';
     }
@@ -67,11 +63,11 @@ function template_articlesmain() {
     LIMIT 5", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request)) {
+    $row['title'] = htmlentities($row['title'], ENT_QUOTES, 'ISO-8859-1');
+
     echo '
       <img alt="' . $row['title'] . '" src="' . $settings['images_url'] . '/ayuda/articulo.png" title="' . $row['title'] . '" />
-      &nbsp;
       <a href="' . $boardurl . '/ayuda/articulo/' . $row['ID_ARTICLE'] . '">' . ssi_reducir($row['title']) . '</a>
-      &nbsp;
       (' . timeformat($row['date']) . ')
       <br />';
   }
@@ -97,11 +93,11 @@ function template_articlesmain() {
     LIMIT 5", __FILE__, __LINE__);
 
   while ($row = mysqli_fetch_assoc($request)) {
+    $row['title'] = htmlentities($row['title'], ENT_QUOTES, 'ISO-8859-1');
+
     echo '
       <img alt="' . $row['title'] . '" src="' . $settings['images_url'] . '/ayuda/articulo.png" title="' . $row['title'] . '" />
-      &nbsp;
       <a href="' . $boardurl . '/ayuda/articulo/' . $row['ID_ARTICLE'] . '">' . ssi_reducir($row['title']) . '</a>
-      &nbsp;
       (' . $row['views'] . '&nbsp;' . $txt['smfarticles_cviews'] . ')
       <br />';
   }
@@ -115,60 +111,71 @@ function template_articlesmain() {
 
     if ($context['m_cats']) {
       echo '
-        <table border="0" cellspacing="1" cellpadding="5" class="bordercolor" style="margin-top: 1px;" align="center" width="90%">
-          <tr class="titlebg">
-            <td align="center">' . $txt['smfarticles_articlespanel'] . '</td>
-          </tr>
-          <tr>
-            <td class="windowbg2" align="center">
-              <a href="' . $scripturl . '?action=articles;sa=addcat">' . $txt['smfarticles_addcat'] . '</a>&nbsp;';
-      
+        <div class="hrs"></div>
+
+        <div class="box_buscador" style="margin-bottom: 8px;">
+          <div class="box_title" style="width: 922px;">
+            <div class="box_txt box_buscadort">' . $txt['smfarticles_articlespanel'] . '</div>
+            <div class="box_rss">
+              <img alt="" src="' . $settings['images_url'] . '/espacio.gif" style="width: 14px; height: 12px;" border="0" />
+            </div>
+          </div>
+          <div style="width: 914px; padding: 4px;" class="windowbg">
+            <table border="0" cellspacing="1" cellpadding="5" class="bordercolor" style="margin-top: 1px;" align="center" width="90%">
+              <tr>
+                <td align="center">
+                  <a href="' . $scripturl . '?action=articles;sa=addcat">
+                    <input type="button" class="button" value="' . $txt['smfarticles_addcat'] . '" />
+                  </a>
+                  ';
+        
       if ($context['addarticle']) {
-        echo '<a href="' . $scripturl . '?action=articles;sa=addarticle">' . $txt['smfarticles_addarticle'] . '</a>&nbsp;';
+        echo '
+          <a href="' . $scripturl . '?action=articles;sa=addarticle">
+            <input type="button" class="button" value="' . $txt['smfarticles_addarticle'] . '" />
+          </a>';
       }
 
       echo '
-              <a href="' . $scripturl . '?action=articles;sa=admin">' . $txt['smfarticles_articlessettings'] . '</a>
-              &nbsp;
-              <a href="' . $scripturl . '?action=articles;sa=adminperm">' . $txt['edit_permissions'] . '</a>
-              <br />
-              ' . $txt['smfarticles_thereare'] . '
-              <b>' . $context['articlesapproval'] . '</b>
-              ' . $txt['smfarticles_waitingapproval'] .'
-              &nbsp;
-              <a href="' . $scripturl . '?action=articles;sa=alist">' . $txt['smfarticles_articlecheckapproval'] . '</a>
-              <br />
-            </td>
-          </tr>
-        </table>
-        <table>
-          <tr>
-            <td>';
+                  <a href="' . $scripturl . '?action=articles;sa=admin">
+                    <input type="button" class="button" value="' . $txt['smfarticles_articlessettings'] . '" />
+                  </a>
+                  <a href="' . $scripturl . '?action=articles;sa=adminperm">
+                    <input type="button" class="button" value="' . $txt['edit_permissions'] . '" />
+                  </a>
+                  <div class="hrs"></div>
+                  <div class="noesta">
+                    ' . $txt['smfarticles_thereare'] . '
+                    <b>' . $context['articlesapproval'] . '</b>
+                    ' . $txt['smfarticles_waitingapproval'] .'
+                    <a href="' . $scripturl . '?action=articles;sa=alist">' . $txt['smfarticles_articlecheckapproval'] . '</a>
+                  </div>
+                  <div class="hrs"></div>
+                </td>
+              </tr>';
+
       foreach ($context['articles_cat'] as $row) {
         if ($context['m_cats']) {
           echo '
-            <div style="">
-              <p>
-                ' . $row['title'] . '
-                &nbsp;
-                <br />
-                <a href="' . $scripturl . '?action=articles;sa=catup;cat=' . $row['ID_CAT'] . '">' . $txt['smfarticles_txtup'] . '</a>
-                &nbsp;
-                <a href="' . $scripturl . '?action=articles;sa=catdown;cat=' . $row['ID_CAT'] . '">' . $txt['smfarticles_txtdown'] . '</a>
-                <a href="' . $scripturl . '?action=articles;sa=editcat;cat=' . $row['ID_CAT'] . '">' . $txt['smfarticles_txtedit'] . '</a>
-                &nbsp;
-                <a href="' . $scripturl . '?action=articles;sa=deletecat;cat=' . $row['ID_CAT'] . '">' . $txt['smfarticles_txtdel'] . '</a>
-                <br />
-                <a href="' . $scripturl . '?action=articles;sa=catperm;cat=' . $row['ID_CAT'] . '">' . $txt['smfarticles_txt_perm'] . '</a>
-              </p>
-            </div>';
+              <tr>
+                <td>
+                  ' . $row['title'] . '
+                  <br />
+                  <a href="' . $scripturl . '?action=articles;sa=catup;cat=' . $row['ID_CAT'] . '">' . $txt['smfarticles_txtup'] . '</a>
+                  <a href="' . $scripturl . '?action=articles;sa=catdown;cat=' . $row['ID_CAT'] . '">' . $txt['smfarticles_txtdown'] . '</a>
+                  <a href="' . $scripturl . '?action=articles;sa=editcat;cat=' . $row['ID_CAT'] . '">' . $txt['smfarticles_txtedit'] . '</a>
+                  <a href="' . $scripturl . '?action=articles;sa=deletecat;cat=' . $row['ID_CAT'] . '">' . $txt['smfarticles_txtdel'] . '</a>
+                  <br />
+                  <a href="' . $scripturl . '?action=articles;sa=catperm;cat=' . $row['ID_CAT'] . '">' . $txt['smfarticles_txt_perm'] . '</a>
+                </td>
+              </tr>';
         }
       }
 
       echo '
-            </td>
-          </tr>
-        </table>';
+            </table>
+          </div>
+        </div>';
     }
 }
 
@@ -273,9 +280,8 @@ function template_viewarticle() {
                   <center>
                     <b style="color: green;">
                       ' . $context['article']['views'] . '
-                      &nbsp;&nbsp;
                       ' . $txt['smfarticles_cviews'] . '
-                      &nbsp;|&nbsp;
+                      |
                       ' . timeformat($context['article']['date']) . '
                     </b>
                   </center>

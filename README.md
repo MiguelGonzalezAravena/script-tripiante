@@ -1,4 +1,8 @@
-# Script de www.tripiante.net
+<p align="center" width="100%">
+  <img style="background-color: #FFFFFF; border-radius: 8px" width="50%" src="https://raw.githubusercontent.com/MiguelGonzalezAravena/script-tripiante/master/images/logos/logo.png" />
+</p>
+<hr />
+
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
 ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
@@ -12,7 +16,9 @@
 ![Google Chrome](https://img.shields.io/badge/Google%20Chrome-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=white)
 ![Rss](https://img.shields.io/badge/rss-F88900?style=for-the-badge&logo=rss&logoColor=white)
 
+<p width="100%">
 El siguiente script fue arreglado para que funcione con PHP 8.
+</p>
 
 ## Instalación
 
@@ -22,6 +28,10 @@ El siguiente script fue arreglado para que funcione con PHP 8.
 4. Importar archivo `tripiante.sql`.
 5. Configurar archivo `Settings.php` con credenciales a base de datos, URL del dominio donde se va a instalar el script.
 6. Disfrutar tu página clon de [Tripiante](http://www.tripiante.net/).
+
+## Pendientes
+
+Para revisar los temas que se encuentran pendientes, se puede revisar el archivo [TODO.md](https://github.com/MiguelGonzalezAravena/script-tripiante/blob/master/TODO.md).
 
 ## Créditos
 

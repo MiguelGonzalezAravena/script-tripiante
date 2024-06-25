@@ -16,9 +16,7 @@
 ![Google Chrome](https://img.shields.io/badge/Google%20Chrome-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=white)
 ![Rss](https://img.shields.io/badge/rss-F88900?style=for-the-badge&logo=rss&logoColor=white)
 
-<p width="100%">
-El siguiente script fue arreglado para que funcione con PHP 8.
-</p>
+El siguiente script fue arreglado para que funcione con PHP `7.4.26`.
 
 ## Instalación
 
